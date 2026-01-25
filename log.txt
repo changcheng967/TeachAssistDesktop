@@ -1,0 +1,235 @@
+'TeachAssistApp.exe' (CoreCLR: DefaultDomain): Loaded 'C:\Program Files\dotnet\shared\Microsoft.NETCore.App\9.0.11\System.Private.CoreLib.dll'. Skipped loading symbols. Module is optimized and the debugger option 'Just My Code' is enabled.
+'TeachAssistApp.exe' (CoreCLR: clrhost): Loaded 'C:\Users\chang\Downloads\TA\TeachAssistApp\bin\Debug\net9.0-windows\TeachAssistApp.dll'. Symbols loaded.
+'TeachAssistApp.exe' (CoreCLR: clrhost): Loaded 'C:\Program Files\dotnet\shared\Microsoft.WindowsDesktop.App\9.0.11\PresentationFramework.dll'. Skipped loading symbols. Module is optimized and the debugger option 'Just My Code' is enabled.
+'TeachAssistApp.exe' (CoreCLR: clrhost): Loaded 'C:\Program Files\dotnet\shared\Microsoft.WindowsDesktop.App\9.0.11\WindowsBase.dll'. Skipped loading symbols. Module is optimized and the debugger option 'Just My Code' is enabled.
+'TeachAssistApp.exe' (CoreCLR: clrhost): Loaded 'C:\Program Files\dotnet\shared\Microsoft.NETCore.App\9.0.11\System.Runtime.dll'. Skipped loading symbols. Module is optimized and the debugger option 'Just My Code' is enabled.
+'TeachAssistApp.exe' (CoreCLR: clrhost): Loaded 'C:\Program Files\dotnet\shared\Microsoft.WindowsDesktop.App\9.0.11\System.Xaml.dll'. Skipped loading symbols. Module is optimized and the debugger option 'Just My Code' is enabled.
+'TeachAssistApp.exe' (CoreCLR: clrhost): Loaded 'c:\program files\microsoft visual studio\18\insiders\common7\ide\extensions\microsoft\managedprojectsystem\HotReload\net6.0\Microsoft.Extensions.DotNetDeltaApplier.dll'. Skipped loading symbols. Module is optimized and the debugger option 'Just My Code' is enabled.
+'TeachAssistApp.exe' (CoreCLR: clrhost): Loaded 'C:\Program Files\dotnet\shared\Microsoft.NETCore.App\9.0.11\System.Linq.dll'. Skipped loading symbols. Module is optimized and the debugger option 'Just My Code' is enabled.
+'TeachAssistApp.exe' (CoreCLR: clrhost): Loaded 'C:\Program Files\dotnet\shared\Microsoft.NETCore.App\9.0.11\System.Runtime.Loader.dll'. Skipped loading symbols. Module is optimized and the debugger option 'Just My Code' is enabled.
+'TeachAssistApp.exe' (CoreCLR: clrhost): Loaded 'C:\Program Files\dotnet\shared\Microsoft.NETCore.App\9.0.11\System.Console.dll'. Skipped loading symbols. Module is optimized and the debugger option 'Just My Code' is enabled.
+'TeachAssistApp.exe' (CoreCLR: clrhost): Loaded 'C:\Program Files\dotnet\shared\Microsoft.NETCore.App\9.0.11\System.Collections.dll'. Skipped loading symbols. Module is optimized and the debugger option 'Just My Code' is enabled.
+'TeachAssistApp.exe' (CoreCLR: clrhost): Loaded 'C:\Program Files\dotnet\shared\Microsoft.NETCore.App\9.0.11\System.Runtime.InteropServices.RuntimeInformation.dll'. Skipped loading symbols. Module is optimized and the debugger option 'Just My Code' is enabled.
+'TeachAssistApp.exe' (CoreCLR: clrhost): Loaded 'C:\Program Files\dotnet\shared\Microsoft.NETCore.App\9.0.11\System.Collections.Concurrent.dll'. Skipped loading symbols. Module is optimized and the debugger option 'Just My Code' is enabled.
+'TeachAssistApp.exe' (CoreCLR: clrhost): Loaded 'C:\Program Files\dotnet\shared\Microsoft.NETCore.App\9.0.11\System.IO.Pipes.dll'. Skipped loading symbols. Module is optimized and the debugger option 'Just My Code' is enabled.
+'TeachAssistApp.exe' (CoreCLR: clrhost): Loaded 'C:\Program Files\dotnet\shared\Microsoft.NETCore.App\9.0.11\System.Threading.dll'. Skipped loading symbols. Module is optimized and the debugger option 'Just My Code' is enabled.
+'TeachAssistApp.exe' (CoreCLR: clrhost): Loaded 'C:\Program Files\dotnet\shared\Microsoft.NETCore.App\9.0.11\System.Runtime.InteropServices.dll'. Skipped loading symbols. Module is optimized and the debugger option 'Just My Code' is enabled.
+'TeachAssistApp.exe' (CoreCLR: clrhost): Loaded 'C:\Program Files\dotnet\shared\Microsoft.NETCore.App\9.0.11\System.Threading.Overlapped.dll'. Skipped loading symbols. Module is optimized and the debugger option 'Just My Code' is enabled.
+'TeachAssistApp.exe' (CoreCLR: clrhost): Loaded 'C:\Program Files\dotnet\shared\Microsoft.NETCore.App\9.0.11\System.Security.AccessControl.dll'. Skipped loading symbols. Module is optimized and the debugger option 'Just My Code' is enabled.
+'TeachAssistApp.exe' (CoreCLR: clrhost): Loaded 'C:\Program Files\dotnet\shared\Microsoft.NETCore.App\9.0.11\System.Security.Principal.Windows.dll'. Skipped loading symbols. Module is optimized and the debugger option 'Just My Code' is enabled.
+'TeachAssistApp.exe' (CoreCLR: clrhost): Loaded 'C:\Program Files\dotnet\shared\Microsoft.NETCore.App\9.0.11\System.Security.Claims.dll'. Skipped loading symbols. Module is optimized and the debugger option 'Just My Code' is enabled.
+'TeachAssistApp.exe' (CoreCLR: clrhost): Loaded 'C:\Program Files\Microsoft Visual Studio\18\Insiders\Common7\IDE\PrivateAssemblies\Runtime\Microsoft.VisualStudio.Debugger.Runtime.NetCoreApp.dll'. Skipped loading symbols. Module is optimized and the debugger option 'Just My Code' is enabled.
+'TeachAssistApp.exe' (CoreCLR: clrhost): Loaded 'C:\Program Files\dotnet\shared\Microsoft.NETCore.App\9.0.11\System.Threading.ThreadPool.dll'. Skipped loading symbols. Module is optimized and the debugger option 'Just My Code' is enabled.
+Step into: Stepping over non-user code 'TeachAssistApp.App..ctor'
+'TeachAssistApp.exe' (CoreCLR: clrhost): Loaded 'C:\Program Files\dotnet\shared\Microsoft.NETCore.App\9.0.11\System.Diagnostics.TraceSource.dll'. Skipped loading symbols. Module is optimized and the debugger option 'Just My Code' is enabled.
+'TeachAssistApp.exe' (CoreCLR: clrhost): Loaded 'C:\Program Files\dotnet\shared\Microsoft.WindowsDesktop.App\9.0.11\System.IO.Packaging.dll'. Skipped loading symbols. Module is optimized and the debugger option 'Just My Code' is enabled.
+'TeachAssistApp.exe' (CoreCLR: clrhost): Loaded 'C:\Program Files\dotnet\shared\Microsoft.NETCore.App\9.0.11\System.Text.RegularExpressions.dll'. Skipped loading symbols. Module is optimized and the debugger option 'Just My Code' is enabled.
+'TeachAssistApp.exe' (CoreCLR: clrhost): Loaded 'C:\Program Files\dotnet\shared\Microsoft.NETCore.App\9.0.11\System.Private.Uri.dll'. Skipped loading symbols. Module is optimized and the debugger option 'Just My Code' is enabled.
+'TeachAssistApp.exe' (CoreCLR: clrhost): Loaded 'C:\Program Files\dotnet\shared\Microsoft.WindowsDesktop.App\9.0.11\PresentationCore.dll'. Skipped loading symbols. Module is optimized and the debugger option 'Just My Code' is enabled.
+'TeachAssistApp.exe' (CoreCLR: clrhost): Loaded 'C:\Program Files\dotnet\shared\Microsoft.NETCore.App\9.0.11\Microsoft.Win32.Primitives.dll'. Skipped loading symbols. Module is optimized and the debugger option 'Just My Code' is enabled.
+'TeachAssistApp.exe' (CoreCLR: clrhost): Loaded 'C:\Program Files\dotnet\shared\Microsoft.NETCore.App\9.0.11\System.Memory.dll'. Skipped loading symbols. Module is optimized and the debugger option 'Just My Code' is enabled.
+'TeachAssistApp.exe' (CoreCLR: clrhost): Loaded 'C:\Program Files\dotnet\shared\Microsoft.WindowsDesktop.App\9.0.11\DirectWriteForwarder.dll'. Skipped loading symbols. Module is optimized and the debugger option 'Just My Code' is enabled.
+'TeachAssistApp.exe' (CoreCLR: clrhost): Loaded 'C:\Program Files\dotnet\shared\Microsoft.NETCore.App\9.0.11\System.Runtime.Extensions.dll'. Skipped loading symbols. Module is optimized and the debugger option 'Just My Code' is enabled.
+'TeachAssistApp.exe' (CoreCLR: clrhost): Loaded 'C:\Program Files\dotnet\shared\Microsoft.NETCore.App\9.0.11\System.Diagnostics.Debug.dll'. Skipped loading symbols. Module is optimized and the debugger option 'Just My Code' is enabled.
+'TeachAssistApp.exe' (CoreCLR: clrhost): Loaded 'C:\Program Files\dotnet\shared\Microsoft.NETCore.App\9.0.11\System.Runtime.CompilerServices.VisualC.dll'. Skipped loading symbols. Module is optimized and the debugger option 'Just My Code' is enabled.
+'TeachAssistApp.exe' (CoreCLR: clrhost): Loaded 'C:\Program Files\dotnet\shared\Microsoft.NETCore.App\9.0.11\System.Collections.NonGeneric.dll'. Skipped loading symbols. Module is optimized and the debugger option 'Just My Code' is enabled.
+'TeachAssistApp.exe' (CoreCLR: clrhost): Loaded 'C:\Program Files\dotnet\shared\Microsoft.NETCore.App\9.0.11\Microsoft.Win32.Registry.dll'. Skipped loading symbols. Module is optimized and the debugger option 'Just My Code' is enabled.
+'TeachAssistApp.exe' (CoreCLR: clrhost): Loaded 'C:\Program Files\dotnet\shared\Microsoft.NETCore.App\9.0.11\System.Collections.Specialized.dll'. Skipped loading symbols. Module is optimized and the debugger option 'Just My Code' is enabled.
+'TeachAssistApp.exe' (CoreCLR: clrhost): Loaded 'C:\Program Files\dotnet\shared\Microsoft.NETCore.App\9.0.11\System.ComponentModel.Primitives.dll'. Skipped loading symbols. Module is optimized and the debugger option 'Just My Code' is enabled.
+'TeachAssistApp.exe' (CoreCLR: clrhost): Loaded 'C:\Program Files\dotnet\shared\Microsoft.NETCore.App\9.0.11\System.Threading.Thread.dll'. Skipped loading symbols. Module is optimized and the debugger option 'Just My Code' is enabled.
+'TeachAssistApp.exe' (CoreCLR: clrhost): Loaded 'C:\Program Files\dotnet\shared\Microsoft.WindowsDesktop.App\9.0.11\System.Configuration.ConfigurationManager.dll'. Skipped loading symbols. Module is optimized and the debugger option 'Just My Code' is enabled.
+'TeachAssistApp.exe' (CoreCLR: clrhost): Loaded 'C:\Program Files\dotnet\shared\Microsoft.NETCore.App\9.0.11\System.Xml.ReaderWriter.dll'. Skipped loading symbols. Module is optimized and the debugger option 'Just My Code' is enabled.
+'TeachAssistApp.exe' (CoreCLR: clrhost): Loaded 'C:\Program Files\dotnet\shared\Microsoft.NETCore.App\9.0.11\System.Private.Xml.dll'. Skipped loading symbols. Module is optimized and the debugger option 'Just My Code' is enabled.
+'TeachAssistApp.exe' (CoreCLR: clrhost): Loaded 'C:\Program Files\dotnet\shared\Microsoft.NETCore.App\9.0.11\System.Net.WebClient.dll'. Skipped loading symbols. Module is optimized and the debugger option 'Just My Code' is enabled.
+'TeachAssistApp.exe' (CoreCLR: clrhost): Loaded 'C:\Program Files\dotnet\shared\Microsoft.NETCore.App\9.0.11\System.Text.Encoding.Extensions.dll'. Skipped loading symbols. Module is optimized and the debugger option 'Just My Code' is enabled.
+'TeachAssistApp.exe' (CoreCLR: clrhost): Loaded 'C:\Program Files\dotnet\shared\Microsoft.NETCore.App\9.0.11\System.Numerics.Vectors.dll'. Skipped loading symbols. Module is optimized and the debugger option 'Just My Code' is enabled.
+Step into: Stepping over non-user code 'TeachAssistApp.App.InitializeComponent'
+'TeachAssistApp.exe' (CoreCLR: clrhost): Loaded 'C:\Program Files\dotnet\shared\Microsoft.NETCore.App\9.0.11\System.ComponentModel.TypeConverter.dll'. Skipped loading symbols. Module is optimized and the debugger option 'Just My Code' is enabled.
+'TeachAssistApp.exe' (CoreCLR: clrhost): Loaded 'C:\Program Files\dotnet\shared\Microsoft.WindowsDesktop.App\9.0.11\System.Windows.Extensions.dll'. Skipped loading symbols. Module is optimized and the debugger option 'Just My Code' is enabled.
+'TeachAssistApp.exe' (CoreCLR: clrhost): Loaded 'C:\Program Files\dotnet\shared\Microsoft.NETCore.App\9.0.11\System.ComponentModel.dll'. Skipped loading symbols. Module is optimized and the debugger option 'Just My Code' is enabled.
+'TeachAssistApp.exe' (CoreCLR: clrhost): Loaded 'C:\Program Files\dotnet\shared\Microsoft.NETCore.App\9.0.11\System.ObjectModel.dll'. Skipped loading symbols. Module is optimized and the debugger option 'Just My Code' is enabled.
+'TeachAssistApp.exe' (CoreCLR: clrhost): Loaded 'C:\Users\chang\Downloads\TA\TeachAssistApp\bin\Debug\net9.0-windows\Microsoft.Extensions.Hosting.dll'. Skipped loading symbols. Module is optimized and the debugger option 'Just My Code' is enabled.
+'TeachAssistApp.exe' (CoreCLR: clrhost): Loaded 'C:\Users\chang\Downloads\TA\TeachAssistApp\bin\Debug\net9.0-windows\Microsoft.Extensions.Hosting.Abstractions.dll'. Skipped loading symbols. Module is optimized and the debugger option 'Just My Code' is enabled.
+'TeachAssistApp.exe' (CoreCLR: clrhost): Loaded 'C:\Users\chang\Downloads\TA\TeachAssistApp\bin\Debug\net9.0-windows\Microsoft.Extensions.DependencyInjection.Abstractions.dll'. Skipped loading symbols. Module is optimized and the debugger option 'Just My Code' is enabled.
+'TeachAssistApp.exe' (CoreCLR: clrhost): Loaded 'C:\Users\chang\Downloads\TA\TeachAssistApp\bin\Debug\net9.0-windows\Microsoft.Extensions.Configuration.Abstractions.dll'. Skipped loading symbols. Module is optimized and the debugger option 'Just My Code' is enabled.
+'TeachAssistApp.exe' (CoreCLR: clrhost): Loaded 'C:\Users\chang\Downloads\TA\TeachAssistApp\bin\Debug\net9.0-windows\Microsoft.Extensions.DependencyInjection.dll'. Skipped loading symbols. Module is optimized and the debugger option 'Just My Code' is enabled.
+'TeachAssistApp.exe' (CoreCLR: clrhost): Loaded 'C:\Users\chang\Downloads\TA\TeachAssistApp\bin\Debug\net9.0-windows\System.Diagnostics.DiagnosticSource.dll'. Skipped loading symbols. Module is optimized and the debugger option 'Just My Code' is enabled.
+'TeachAssistApp.exe' (CoreCLR: clrhost): Loaded 'C:\Program Files\dotnet\shared\Microsoft.NETCore.App\9.0.11\System.Diagnostics.Tracing.dll'. Skipped loading symbols. Module is optimized and the debugger option 'Just My Code' is enabled.
+'TeachAssistApp.exe' (CoreCLR: clrhost): Loaded 'C:\Users\chang\Downloads\TA\TeachAssistApp\bin\Debug\net9.0-windows\Microsoft.Extensions.Configuration.dll'. Skipped loading symbols. Module is optimized and the debugger option 'Just My Code' is enabled.
+'TeachAssistApp.exe' (CoreCLR: clrhost): Loaded 'C:\Users\chang\Downloads\TA\TeachAssistApp\bin\Debug\net9.0-windows\Microsoft.Extensions.Configuration.EnvironmentVariables.dll'. Skipped loading symbols. Module is optimized and the debugger option 'Just My Code' is enabled.
+'TeachAssistApp.exe' (CoreCLR: clrhost): Loaded 'C:\Users\chang\Downloads\TA\TeachAssistApp\bin\Debug\net9.0-windows\Microsoft.Extensions.Configuration.CommandLine.dll'. Skipped loading symbols. Module is optimized and the debugger option 'Just My Code' is enabled.
+'TeachAssistApp.exe' (CoreCLR: clrhost): Loaded 'C:\Users\chang\Downloads\TA\TeachAssistApp\bin\Debug\net9.0-windows\Microsoft.Extensions.Primitives.dll'. Skipped loading symbols. Module is optimized and the debugger option 'Just My Code' is enabled.
+'TeachAssistApp.exe' (CoreCLR: clrhost): Loaded 'C:\Users\chang\Downloads\TA\TeachAssistApp\bin\Debug\net9.0-windows\Microsoft.Extensions.FileProviders.Abstractions.dll'. Skipped loading symbols. Module is optimized and the debugger option 'Just My Code' is enabled.
+'TeachAssistApp.exe' (CoreCLR: clrhost): Loaded 'C:\Users\chang\Downloads\TA\TeachAssistApp\bin\Debug\net9.0-windows\Microsoft.Extensions.FileProviders.Physical.dll'. Skipped loading symbols. Module is optimized and the debugger option 'Just My Code' is enabled.
+'TeachAssistApp.exe' (CoreCLR: clrhost): Loaded 'C:\Users\chang\Downloads\TA\TeachAssistApp\bin\Debug\net9.0-windows\Microsoft.Extensions.Configuration.FileExtensions.dll'. Skipped loading symbols. Module is optimized and the debugger option 'Just My Code' is enabled.
+'TeachAssistApp.exe' (CoreCLR: clrhost): Loaded 'C:\Users\chang\Downloads\TA\TeachAssistApp\bin\Debug\net9.0-windows\Microsoft.Extensions.Configuration.Json.dll'. Skipped loading symbols. Module is optimized and the debugger option 'Just My Code' is enabled.
+'TeachAssistApp.exe' (CoreCLR: clrhost): Loaded 'C:\Users\chang\Downloads\TA\TeachAssistApp\bin\Debug\net9.0-windows\Microsoft.Extensions.Configuration.UserSecrets.dll'. Skipped loading symbols. Module is optimized and the debugger option 'Just My Code' is enabled.
+'TeachAssistApp.exe' (CoreCLR: clrhost): Loaded 'C:\Users\chang\Downloads\TA\TeachAssistApp\bin\Debug\net9.0-windows\Microsoft.Extensions.Configuration.Binder.dll'. Skipped loading symbols. Module is optimized and the debugger option 'Just My Code' is enabled.
+'TeachAssistApp.exe' (CoreCLR: clrhost): Loaded 'C:\Program Files\dotnet\shared\Microsoft.NETCore.App\9.0.11\System.IO.FileSystem.Watcher.dll'. Skipped loading symbols. Module is optimized and the debugger option 'Just My Code' is enabled.
+'TeachAssistApp.exe' (CoreCLR: clrhost): Loaded 'C:\Users\chang\Downloads\TA\TeachAssistApp\bin\Debug\net9.0-windows\Microsoft.Extensions.FileSystemGlobbing.dll'. Skipped loading symbols. Module is optimized and the debugger option 'Just My Code' is enabled.
+'TeachAssistApp.exe' (CoreCLR: clrhost): Loaded 'C:\Users\chang\Downloads\TA\TeachAssistApp\bin\Debug\net9.0-windows\Microsoft.Extensions.Options.dll'. Skipped loading symbols. Module is optimized and the debugger option 'Just My Code' is enabled.
+'TeachAssistApp.exe' (CoreCLR: clrhost): Loaded 'C:\Users\chang\Downloads\TA\TeachAssistApp\bin\Debug\net9.0-windows\Microsoft.Extensions.Logging.dll'. Skipped loading symbols. Module is optimized and the debugger option 'Just My Code' is enabled.
+'TeachAssistApp.exe' (CoreCLR: clrhost): Loaded 'C:\Users\chang\Downloads\TA\TeachAssistApp\bin\Debug\net9.0-windows\Microsoft.Extensions.Diagnostics.dll'. Skipped loading symbols. Module is optimized and the debugger option 'Just My Code' is enabled.
+'TeachAssistApp.exe' (CoreCLR: clrhost): Loaded 'C:\Users\chang\Downloads\TA\TeachAssistApp\bin\Debug\net9.0-windows\Microsoft.Extensions.Logging.Abstractions.dll'. Skipped loading symbols. Module is optimized and the debugger option 'Just My Code' is enabled.
+'TeachAssistApp.exe' (CoreCLR: clrhost): Loaded 'C:\Users\chang\Downloads\TA\TeachAssistApp\bin\Debug\net9.0-windows\Microsoft.Extensions.Diagnostics.Abstractions.dll'. Skipped loading symbols. Module is optimized and the debugger option 'Just My Code' is enabled.
+'TeachAssistApp.exe' (CoreCLR: clrhost): Loaded 'C:\Users\chang\Downloads\TA\TeachAssistApp\bin\Debug\net9.0-windows\Microsoft.Extensions.Logging.Configuration.dll'. Skipped loading symbols. Module is optimized and the debugger option 'Just My Code' is enabled.
+'TeachAssistApp.exe' (CoreCLR: clrhost): Loaded 'C:\Users\chang\Downloads\TA\TeachAssistApp\bin\Debug\net9.0-windows\Microsoft.Extensions.Logging.Debug.dll'. Skipped loading symbols. Module is optimized and the debugger option 'Just My Code' is enabled.
+'TeachAssistApp.exe' (CoreCLR: clrhost): Loaded 'C:\Users\chang\Downloads\TA\TeachAssistApp\bin\Debug\net9.0-windows\Microsoft.Extensions.Logging.EventSource.dll'. Skipped loading symbols. Module is optimized and the debugger option 'Just My Code' is enabled.
+'TeachAssistApp.exe' (CoreCLR: clrhost): Loaded 'C:\Users\chang\Downloads\TA\TeachAssistApp\bin\Debug\net9.0-windows\Microsoft.Extensions.Logging.EventLog.dll'. Skipped loading symbols. Module is optimized and the debugger option 'Just My Code' is enabled.
+'TeachAssistApp.exe' (CoreCLR: clrhost): Loaded 'C:\Users\chang\Downloads\TA\TeachAssistApp\bin\Debug\net9.0-windows\Microsoft.Extensions.Logging.Console.dll'. Skipped loading symbols. Module is optimized and the debugger option 'Just My Code' is enabled.
+'TeachAssistApp.exe' (CoreCLR: clrhost): Loaded 'C:\Users\chang\Downloads\TA\TeachAssistApp\bin\Debug\net9.0-windows\Microsoft.Extensions.Options.ConfigurationExtensions.dll'. Skipped loading symbols. Module is optimized and the debugger option 'Just My Code' is enabled.
+'TeachAssistApp.exe' (CoreCLR: clrhost): Loaded 'C:\Users\chang\Downloads\TA\TeachAssistApp\bin\Debug\net9.0-windows\System.Text.Json.dll'. Skipped loading symbols. Module is optimized and the debugger option 'Just My Code' is enabled.
+'TeachAssistApp.exe' (CoreCLR: clrhost): Loaded 'C:\Users\chang\Downloads\TA\TeachAssistApp\bin\Debug\net9.0-windows\CommunityToolkit.Mvvm.dll'. Skipped loading symbols. Module is optimized and the debugger option 'Just My Code' is enabled.
+'TeachAssistApp.exe' (CoreCLR: clrhost): Loaded 'C:\Users\chang\Downloads\TA\TeachAssistApp\bin\Debug\net9.0-windows\runtimes\win\lib\net9.0\System.Diagnostics.EventLog.dll'. Skipped loading symbols. Module is optimized and the debugger option 'Just My Code' is enabled.
+'TeachAssistApp.exe' (CoreCLR: clrhost): Loaded 'C:\Program Files\dotnet\shared\Microsoft.WindowsDesktop.App\9.0.11\UIAutomationTypes.dll'. Skipped loading symbols. Module is optimized and the debugger option 'Just My Code' is enabled.
+'TeachAssistApp.exe' (CoreCLR: clrhost): Loaded 'C:\Program Files\dotnet\shared\Microsoft.NETCore.App\9.0.11\System.Diagnostics.Process.dll'. Skipped loading symbols. Module is optimized and the debugger option 'Just My Code' is enabled.
+'TeachAssistApp.exe' (CoreCLR: clrhost): Loaded 'C:\Program Files\dotnet\shared\Microsoft.WindowsDesktop.App\9.0.11\PresentationFramework.Aero2.dll'. Skipped loading symbols. Module is optimized and the debugger option 'Just My Code' is enabled.
+'TeachAssistApp.exe' (CoreCLR: clrhost): Loaded 'C:\Program Files\dotnet\shared\Microsoft.WindowsDesktop.App\9.0.11\System.Windows.Controls.Ribbon.dll'. Skipped loading symbols. Module is optimized and the debugger option 'Just My Code' is enabled.
+Windows 11 effects enabled
+NavigateTo called: Login
+  Base view: Login
+'TeachAssistApp.exe' (CoreCLR: clrhost): Loaded 'C:\Program Files\dotnet\shared\Microsoft.WindowsDesktop.App\9.0.11\zh-Hans\PresentationFramework.resources.dll'. Module was built without symbols.
+'TeachAssistApp.exe' (CoreCLR: clrhost): Loaded 'C:\Program Files\dotnet\shared\Microsoft.WindowsDesktop.App\9.0.11\UIAutomationProvider.dll'. Skipped loading symbols. Module is optimized and the debugger option 'Just My Code' is enabled.
+'TeachAssistApp.exe' (CoreCLR: clrhost): Loaded 'C:\Program Files\dotnet\shared\Microsoft.NETCore.App\9.0.11\System.Net.Http.dll'. Skipped loading symbols. Module is optimized and the debugger option 'Just My Code' is enabled.
+'TeachAssistApp.exe' (CoreCLR: clrhost): Loaded 'C:\Program Files\dotnet\shared\Microsoft.NETCore.App\9.0.11\System.Net.Primitives.dll'. Skipped loading symbols. Module is optimized and the debugger option 'Just My Code' is enabled.
+'TeachAssistApp.exe' (CoreCLR: clrhost): Loaded 'C:\Program Files\dotnet\shared\Microsoft.NETCore.App\9.0.11\System.Net.Security.dll'. Skipped loading symbols. Module is optimized and the debugger option 'Just My Code' is enabled.
+'TeachAssistApp.exe' (CoreCLR: clrhost): Loaded 'C:\Program Files\dotnet\shared\Microsoft.NETCore.App\9.0.11\System.Security.Cryptography.dll'. Skipped loading symbols. Module is optimized and the debugger option 'Just My Code' is enabled.
+  Navigating to page
+'TeachAssistApp.exe' (CoreCLR: clrhost): Loaded 'C:\Users\chang\Downloads\TA\TeachAssistApp\bin\Debug\net9.0-windows\CredentialManagement.dll'. Skipped loading symbols. Module is optimized and the debugger option 'Just My Code' is enabled.
+'TeachAssistApp.exe' (CoreCLR: clrhost): Loaded 'C:\Program Files\dotnet\shared\Microsoft.NETCore.App\9.0.11\mscorlib.dll'. Skipped loading symbols. Module is optimized and the debugger option 'Just My Code' is enabled.
+'TeachAssistApp.exe' (CoreCLR: clrhost): Loaded 'C:\Program Files\dotnet\shared\Microsoft.WindowsDesktop.App\9.0.11\zh-Hans\PresentationCore.resources.dll'. Module was built without symbols.
+'TeachAssistApp.exe' (CoreCLR: clrhost): Loaded 'C:\Program Files\dotnet\shared\Microsoft.WindowsDesktop.App\9.0.11\System.Security.Permissions.dll'. Skipped loading symbols. Module is optimized and the debugger option 'Just My Code' is enabled.
+'TeachAssistApp.exe' (CoreCLR: clrhost): Loaded 'C:\Program Files\dotnet\shared\Microsoft.WindowsDesktop.App\9.0.11\PresentationFramework-SystemXml.dll'. Skipped loading symbols. Module is optimized and the debugger option 'Just My Code' is enabled.
+'TeachAssistApp.exe' (CoreCLR: clrhost): Loaded 'c:\program files\microsoft visual studio\18\insiders\common7\ide\commonextensions\microsoft\xamldiagnostics\Core\x64\Microsoft.VisualStudio.DesignTools.WpfTap.dll'. Skipped loading symbols. Module is optimized and the debugger option 'Just My Code' is enabled.
+'TeachAssistApp.exe' (CoreCLR: clrhost): Loaded 'C:\Program Files\dotnet\shared\Microsoft.NETCore.App\9.0.11\System.Threading.Tasks.dll'. Skipped loading symbols. Module is optimized and the debugger option 'Just My Code' is enabled.
+'TeachAssistApp.exe' (CoreCLR: clrhost): Loaded 'C:\Program Files\dotnet\shared\Microsoft.NETCore.App\9.0.11\System.Runtime.Serialization.Json.dll'. Skipped loading symbols. Module is optimized and the debugger option 'Just My Code' is enabled.
+'TeachAssistApp.exe' (CoreCLR: clrhost): Loaded 'C:\Program Files\dotnet\shared\Microsoft.NETCore.App\9.0.11\System.Private.DataContractSerialization.dll'. Skipped loading symbols. Module is optimized and the debugger option 'Just My Code' is enabled.
+'TeachAssistApp.exe' (CoreCLR: clrhost): Loaded 'C:\Program Files\dotnet\shared\Microsoft.NETCore.App\9.0.11\System.Runtime.Serialization.Xml.dll'. Skipped loading symbols. Module is optimized and the debugger option 'Just My Code' is enabled.
+'TeachAssistApp.exe' (CoreCLR: clrhost): Loaded 'C:\Program Files\dotnet\shared\Microsoft.NETCore.App\9.0.11\System.Runtime.Serialization.Primitives.dll'. Skipped loading symbols. Module is optimized and the debugger option 'Just My Code' is enabled.
+'TeachAssistApp.exe' (CoreCLR: clrhost): Loaded 'C:\Program Files\dotnet\shared\Microsoft.NETCore.App\9.0.11\System.Resources.ResourceManager.dll'. Skipped loading symbols. Module is optimized and the debugger option 'Just My Code' is enabled.
+'TeachAssistApp.exe' (CoreCLR: clrhost): Loaded 'C:\Program Files\dotnet\shared\Microsoft.NETCore.App\9.0.11\System.Reflection.Emit.ILGeneration.dll'. Skipped loading symbols. Module is optimized and the debugger option 'Just My Code' is enabled.
+'TeachAssistApp.exe' (CoreCLR: clrhost): Loaded 'C:\Program Files\dotnet\shared\Microsoft.NETCore.App\9.0.11\System.Reflection.Emit.Lightweight.dll'. Skipped loading symbols. Module is optimized and the debugger option 'Just My Code' is enabled.
+'TeachAssistApp.exe' (CoreCLR: clrhost): Loaded 'C:\Program Files\dotnet\shared\Microsoft.NETCore.App\9.0.11\System.Reflection.Primitives.dll'. Skipped loading symbols. Module is optimized and the debugger option 'Just My Code' is enabled.
+'TeachAssistApp.exe' (CoreCLR: clrhost): Loaded 'C:\Program Files\dotnet\shared\Microsoft.NETCore.App\9.0.11\System.Net.Requests.dll'. Skipped loading symbols. Module is optimized and the debugger option 'Just My Code' is enabled.
+'TeachAssistApp.exe' (CoreCLR: clrhost): Loaded 'C:\Program Files\dotnet\shared\Microsoft.NETCore.App\9.0.11\System.Net.WebHeaderCollection.dll'. Skipped loading symbols. Module is optimized and the debugger option 'Just My Code' is enabled.
+'TeachAssistApp.exe' (CoreCLR: clrhost): Loaded 'C:\Program Files\dotnet\shared\Microsoft.WindowsDesktop.App\9.0.11\PresentationUI.dll'. Skipped loading symbols. Module is optimized and the debugger option 'Just My Code' is enabled.
+'TeachAssistApp.exe' (CoreCLR: clrhost): Loaded 'C:\Program Files\dotnet\shared\Microsoft.WindowsDesktop.App\9.0.11\zh-Hans\PresentationUI.resources.dll'. Module was built without symbols.
+'TeachAssistApp.exe' (CoreCLR: clrhost): Loaded 'C:\Program Files\dotnet\shared\Microsoft.NETCore.App\9.0.11\System.Runtime.Serialization.Formatters.dll'. Skipped loading symbols. Module is optimized and the debugger option 'Just My Code' is enabled.
+'TeachAssistApp.exe' (CoreCLR: clrhost): Loaded 'C:\Program Files\dotnet\shared\Microsoft.NETCore.App\9.0.11\System.Runtime.Intrinsics.dll'. Skipped loading symbols. Module is optimized and the debugger option 'Just My Code' is enabled.
+Logging in to TeachAssist...
+'TeachAssistApp.exe' (CoreCLR: clrhost): Loaded 'C:\Program Files\dotnet\shared\Microsoft.NETCore.App\9.0.11\System.Net.Sockets.dll'. Skipped loading symbols. Module is optimized and the debugger option 'Just My Code' is enabled.
+'TeachAssistApp.exe' (CoreCLR: clrhost): Loaded 'C:\Program Files\dotnet\shared\Microsoft.NETCore.App\9.0.11\System.Net.NameResolution.dll'. Skipped loading symbols. Module is optimized and the debugger option 'Just My Code' is enabled.
+Got login page, status: OK, length: 5189
+CSRF Token found: False
+Login POST response, status: OK, length: 9423
+Saved login HTML to: C:\Users\chang\Downloads\TA\TeachAssistApp\bin\Debug\net9.0-windows\login_response.html
+'TeachAssistApp.exe' (CoreCLR: clrhost): Loaded 'C:\Users\chang\Downloads\TA\TeachAssistApp\bin\Debug\net9.0-windows\HtmlAgilityPack.dll'. Skipped loading symbols. Module is optimized and the debugger option 'Just My Code' is enabled.
+Found student_id: 248443
+Found 17 total table rows
+Parsed course: CGC1W1-1 - Geography of Canada - Mark: 96.8 - SubjectId: 709654
+  No subject_id found for course: FSF1D1-2
+  Row HTML snippet: 
+		<td>
+FSF1D1-2 : French			<br>
+			Block: P2  - rm. 255 
+		</td>
+		<td width="30%" align="center">
+			2025-09-02 ~ 
+			2026-01-29		</td>
+			<!--td></td-->
+		<td align="right">
+<span style="background:red;color:white;padding:5px;">MIDTERM MARK: 80%</span>&nbsp;Please see teacher for curren
+  No href/onclick found in row HTML
+Parsed course: FSF1D1-2 - French - Mark: 80 - SubjectId: 
+Parsed course: ESLEO1-2 - Course - Mark: 87.6 - SubjectId: 709612
+  No subject_id found for course: MTH1W1-8
+  Row HTML snippet: 
+		<td>
+MTH1W1-8 : 			<br>
+			Block: P5  - rm. 251 
+		</td>
+		<td width="30%" align="center">
+			2025-09-02 ~ 
+			2026-01-29		</td>
+			<!--td></td-->
+		<td align="right">
+<span style="background:red;color:white;padding:5px;">MIDTERM MARK: 96%</span>&nbsp;Please see teacher for current stat
+  No href/onclick found in row HTML
+Parsed course: MTH1W1-8 -  - Mark: 96 - SubjectId: 
+  No subject_id found for course: PPL1O9-3
+  Row HTML snippet: 
+		<td>
+PPL1O9-3 : Healthy Active Living Education			<br>
+			Block: P1  - rm. GYM C 
+		</td>
+		<td width="30%" align="center">
+			2026-01-30 ~ 
+			2026-06-24		</td>
+			<!--td></td-->
+		<td align="right">
+		</td>
+	
+  No href/onclick found in row HTML
+Parsed course: PPL1O9-3 - Healthy Active Living Education - Mark:  - SubjectId: 
+  No subject_id found for course: SNC1W1-13
+  Row HTML snippet: 
+		<td>
+SNC1W1-13 : Science			<br>
+			Block: P2  - rm. 226 
+		</td>
+		<td width="30%" align="center">
+			2026-01-30 ~ 
+			2026-06-24		</td>
+			<!--td></td-->
+		<td align="right">
+Please see teacher for current status regarding achievement in the course		</td>
+	
+  No href/onclick found in row HTML
+Parsed course: SNC1W1-13 - Science - Mark:  - SubjectId: 
+  No subject_id found for course: TEJ1O1-4
+  Row HTML snippet: 
+		<td>
+TEJ1O1-4 : Computer Engineering Technology			<br>
+			Block: P4  - rm. 102 
+		</td>
+		<td width="30%" align="center">
+			2026-01-30 ~ 
+			2026-06-24		</td>
+			<!--td></td-->
+		<td align="right">
+Please see teacher for current status regarding achievement in the course		</td>
+	
+  No href/onclick found in row HTML
+Parsed course: TEJ1O1-4 - Computer Engineering Technology - Mark:  - SubjectId: 
+  No subject_id found for course: ENL1W1-16
+  Row HTML snippet: 
+		<td>
+ENL1W1-16 : 			<br>
+			Block: P5  - rm. 158 
+		</td>
+		<td width="30%" align="center">
+			2026-01-30 ~ 
+			2026-06-24		</td>
+			<!--td></td-->
+		<td align="right">
+Please see teacher for current status regarding achievement in the course		</td>
+	
+  No href/onclick found in row HTML
+Parsed course: ENL1W1-16 -  - Mark:  - SubjectId: 
+Total courses parsed: 8
+Successfully parsed 8 courses from login response
+Fetching all reports from: https://ta.yrdsb.ca/live/students/listReports.php?student_id=248443
+listReports response length: 9423
+Saved list reports HTML to: C:\Users\chang\Downloads\TA\TeachAssistApp\bin\Debug\net9.0-windows\list_reports.html
+Found 7 links in listReports
+Found report link: current mark =  96.8% -> subject_id=709654
+  Matched subject_id 709654 to course CGC1W1-1
+Found report link: current mark =  87.6% -> subject_id=709612
+  Matched subject_id 709612 to course ESLEO1-2
+NavigateTo called: Dashboard
+  Base view: Dashboard
+'TeachAssistApp.exe' (CoreCLR: clrhost): Loaded 'C:\Program Files\dotnet\shared\Microsoft.WindowsDesktop.App\9.0.11\zh-Hans\WindowsBase.resources.dll'. Module was built without symbols.
+'TeachAssistApp.exe' (CoreCLR: clrhost): Loaded 'C:\Program Files\dotnet\shared\Microsoft.WindowsDesktop.App\9.0.11\zh-Hans\System.Xaml.resources.dll'. Module was built without symbols.
+Exception thrown: 'System.Windows.Markup.XamlParseException' in PresentationFramework.dll
+“设置属性“System.Windows.UIElement.Effect”时引发了异常。”，行号为“550”，行位置为“17”。
+

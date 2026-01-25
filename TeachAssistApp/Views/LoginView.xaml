@@ -1,0 +1,266 @@
+<Page x:Class="TeachAssistApp.Views.LoginView"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+      mc:Ignorable="d"
+      d:DesignHeight="800" d:DesignWidth="1000"
+      Background="#FF0D1117"
+      Title="Login - TeachAssist">
+
+    <Grid>
+        <!-- Login Card -->
+        <Border Width="420"
+                VerticalAlignment="Center"
+                HorizontalAlignment="Center"
+                Background="#FF161B22"
+                CornerRadius="16"
+                BorderBrush="#FF30363D"
+                BorderThickness="1"
+                Padding="48,40,48,40">
+            <Border.Effect>
+                <DropShadowEffect Color="#000000" BlurRadius="50" ShadowDepth="0" Opacity="0.5"/>
+            </Border.Effect>
+
+            <StackPanel>
+                <!-- Logo -->
+                <Border Width="72" Height="72"
+                        CornerRadius="16"
+                        HorizontalAlignment="Center"
+                        Margin="0,0,0,24">
+                    <Border.Background>
+                        <LinearGradientBrush StartPoint="0,0" EndPoint="1,1">
+                            <GradientStop Color="#FF58A6FF" Offset="0"/>
+                            <GradientStop Color="#FF238636" Offset="1"/>
+                        </LinearGradientBrush>
+                    </Border.Background>
+                    <Border.Effect>
+                        <DropShadowEffect Color="#FF58A6FF" BlurRadius="25" ShadowDepth="0" Opacity="0.5"/>
+                    </Border.Effect>
+                    <TextBlock Text="TA"
+                               FontSize="28"
+                               FontWeight="Bold"
+                               Foreground="White"
+                               HorizontalAlignment="Center"
+                               VerticalAlignment="Center"
+                               FontFamily="Segoe UI Variable Display"/>
+                </Border>
+
+                <!-- Title -->
+                <TextBlock Text="Sign in to TeachAssist"
+                           FontSize="22"
+                           FontWeight="SemiBold"
+                           Foreground="{StaticResource TextPrimary}"
+                           HorizontalAlignment="Center"
+                           Margin="0,0,0,8"/>
+
+                <TextBlock Text="Enter your YRDSB credentials"
+                           FontSize="13"
+                           Foreground="{StaticResource TextSecondary}"
+                           HorizontalAlignment="Center"
+                           Margin="0,0,0,8"/>
+
+                <!-- Demo Hint -->
+                <Border Background="#FF21262D"
+                        Padding="10,8"
+                        CornerRadius="6"
+                        HorizontalAlignment="Center"
+                        Margin="0,0,0,28">
+                    <TextBlock Text="Use 'demo' to test with sample grades"
+                               FontSize="11"
+                               Foreground="{StaticResource TextSecondary}"
+                               FontStyle="Italic"/>
+                </Border>
+
+                <!-- Error Message -->
+                <Border x:Name="ErrorBorder"
+                        Background="#3D1818"
+                        BorderBrush="#FFf85149"
+                        BorderThickness="1"
+                        CornerRadius="6"
+                        Padding="12,10"
+                        Margin="0,0,0,20"
+                        Visibility="{Binding ErrorMessage, Converter={StaticResource StringToVisibilityConverter}}">
+                    <TextBlock Text="{Binding ErrorMessage}"
+                               Foreground="#FFf85149"
+                               FontSize="12"
+                               TextWrapping="Wrap"/>
+                </Border>
+
+                <!-- Username -->
+                <StackPanel Margin="0,0,0,16">
+                    <TextBlock Text="Student Number"
+                               FontSize="12"
+                               FontWeight="SemiBold"
+                               Foreground="{StaticResource TextPrimary}"
+                               Margin="0,0,0,6"/>
+                    <Border Background="#FF0D1117"
+                            BorderBrush="#FF30363D"
+                            BorderThickness="1"
+                            CornerRadius="6">
+                        <Grid Margin="12,10">
+                            <TextBlock Text="&#xE77B;"
+                                       FontFamily="Segoe MDL2 Assets"
+                                       FontSize="14"
+                                       Foreground="{StaticResource TextSecondary}"
+                                       VerticalAlignment="Center"/>
+                            <TextBox Text="{Binding Username, UpdateSourceTrigger=PropertyChanged}"
+                                     Background="Transparent"
+                                     Foreground="{StaticResource TextPrimary}"
+                                     BorderThickness="0"
+                                     FontSize="13"
+                                     Padding="28,0,0,0"
+                                     VerticalAlignment="Center"
+                                     VerticalContentAlignment="Center">
+                                <TextBox.InputBindings>
+                                    <KeyBinding Key="Enter" Command="{Binding LoginCommand}"/>
+                                </TextBox.InputBindings>
+                            </TextBox>
+                        </Grid>
+                    </Border>
+                </StackPanel>
+
+                <!-- Password -->
+                <StackPanel Margin="0,0,0,20">
+                    <TextBlock Text="Password"
+                               FontSize="12"
+                               FontWeight="SemiBold"
+                               Foreground="{StaticResource TextPrimary}"
+                               Margin="0,0,0,6"/>
+                    <Border Background="#FF0D1117"
+                            BorderBrush="#FF30363D"
+                            BorderThickness="1"
+                            CornerRadius="6">
+                        <Grid Margin="12,10">
+                            <TextBlock Text="&#xE72E;"
+                                       FontFamily="Segoe MDL2 Assets"
+                                       FontSize="14"
+                                       Foreground="{StaticResource TextSecondary}"
+                                       VerticalAlignment="Center"/>
+                            <PasswordBox x:Name="PasswordBox"
+                                         Background="Transparent"
+                                         Foreground="{StaticResource TextPrimary}"
+                                         BorderThickness="0"
+                                         FontSize="13"
+                                         Padding="28,0,0,0"
+                                         VerticalAlignment="Center"
+                                         VerticalContentAlignment="Center"
+                                         PasswordChanged="PasswordBox_PasswordChanged"
+                                         KeyDown="PasswordBox_KeyDown"/>
+                        </Grid>
+                    </Border>
+                </StackPanel>
+
+                <!-- Remember Me -->
+                <CheckBox Content="Remember me"
+                          IsChecked="{Binding RememberMe}"
+                          Foreground="{StaticResource TextPrimary}"
+                          FontSize="12"
+                          Margin="0,0,0,20"/>
+
+                <!-- Login Button -->
+                <Button Content="Sign In"
+                        Command="{Binding LoginCommand}"
+                        HorizontalAlignment="Stretch"
+                        Padding="0,14"
+                        FontSize="14"
+                        FontWeight="SemiBold"
+                        Background="#FF238636"
+                        Foreground="White"
+                        BorderThickness="0"
+                        Cursor="Hand">
+                    <Button.Template>
+                        <ControlTemplate TargetType="Button">
+                            <Border x:Name="ButtonBorder"
+                                    Background="{TemplateBinding Background}"
+                                    CornerRadius="6"
+                                    Padding="{TemplateBinding Padding}"
+                                    Cursor="Hand">
+                                <Border.Effect>
+                                    <DropShadowEffect Color="#FF238636" BlurRadius="15" ShadowDepth="0" Opacity="0.3"/>
+                                </Border.Effect>
+                                <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center">
+                                    <ContentPresenter.Resources>
+                                        <Style TargetType="TextBlock">
+                                            <Setter Property="Foreground" Value="White"/>
+                                        </Style>
+                                    </ContentPresenter.Resources>
+                                </ContentPresenter>
+                            </Border>
+                            <ControlTemplate.Triggers>
+                                <Trigger Property="IsMouseOver" Value="True">
+                                    <Setter TargetName="ButtonBorder" Property="Background" Value="#FF2EA043"/>
+                                </Trigger>
+                                <Trigger Property="IsEnabled" Value="False">
+                                    <Setter TargetName="ButtonBorder" Property="Background" Value="#FF30363D"/>
+                                    <Setter TargetName="ButtonBorder" Property="Effect">
+                                        <Setter.Value>
+                                            <DropShadowEffect Color="#000000" BlurRadius="0" ShadowDepth="0" Opacity="0"/>
+                                        </Setter.Value>
+                                    </Setter>
+                                </Trigger>
+                            </ControlTemplate.Triggers>
+                        </ControlTemplate>
+                    </Button.Template>
+                </Button>
+            </StackPanel>
+        </Border>
+
+        <!-- Loading Overlay -->
+        <Grid x:Name="LoadingOverlay"
+              Background="#DD000000"
+              Visibility="{Binding IsLoading, Converter={StaticResource BooleanToVisibilityConverter}}">
+            <StackPanel VerticalAlignment="Center" HorizontalAlignment="Center">
+                <!-- Dual Ring Spinner -->
+                <Grid Width="70" Height="70" Margin="0,0,0,16">
+                    <!-- Outer Ring -->
+                    <Border Width="70" Height="70"
+                            BorderThickness="3"
+                            BorderBrush="#FF58A6FF"
+                            CornerRadius="35"
+                            Opacity="0.3">
+                        <Border.RenderTransform>
+                            <RotateTransform Angle="0"/>
+                        </Border.RenderTransform>
+                        <Border.Triggers>
+                            <EventTrigger RoutedEvent="Loaded">
+                                <BeginStoryboard>
+                                    <Storyboard RepeatBehavior="Forever">
+                                        <DoubleAnimation Storyboard.TargetProperty="(UIElement.RenderTransform).(RotateTransform.Angle)"
+                                                       From="0" To="360" Duration="0:0:2"/>
+                                    </Storyboard>
+                                </BeginStoryboard>
+                            </EventTrigger>
+                        </Border.Triggers>
+                    </Border>
+
+                    <!-- Inner Ring -->
+                    <Border Width="50" Height="50"
+                            BorderThickness="3"
+                            BorderBrush="#FF238636"
+                            CornerRadius="25">
+                        <Border.RenderTransform>
+                            <RotateTransform Angle="0"/>
+                        </Border.RenderTransform>
+                        <Border.Triggers>
+                            <EventTrigger RoutedEvent="Loaded">
+                                <BeginStoryboard>
+                                    <Storyboard RepeatBehavior="Forever">
+                                        <DoubleAnimation Storyboard.TargetProperty="(UIElement.RenderTransform).(RotateTransform.Angle)"
+                                                       From="360" To="0" Duration="0:0:1.5"/>
+                                    </Storyboard>
+                                </BeginStoryboard>
+                            </EventTrigger>
+                        </Border.Triggers>
+                    </Border>
+                </Grid>
+
+                <TextBlock Text="Signing in..."
+                           Foreground="{StaticResource TextPrimary}"
+                           FontSize="16"
+                           FontWeight="SemiBold"
+                           HorizontalAlignment="Center"/>
+            </StackPanel>
+        </Grid>
+    </Grid>
+</Page>
