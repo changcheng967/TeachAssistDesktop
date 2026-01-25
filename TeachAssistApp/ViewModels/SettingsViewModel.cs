@@ -23,7 +23,7 @@ public partial class SettingsViewModel : ObservableObject
     private readonly PdfExporter _pdfExporter;
 
     [ObservableProperty]
-    private string _appVersion = "1.0.0";
+    private string _appVersion = "2.0.0";
 
     [ObservableProperty]
     private bool _isLoading;
