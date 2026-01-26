@@ -1,13 +1,13 @@
 <Project>
   <PropertyGroup>
     <ProjectGuid>8A2B3C4D-5E6F-7A8B-9C0D-1E2F3A4B5C6D</ProjectGuid>
-    <TargetFrameworkVersion>net9.0-windows</TargetFrameworkVersion>
-    <LanguageVersion>latest</LanguageVersion>
     <RootNamespace>TeachAssistApp.Package</RootNamespace>
     <ProjectTypeGuids>{76A93CF2-D519-4CA6-B653-2A85E329BCA6};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
     <GenerateProjectSpecificOutputFolder>false</GenerateProjectSpecificOutputFolder>
     <OutputPath>bin\$(Configuration)\</OutputPath>
     <NoWarn>$(NoWarn);NU1701</NoWarn>
+    <TargetPlatformVersion>10.0.22621.0</TargetPlatformVersion>
+    <TargetPlatformMinVersion>10.0.17763.0</TargetPlatformMinVersion>
   </PropertyGroup>
 
   <ItemGroup>
