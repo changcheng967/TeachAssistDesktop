@@ -1,35 +1,51 @@
-<Project ToolsVersion="15.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
-  <PropertyGroup Label="Globals">
+<Project>
+  <PropertyGroup>
     <ProjectGuid>8A2B3C4D-5E6F-7A8B-9C0D-1E2F3A4B5C6D</ProjectGuid>
+    <TargetFrameworkVersion>net9.0-windows</TargetFrameworkVersion>
+    <LanguageVersion>latest</LanguageVersion>
+    <RootNamespace>TeachAssistApp.Package</RootNamespace>
+    <ProjectTypeGuids>{76A93CF2-D519-4CA6-B653-2A85E329BCA6};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
+    <GenerateProjectSpecificOutputFolder>false</GenerateProjectSpecificOutputFolder>
+    <OutputPath>bin\$(Configuration)\</OutputPath>
+    <NoWarn>$(NoWarn);NU1701</NoWarn>
   </PropertyGroup>
-  <Import Project="$(MSBuildExtensionsPath)\Microsoft\WindowsXaml\v16.0\Microsoft.Windows.UI.Xaml.CSharp.targets" />
-  <PropertyGroup Label="Globals">
-    <rootnamespace>TeachAssistApp.Package</rootnamespace>
-  </PropertyGroup>
+
   <ItemGroup>
-    <AppxManifestPackage Include="Package.appxmanifest">
+    <AppxManifest Include="Package.appxmanifest">
       <SubType>Designer</SubType>
-    </AppxManifestPackage>
+    </AppxManifest>
   </ItemGroup>
+
   <ItemGroup>
-    <Content Include="Images\StoreLogo.png" />
-    <Content Include="Images\SmallTile.png" />
-    <Content Include="Images\LargeTile.png" />
-    <Content Include="Images\SplashScreen.png" />
-    <None Include="Package.StoreAssociation.xml" />
+    <Content Include="Assets\StoreLogo.png" />
+    <Content Include="Assets\SmallTile.png" />
+    <Content Include="Assets\MediumTile.png" />
+    <Content Include="Assets\LargeTile.png" />
+    <Content Include="Assets\WideTile.png" />
+    <Content Include="Assets\SplashScreen.png" />
   </ItemGroup>
+
   <ItemGroup>
     <ProjectReference Include="..\TeachAssistApp\TeachAssistApp.csproj">
       <Project>{4A5B6C7D-8E9F-0A1B-2C3D-4E5F6A7B8C9D}</Project>
       <Name>TeachAssistApp</Name>
     </ProjectReference>
   </ItemGroup>
-  <Import Project="..\TeachAssistApp\TeachAssistApp.project" />
+
+  <ItemGroup>
+    <None Include="Package.StoreAssociation.xml">
+      <SubType>Designer</SubType>
+    </None>
+  </ItemGroup>
+
+  <Import Project="$(MSBuildToolsPath)\Microsoft.Common.targets" />
+  <Import Project="$(MSBuildExtensionsPath)\Microsoft\WindowsXaml\v16.0\Microsoft.Windows.UI.Xaml.CSharp.targets" Condition="Exists('$(MSBuildExtensionsPath)\Microsoft\WindowsXaml\v16.0\Microsoft.Windows.UI.Xaml.CSharp.targets')" />
+
   <PropertyGroup>
     <GenerateAppxPackageOnBuild>true</GenerateAppxPackageOnBuild>
     <AppxPackage>True</AppxPackage>
-    <AppxPackagePayloadFile>$(GeneratedUploadDir)</AppxPackagePayloadFile>
     <AppxBundlePlatforms>x64</AppxBundlePlatforms>
     <AppxBundle>Always</AppxBundle>
+    <AppxPackagePayloadFile>$(GeneratedUploadDir)</AppxPackagePayloadFile>
   </PropertyGroup>
 </Project>
