@@ -1,7 +1,0 @@
-<?xml version="1.0" encoding="utf-8"?>
-<StoreAssociation xmlns="http://schemas.microsoft.com/appx/2010/storeassociation">
-  <Publisher>CN=changcheng967</Publisher>
-  <PublisherDisplayName>changcheng967</PublisherDisplayName>
-  <DeveloperAccountType="Individual</DeveloperAccountType>
-  <GeneratePackageHash>false</GeneratePackageHash>
-</StoreAssociation>
