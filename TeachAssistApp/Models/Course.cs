@@ -17,6 +17,8 @@ public class Course
     // For fetching detailed report from TeachAssist
     public string? SubjectId { get; set; }
     public string? StudentId { get; set; }
+    public string? ReportUrl { get; set; } // Full URL from course list href
+    public bool PartiallyParsed { get; set; } // True when parsed by fallback parser
 
     public string DisplayMark => OverallMark?.ToString() ?? "N/A";
 
