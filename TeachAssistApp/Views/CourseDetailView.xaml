@@ -84,37 +84,61 @@
             <Grid MaxWidth="900" HorizontalAlignment="Center">
                 <StackPanel>
 
-                    <!-- Grade Trends Section -->
-                    <Border Visibility="{Binding HasTrends, Converter={StaticResource BooleanToVisibilityConverter}}"
+                    <!-- Grade Analytics Section -->
+                    <Border Visibility="{Binding HasGradeTimeline, Converter={StaticResource BooleanToVisibilityConverter}}"
                             Background="#FF161B22" CornerRadius="10" Padding="20" Margin="0,0,0,16"
                             BorderBrush="#FF21262D" BorderThickness="1">
                         <StackPanel>
-                            <TextBlock Text="Grade Trends" FontSize="14" FontWeight="SemiBold" Foreground="White" FontFamily="Segoe UI Variable" Margin="0,0,0,14"/>
-                            <ItemsControl ItemsSource="{Binding AssignmentTrendsDisplay}">
-                                <ItemsControl.ItemTemplate>
-                                    <DataTemplate>
-                                        <Grid Margin="0,4,0,0">
-                                            <Grid.ColumnDefinitions>
-                                                <ColumnDefinition Width="100"/>
-                                                <ColumnDefinition Width="*"/>
-                                                <ColumnDefinition Width="50"/>
-                                            </Grid.ColumnDefinitions>
-                                            <TextBlock Grid.Column="0" Text="{Binding AssignmentName}" FontSize="11" Foreground="#FF8B949E" TextTrimming="CharacterEllipsis" VerticalAlignment="Center" FontFamily="Segoe UI Variable"/>
-                                            <Border Grid.Column="1" Height="16" CornerRadius="3" Background="#FF21262D" Margin="8,0">
-                                                <Border HorizontalAlignment="Left" CornerRadius="3" Background="{Binding TrendColor, Converter={StaticResource StringToBrushConverter}}">
-                                                    <Border.Width>
-                                                        <MultiBinding Converter="{StaticResource PercentageConverter}">
-                                                            <Binding Path="Mark" Mode="OneWay"/>
-                                                            <Binding RelativeSource="{RelativeSource Mode=FindAncestor, AncestorType=Border}" Path="ActualWidth" Mode="OneWay"/>
-                                                        </MultiBinding>
-                                                    </Border.Width>
-                                                </Border>
-                                            </Border>
-                                            <TextBlock Grid.Column="2" Text="{Binding Mark, StringFormat=\{0:F0\}%}" FontSize="11" FontWeight="SemiBold" Foreground="{Binding TrendColor}" HorizontalAlignment="Right" VerticalAlignment="Center" FontFamily="Segoe UI Variable"/>
-                                        </Grid>
-                                    </DataTemplate>
-                                </ItemsControl.ItemTemplate>
-                            </ItemsControl>
+                            <TextBlock Text="Grade Analytics" FontSize="14" FontWeight="SemiBold" Foreground="White" FontFamily="Segoe UI Variable" Margin="0,0,0,14"/>
+
+                            <!-- Summary Stats Row -->
+                            <Grid Margin="0,0,0,14">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="*"/>
+                                    <ColumnDefinition Width="*"/>
+                                    <ColumnDefinition Width="*"/>
+                                    <ColumnDefinition Width="*"/>
+                                </Grid.ColumnDefinitions>
+
+                                <!-- Current Grade -->
+                                <Border Grid.Column="0" Background="#FF0D1117" CornerRadius="8" Padding="12,10" Margin="0,0,6,0" BorderBrush="#FF58A6FF" BorderThickness="0,0,0,2">
+                                    <StackPanel>
+                                        <TextBlock Text="Current Grade" FontSize="10" Foreground="#FF6E7681" FontFamily="Segoe UI Variable" Margin="0,0,0,4"/>
+                                        <TextBlock Text="{Binding CurrentGrade, StringFormat={}{0:F1}%}" FontSize="18" FontWeight="Bold" Foreground="#FF58A6FF" FontFamily="Segoe UI Variable Display"/>
+                                    </StackPanel>
+                                </Border>
+
+                                <!-- Total Change -->
+                                <Border Grid.Column="1" Background="#FF0D1117" CornerRadius="8" Padding="12,10" Margin="0,0,6,0" BorderBrush="#FF238636" BorderThickness="0,0,0,2">
+                                    <StackPanel>
+                                        <TextBlock Text="Total Change" FontSize="10" Foreground="#FF6E7681" FontFamily="Segoe UI Variable" Margin="0,0,0,4"/>
+                                        <TextBlock Text="{Binding GradeChangeDisplay}" FontSize="18" FontWeight="Bold" Foreground="{Binding GradeChangeTotal, Converter={StaticResource ImpactDeltaToColorConverter}}" FontFamily="Segoe UI Variable Display"/>
+                                    </StackPanel>
+                                </Border>
+
+                                <!-- High-Impact Count -->
+                                <Border Grid.Column="2" Background="#FF0D1117" CornerRadius="8" Padding="12,10" Margin="0,0,6,0" BorderBrush="#FFD29922" BorderThickness="0,0,0,2">
+                                    <StackPanel>
+                                        <TextBlock Text="High Impact" FontSize="10" Foreground="#FF6E7681" FontFamily="Segoe UI Variable" Margin="0,0,0,4"/>
+                                        <TextBlock FontSize="18" FontWeight="Bold" Foreground="#FFD29922" FontFamily="Segoe UI Variable Display">
+                                            <Run Text="{Binding HighImpactCount, Mode=OneWay}"/>
+                                            <Run Text=" tasks" FontSize="12"/>
+                                        </TextBlock>
+                                    </StackPanel>
+                                </Border>
+
+                                <!-- Biggest Impact -->
+                                <Border Grid.Column="3" Background="#FF0D1117" CornerRadius="8" Padding="12,10" BorderBrush="#FF238636" BorderThickness="0,0,0,2">
+                                    <StackPanel>
+                                        <TextBlock Text="Biggest Impact" FontSize="10" Foreground="#FF6E7681" FontFamily="Segoe UI Variable" Margin="0,0,0,4" TextTrimming="CharacterEllipsis"/>
+                                        <TextBlock Text="{Binding BestAssignmentName}" FontSize="12" FontWeight="SemiBold" Foreground="#FF8B949E" FontFamily="Segoe UI Variable" TextTrimming="CharacterEllipsis" MaxHeight="18"/>
+                                        <TextBlock Text="{Binding BestAssignmentImpact, StringFormat={}{0:+0.0;-0.0;0.0}%}" FontSize="14" FontWeight="Bold" Foreground="#FF238636" FontFamily="Segoe UI Variable Display" Margin="0,2,0,0"/>
+                                    </StackPanel>
+                                </Border>
+                            </Grid>
+
+                            <!-- Grade Timeline Chart -->
+                            <ContentControl x:Name="ChartHost" Height="250"/>
                         </StackPanel>
                     </Border>
 
@@ -239,7 +263,20 @@
                                                         <ColumnDefinition Width="*"/>
                                                         <ColumnDefinition Width="Auto"/>
                                                     </Grid.ColumnDefinitions>
-                                                    <TextBlock Grid.Column="0" Text="{Binding Name}" FontSize="13" FontWeight="SemiBold" Foreground="White" FontFamily="Segoe UI Variable"/>
+                                                    <StackPanel Grid.Column="0" Orientation="Horizontal" VerticalAlignment="Center">
+                                                        <!-- High-impact left border indicator -->
+                                                        <Border Width="3" Height="20" CornerRadius="1.5"
+                                                                Visibility="{Binding Impact, Converter={StaticResource NullToVisibilityConverter}}"
+                                                                Background="{Binding Impact.ImpactColor, Converter={StaticResource StringToBrushConverter}}"
+                                                                Margin="0,0,10,0"/>
+                                                        <TextBlock Text="{Binding Name}" FontSize="13" FontWeight="SemiBold" Foreground="White" FontFamily="Segoe UI Variable"/>
+                                                    </StackPanel>
+                                                    <!-- Impact Badge -->
+                                                    <Border Grid.Column="1" Background="{Binding Impact.ImpactColor, Converter={StaticResource StringToBrushConverter}}"
+                                                            CornerRadius="4" Padding="6,2"
+                                                            Visibility="{Binding Impact, Converter={StaticResource NullToVisibilityConverter}}">
+                                                        <TextBlock Text="{Binding Impact.DisplayImpact}" FontSize="11" FontWeight="SemiBold" Foreground="White" FontFamily="Segoe UI Variable"/>
+                                                    </Border>
                                                 </Grid>
                                                 <ItemsControl ItemsSource="{Binding Assignments}">
                                                     <ItemsControl.ItemTemplate>

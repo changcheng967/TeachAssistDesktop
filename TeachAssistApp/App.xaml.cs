@@ -203,6 +203,38 @@ public class PercentageConverter : System.Windows.Data.IMultiValueConverter
     }
 }
 
+public class ImpactDeltaToColorConverter : System.Windows.Data.IValueConverter
+{
+    public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
+    {
+        if (value is double delta)
+        {
+            return delta >= 0
+                ? new System.Windows.Media.SolidColorBrush(System.Windows.Media.Color.FromRgb(35, 134, 54))   // #238636 green
+                : new System.Windows.Media.SolidColorBrush(System.Windows.Media.Color.FromRgb(248, 81, 73));    // #F85149 red
+        }
+        return new System.Windows.Media.SolidColorBrush(System.Windows.Media.Colors.Gray);
+    }
+
+    public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
+    {
+        throw new NotImplementedException();
+    }
+}
+
+public class NullToVisibilityConverter : System.Windows.Data.IValueConverter
+{
+    public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
+    {
+        return value != null ? Visibility.Visible : Visibility.Collapsed;
+    }
+
+    public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
+    {
+        throw new NotImplementedException();
+    }
+}
+
 public class TrendPointConverter : System.Windows.Data.IMultiValueConverter
 {
     public object Convert(object[] values, Type targetType, object parameter, CultureInfo culture)

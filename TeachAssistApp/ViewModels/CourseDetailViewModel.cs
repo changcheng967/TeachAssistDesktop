@@ -45,6 +45,43 @@ public partial class CourseDetailViewModel : ObservableObject
     [ObservableProperty]
     private ObservableCollection<AssignmentTrendDisplay> _assignmentTrendsDisplay = new();
 
+    // Grade analytics
+    [ObservableProperty]
+    private ObservableCollection<GradeTimelinePoint> _gradeTimeline = new();
+
+    [ObservableProperty]
+    private bool _hasGradeTimeline;
+
+    [ObservableProperty]
+    private ObservableCollection<AssignmentImpact> _assignmentImpacts = new();
+
+    [ObservableProperty]
+    private bool _hasImpacts;
+
+    [ObservableProperty]
+    private double _currentGrade;
+
+    [ObservableProperty]
+    private double _gradeChangeTotal;
+
+    [ObservableProperty]
+    private string _gradeChangeDisplay = "";
+
+    [ObservableProperty]
+    private int _highImpactCount;
+
+    [ObservableProperty]
+    private string? _bestAssignmentName;
+
+    [ObservableProperty]
+    private double _bestAssignmentImpact;
+
+    [ObservableProperty]
+    private string? _worstAssignmentName;
+
+    [ObservableProperty]
+    private double _worstAssignmentImpact;
+
     public CourseDetailViewModel(
         ITeachAssistService teachAssistService,
         INavigationService navigationService)
@@ -131,6 +168,9 @@ public partial class CourseDetailViewModel : ObservableObject
                 // Populate trends for visualization
                 PopulateTrends();
                 System.Diagnostics.Debug.WriteLine($"Loaded {AssignmentTrendsDisplay.Count} trends for visualization");
+
+                // Calculate grade analytics
+                CalculateGradeAnalytics();
             }
             else
             {
@@ -288,6 +328,67 @@ public partial class CourseDetailViewModel : ObservableObject
         else
         {
             HasTrends = false;
+        }
+    }
+
+    private void CalculateGradeAnalytics()
+    {
+        GradeTimeline.Clear();
+        AssignmentImpacts.Clear();
+        HasGradeTimeline = false;
+        HasImpacts = false;
+        CurrentGrade = 0;
+        GradeChangeTotal = 0;
+        GradeChangeDisplay = "";
+        HighImpactCount = 0;
+        BestAssignmentName = null;
+        BestAssignmentImpact = 0;
+        WorstAssignmentName = null;
+        WorstAssignmentImpact = 0;
+
+        if (SelectedCourse == null || AssignmentGroups.Count == 0) return;
+
+        var (timeline, impacts) = GradeImpactCalculator.Calculate(
+            AssignmentGroups.ToList(),
+            SelectedCourse.WeightTable);
+
+        if (timeline.Count == 0) return;
+
+        foreach (var point in timeline)
+            GradeTimeline.Add(point);
+
+        HasGradeTimeline = true;
+
+        foreach (var impact in impacts.Values)
+            AssignmentImpacts.Add(impact);
+
+        HasImpacts = impacts.Count > 0;
+
+        // Wire impact to assignment groups
+        foreach (var group in AssignmentGroups)
+        {
+            if (impacts.TryGetValue(group.Name, out var impact))
+                group.Impact = impact;
+        }
+
+        // Summary stats
+        var lastPoint = timeline.Last();
+        CurrentGrade = lastPoint.CumulativeGrade;
+        GradeChangeTotal = lastPoint.CumulativeGrade - (timeline.First().CumulativeGrade - timeline.First().Impact);
+        GradeChangeDisplay = $"{(GradeChangeTotal >= 0 ? "+" : "")}{GradeChangeTotal:F1}%";
+
+        var highImpacts = impacts.Values.Where(v => v.IsHighImpact).ToList();
+        HighImpactCount = highImpacts.Count;
+
+        if (impacts.Values.Any())
+        {
+            var best = impacts.Values.OrderByDescending(v => v.ImpactDelta).First();
+            BestAssignmentName = best.AssignmentName;
+            BestAssignmentImpact = best.ImpactDelta;
+
+            var worst = impacts.Values.OrderBy(v => v.ImpactDelta).First();
+            WorstAssignmentName = worst.AssignmentName;
+            WorstAssignmentImpact = worst.ImpactDelta;
         }
     }
 

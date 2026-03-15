@@ -15,6 +15,8 @@ public class AssignmentGroup
     public Assignment? FMark => Assignments.FirstOrDefault(a => a.Category == "F");
     public Assignment? OMark => Assignments.FirstOrDefault(a => a.Category == "O");
 
+    public AssignmentImpact? Impact { get; set; }
+
     public bool HasAnyMark => Assignments.Any(a => a.MarkAchieved.HasValue && a.MarkPossible.HasValue);
 
     public string GradeColor

@@ -21,6 +21,8 @@
             <local:StringToVisibilityConverter x:Key="StringToVisibilityConverter"/>
             <local:EmptyCollectionToVisibilityConverter x:Key="EmptyCollectionToVisibilityConverter"/>
             <local:PercentageConverter x:Key="PercentageConverter"/>
+            <local:ImpactDeltaToColorConverter x:Key="ImpactDeltaToColorConverter"/>
+            <local:NullToVisibilityConverter x:Key="NullToVisibilityConverter"/>
         </ResourceDictionary>
     </Application.Resources>
 </Application>
