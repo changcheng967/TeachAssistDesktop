@@ -5,29 +5,8 @@
       xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
       mc:Ignorable="d"
       d:DesignHeight="800" d:DesignWidth="1200"
-      Background="#FF0A0E14"
+      Background="Transparent"
       Title="Course Detail - TeachAssist">
-
-    <Page.Resources>
-        <!-- Color Palette (Same as Dashboard) -->
-        <SolidColorBrush x:Key="CardBackground" Color="#FF161B22"/>
-        <SolidColorBrush x:Key="CardBackgroundHover" Color="#FF1C2128"/>
-        <SolidColorBrush x:Key="TextPrimary" Color="#FFFFFFFF"/>
-        <SolidColorBrush x:Key="TextSecondary" Color="#FF8B949E"/>
-        <SolidColorBrush x:Key="AccentGray" Color="#FF30363D"/>
-        <SolidColorBrush x:Key="AccentGreen" Color="#FF3FB950"/>
-        <SolidColorBrush x:Key="AccentYellow" Color="#FFD29922"/>
-        <SolidColorBrush x:Key="AccentOrange" Color="#FFDB6D28"/>
-        <SolidColorBrush x:Key="AccentRed" Color="#FFf85149"/>
-
-        <!-- Category Colors -->
-        <SolidColorBrush x:Key="KU_Color" Color="#FFFFFaa"/>
-        <SolidColorBrush x:Key="T_Color" Color="#FFc0fea4"/>
-        <SolidColorBrush x:Key="C_Color" Color="#FFafafff"/>
-        <SolidColorBrush x:Key="A_Color" Color="#FFffd490"/>
-        <SolidColorBrush x:Key="F_Color" Color="#FFe0e0e0"/>
-        <SolidColorBrush x:Key="O_Color" Color="#FFd0d0d0"/>
-    </Page.Resources>
 
     <Grid>
         <Grid.RowDefinitions>
@@ -35,8 +14,8 @@
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
 
-        <!-- Premium Header -->
-        <Border Grid.Row="0" Background="#FF010409" Padding="32,24,32,24" BorderBrush="#FF30363D" BorderThickness="0,0,0,1">
+        <!-- Top Bar -->
+        <Border Grid.Row="0" Background="#FF010409" Padding="24,16" BorderBrush="#FF21262D" BorderThickness="0,0,0,1">
             <Grid>
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="Auto"/>
@@ -44,118 +23,54 @@
                     <ColumnDefinition Width="Auto"/>
                 </Grid.ColumnDefinitions>
 
-                <!-- Back Button with Enhanced Styling -->
                 <Button Grid.Column="0"
                         Command="{Binding GoBackCommand}"
-                        Background="#FF21262D"
-                        Foreground="{StaticResource TextPrimary}"
-                        FontSize="13"
-                        FontWeight="SemiBold"
-                        Padding="14,10"
-                        BorderThickness="1"
-                        BorderBrush="#FF30363D"
-                        Cursor="Hand"
-                        Margin="0,0,20,0">
-                    <Button.Template>
-                        <ControlTemplate TargetType="Button">
-                            <Border Background="{TemplateBinding Background}"
-                                    BorderBrush="{TemplateBinding BorderBrush}"
-                                    BorderThickness="{TemplateBinding BorderThickness}"
-                                    CornerRadius="8"
-                                    Padding="{TemplateBinding Padding}"
-                                    Cursor="Hand">
-                                <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
-                            </Border>
-                            <ControlTemplate.Triggers>
-                                <Trigger Property="IsMouseOver" Value="True">
-                                    <Setter Property="Background" Value="#FF30363D"/>
-                                    <Setter Property="BorderBrush" Value="{StaticResource Accent}"/>
-                                </Trigger>
-                            </ControlTemplate.Triggers>
-                        </ControlTemplate>
-                    </Button.Template>
+                        Style="{StaticResource GhostButton}"
+                        Padding="10,6"
+                        Margin="0,0,16,0"
+                        FontSize="12">
                     <StackPanel Orientation="Horizontal">
-                        <TextBlock Text="&#xE72B;"
-                                   FontFamily="Segoe MDL2 Assets"
-                                   FontSize="12"
-                                   VerticalAlignment="Center"
-                                   Margin="0,0,8,0"/>
+                        <TextBlock Text="&#xE72B;" FontFamily="Segoe MDL2 Assets" FontSize="12" VerticalAlignment="Center" Margin="0,0,6,0"/>
                         <TextBlock Text="Back"/>
                     </StackPanel>
                 </Button>
 
-                <!-- Course Info -->
                 <StackPanel Grid.Column="1" VerticalAlignment="Center">
-                    <TextBlock Text="{Binding SelectedCourse.Name}"
-                               FontSize="26"
-                               FontWeight="SemiBold"
-                               Foreground="{StaticResource TextPrimary}"
-                               FontFamily="Segoe UI Variable Display"
-                               Margin="0,0,0,6"/>
                     <StackPanel Orientation="Horizontal">
-                        <Border Background="#FF161B22"
-                                Padding="10,6"
-                                CornerRadius="6"
-                                BorderBrush="#FF30363D"
-                                BorderThickness="1">
-                            <TextBlock Text="{Binding SelectedCourse.Code}"
-                                       FontSize="13"
-                                       FontWeight="Medium"
-                                       Foreground="{StaticResource Accent}"
-                                       FontFamily="Segoe UI Variable"/>
-                        </Border>
-                        <Border Background="#FF161B22"
-                                Padding="10,6"
-                                CornerRadius="6"
-                                BorderBrush="#FF30363D"
-                                BorderThickness="1"
-                                Margin="8,0,0,0"
-                                Visibility="{Binding SelectedCourse.Room, Converter={StaticResource StringToVisibilityConverter}}">
-                            <TextBlock FontSize="13"
-                                       FontWeight="Medium"
-                                       Foreground="{StaticResource TextSecondary}"
-                                       FontFamily="Segoe UI Variable">
-                                <Run Text="&#xE909;" FontFamily="Segoe MDL2 Assets"/><Run Text=" "/>
-                                <Run Text="{Binding SelectedCourse.Room}"/>
-                            </TextBlock>
-                        </Border>
-                        <Border Background="#FF161B22"
-                                Padding="10,6"
-                                CornerRadius="6"
-                                BorderBrush="#FF30363D"
-                                BorderThickness="1"
-                                Margin="8,0,0,0">
-                            <TextBlock FontSize="13"
-                                       FontWeight="Medium"
-                                       Foreground="{StaticResource TextSecondary}"
-                                       FontFamily="Segoe UI Variable">
-                                <Run Text="&#xE8F1;" FontFamily="Segoe MDL2 Assets"/><Run Text=" "/>
-                                <Run Text="{Binding SelectedCourse.Block}"/>
-                            </TextBlock>
-                        </Border>
+                        <TextBlock Text="{Binding SelectedCourse.Code}"
+                                   FontSize="14"
+                                   FontWeight="SemiBold"
+                                   Foreground="#FF58A6FF"
+                                   FontFamily="Segoe UI Variable"
+                                   Margin="0,0,12,0"/>
+                        <TextBlock Text="{Binding SelectedCourse.Name}"
+                                   FontSize="14"
+                                   Foreground="White"
+                                   FontFamily="Segoe UI Variable"/>
+                        <TextBlock Text="{Binding SelectedCourse.Room, StringFormat='   \x2022  {0}'}"
+                                   FontSize="12"
+                                   Foreground="#FF6E7681"
+                                   FontFamily="Segoe UI Variable"/>
+                        <TextBlock Text="{Binding SelectedCourse.Block, StringFormat='   \x2022  Block {0}'}"
+                                   FontSize="12"
+                                   Foreground="#FF6E7681"
+                                   FontFamily="Segoe UI Variable"/>
                     </StackPanel>
                 </StackPanel>
 
-                <!-- Overall Mark - Premium Display -->
+                <!-- Overall Mark -->
                 <Border Grid.Column="2"
-                        Width="140"
-                        Height="140"
-                        CornerRadius="16"
+                        Width="100" Height="52"
+                        CornerRadius="10"
                         Background="{Binding SelectedCourse.GradeColor, Converter={StaticResource StringToBrushConverter}}"
-                        Margin="0,0,0,0">
+                        Padding="12">
                     <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center">
                         <TextBlock Text="{Binding SelectedCourse.DisplayMark}"
-                                   FontSize="48"
+                                   FontSize="22"
                                    FontWeight="Bold"
                                    HorizontalAlignment="Center"
                                    Foreground="White"
-                                   FontFamily="Segoe UI"/>
-                        <TextBlock Text="Overall"
-                                   FontSize="14"
-                                   HorizontalAlignment="Center"
-                                   Foreground="White"
-                                   Opacity="0.9"
-                                   FontFamily="Segoe UI"/>
+                                   FontFamily="Segoe UI Variable Display"/>
                     </StackPanel>
                 </Border>
             </Grid>
@@ -164,426 +79,242 @@
         <!-- Content -->
         <ScrollViewer Grid.Row="1"
                       VerticalScrollBarVisibility="Auto"
-                      Padding="40,32,40,40"
-                      Background="#FF0A0E14">
-            <StackPanel>
+                      Padding="32,24,32,32"
+                      Background="#FF0D1117">
+            <Grid MaxWidth="900" HorizontalAlignment="Center">
+                <StackPanel>
 
-                <!-- Grade Trends Section -->
-                <TextBlock Text="Grade Trends Over Time"
-                           FontSize="20"
-                           FontWeight="SemiBold"
-                           Foreground="{StaticResource TextPrimary}"
-                           FontFamily="Segoe UI"
-                           Margin="0,0,0,20"
-                           Visibility="{Binding HasTrends, Converter={StaticResource BooleanToVisibilityConverter}}"/>
-
-                <!-- Line Chart Visualization -->
-                <Border Background="{StaticResource CardBackground}"
-                        CornerRadius="12"
-                        Padding="24"
-                        Margin="0,0,0,32"
-                        Visibility="{Binding HasTrends, Converter={StaticResource BooleanToVisibilityConverter}}">
-                    <Grid>
-                        <Grid.RowDefinitions>
-                            <RowDefinition Height="Auto"/>
-                            <RowDefinition Height="Auto"/>
-                        </Grid.RowDefinitions>
-
-                        <!-- Trend Visualization (Simple Progress Bars with Line Effect) -->
-                        <ItemsControl Grid.Row="0" ItemsSource="{Binding AssignmentTrendsDisplay}">
-                            <ItemsControl.ItemTemplate>
-                                <DataTemplate>
-                                    <Grid Margin="0,6,0,0">
-                                        <Grid.ColumnDefinitions>
-                                            <ColumnDefinition Width="80"/>
-                                            <ColumnDefinition Width="*"/>
-                                            <ColumnDefinition Width="60"/>
-                                        </Grid.ColumnDefinitions>
-
-                                        <!-- Assignment Name -->
-                                        <TextBlock Grid.Column="0"
-                                                   Text="{Binding AssignmentName}"
-                                                   FontSize="10"
-                                                   Foreground="{StaticResource TextSecondary}"
-                                                   TextTrimming="CharacterEllipsis"
-                                                   VerticalAlignment="Center"
-                                                   ToolTip="{Binding AssignmentName}"/>
-
-                                        <!-- Progress Bar with Gradient -->
-                                        <Border Grid.Column="1"
-                                                Height="20"
-                                                CornerRadius="4"
-                                                Background="#FF21262D"
-                                                Margin="8,0">
-                                            <Border HorizontalAlignment="Left"
-                                                    CornerRadius="4">
-                                                <Border.Width>
-                                                    <MultiBinding Converter="{StaticResource PercentageConverter}">
-                                                        <Binding Path="Mark" Mode="OneWay"/>
-                                                        <Binding RelativeSource="{RelativeSource Mode=FindAncestor, AncestorType=Border}" Path="ActualWidth" Mode="OneWay"/>
-                                                    </MultiBinding>
-                                                </Border.Width>
-                                                <Border.Background>
-                                                    <LinearGradientBrush StartPoint="0,0" EndPoint="1,0">
-                                                        <GradientStop Color="#FF58A6FF" Offset="0"/>
-                                                        <GradientStop Color="{Binding TrendColor, Converter={StaticResource StringToBrushConverter}}" Offset="1"/>
-                                                    </LinearGradientBrush>
-                                                </Border.Background>
-                                            </Border>
-                                        </Border>
-
-                                        <!-- Percentage -->
-                                        <TextBlock Grid.Column="2"
-                                                   Text="{Binding Mark, StringFormat=\{0:F0\}%}"
-                                                   FontSize="11"
-                                                   FontWeight="SemiBold"
-                                                   Foreground="{Binding TrendColor}"
-                                                   HorizontalAlignment="Right"
-                                                   VerticalAlignment="Center"/>
-                                    </Grid>
-                                </DataTemplate>
-                            </ItemsControl.ItemTemplate>
-                        </ItemsControl>
-
-                        <!-- Legend -->
-                        <Grid Grid.Row="1" Margin="0,16,0,0">
-                            <Grid.RowDefinitions>
-                                <RowDefinition Height="Auto"/>
-                                <RowDefinition Height="Auto"/>
-                            </Grid.RowDefinitions>
-
-                            <TextBlock Grid.Row="0" FontSize="11" Foreground="{StaticResource TextSecondary}" Margin="0,0,0,8">
-                                <Run Text="💡 Grade progression across your assignments (most recent first)"/>
-                            </TextBlock>
-
-                            <StackPanel Grid.Row="1" Orientation="Horizontal" Margin="0,4,0,0">
-                                <Border Width="12" Height="12" CornerRadius="2" Background="#FF238636" Margin="0,0,6,4"/>
-                                <TextBlock FontSize="10" Foreground="{StaticResource TextSecondary}" VerticalAlignment="Center">Excellent (90%+)</TextBlock>
-
-                                <Border Width="12" Height="12" CornerRadius="2" Background="#FFD29922" Margin="12,0,6,4"/>
-                                <TextBlock FontSize="10" Foreground="{StaticResource TextSecondary}" VerticalAlignment="Center">Good (80-89%)</TextBlock>
-
-                                <Border Width="12" Height="12" CornerRadius="2" Background="#FFDB6D28" Margin="12,0,6,4"/>
-                                <TextBlock FontSize="10" Foreground="{StaticResource TextSecondary}" VerticalAlignment="Center">Needs Improvement (&lt;80%)</TextBlock>
-                            </StackPanel>
-                        </Grid>
-                    </Grid>
-                </Border>
-
-                <!-- Category Performance Cards -->
-                <TextBlock Text="Category Performance"
-                           FontSize="24"
-                           FontWeight="SemiBold"
-                           Foreground="{StaticResource TextPrimary}"
-                           FontFamily="Segoe UI"
-                           Margin="0,0,0,20"/>
-
-                <ItemsControl ItemsSource="{Binding CategoryPerformance}">
-                    <ItemsControl.ItemsPanel>
-                        <ItemsPanelTemplate>
-                            <WrapPanel Orientation="Horizontal"/>
-                        </ItemsPanelTemplate>
-                    </ItemsControl.ItemsPanel>
-
-                    <ItemsControl.ItemTemplate>
-                        <DataTemplate>
-                            <Border Width="280"
-                                    Margin="12"
-                                    Background="{StaticResource CardBackground}"
-                                    CornerRadius="12"
-                                    Padding="20">
-                                <Border.Effect>
-                                    <DropShadowEffect Color="#000000" Opacity="0.3" BlurRadius="10" ShadowDepth="0"/>
-                                </Border.Effect>
-
-                                <StackPanel>
-                                    <Grid Margin="0,0,0,16">
-                                        <Grid.ColumnDefinitions>
-                                            <ColumnDefinition Width="*"/>
-                                            <ColumnDefinition Width="Auto"/>
-                                        </Grid.ColumnDefinitions>
-
-                                        <TextBlock Grid.Column="0"
-                                                   Text="{Binding Name}"
-                                                   FontSize="15"
-                                                   FontWeight="SemiBold"
-                                                   Foreground="{StaticResource TextPrimary}"
-                                                   FontFamily="Segoe UI"
-                                                   TextTrimming="CharacterEllipsis"/>
-
-                                        <TextBlock Grid.Column="1"
-                                                   Text="{Binding Percentage, StringFormat={}{0:F1}%, Mode=OneWay}"
-                                                   FontSize="20"
-                                                   FontWeight="Bold"
-                                                   Foreground="{Binding GradeColor, Converter={StaticResource StringToBrushConverter}, Mode=OneWay}"
-                                                   FontFamily="Segoe UI"
-                                                   Margin="8,0,0,0"/>
-                                    </Grid>
-
-                                    <!-- Progress Bar -->
-                                    <Border Height="8"
-                                            CornerRadius="4"
-                                            Background="{StaticResource AccentGray}"
-                                            Margin="0,0,0,12">
-                                        <Border HorizontalAlignment="Left"
-                                                CornerRadius="4"
-                                                Background="{Binding GradeColor, Converter={StaticResource StringToBrushConverter}}">
-                                            <Border.Width>
-                                                <MultiBinding Converter="{StaticResource PercentageConverter}">
-                                                    <Binding Path="Percentage" Mode="OneWay"/>
-                                                    <Binding RelativeSource="{RelativeSource Mode=FindAncestor, AncestorType=Border}" Path="ActualWidth" Mode="OneWay"/>
-                                                </MultiBinding>
-                                            </Border.Width>
-                                        </Border>
-                                    </Border>
-
-                                    <!-- Stats -->
-                                    <Grid>
-                                        <Grid.ColumnDefinitions>
-                                            <ColumnDefinition Width="*"/>
-                                            <ColumnDefinition Width="*"/>
-                                        </Grid.ColumnDefinitions>
-
-                                        <StackPanel Grid.Column="0">
-                                            <TextBlock FontSize="12"
-                                                       Foreground="{StaticResource TextSecondary}"
-                                                       FontFamily="Segoe UI">
-                                                <Run Text="Weight"/>
-                                            </TextBlock>
-                                            <TextBlock FontSize="16"
-                                                       FontWeight="SemiBold"
-                                                       Foreground="{StaticResource TextPrimary}"
-                                                       FontFamily="Segoe UI">
-                                                <Run Text="{Binding Weight, StringFormat={}{0}%}"/>
-                                            </TextBlock>
-                                        </StackPanel>
-
-                                        <StackPanel Grid.Column="1">
-                                            <TextBlock FontSize="12"
-                                                       Foreground="{StaticResource TextSecondary}"
-                                                       FontFamily="Segoe UI">
-                                                <Run Text="Assignments"/>
-                                            </TextBlock>
-                                            <TextBlock FontSize="16"
-                                                       FontWeight="SemiBold"
-                                                       Foreground="{StaticResource TextPrimary}"
-                                                       FontFamily="Segoe UI">
-                                                <Run Text="{Binding AssignmentCount}"/>
-                                            </TextBlock>
-                                        </StackPanel>
-                                    </Grid>
-                                </StackPanel>
-                            </Border>
-                        </DataTemplate>
-                    </ItemsControl.ItemTemplate>
-                </ItemsControl>
-
-                <!-- Weight Breakdown -->
-                <TextBlock Text="Weight Breakdown"
-                           FontSize="24"
-                           FontWeight="SemiBold"
-                           Foreground="{StaticResource TextPrimary}"
-                           FontFamily="Segoe UI"
-                           Margin="0,32,0,20"/>
-
-                <Border Background="{StaticResource CardBackground}"
-                        CornerRadius="12"
-                        Padding="24"
-                        Margin="0,0,0,32">
-                    <Border.Effect>
-                        <DropShadowEffect Color="#000000" Opacity="0.3" BlurRadius="10" ShadowDepth="0"/>
-                    </Border.Effect>
-
-                    <ItemsControl ItemsSource="{Binding SelectedCourse.WeightTable.Weights}">
-                        <ItemsControl.ItemTemplate>
-                            <DataTemplate>
-                                <Grid Margin="0,8">
-                                    <Grid.ColumnDefinitions>
-                                        <ColumnDefinition Width="120"/>
-                                        <ColumnDefinition Width="*"/>
-                                        <ColumnDefinition Width="100"/>
-                                    </Grid.ColumnDefinitions>
-
-                                    <TextBlock Grid.Column="0"
-                                               Text="{Binding Key}"
-                                               FontSize="14"
-                                               FontWeight="SemiBold"
-                                               Foreground="{StaticResource TextPrimary}"
-                                               FontFamily="Segoe UI"
-                                               VerticalAlignment="Center"/>
-
-                                    <ProgressBar Grid.Column="1"
-                                                 Height="10"
-                                                 Value="{Binding Value, Mode=OneWay}"
-                                                 Maximum="100"
-                                                 Margin="16,0"
-                                                 VerticalAlignment="Center"
-                                                 Foreground="#FF3FB950"
-                                                 Background="{StaticResource AccentGray}"/>
-
-                                    <TextBlock Grid.Column="2"
-                                               Text="{Binding Value, StringFormat={}{0}%}"
-                                               FontSize="14"
-                                               FontWeight="SemiBold"
-                                               HorizontalAlignment="Right"
-                                               Foreground="{StaticResource TextPrimary}"
-                                               FontFamily="Segoe UI"
-                                               VerticalAlignment="Center"/>
-                                </Grid>
-                            </DataTemplate>
-                        </ItemsControl.ItemTemplate>
-                    </ItemsControl>
-                </Border>
-
-                <!-- Assignments -->
-                <TextBlock Text="Assignments"
-                           FontSize="24"
-                           FontWeight="SemiBold"
-                           Foreground="{StaticResource TextPrimary}"
-                           FontFamily="Segoe UI"
-                           Margin="0,0,0,20"/>
-
-                <ItemsControl ItemsSource="{Binding AssignmentGroups}">
-                    <ItemsControl.ItemTemplate>
-                        <DataTemplate>
-                            <Border Background="{StaticResource CardBackground}"
-                                    CornerRadius="10"
-                                    Padding="20"
-                                    Margin="0,0,0,12">
-                                <Border.Effect>
-                                    <DropShadowEffect Color="#000000" Opacity="0.2" BlurRadius="6" ShadowDepth="0"/>
-                                </Border.Effect>
-
-                                <StackPanel>
-                                    <!-- Assignment Name -->
-                                    <TextBlock Text="{Binding Name}"
-                                               FontSize="17"
-                                               FontWeight="SemiBold"
-                                               Foreground="{StaticResource TextPrimary}"
-                                               FontFamily="Segoe UI"
-                                               Margin="0,0,0,12"/>
-
-                                    <!-- Category Marks Grid -->
-                                    <ItemsControl ItemsSource="{Binding Assignments}">
-                                        <ItemsControl.ItemsPanel>
-                                            <ItemsPanelTemplate>
-                                                <WrapPanel Orientation="Horizontal"/>
-                                            </ItemsPanelTemplate>
-                                        </ItemsControl.ItemsPanel>
-                                        <ItemsControl.ItemTemplate>
-                                            <DataTemplate>
-                                                <Border Background="{StaticResource AccentGray}"
-                                                        CornerRadius="8"
-                                                        Padding="16,12"
-                                                        Margin="0,0,8,8"
-                                                        MinWidth="140">
-                                                    <StackPanel>
-                                                        <!-- Category Badge -->
-                                                        <TextBlock Text="{Binding Category}"
-                                                                   FontSize="11"
-                                                                   FontWeight="SemiBold"
-                                                                   Foreground="{StaticResource TextSecondary}"
-                                                                   FontFamily="Segoe UI"
-                                                                   Margin="0,0,0,6"
-                                                                   TextAlignment="Center"/>
-
-                                                        <!-- Mark Display -->
-                                                        <Border Background="{Binding Percentage, Converter={StaticResource MarkToColorConverter}, Mode=OneWay}"
-                                                                CornerRadius="6"
-                                                                Padding="12,8"
-                                                                HorizontalAlignment="Center">
-                                                            <TextBlock FontSize="18"
-                                                                       FontWeight="Bold"
-                                                                       Foreground="White"
-                                                                       FontFamily="Segoe UI"
-                                                                       HorizontalAlignment="Center">
-                                                                <Run Text="{Binding MarkAchieved, StringFormat={}{0:F0}, Mode=OneWay}"/>
-                                                                <Run Text="/"/>
-                                                                <Run Text="{Binding MarkPossible, StringFormat={}{0:F0}, Mode=OneWay}"/>
-                                                            </TextBlock>
-                                                        </Border>
-
-                                                        <!-- Percentage -->
-                                                        <TextBlock Text="{Binding Percentage, StringFormat={}{0:F1}%, Mode=OneWay}"
-                                                                   FontSize="14"
-                                                                   FontWeight="SemiBold"
-                                                                   Foreground="{Binding Percentage, Converter={StaticResource MarkToColorConverter}, Mode=OneWay}"
-                                                                   FontFamily="Segoe UI"
-                                                                   HorizontalAlignment="Center"
-                                                                   Margin="0,6,0,0"/>
-
-                                                        <!-- Weight -->
-                                                        <TextBlock FontSize="11"
-                                                                   Foreground="{StaticResource TextSecondary}"
-                                                                   FontFamily="Segoe UI"
-                                                                   HorizontalAlignment="Center"
-                                                                   Margin="0,4,0,0">
-                                                            <Run Text="Weight: "/>
-                                                            <Run Text="{Binding Weight, StringFormat={}{0:F0}}"/>
-                                                        </TextBlock>
-                                                    </StackPanel>
+                    <!-- Grade Trends Section -->
+                    <Border Visibility="{Binding HasTrends, Converter={StaticResource BooleanToVisibilityConverter}}"
+                            Background="#FF161B22" CornerRadius="10" Padding="20" Margin="0,0,0,16"
+                            BorderBrush="#FF21262D" BorderThickness="1">
+                        <StackPanel>
+                            <TextBlock Text="Grade Trends" FontSize="14" FontWeight="SemiBold" Foreground="White" FontFamily="Segoe UI Variable" Margin="0,0,0,14"/>
+                            <ItemsControl ItemsSource="{Binding AssignmentTrendsDisplay}">
+                                <ItemsControl.ItemTemplate>
+                                    <DataTemplate>
+                                        <Grid Margin="0,4,0,0">
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition Width="100"/>
+                                                <ColumnDefinition Width="*"/>
+                                                <ColumnDefinition Width="50"/>
+                                            </Grid.ColumnDefinitions>
+                                            <TextBlock Grid.Column="0" Text="{Binding AssignmentName}" FontSize="11" Foreground="#FF8B949E" TextTrimming="CharacterEllipsis" VerticalAlignment="Center" FontFamily="Segoe UI Variable"/>
+                                            <Border Grid.Column="1" Height="16" CornerRadius="3" Background="#FF21262D" Margin="8,0">
+                                                <Border HorizontalAlignment="Left" CornerRadius="3" Background="{Binding TrendColor, Converter={StaticResource StringToBrushConverter}}">
+                                                    <Border.Width>
+                                                        <MultiBinding Converter="{StaticResource PercentageConverter}">
+                                                            <Binding Path="Mark" Mode="OneWay"/>
+                                                            <Binding RelativeSource="{RelativeSource Mode=FindAncestor, AncestorType=Border}" Path="ActualWidth" Mode="OneWay"/>
+                                                        </MultiBinding>
+                                                    </Border.Width>
                                                 </Border>
-                                            </DataTemplate>
-                                        </ItemsControl.ItemTemplate>
-                                    </ItemsControl>
-                                </StackPanel>
-                            </Border>
-                        </DataTemplate>
-                    </ItemsControl.ItemTemplate>
-                </ItemsControl>
+                                            </Border>
+                                            <TextBlock Grid.Column="2" Text="{Binding Mark, StringFormat=\{0:F0\}%}" FontSize="11" FontWeight="SemiBold" Foreground="{Binding TrendColor}" HorizontalAlignment="Right" VerticalAlignment="Center" FontFamily="Segoe UI Variable"/>
+                                        </Grid>
+                                    </DataTemplate>
+                                </ItemsControl.ItemTemplate>
+                            </ItemsControl>
+                        </StackPanel>
+                    </Border>
 
-                <!-- No Assignments Message -->
-                <Border Background="{StaticResource CardBackground}"
-                        CornerRadius="12"
-                        Padding="40"
-                        Visibility="{Binding AssignmentGroups.Count, Converter={StaticResource EmptyCollectionToVisibilityConverter}}">
-                    <StackPanel HorizontalAlignment="Center">
-                        <TextBlock Text="No assignments available yet"
-                                   FontSize="18"
-                                   Foreground="{StaticResource TextSecondary}"
-                                   FontFamily="Segoe UI"
-                                   HorizontalAlignment="Center"/>
-                        <TextBlock Text="Assignments will appear here once your teacher posts them"
-                                   FontSize="14"
-                                   Foreground="{StaticResource TextSecondary}"
-                                   FontFamily="Segoe UI"
-                                   HorizontalAlignment="Center"
-                                   Margin="0,8,0,0"/>
-                    </StackPanel>
-                </Border>
+                    <!-- Category Performance (standard courses) -->
+                    <Border Visibility="{Binding IsOEFormat, Converter={StaticResource InvertedBooleanToVisibilityConverter}}"
+                            Background="#FF161B22" CornerRadius="10" Padding="20" Margin="0,0,0,16"
+                            BorderBrush="#FF21262D" BorderThickness="1">
+                        <StackPanel>
+                            <TextBlock Text="Category Performance" FontSize="14" FontWeight="SemiBold" Foreground="White" FontFamily="Segoe UI Variable" Margin="0,0,0,14"/>
+                            <ItemsControl ItemsSource="{Binding CategoryPerformance}">
+                                <ItemsControl.ItemTemplate>
+                                    <DataTemplate>
+                                        <Border Background="#FF0D1117" CornerRadius="8" Padding="14,10" Margin="0,0,0,6">
+                                            <Grid>
+                                                <Grid.ColumnDefinitions>
+                                                    <ColumnDefinition Width="140"/>
+                                                    <ColumnDefinition Width="*"/>
+                                                    <ColumnDefinition Width="60"/>
+                                                    <ColumnDefinition Width="80"/>
+                                                </Grid.ColumnDefinitions>
+                                                <TextBlock Grid.Column="0" Text="{Binding Name}" FontSize="12" Foreground="#FF8B949E" VerticalAlignment="Center" FontFamily="Segoe UI Variable"/>
+                                                <Border Grid.Column="1" Height="8" CornerRadius="4" Background="#FF21262D" Margin="12,0">
+                                                    <Border HorizontalAlignment="Left" CornerRadius="4" Background="{Binding GradeColor, Converter={StaticResource StringToBrushConverter}}">
+                                                        <Border.Width>
+                                                            <MultiBinding Converter="{StaticResource PercentageConverter}">
+                                                                <Binding Path="Percentage" Mode="OneWay"/>
+                                                                <Binding RelativeSource="{RelativeSource Mode=FindAncestor, AncestorType=Border}" Path="ActualWidth" Mode="OneWay"/>
+                                                            </MultiBinding>
+                                                        </Border.Width>
+                                                    </Border>
+                                                </Border>
+                                                <TextBlock Grid.Column="2" Text="{Binding Percentage, StringFormat={}{0:F1}%}" FontSize="13" FontWeight="Bold" Foreground="{Binding GradeColor, Converter={StaticResource StringToBrushConverter}}" VerticalAlignment="Center" FontFamily="Segoe UI Variable"/>
+                                                <TextBlock Grid.Column="3" FontSize="11" Foreground="#FF6E7681" VerticalAlignment="Center" HorizontalAlignment="Right" FontFamily="Segoe UI Variable">
+                                                    <Run Text="{Binding AssignmentCount}"/><Run Text=" tasks"/>
+                                                </TextBlock>
+                                            </Grid>
+                                        </Border>
+                                    </DataTemplate>
+                                </ItemsControl.ItemTemplate>
+                            </ItemsControl>
+                        </StackPanel>
+                    </Border>
 
-            </StackPanel>
+                    <!-- Expectation Performance (OE courses) -->
+                    <Border Visibility="{Binding IsOEFormat, Converter={StaticResource BooleanToVisibilityConverter}}"
+                            Background="#FF161B22" CornerRadius="10" Padding="20" Margin="0,0,0,16"
+                            BorderBrush="#FF21262D" BorderThickness="1">
+                        <StackPanel>
+                            <TextBlock Text="Expectation Performance" FontSize="14" FontWeight="SemiBold" Foreground="White" FontFamily="Segoe UI Variable" Margin="0,0,0,14"/>
+                            <ItemsControl ItemsSource="{Binding ExpectationPerformance}">
+                                <ItemsControl.ItemsPanel>
+                                    <ItemsPanelTemplate>
+                                        <WrapPanel Orientation="Horizontal"/>
+                                    </ItemsPanelTemplate>
+                                </ItemsControl.ItemsPanel>
+                                <ItemsControl.ItemTemplate>
+                                    <DataTemplate>
+                                        <Border Background="#FF0D1117" CornerRadius="8" Padding="16,12" Margin="0,0,8,8" MinWidth="150">
+                                            <StackPanel>
+                                                <Border Background="#FF58A6FF" CornerRadius="4" Padding="8,3" HorizontalAlignment="Left" Margin="0,0,0,8">
+                                                    <TextBlock Text="{Binding Code}" FontSize="14" FontWeight="Bold" Foreground="White" FontFamily="Segoe UI Variable"/>
+                                                </Border>
+                                                <TextBlock Text="{Binding Percentage, StringFormat={}{0:F1}%}" FontSize="22" FontWeight="Bold" Foreground="{Binding GradeColor, Converter={StaticResource StringToBrushConverter}}" FontFamily="Segoe UI Variable Display" Margin="0,0,0,6"/>
+                                                <Border Height="4" CornerRadius="2" Background="#FF21262D">
+                                                    <Border HorizontalAlignment="Left" CornerRadius="2" Background="{Binding GradeColor, Converter={StaticResource StringToBrushConverter}}">
+                                                        <Border.Width>
+                                                            <MultiBinding Converter="{StaticResource PercentageConverter}">
+                                                                <Binding Path="Percentage" Mode="OneWay"/>
+                                                                <Binding RelativeSource="{RelativeSource Mode=FindAncestor, AncestorType=Border}" Path="ActualWidth" Mode="OneWay"/>
+                                                            </MultiBinding>
+                                                        </Border.Width>
+                                                    </Border>
+                                                </Border>
+                                                <TextBlock FontSize="11" Foreground="#FF6E7681" Margin="0,6,0,0" FontFamily="Segoe UI Variable">
+                                                    <Run Text="{Binding AssignmentCount}"/><Run Text=" assessments"/>
+                                                </TextBlock>
+                                            </StackPanel>
+                                        </Border>
+                                    </DataTemplate>
+                                </ItemsControl.ItemTemplate>
+                            </ItemsControl>
+                        </StackPanel>
+                    </Border>
+
+                    <!-- Weight Breakdown -->
+                    <Border Visibility="{Binding HasWeightData, Converter={StaticResource BooleanToVisibilityConverter}}"
+                            Background="#FF161B22" CornerRadius="10" Padding="20" Margin="0,0,0,16"
+                            BorderBrush="#FF21262D" BorderThickness="1">
+                        <StackPanel>
+                            <TextBlock Text="Weight Breakdown" FontSize="14" FontWeight="SemiBold" Foreground="White" FontFamily="Segoe UI Variable" Margin="0,0,0,14"/>
+                            <ItemsControl ItemsSource="{Binding SelectedCourse.WeightTable.Weights}">
+                                <ItemsControl.ItemTemplate>
+                                    <DataTemplate>
+                                        <Grid Margin="0,4,0,0">
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition Width="180"/>
+                                                <ColumnDefinition Width="*"/>
+                                                <ColumnDefinition Width="60"/>
+                                            </Grid.ColumnDefinitions>
+                                            <TextBlock Grid.Column="0" Text="{Binding Key}" FontSize="12" Foreground="#FF8B949E" VerticalAlignment="Center" FontFamily="Segoe UI Variable"/>
+                                            <ProgressBar Grid.Column="1" Height="8" Value="{Binding Value, Mode=OneWay}" Maximum="100" Margin="12,0" VerticalAlignment="Center" Foreground="#FF238636" Background="#FF21262D"/>
+                                            <TextBlock Grid.Column="2" Text="{Binding Value, StringFormat={}{0}%}" FontSize="13" FontWeight="SemiBold" Foreground="White" HorizontalAlignment="Right" VerticalAlignment="Center" FontFamily="Segoe UI Variable"/>
+                                        </Grid>
+                                    </DataTemplate>
+                                </ItemsControl.ItemTemplate>
+                            </ItemsControl>
+                        </StackPanel>
+                    </Border>
+
+                    <!-- Assignments -->
+                    <Border Background="#FF161B22" CornerRadius="10" Padding="20" Margin="0,0,0,16"
+                            BorderBrush="#FF21262D" BorderThickness="1">
+                        <StackPanel>
+                            <TextBlock Text="Assignments" FontSize="14" FontWeight="SemiBold" Foreground="White" FontFamily="Segoe UI Variable" Margin="0,0,0,14"/>
+                            <ItemsControl ItemsSource="{Binding AssignmentGroups}">
+                                <ItemsControl.ItemTemplate>
+                                    <DataTemplate>
+                                        <Border Background="#FF0D1117" CornerRadius="8" Padding="16,12" Margin="0,0,0,8">
+                                            <StackPanel>
+                                                <Grid Margin="0,0,0,10">
+                                                    <Grid.ColumnDefinitions>
+                                                        <ColumnDefinition Width="*"/>
+                                                        <ColumnDefinition Width="Auto"/>
+                                                    </Grid.ColumnDefinitions>
+                                                    <TextBlock Grid.Column="0" Text="{Binding Name}" FontSize="13" FontWeight="SemiBold" Foreground="White" FontFamily="Segoe UI Variable"/>
+                                                </Grid>
+                                                <ItemsControl ItemsSource="{Binding Assignments}">
+                                                    <ItemsControl.ItemTemplate>
+                                                        <DataTemplate>
+                                                            <Border Background="#FF161B22" CornerRadius="6" Padding="12,8" Margin="0,0,6,4" MinWidth="120">
+                                                                <StackPanel>
+                                                                    <TextBlock Text="{Binding Category}" FontSize="10" FontWeight="SemiBold" Foreground="#FF6E7681" Margin="0,0,0,4" TextAlignment="Center"/>
+                                                                    <TextBlock FontSize="16" FontWeight="Bold" Foreground="{Binding Percentage, Converter={StaticResource MarkToColorConverter}, Mode=OneWay}" HorizontalAlignment="Center" FontFamily="Segoe UI Variable Display">
+                                                                        <Run Text="{Binding MarkAchieved, StringFormat={}{0:F0}, Mode=OneWay}"/>
+                                                                        <Run Text="/" FontSize="11"/>
+                                                                        <Run Text="{Binding MarkPossible, StringFormat={}{0:F0}, Mode=OneWay}" FontSize="11"/>
+                                                                    </TextBlock>
+                                                                    <TextBlock Text="{Binding Percentage, StringFormat={}{0:F1}%, Mode=OneWay}" FontSize="11" FontWeight="SemiBold" Foreground="{Binding Percentage, Converter={StaticResource MarkToColorConverter}, Mode=OneWay}" HorizontalAlignment="Center" Margin="0,2,0,0"/>
+                                                                </StackPanel>
+                                                            </Border>
+                                                        </DataTemplate>
+                                                    </ItemsControl.ItemTemplate>
+                                                    <ItemsControl.ItemsPanel>
+                                                        <ItemsPanelTemplate>
+                                                            <WrapPanel Orientation="Horizontal"/>
+                                                        </ItemsPanelTemplate>
+                                                    </ItemsControl.ItemsPanel>
+                                                </ItemsControl>
+                                            </StackPanel>
+                                        </Border>
+                                    </DataTemplate>
+                                </ItemsControl.ItemTemplate>
+                            </ItemsControl>
+                        </StackPanel>
+                    </Border>
+
+                    <!-- No Assignments -->
+                    <Border Visibility="{Binding AssignmentGroups.Count, Converter={StaticResource EmptyCollectionToVisibilityConverter}}"
+                            Background="#FF161B22" CornerRadius="10" Padding="40"
+                            BorderBrush="#FF21262D" BorderThickness="1">
+                        <TextBlock Text="No assignments available yet" FontSize="14" Foreground="#FF8B949E" HorizontalAlignment="Center" FontFamily="Segoe UI Variable"/>
+                    </Border>
+
+                </StackPanel>
+            </Grid>
         </ScrollViewer>
 
         <!-- Loading Overlay -->
         <Grid Grid.Row="1"
-              Background="#DD000000"
+              Background="#CC000000"
               Visibility="{Binding IsLoading, Converter={StaticResource BooleanToVisibilityConverter}}">
-            <StackPanel VerticalAlignment="Center" HorizontalAlignment="Center">
-                <TextBlock Text="Loading assignments..."
-                           Foreground="White"
-                           FontSize="18"
-                           FontWeight="SemiBold"
-                           HorizontalAlignment="Center"
-                           FontFamily="Segoe UI"/>
-            </StackPanel>
+            <Border Width="40" Height="40" BorderThickness="3" BorderBrush="#FF58A6FF" CornerRadius="20" VerticalAlignment="Center" HorizontalAlignment="Center">
+                <Border.RenderTransform><RotateTransform Angle="0"/></Border.RenderTransform>
+                <Border.Triggers>
+                    <EventTrigger RoutedEvent="Loaded">
+                        <BeginStoryboard>
+                            <Storyboard RepeatBehavior="Forever">
+                                <DoubleAnimation Storyboard.TargetProperty="(UIElement.RenderTransform).(RotateTransform.Angle)" From="0" To="360" Duration="0:0:1"/>
+                            </Storyboard>
+                        </BeginStoryboard>
+                    </EventTrigger>
+                </Border.Triggers>
+            </Border>
         </Grid>
 
         <!-- Error Message -->
         <Border Grid.Row="1"
-                Background="{StaticResource AccentRed}"
-                CornerRadius="8"
+                Background="#FF161B22"
+                CornerRadius="10"
                 Padding="20"
-                Margin="40,80,40,0"
+                Margin="32,60,32,0"
                 HorizontalAlignment="Center"
                 VerticalAlignment="Top"
+                BorderBrush="#FFF85149"
+                BorderThickness="1"
                 Visibility="{Binding ErrorMessage, Converter={StaticResource BooleanToVisibilityConverter}}">
-            <TextBlock Text="{Binding ErrorMessage}"
-                       Foreground="White"
-                       TextWrapping="Wrap"
-                       FontSize="15"
-                       FontWeight="Medium"
-                       FontFamily="Segoe UI"/>
+            <StackPanel Orientation="Horizontal">
+                <TextBlock Text="&#xE7BA;" FontFamily="Segoe MDL2 Assets" FontSize="18" Foreground="#FFF85149" VerticalAlignment="Center" Margin="0,0,14,0"/>
+                <TextBlock Text="{Binding ErrorMessage}" Foreground="#FF8B949E" TextWrapping="Wrap" FontSize="13" FontFamily="Segoe UI Variable" MaxWidth="400"/>
+            </StackPanel>
         </Border>
     </Grid>
 </Page>

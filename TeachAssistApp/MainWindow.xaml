@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:TeachAssistApp"
         mc:Ignorable="d"
-        Title="TeachAssist - YRDSB"
+        Title="TeachAssist"
         Height="900"
         Width="1400"
         MinWidth="1100"
@@ -18,77 +18,9 @@
         Loaded="Window_Loaded">
 
     <Window.Resources>
-        <!-- Windows 11 Style Resources -->
-        <SolidColorBrush x:Key="BackgroundBrush" Color="#FF0D1117"/>
-        <SolidColorBrush x:Key="SurfaceBrush" Color="#FF161B22"/>
-        <SolidColorBrush x:Key="SurfaceHoverBrush" Color="#FF1C2128"/>
-        <SolidColorBrush x:Key="BorderBrush" Color="#FF30363D"/>
-        <SolidColorBrush x:Key="PrimaryBrush" Color="#FF238636"/>
-        <SolidColorBrush x:Key="PrimaryHoverBrush" Color="#FF2EA043"/>
-        <SolidColorBrush x:Key="TextPrimaryBrush" Color="#FFFFFFFF"/>
-        <SolidColorBrush x:Key="TextSecondaryBrush" Color="#FF8B949E"/>
-        <SolidColorBrush x:Key="AccentBrush" Color="#FF58A6FF"/>
-
-        <!-- Glow Effect -->
-        <DropShadowEffect x:Key="GlowEffect" Color="#FF58A6FF" BlurRadius="20" ShadowDepth="0" Opacity="0.3"/>
-        <DropShadowEffect x:Key="CardShadow" Color="#000000" BlurRadius="12" ShadowDepth="0" Opacity="0.25"/>
-
-        <!-- Window Control Button Style -->
-        <Style x:Key="WindowControlButton" TargetType="Button">
-            <Setter Property="Background" Value="Transparent"/>
-            <Setter Property="BorderThickness" Value="0"/>
-            <Setter Property="Foreground" Value="#FF8B949E"/>
-            <Setter Property="Width" Value="48"/>
-            <Setter Property="Height" Value="32"/>
-            <Setter Property="Cursor" Value="Hand"/>
-            <Setter Property="Template">
-                <Setter.Value>
-                    <ControlTemplate TargetType="Button">
-                        <Border x:Name="ButtonBorder"
-                                Background="{TemplateBinding Background}"
-                                BorderThickness="0">
-                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
-                        </Border>
-                        <ControlTemplate.Triggers>
-                            <Trigger Property="IsMouseOver" Value="True">
-                                <Setter Property="Background" TargetName="ButtonBorder" Value="#FF21262D"/>
-                                <Setter Property="Foreground" Value="#FFFFFFFF"/>
-                            </Trigger>
-                        </ControlTemplate.Triggers>
-                    </ControlTemplate>
-                </Setter.Value>
-            </Setter>
-        </Style>
-
-        <!-- Close Button Special Style -->
-        <Style x:Key="CloseButton" TargetType="Button" BasedOn="{StaticResource WindowControlButton}">
-            <Style.Triggers>
-                <Trigger Property="IsMouseOver" Value="True">
-                    <Setter Property="Background" Value="#FFF85149"/>
-                    <Setter Property="Foreground" Value="#FFFFFFFF"/>
-                </Trigger>
-            </Style.Triggers>
-        </Style>
-
-        <!-- Animations -->
-        <Storyboard x:Key="FadeInAnimation">
+        <Storyboard x:Key="WindowFadeIn">
             <DoubleAnimation Storyboard.TargetProperty="(Window.Opacity)"
-                             From="0" To="1" Duration="0:0:0.4">
-                <DoubleAnimation.EasingFunction>
-                    <CubicEase EasingMode="EaseOut"/>
-                </DoubleAnimation.EasingFunction>
-            </DoubleAnimation>
-        </Storyboard>
-
-        <Storyboard x:Key="SlideInAnimation">
-            <DoubleAnimation Storyboard.TargetProperty="(UIElement.RenderTransform).(TranslateTransform.Y)"
-                             From="20" To="0" Duration="0:0:0.5">
-                <DoubleAnimation.EasingFunction>
-                    <CubicEase EasingMode="EaseOut"/>
-                </DoubleAnimation.EasingFunction>
-            </DoubleAnimation>
-            <DoubleAnimation Storyboard.TargetProperty="(UIElement.Opacity)"
-                             From="0" To="1" Duration="0:0:0.5">
+                             From="0" To="1" Duration="0:0:0.3">
                 <DoubleAnimation.EasingFunction>
                     <CubicEase EasingMode="EaseOut"/>
                 </DoubleAnimation.EasingFunction>
@@ -96,125 +28,55 @@
         </Storyboard>
     </Window.Resources>
 
-    <!-- Outer Border with Shadow -->
-    <Border BorderBrush="#FF30363D"
-            BorderThickness="1"
-            CornerRadius="8"
-            Background="#FF0D1117">
-        <Border.Effect>
-            <DropShadowEffect Color="#000000" BlurRadius="40" ShadowDepth="0" Opacity="0.6"/>
-        </Border.Effect>
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="32"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
 
-        <Grid>
-            <Grid.RowDefinitions>
-                <RowDefinition Height="48"/>
-                <RowDefinition Height="*"/>
-            </Grid.RowDefinitions>
+        <!-- Minimal Title Bar -->
+        <Grid Grid.Row="0" Background="#FF010409" MouseLeftButtonDown="TitleBar_MouseLeftButtonDown">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="Auto"/>
+            </Grid.ColumnDefinitions>
 
-            <!-- Custom Title Bar -->
-            <Grid Grid.Row="0" Background="#FF010409">
-                <Grid.Effect>
-                    <DropShadowEffect Color="#000000" BlurRadius="12" ShadowDepth="2" Opacity="0.4"/>
-                </Grid.Effect>
+            <StackPanel Grid.Column="0" Orientation="Horizontal" Margin="12,0,0,0" VerticalAlignment="Center">
+                <Border Width="14" Height="14" CornerRadius="3" Margin="0,0,8,0">
+                    <Border.Background>
+                        <LinearGradientBrush StartPoint="0,0" EndPoint="1,1">
+                            <GradientStop Color="#FF58A6FF" Offset="0"/>
+                            <GradientStop Color="#FF238636" Offset="1"/>
+                        </LinearGradientBrush>
+                    </Border.Background>
+                </Border>
+                <TextBlock Text="TeachAssist"
+                           FontSize="12"
+                           Foreground="#FF8B949E"
+                           FontFamily="Segoe UI Variable"
+                           VerticalAlignment="Center"/>
+            </StackPanel>
 
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="Auto"/>
-                    <ColumnDefinition Width="*"/>
-                    <ColumnDefinition Width="Auto"/>
-                </Grid.ColumnDefinitions>
+            <StackPanel Grid.Column="2" Orientation="Horizontal" HorizontalAlignment="Right">
+                <Button Click="Minimize_Click" Style="{StaticResource WindowControlButton}" Width="46" Height="32">
+                    <Path Data="M0,8 L10,8" Stroke="{Binding Foreground, RelativeSource={RelativeSource AncestorType=Button}}" StrokeThickness="1" StrokeStartLineCap="Round"/>
+                </Button>
+                <Button Click="Maximize_Click" Style="{StaticResource WindowControlButton}" Width="46" Height="32">
+                    <Path Data="M0,0 L10,0 L10,10 L0,10 Z M1,1 L1,9 L9,9 L9,1 Z" Fill="{Binding Foreground, RelativeSource={RelativeSource AncestorType=Button}}" Width="10" Height="10" StrokeThickness="0"/>
+                </Button>
+                <Button Click="Close_Click" Style="{StaticResource CloseButton}" Width="46" Height="32">
+                    <Path Data="M0,0 L10,10 M10,0 L0,10" Stroke="{Binding Foreground, RelativeSource={RelativeSource AncestorType=Button}}" StrokeThickness="1.2" StrokeStartLineCap="Round" StrokeEndLineCap="Round"/>
+                </Button>
+            </StackPanel>
+        </Grid>
 
-                <!-- Logo & Title -->
-                <StackPanel Grid.Column="0"
-                           Orientation="Horizontal"
-                           Margin="16,0,0,0"
-                           VerticalAlignment="Center">
-                    <!-- Logo with Gradient -->
-                    <Border Width="32"
-                            Height="32"
-                            CornerRadius="8"
-                            Margin="0,0,12,0"
-                            RenderTransformOrigin="0.5,0.5">
-                        <Border.Background>
-                            <LinearGradientBrush StartPoint="0,0" EndPoint="1,1">
-                                <GradientStop Color="#FF58A6FF" Offset="0"/>
-                                <GradientStop Color="#FF2188FF" Offset="1"/>
-                            </LinearGradientBrush>
-                        </Border.Background>
-                        <Border.Effect>
-                            <DropShadowEffect Color="#FF58A6FF" BlurRadius="15" ShadowDepth="0" Opacity="0.5"/>
-                        </Border.Effect>
-                        <TextBlock Text="📚"
-                                   FontSize="18"
-                                   HorizontalAlignment="Center"
-                                   VerticalAlignment="Center"
-                                   Margin="0,0,0,1"/>
-                    </Border>
-
-                    <TextBlock Text="TeachAssist"
-                               FontSize="16"
-                               FontWeight="SemiBold"
-                               Foreground="{StaticResource TextPrimaryBrush}"
-                               FontFamily="Segoe UI Variable Display"
-                               Margin="0,0,0,8"
-                               VerticalAlignment="Center">
-                        <TextBlock.Effect>
-                            <DropShadowEffect Color="#FF58A6FF" BlurRadius="10" ShadowDepth="0" Opacity="0.3"/>
-                        </TextBlock.Effect>
-                    </TextBlock>
-
-                    <!-- Badge with Glow -->
-                    <Border Background="#FF238636"
-                            CornerRadius="6"
-                            Padding="10,5"
-                            VerticalAlignment="Center"
-                            Margin="8,0,0,0">
-                        <Border.Effect>
-                            <DropShadowEffect Color="#FF238636" BlurRadius="10" ShadowDepth="0" Opacity="0.5"/>
-                        </Border.Effect>
-                        <TextBlock Text="YRDSB"
-                                   FontSize="10"
-                                   FontWeight="Bold"
-                                   Foreground="White"
-                                   FontFamily="Segoe UI"/>
-                    </Border>
-                </StackPanel>
-
-                <!-- Window Controls -->
-                <StackPanel Grid.Column="2"
-                           Orientation="Horizontal"
-                           HorizontalAlignment="Right">
-                    <Button Click="Minimize_Click" Style="{StaticResource WindowControlButton}">
-                        <Path Data="M0,9 L0,10 L12,10 L12,9 Z"
-                              Fill="{Binding Foreground, RelativeSource={RelativeSource AncestorType=Button}}"
-                              Width="12" Height="1"
-                              StrokeThickness="0"/>
-                    </Button>
-                    <Button Click="Maximize_Click" Style="{StaticResource WindowControlButton}">
-                        <Path Data="M0,0 L12,0 L12,10 L0,10 Z M1,1 L1,9 L11,9 L11,1 Z"
-                              Fill="{Binding Foreground, RelativeSource={RelativeSource AncestorType=Button}}"
-                              Width="12" Height="10"
-                              StrokeThickness="0"/>
-                    </Button>
-                    <Button Click="Close_Click" Style="{StaticResource CloseButton}">
-                        <Path Data="M0,0 L12,12 M12,0 L0,12"
-                              Stroke="{Binding Foreground, RelativeSource={RelativeSource AncestorType=Button}}"
-                              StrokeThickness="1.5"
-                              StrokeStartLineCap="Round"
-                              StrokeEndLineCap="Round"/>
-                    </Button>
-                </StackPanel>
-            </Grid>
-
-            <!-- Main Content Frame -->
+        <!-- Main Content Frame -->
+        <Grid Grid.Row="1">
             <Frame x:Name="ContentFrame"
                    NavigationUIVisibility="Hidden"
                    Background="Transparent"
-                   Grid.Row="1"
-                   RenderTransformOrigin="0,0">
-                <Frame.RenderTransform>
-                    <TranslateTransform X="0" Y="0"/>
-                </Frame.RenderTransform>
-            </Frame>
+                   ClipToBounds="True"/>
         </Grid>
-    </Border>
+    </Grid>
 </Window>

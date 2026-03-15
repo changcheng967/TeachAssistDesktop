@@ -25,6 +25,15 @@ public partial class CourseDetailViewModel : ObservableObject
     private ObservableCollection<CategoryPerformance> _categoryPerformance = new();
 
     [ObservableProperty]
+    private ObservableCollection<CategoryPerformance> _expectationPerformance = new();
+
+    [ObservableProperty]
+    private bool _isOEFormat;
+
+    [ObservableProperty]
+    private bool _hasWeightData;
+
+    [ObservableProperty]
     private bool _isLoading;
 
     [ObservableProperty]
@@ -107,8 +116,17 @@ public partial class CourseDetailViewModel : ObservableObject
                 System.Diagnostics.Debug.WriteLine($"Loaded {AssignmentGroups.Count} assignment groups into UI");
 
                 // Calculate category performance
+                IsOEFormat = SelectedCourse.IsCGCFormat;
                 CalculateCategoryPerformance();
                 System.Diagnostics.Debug.WriteLine($"Calculated {CategoryPerformance.Count} category performance items");
+
+                if (IsOEFormat)
+                {
+                    CalculateExpectationPerformance();
+                    System.Diagnostics.Debug.WriteLine($"Calculated {ExpectationPerformance.Count} expectation performance items");
+                }
+
+                HasWeightData = SelectedCourse.WeightTable.Weights.Count > 0;
 
                 // Populate trends for visualization
                 PopulateTrends();
@@ -174,6 +192,39 @@ public partial class CourseDetailViewModel : ObservableObject
                     });
                 }
             }
+        }
+    }
+
+    private void CalculateExpectationPerformance()
+    {
+        ExpectationPerformance.Clear();
+
+        if (SelectedCourse == null) return;
+
+        // Group assignments by their expectation code (Category field contains A1, A2, B1, etc. for OE courses)
+        var expectationGroups = SelectedCourse.Assignments
+            .Where(a => a.MarkAchieved.HasValue && a.MarkPossible.HasValue)
+            .GroupBy(a => a.Category)
+            .OrderBy(g => g.Key);
+
+        foreach (var group in expectationGroups)
+        {
+            var code = group.Key;
+            // Only process codes that look like expectation codes (letter + digit)
+            if (code.Length < 2 || !char.IsLetter(code[0]) || !char.IsDigit(code[1])) continue;
+
+            var totalAchieved = group.Sum(a => a.MarkAchieved!.Value);
+            var totalPossible = group.Sum(a => a.MarkPossible!.Value);
+            var percentage = totalPossible > 0 ? (totalAchieved / totalPossible) * 100 : 0;
+
+            ExpectationPerformance.Add(new CategoryPerformance
+            {
+                Code = code,
+                Name = $"Expectation {code}",
+                Percentage = Math.Round(percentage, 1),
+                Weight = 0,
+                AssignmentCount = group.Count()
+            });
         }
     }
 

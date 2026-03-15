@@ -3,824 +3,310 @@
       xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
       xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-      xmlns:ui="http://schemas.modernwpf.com/2020/xaml/present"
       mc:Ignorable="d"
       d:DesignHeight="700" d:DesignWidth="1200"
       Background="Transparent"
-      Title="Dashboard - TeachAssist">
+      Title="Dashboard - TeachAssist"
+      Loaded="Page_Loaded">
 
     <Page.Resources>
-        <!-- Premium Windows 11 Color Palette -->
-        <SolidColorBrush x:Key="CardBackground" Color="#FF161B22"/>
-        <SolidColorBrush x:Key="CardBackgroundHover" Color="#FF1C2128"/>
-        <SolidColorBrush x:Key="CardBorder" Color="#FF30363D"/>
-        <SolidColorBrush x:Key="TextPrimary" Color="#FFFFFFFF"/>
-        <SolidColorBrush x:Key="TextSecondary" Color="#FF8B949E"/>
-        <SolidColorBrush x:Key="TextTertiary" Color="#FF6E7681"/>
-
-        <!-- Grade Colors - Enhanced -->
-        <SolidColorBrush x:Key="GradeAPlus" Color="#FF1F6FEB"/>  <!-- Vibrant Blue -->
-        <SolidColorBrush x:Key="GradeA" Color="#FF238636"/>      <!-- GitHub Green -->
-        <SolidColorBrush x:Key="GradeB" Color="#FFD29922"/>      <!-- Warm Gold -->
-        <SolidColorBrush x:Key="GradeC" Color="#FFDB6D28"/>      <!-- Orange -->
-        <SolidColorBrush x:Key="GradeD" Color="#FFf85149"/>      <!-- Red -->
-        <SolidColorBrush x:Key="GradeNA" Color="#FF30363D"/>     <!-- Gray -->
-
-        <!-- Mica/Acrylic Effect Brushes -->
-        <SolidColorBrush x:Key="MicaBackground" Color="#E50D1117"/>
-
-        <!-- Premium Card Style -->
-        <Style x:Key="PremiumCard" TargetType="Border">
-            <Setter Property="Background" Value="{StaticResource CardBackground}"/>
-            <Setter Property="BorderBrush" Value="{StaticResource CardBorder}"/>
+        <Style x:Key="CourseRow" TargetType="Border">
+            <Setter Property="Background" Value="#FF161B22"/>
+            <Setter Property="BorderBrush" Value="#FF21262D"/>
             <Setter Property="BorderThickness" Value="1"/>
-            <Setter Property="CornerRadius" Value="16"/>
-            <Setter Property="Effect">
-                <Setter.Value>
-                    <DropShadowEffect Color="#000000" Opacity="0.25" BlurRadius="20" ShadowDepth="0"/>
-                </Setter.Value>
-            </Setter>
-            <Setter Property="RenderTransformOrigin" Value="0.5,0.5"/>
-            <Setter Property="RenderTransform">
-                <Setter.Value>
-                    <ScaleTransform ScaleX="1" ScaleY="1"/>
-                </Setter.Value>
-            </Setter>
-        </Style>
-
-        <!-- Modern Button Style -->
-        <Style x:Key="ModernButton" TargetType="Button">
-            <Setter Property="Background" Value="{StaticResource CardBackground}"/>
-            <Setter Property="Foreground" Value="{StaticResource TextPrimary}"/>
-            <Setter Property="BorderThickness" Value="1"/>
-            <Setter Property="BorderBrush" Value="{StaticResource CardBorder}"/>
+            <Setter Property="CornerRadius" Value="10"/>
             <Setter Property="Cursor" Value="Hand"/>
-            <Setter Property="FontSize" Value="14"/>
-            <Setter Property="FontWeight" Value="SemiBold"/>
-            <Setter Property="Padding" Value="20,12"/>
-            <Setter Property="Template">
-                <Setter.Value>
-                    <ControlTemplate TargetType="Button">
-                        <Border Background="{TemplateBinding Background}"
-                                BorderBrush="{TemplateBinding BorderBrush}"
-                                BorderThickness="{TemplateBinding BorderThickness}"
-                                CornerRadius="8"
-                                Padding="{TemplateBinding Padding}">
-                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
-                        </Border>
-                    </ControlTemplate>
-                </Setter.Value>
-            </Setter>
+            <Setter Property="Margin" Value="0,0,0,6"/>
+            <Setter Property="Padding" Value="16,14"/>
             <Style.Triggers>
                 <Trigger Property="IsMouseOver" Value="True">
-                    <Setter Property="Background" Value="{StaticResource CardBackgroundHover}"/>
-                    <Setter Property="BorderBrush" Value="#FF58A6FF"/>
-                </Trigger>
-                <Trigger Property="IsPressed" Value="True">
-                    <Setter Property="Background" Value="#FF0D1117"/>
-                    <Setter Property="RenderTransform">
-                        <Setter.Value>
-                            <ScaleTransform ScaleX="0.98" ScaleY="0.98"/>
-                        </Setter.Value>
-                    </Setter>
-                </Trigger>
-            </Style.Triggers>
-        </Style>
-
-        <!-- Primary Button Style -->
-        <Style x:Key="PrimaryButton" TargetType="Button" BasedOn="{StaticResource ModernButton}">
-            <Setter Property="Background" Value="#FF238636"/>
-            <Setter Property="Foreground" Value="White"/>
-            <Setter Property="BorderThickness" Value="0"/>
-            <Style.Triggers>
-                <Trigger Property="IsMouseOver" Value="True">
-                    <Setter Property="Background" Value="#FF2EA043"/>
-                    <Setter Property="BorderBrush" Value="Transparent"/>
-                </Trigger>
-            </Style.Triggers>
-        </Style>
-
-        <!-- Course Card ItemContainerStyle -->
-        <Style x:Key="CourseCardStyle" TargetType="Border">
-            <Setter Property="Background" Value="{StaticResource CardBackground}"/>
-            <Setter Property="BorderBrush" Value="{StaticResource CardBorder}"/>
-            <Setter Property="BorderThickness" Value="1"/>
-            <Setter Property="CornerRadius" Value="16"/>
-            <Setter Property="Cursor" Value="Hand"/>
-            <Setter Property="Effect">
-                <Setter.Value>
-                    <DropShadowEffect Color="#000000" Opacity="0.2" BlurRadius="16" ShadowDepth="0"/>
-                </Setter.Value>
-            </Setter>
-            <Setter Property="RenderTransformOrigin" Value="0.5,0.5"/>
-            <Setter Property="RenderTransform">
-                <Setter.Value>
-                    <TranslateTransform X="0" Y="0"/>
-                </Setter.Value>
-            </Setter>
-            <Style.Triggers>
-                <Trigger Property="IsMouseOver" Value="True">
-                    <Setter Property="Background" Value="{StaticResource CardBackgroundHover}"/>
-                    <Setter Property="BorderBrush" Value="#FF58A6FF"/>
-                    <Setter Property="RenderTransform">
-                        <Setter.Value>
-                            <TranslateTransform X="0" Y="-4"/>
-                        </Setter.Value>
-                    </Setter>
-                    <Setter Property="Effect">
-                        <Setter.Value>
-                            <DropShadowEffect Color="#FF58A6FF" Opacity="0.3" BlurRadius="24" ShadowDepth="0"/>
-                        </Setter.Value>
-                    </Setter>
+                    <Setter Property="Background" Value="#FF1C2128"/>
+                    <Setter Property="BorderBrush" Value="#FF30363D"/>
                 </Trigger>
             </Style.Triggers>
         </Style>
     </Page.Resources>
 
-    <Grid Margin="0">
+    <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
 
-        <!-- Premium Header -->
-        <Border Grid.Row="0"
-                Background="#FF010409"
-                Padding="24,16,24,16"
-                BorderBrush="#FF30363D"
-                BorderThickness="0,0,0,1">
-            <Grid>
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="*"/>
-                    <ColumnDefinition Width="Auto"/>
-                </Grid.ColumnDefinitions>
+        <!-- Hero Stats Bar -->
+        <Border Grid.Row="0" Background="#FF010409" Padding="32,24">
+            <Border BorderBrush="#FF21262D" BorderThickness="0,0,0,1" Padding="0,0,0,24">
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="Auto"/>
+                    </Grid.ColumnDefinitions>
 
-                <!-- Title Section with Enhanced Stats -->
-                <StackPanel Grid.Column="0" Orientation="Horizontal">
-                    <Border Width="40" Height="40"
-                            CornerRadius="10"
-                            Margin="0,0,16,0"
-                            VerticalAlignment="Center">
-                        <Border.Background>
-                            <LinearGradientBrush StartPoint="0,0" EndPoint="1,1">
-                                <GradientStop Color="#FF58A6FF" Offset="0"/>
-                                <GradientStop Color="#FF2188FF" Offset="1"/>
-                            </LinearGradientBrush>
-                        </Border.Background>
-                        <Border.Effect>
-                            <DropShadowEffect Color="#FF58A6FF" BlurRadius="15" ShadowDepth="0" Opacity="0.4"/>
-                        </Border.Effect>
-                        <TextBlock Text="&#xE80F;"
-                                   FontFamily="Segoe MDL2 Assets"
-                                   FontSize="20"
-                                   Foreground="White"
-                                   HorizontalAlignment="Center"
-                                   VerticalAlignment="Center"/>
-                    </Border>
-
-                    <StackPanel VerticalAlignment="Center">
+                    <!-- Left: Title -->
+                    <StackPanel Grid.Column="0" VerticalAlignment="Center">
                         <TextBlock Text="My Grades"
-                                   FontSize="22"
-                                   FontWeight="SemiBold"
-                                   Foreground="{StaticResource TextPrimary}"
+                                   FontSize="24"
+                                   FontWeight="Bold"
+                                   Foreground="White"
                                    FontFamily="Segoe UI Variable Display"
-                                   Margin="0,0,0,4"/>
-                        <TextBlock FontSize="11"
-                                   Foreground="{StaticResource TextSecondary}"
-                                   FontFamily="Segoe UI Variable">
-                            <Run Text="Track your academic progress"/>
-                        </TextBlock>
+                                   Margin="0,0,0,2"/>
+                        <TextBlock Text="Pierre Elliott Trudeau High School"
+                                   FontSize="13"
+                                   Foreground="#FF6E7681"
+                                   FontFamily="Segoe UI Variable"/>
                     </StackPanel>
 
-                    <!-- Enhanced Stats Bar -->
-                    <StackPanel Orientation="Horizontal" Margin="24,0,0,0" VerticalAlignment="Center">
-                        <!-- GPA with Icon -->
-                        <Border Background="#FF161B22"
-                                BorderBrush="#FF30363D"
-                                BorderThickness="1"
-                                Padding="12,8"
-                                CornerRadius="8"
-                                Margin="0,0,10,0">
-                            <Grid>
-                                <Border Width="24" Height="24"
-                                        CornerRadius="6"
-                                        Background="#FF58A6FF"
-                                        HorizontalAlignment="Left"
-                                        VerticalAlignment="Center"
-                                        Margin="0,0,8,0">
-                                    <Border.Effect>
-                                        <DropShadowEffect Color="#FF58A6FF" BlurRadius="8" ShadowDepth="0" Opacity="0.4"/>
-                                    </Border.Effect>
-                                    <TextBlock Text="&#xE7C3;"
-                                               FontFamily="Segoe MDL2 Assets"
-                                               FontSize="12"
-                                               Foreground="White"
-                                               HorizontalAlignment="Center"
-                                               VerticalAlignment="Center"/>
-                                </Border>
-                                <TextBlock FontSize="13" FontWeight="SemiBold"
-                                           Foreground="{StaticResource TextPrimary}"
-                                           Margin="32,0,0,0"
-                                           VerticalAlignment="Center">
-                                    <Run Text="GPA" Foreground="{StaticResource TextSecondary}" FontSize="11"/><LineBreak/>
-                                    <Run Text="{Binding Gpa}" Foreground="#FF58A6FF"/>
+                    <!-- Right: Stat pills + Actions -->
+                    <StackPanel Grid.Column="1" VerticalAlignment="Center" Orientation="Horizontal">
+                        <Border Background="#FF161B22" CornerRadius="8" Padding="16,10" Margin="0,0,8,0">
+                            <StackPanel Orientation="Horizontal">
+                                <TextBlock FontSize="22" FontWeight="Bold" Foreground="#FF58A6FF" VerticalAlignment="Center" FontFamily="Segoe UI Variable Display">
+                                    <Run Text="{Binding AverageMark, StringFormat={}{0:F1}}"/>
                                 </TextBlock>
-                            </Grid>
+                                <TextBlock FontSize="13" Foreground="#FF6E7681" VerticalAlignment="Center" Margin="6,0,0,0" FontFamily="Segoe UI Variable">
+                                    % avg
+                                </TextBlock>
+                            </StackPanel>
+                        </Border>
+                        <Border Background="#FF161B22" CornerRadius="8" Padding="16,10" Margin="0,0,8,0">
+                            <StackPanel Orientation="Horizontal">
+                                <TextBlock FontSize="22" FontWeight="Bold" Foreground="#FF238636" VerticalAlignment="Center" FontFamily="Segoe UI Variable Display">
+                                    <Run Text="{Binding Gpa}"/>
+                                </TextBlock>
+                                <TextBlock FontSize="13" Foreground="#FF6E7681" VerticalAlignment="Center" Margin="6,0,0,0" FontFamily="Segoe UI Variable">
+                                    GPA
+                                </TextBlock>
+                            </StackPanel>
+                        </Border>
+                        <Border Background="#FF161B22" CornerRadius="8" Padding="16,10" Margin="0,0,16,0">
+                            <StackPanel Orientation="Horizontal">
+                                <TextBlock FontSize="22" FontWeight="Bold" Foreground="#FFD29922" VerticalAlignment="Center" FontFamily="Segoe UI Variable Display">
+                                    <Run Text="{Binding CourseCount}"/>
+                                </TextBlock>
+                                <TextBlock FontSize="13" Foreground="#FF6E7681" VerticalAlignment="Center" Margin="6,0,0,0" FontFamily="Segoe UI Variable">
+                                    courses
+                                </TextBlock>
+                            </StackPanel>
                         </Border>
 
-                        <!-- Average with Icon -->
-                        <Border Background="#FF161B22"
-                                BorderBrush="#FF30363D"
-                                BorderThickness="1"
-                                Padding="12,8"
-                                CornerRadius="8"
-                                Margin="0,0,10,0">
-                            <Grid>
-                                <Border Width="24" Height="24"
-                                        CornerRadius="6"
-                                        Background="#FF238636"
-                                        HorizontalAlignment="Left"
-                                        VerticalAlignment="Center"
-                                        Margin="0,0,8,0">
-                                    <Border.Effect>
-                                        <DropShadowEffect Color="#FF238636" BlurRadius="8" ShadowDepth="0" Opacity="0.4"/>
-                                    </Border.Effect>
-                                    <TextBlock Text="&#xE795;"
-                                               FontFamily="Segoe MDL2 Assets"
-                                               FontSize="12"
-                                               Foreground="White"
-                                               HorizontalAlignment="Center"
-                                               VerticalAlignment="Center"/>
-                                </Border>
-                                <TextBlock FontSize="13" FontWeight="SemiBold"
-                                           Foreground="{StaticResource TextPrimary}"
-                                           Margin="32,0,0,0"
-                                           VerticalAlignment="Center">
-                                    <Run Text="AVG" Foreground="{StaticResource TextSecondary}" FontSize="11"/><LineBreak/>
-                                    <Run Text="{Binding AverageMark, StringFormat={}{0:F1}%}" Foreground="#FF238636"/>
-                                </TextBlock>
-                            </Grid>
-                        </Border>
-
-                        <!-- Courses with Icon -->
-                        <Border Background="#FF161B22"
-                                BorderBrush="#FF30363D"
-                                BorderThickness="1"
-                                Padding="12,8"
-                                CornerRadius="8">
-                            <Grid>
-                                <Border Width="24" Height="24"
-                                        CornerRadius="6"
-                                        Background="#FFD29922"
-                                        HorizontalAlignment="Left"
-                                        VerticalAlignment="Center"
-                                        Margin="0,0,8,0">
-                                    <Border.Effect>
-                                        <DropShadowEffect Color="#FFD29922" BlurRadius="8" ShadowDepth="0" Opacity="0.4"/>
-                                    </Border.Effect>
-                                    <TextBlock Text="&#xE7BE;"
-                                               FontFamily="Segoe MDL2 Assets"
-                                               FontSize="12"
-                                               Foreground="White"
-                                               HorizontalAlignment="Center"
-                                               VerticalAlignment="Center"/>
-                                </Border>
-                                <TextBlock FontSize="13" FontWeight="SemiBold"
-                                           Foreground="{StaticResource TextPrimary}"
-                                           Margin="32,0,0,0"
-                                           VerticalAlignment="Center">
-                                    <Run Text="Courses" Foreground="{StaticResource TextSecondary}" FontSize="11"/><LineBreak/>
-                                    <Run Text="{Binding CourseCount}" Foreground="#FFD29922"/>
-                                </TextBlock>
-                            </Grid>
-                        </Border>
+                        <Button Click="QuickActions_Click"
+                                Style="{StaticResource GhostButton}"
+                                Padding="12,8" FontSize="12" Margin="0,0,6,0">
+                            <StackPanel Orientation="Horizontal">
+                                <TextBlock Text="&#xE712;" FontFamily="Segoe MDL2 Assets" FontSize="13" VerticalAlignment="Center" Margin="0,0,6,0"/>
+                                <TextBlock Text="Actions" VerticalAlignment="Center"/>
+                            </StackPanel>
+                            <Button.ContextMenu>
+                                <ContextMenu Background="#FF161B22" Foreground="White" FontSize="13">
+                                    <MenuItem Header="Grade Trends" Command="{Binding ViewTrendsCommand}" Background="#FF161B22" Foreground="White" Padding="12,8">
+                                        <MenuItem.Icon><TextBlock Text="&#xE7E7;" FontFamily="Segoe MDL2 Assets" Foreground="#FF58A6FF"/></MenuItem.Icon>
+                                    </MenuItem>
+                                    <MenuItem Header="What-If Calculator" Command="{Binding WhatIfCommand}" Background="#FF161B22" Foreground="White" Padding="12,8">
+                                        <MenuItem.Icon><TextBlock Text="&#xE789;" FontFamily="Segoe MDL2 Assets" Foreground="#FFD29922"/></MenuItem.Icon>
+                                    </MenuItem>
+                                    <MenuItem Header="Grade Goals" Command="{Binding GradeGoalsCommand}" Background="#FF161B22" Foreground="White" Padding="12,8">
+                                        <MenuItem.Icon><TextBlock Text="&#xE7E8;" FontFamily="Segoe MDL2 Assets" Foreground="#FF238636"/></MenuItem.Icon>
+                                    </MenuItem>
+                                    <MenuItem Header="Export All Grades" Command="{Binding ExportCommand}" Background="#FF161B22" Foreground="White" Padding="12,8">
+                                        <MenuItem.Icon><TextBlock Text="&#xE7B3;" FontFamily="Segoe MDL2 Assets" Foreground="#FF58A6FF"/></MenuItem.Icon>
+                                    </MenuItem>
+                                    <Separator Background="#FF30363D"/>
+                                    <MenuItem Header="Refresh" Command="{Binding LoadCoursesCommand}" Background="#FF161B22" Foreground="White" Padding="12,8">
+                                        <MenuItem.Icon><TextBlock Text="&#xE117;" FontFamily="Segoe MDL2 Assets" Foreground="#FF238636"/></MenuItem.Icon>
+                                    </MenuItem>
+                                </ContextMenu>
+                            </Button.ContextMenu>
+                        </Button>
+                        <Button Command="{Binding LoadCoursesCommand}" Style="{StaticResource PrimaryButton}" Padding="12,8" FontSize="12" Margin="0,0,6,0">
+                            <StackPanel Orientation="Horizontal">
+                                <TextBlock Text="&#xE117;" FontFamily="Segoe MDL2 Assets" FontSize="13" VerticalAlignment="Center" Margin="0,0,6,0"/>
+                                <TextBlock Text="Refresh" VerticalAlignment="Center" Foreground="White"/>
+                            </StackPanel>
+                        </Button>
+                        <Button Click="Settings_Click" Style="{StaticResource GhostButton}" Padding="12,8" FontSize="12">
+                            <StackPanel Orientation="Horizontal">
+                                <TextBlock Text="&#xE713;" FontFamily="Segoe MDL2 Assets" FontSize="13" VerticalAlignment="Center" Margin="0,0,6,0"/>
+                                <TextBlock Text="Settings" VerticalAlignment="Center"/>
+                            </StackPanel>
+                        </Button>
                     </StackPanel>
-                </StackPanel>
-
-                <!-- Enhanced Action Buttons -->
-                <StackPanel Grid.Column="1" Orientation="Horizontal">
-                    <!-- Quick Actions Menu -->
-                    <Button Click="QuickActions_Click"
-                            Background="#FF21262D"
-                            Foreground="{StaticResource TextPrimary}"
-                            BorderThickness="1"
-                            BorderBrush="#FF30363D"
-                            Padding="14,8"
-                            FontSize="12"
-                            FontWeight="SemiBold"
-                            Cursor="Hand"
-                            Margin="0,0,10,0">
-                        <Button.Template>
-                            <ControlTemplate TargetType="Button">
-                                <Border Background="{TemplateBinding Background}"
-                                        BorderBrush="{TemplateBinding BorderBrush}"
-                                        BorderThickness="{TemplateBinding BorderThickness}"
-                                        CornerRadius="8"
-                                        Padding="{TemplateBinding Padding}"
-                                        Cursor="Hand">
-                                    <Border.Effect>
-                                        <DropShadowEffect Color="#000000" BlurRadius="8" ShadowDepth="0" Opacity="0.1"/>
-                                    </Border.Effect>
-                                    <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
-                                </Border>
-                                <ControlTemplate.Triggers>
-                                    <Trigger Property="IsMouseOver" Value="True">
-                                        <Setter Property="Background" Value="#FF30363D"/>
-                                        <Setter Property="BorderBrush" Value="{StaticResource Accent}"/>
-                                    </Trigger>
-                                </ControlTemplate.Triggers>
-                            </ControlTemplate>
-                        </Button.Template>
-                        <StackPanel Orientation="Horizontal">
-                            <TextBlock Text="&#xE712;"
-                                       FontFamily="Segoe MDL2 Assets"
-                                       FontSize="13"
-                                       VerticalAlignment="Center"
-                                       Margin="0,0,8,0"/>
-                            <TextBlock Text="Quick Actions"
-                                       VerticalAlignment="Center"/>
-                        </StackPanel>
-                        <Button.ContextMenu>
-                            <ContextMenu Background="#FF161B22" Foreground="White" FontSize="13">
-                                <MenuItem Header="📈 Grade Trends"
-                                          Command="{Binding ViewTrendsCommand}"
-                                          Background="#FF161B22"
-                                          Foreground="White"
-                                          Padding="12,8">
-                                    <MenuItem.Icon>
-                                        <TextBlock Text="&#xE7E7;" FontFamily="Segoe MDL2 Assets" Foreground="#FF58A6FF"/>
-                                    </MenuItem.Icon>
-                                </MenuItem>
-                                <MenuItem Header="🧮 What-If Calculator"
-                                          Command="{Binding WhatIfCommand}"
-                                          Background="#FF161B22"
-                                          Foreground="White"
-                                          Padding="12,8">
-                                    <MenuItem.Icon>
-                                        <TextBlock Text="&#xE789;" FontFamily="Segoe MDL2 Assets" Foreground="#FFD29922"/>
-                                    </MenuItem.Icon>
-                                </MenuItem>
-                                <MenuItem Header="🎯 Grade Goals"
-                                          Command="{Binding GradeGoalsCommand}"
-                                          Background="#FF161B22"
-                                          Foreground="White"
-                                          Padding="12,8">
-                                    <MenuItem.Icon>
-                                        <TextBlock Text="&#xE7E8;" FontFamily="Segoe MDL2 Assets" Foreground="#FF238636"/>
-                                    </MenuItem.Icon>
-                                </MenuItem>
-                                <MenuItem Header="📊 Export All Grades"
-                                          Command="{Binding ExportCommand}"
-                                          Background="#FF161B22"
-                                          Foreground="White"
-                                          Padding="12,8">
-                                    <MenuItem.Icon>
-                                        <TextBlock Text="&#xE7B3;" FontFamily="Segoe MDL2 Assets" Foreground="#FF58A6FF"/>
-                                    </MenuItem.Icon>
-                                </MenuItem>
-                                <Separator Background="#FF30363D"/>
-                                <MenuItem Header="🔄 Refresh"
-                                          Command="{Binding LoadCoursesCommand}"
-                                          Background="#FF161B22"
-                                          Foreground="White"
-                                          Padding="12,8">
-                                    <MenuItem.Icon>
-                                        <TextBlock Text="&#xE117;" FontFamily="Segoe MDL2 Assets" Foreground="#FF238636"/>
-                                    </MenuItem.Icon>
-                                </MenuItem>
-                            </ContextMenu>
-                        </Button.ContextMenu>
-                    </Button>
-
-                    <!-- Refresh Button -->
-                    <Button Command="{Binding LoadCoursesCommand}"
-                            Padding="14,8"
-                            FontSize="12"
-                            FontWeight="SemiBold"
-                            Cursor="Hand"
-                            Margin="0,0,10,0">
-                        <Button.Template>
-                            <ControlTemplate TargetType="Button">
-                                <Border Background="#FF238636"
-                                        CornerRadius="8"
-                                        Padding="{TemplateBinding Padding}"
-                                        Cursor="Hand">
-                                    <Border.Effect>
-                                        <DropShadowEffect Color="#FF238636" BlurRadius="12" ShadowDepth="0" Opacity="0.3"/>
-                                    </Border.Effect>
-                                    <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
-                                </Border>
-                                <ControlTemplate.Triggers>
-                                    <Trigger Property="IsMouseOver" Value="True">
-                                        <Setter Property="Background" Value="#FF2EA043"/>
-                                    </Trigger>
-                                </ControlTemplate.Triggers>
-                            </ControlTemplate>
-                        </Button.Template>
-                        <StackPanel Orientation="Horizontal">
-                            <TextBlock Text="&#xE117;"
-                                       FontFamily="Segoe MDL2 Assets"
-                                       FontSize="13"
-                                       VerticalAlignment="Center"
-                                       Margin="0,0,8,0"/>
-                            <TextBlock Text="Refresh"
-                                       VerticalAlignment="Center"
-                                       Foreground="White"/>
-                        </StackPanel>
-                    </Button>
-
-                    <!-- Settings Button -->
-                    <Button Click="Settings_Click"
-                            Background="#FF21262D"
-                            Foreground="{StaticResource TextPrimary}"
-                            BorderThickness="1"
-                            BorderBrush="#FF30363D"
-                            Padding="14,8"
-                            FontSize="12"
-                            FontWeight="SemiBold"
-                            Cursor="Hand">
-                        <Button.Template>
-                            <ControlTemplate TargetType="Button">
-                                <Border Background="{TemplateBinding Background}"
-                                        BorderBrush="{TemplateBinding BorderBrush}"
-                                        BorderThickness="{TemplateBinding BorderThickness}"
-                                        CornerRadius="8"
-                                        Padding="{TemplateBinding Padding}"
-                                        Cursor="Hand">
-                                    <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
-                                </Border>
-                                <ControlTemplate.Triggers>
-                                    <Trigger Property="IsMouseOver" Value="True">
-                                        <Setter Property="Background" Value="#FF30363D"/>
-                                        <Setter Property="BorderBrush" Value="{StaticResource Accent}"/>
-                                    </Trigger>
-                                </ControlTemplate.Triggers>
-                            </ControlTemplate>
-                        </Button.Template>
-                        <StackPanel Orientation="Horizontal">
-                            <TextBlock Text="&#xE713;"
-                                       FontFamily="Segoe MDL2 Assets"
-                                       FontSize="13"
-                                       VerticalAlignment="Center"
-                                       Margin="0,0,8,0"/>
-                            <TextBlock Text="Settings"
-                                       VerticalAlignment="Center"/>
-                        </StackPanel>
-                    </Button>
-                </StackPanel>
-            </Grid>
+                </Grid>
+            </Border>
         </Border>
 
-        <!-- Course Grid - Enhanced Layout -->
+        <!-- Course List -->
         <ScrollViewer Grid.Row="1"
                       VerticalScrollBarVisibility="Auto"
-                      HorizontalScrollBarVisibility="Disabled"
-                      Padding="24,20,24,24"
+                      Padding="32,20,32,32"
                       Background="#FF0D1117">
-            <ItemsControl ItemsSource="{Binding Courses}">
-                <ItemsControl.ItemsPanel>
-                    <ItemsPanelTemplate>
-                        <WrapPanel Orientation="Horizontal"/>
-                    </ItemsPanelTemplate>
-                </ItemsControl.ItemsPanel>
-
-                <ItemsControl.ItemTemplate>
-                    <DataTemplate>
-                        <Border Width="320"
-                                Height="250"
-                                Margin="8"
-                                Background="{StaticResource CardBackground}"
-                                BorderBrush="{StaticResource CardBorder}"
-                                BorderThickness="1"
-                                CornerRadius="12"
-                                Cursor="Hand">
-                            <Border.InputBindings>
-                                <MouseBinding Command="{Binding DataContext.SelectCourseCommand, RelativeSource={RelativeSource AncestorType=ItemsControl}}"
-                                             CommandParameter="{Binding}"
-                                             MouseAction="LeftClick"/>
-                            </Border.InputBindings>
-
-                            <Border.Style>
-                                <Style TargetType="Border">
-                                    <Setter Property="Effect">
-                                        <Setter.Value>
-                                            <DropShadowEffect Color="#000000" BlurRadius="20" ShadowDepth="0" Opacity="0.15"/>
-                                        </Setter.Value>
-                                    </Setter>
-                                    <Style.Triggers>
-                                        <Trigger Property="IsMouseOver" Value="True">
-                                            <Setter Property="BorderBrush" Value="{Binding GradeColor, Converter={StaticResource StringToBrushConverter}}"/>
-                                            <Setter Property="Effect">
-                                                <Setter.Value>
-                                                    <DropShadowEffect Color="{Binding GradeColor}" BlurRadius="30" ShadowDepth="0" Opacity="0.3"/>
-                                                </Setter.Value>
-                                            </Setter>
-                                        </Trigger>
-                                    </Style.Triggers>
-                                </Style>
-                            </Border.Style>
-
-                            <Grid>
-                                <Grid.RowDefinitions>
-                                    <RowDefinition Height="4"/>  <!-- Top accent bar -->
-                                    <RowDefinition Height="*"/>  <!-- Main content -->
-                                    <RowDefinition Height="36"/> <!-- Footer -->
-                                </Grid.RowDefinitions>
-
-                                <!-- Colored Top Accent Bar -->
-                                <Border Grid.Row="0"
-                                        Background="{Binding GradeColor, Converter={StaticResource StringToBrushConverter}}"
-                                        CornerRadius="12,12,0,0"/>
-
-                                <!-- Main Content -->
-                                <Grid Grid.Row="1" Margin="16,12,16,8">
-                                    <Grid.RowDefinitions>
-                                        <RowDefinition Height="Auto"/>
-                                        <RowDefinition Height="Auto"/>
-                                        <RowDefinition Height="*"/>
-                                        <RowDefinition Height="Auto"/>
-                                        <RowDefinition Height="Auto"/>
-                                    </Grid.RowDefinitions>
-
-                                    <!-- Course Code -->
-                                    <TextBlock Grid.Row="0"
-                                               Text="{Binding Code}"
-                                               FontSize="13"
-                                               FontWeight="Medium"
-                                               Foreground="{StaticResource TextSecondary}"
-                                               FontFamily="Segoe UI Variable"
-                                               HorizontalAlignment="Center"
-                                               Margin="0,0,0,4"/>
-
-                                    <!-- Course Name (Decoded) -->
-                                    <TextBlock Grid.Row="1"
-                                               Text="{Binding Name}"
-                                               FontSize="14"
-                                               FontWeight="SemiBold"
-                                               Foreground="{StaticResource TextPrimary}"
-                                               FontFamily="Segoe UI Variable"
-                                               HorizontalAlignment="Center"
-                                               TextWrapping="Wrap"
-                                               Margin="0,0,0,10"
-                                               TextAlignment="Center"
-                                               MaxHeight="40"
-                                               TextTrimming="CharacterEllipsis"/>
-
-                                    <!-- Grade Percentage -->
-                                    <TextBlock Grid.Row="2"
-                                               Text="{Binding DisplayMark}"
-                                               FontSize="52"
-                                               FontWeight="Bold"
-                                               Foreground="{Binding GradeColor, Converter={StaticResource StringToBrushConverter}}"
-                                               FontFamily="Segoe UI Variable Display"
-                                               HorizontalAlignment="Center"
-                                               VerticalAlignment="Center"
-                                               Margin="0,2,0,6">
-                                        <TextBlock.Effect>
-                                            <DropShadowEffect Color="{Binding GradeColor}" BlurRadius="20" ShadowDepth="0" Opacity="0.25"/>
-                                        </TextBlock.Effect>
-                                    </TextBlock>
-
-                                    <!-- Level Text -->
-                                    <TextBlock Grid.Row="3"
-                                               Text="{Binding GradeLevel}"
-                                               FontSize="11"
-                                               FontWeight="Medium"
-                                               Foreground="{StaticResource TextSecondary}"
-                                               FontFamily="Segoe UI Variable"
-                                               HorizontalAlignment="Center"
-                                               Margin="0,0,0,6"
-                                               TextWrapping="Wrap"
-                                               TextAlignment="Center"
-                                               TextTrimming="None"/>
-
-                                    <!-- Letter Badge -->
-                                    <Border Grid.Row="4"
-                                            Background="{Binding GradeColor, Converter={StaticResource StringToBrushConverter}}"
-                                            Padding="14,5"
-                                            CornerRadius="12"
-                                            HorizontalAlignment="Center">
-                                        <Border.Effect>
-                                            <DropShadowEffect Color="{Binding GradeColor}" BlurRadius="12" ShadowDepth="0" Opacity="0.35"/>
-                                        </Border.Effect>
-                                        <TextBlock Text="{Binding GradeLetter}"
-                                                   FontSize="14"
-                                                   FontWeight="Bold"
-                                                   Foreground="White"
-                                                   FontFamily="Segoe UI Variable Display"
-                                                   HorizontalAlignment="Center"/>
-                                    </Border>
-                                </Grid>
-
-                                <!-- Footer: Room and Block -->
-                                <Border Grid.Row="2"
-                                        Background="#FF0D1117"
-                                        CornerRadius="0,0,11,11"
-                                        Padding="12,0">
-                                    <TextBlock FontSize="11"
-                                               Foreground="{StaticResource TextSecondary}"
-                                               FontFamily="Segoe UI Variable"
-                                               HorizontalAlignment="Center"
-                                               VerticalAlignment="Center">
-                                        <Run Text="&#xE909;" FontFamily="Segoe MDL2 Assets"/><Run Text=" "/>
-                                        <Run Text="{Binding Room}"/>
-                                        <Run Text=" • " FontSize="9"/>
-                                        <Run Text="&#xE8F1;" FontFamily="Segoe MDL2 Assets"/><Run Text=" "/>
-                                        <Run Text="Block "/><Run Text="{Binding Block}"/>
-                                    </TextBlock>
-                                </Border>
-                            </Grid>
-                        </Border>
-                    </DataTemplate>
-                </ItemsControl.ItemTemplate>
-            </ItemsControl>
-        </ScrollViewer>
-
-        <!-- Premium Loading Overlay with Skeleton -->
-        <Grid x:Name="LoadingOverlay"
-              Grid.Row="1"
-              Background="#DD0D1117"
-              Visibility="{Binding IsLoading, Converter={StaticResource BooleanToVisibilityConverter}}">
-            <StackPanel VerticalAlignment="Center" HorizontalAlignment="Center" Width="600">
-                <!-- Animated Loading Circle with Pulse -->
-                <Grid Width="80" Height="80" Margin="0,0,0,24">
-                    <!-- Outer Ring -->
-                    <Border Width="80" Height="80"
-                            BorderThickness="3"
-                            BorderBrush="#FF58A6FF"
-                            CornerRadius="40"
-                            Opacity="0.3">
-                        <Border.RenderTransform>
-                            <RotateTransform Angle="0"/>
-                        </Border.RenderTransform>
-                        <Border.Triggers>
-                            <EventTrigger RoutedEvent="Loaded">
-                                <BeginStoryboard>
-                                    <Storyboard RepeatBehavior="Forever">
-                                        <DoubleAnimation Storyboard.TargetProperty="(UIElement.RenderTransform).(RotateTransform.Angle)"
-                                                       From="0" To="360" Duration="0:0:2"/>
-                                    </Storyboard>
-                                </BeginStoryboard>
-                            </EventTrigger>
-                        </Border.Triggers>
-                    </Border>
-                    <!-- Inner Ring -->
-                    <Border Width="56" Height="56"
-                            BorderThickness="3"
-                            BorderBrush="#FF238636"
-                            CornerRadius="28"
-                            HorizontalAlignment="Center"
-                            VerticalAlignment="Center">
-                        <Border.RenderTransform>
-                            <RotateTransform Angle="0"/>
-                        </Border.RenderTransform>
-                        <Border.Triggers>
-                            <EventTrigger RoutedEvent="Loaded">
-                                <BeginStoryboard>
-                                    <Storyboard RepeatBehavior="Forever">
-                                        <DoubleAnimation Storyboard.TargetProperty="(UIElement.RenderTransform).(RotateTransform.Angle)"
-                                                       From="360" To="0" Duration="0:0:1.5"/>
-                                    </Storyboard>
-                                </BeginStoryboard>
-                            </EventTrigger>
-                        </Border.Triggers>
-                    </Border>
+            <Grid MaxWidth="900" HorizontalAlignment="Center">
+                <!-- Column Headers -->
+                <Grid Margin="0,0,0,10" Height="32">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="160"/>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="90"/>
+                        <ColumnDefinition Width="80"/>
+                        <ColumnDefinition Width="80"/>
+                    </Grid.ColumnDefinitions>
+                    <TextBlock Grid.Column="0" Text="Code" FontSize="11" FontWeight="SemiBold" Foreground="#FF6E7681" VerticalAlignment="Center" FontFamily="Segoe UI Variable"/>
+                    <TextBlock Grid.Column="1" Text="Course" FontSize="11" FontWeight="SemiBold" Foreground="#FF6E7681" VerticalAlignment="Center" Margin="16,0,0,0" FontFamily="Segoe UI Variable"/>
+                    <TextBlock Grid.Column="2" Text="Mark" FontSize="11" FontWeight="SemiBold" Foreground="#FF6E7681" VerticalAlignment="Center" Margin="16,0,0,0" FontFamily="Segoe UI Variable"/>
+                    <TextBlock Grid.Column="3" Text="Block" FontSize="11" FontWeight="SemiBold" Foreground="#FF6E7681" VerticalAlignment="Center" Margin="16,0,0,0" FontFamily="Segoe UI Variable"/>
+                    <TextBlock Grid.Column="4" Text="Room" FontSize="11" FontWeight="SemiBold" Foreground="#FF6E7681" VerticalAlignment="Center" Margin="16,0,0,0" FontFamily="Segoe UI Variable"/>
                 </Grid>
 
-                <TextBlock Text="Loading your grades..."
-                           Foreground="{StaticResource TextPrimary}"
-                           FontSize="20"
+                <!-- Course Rows -->
+                <ItemsControl ItemsSource="{Binding Courses}" x:Name="CourseItemsControl" Margin="0,32,0,0">
+                    <ItemsControl.ItemTemplate>
+                        <DataTemplate>
+                            <Border Style="{StaticResource CourseRow}">
+                                <Border.InputBindings>
+                                    <MouseBinding Command="{Binding DataContext.SelectCourseCommand, RelativeSource={RelativeSource AncestorType=ItemsControl}}"
+                                                 CommandParameter="{Binding}"
+                                                 MouseAction="LeftClick"/>
+                                </Border.InputBindings>
+                                <Grid>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="160"/>
+                                        <ColumnDefinition Width="*"/>
+                                        <ColumnDefinition Width="90"/>
+                                        <ColumnDefinition Width="80"/>
+                                        <ColumnDefinition Width="80"/>
+                                    </Grid.ColumnDefinitions>
+
+                                    <!-- Course Code -->
+                                    <TextBlock Grid.Column="0"
+                                               Text="{Binding Code}"
+                                               FontSize="13"
+                                               FontWeight="SemiBold"
+                                               Foreground="#FF58A6FF"
+                                               VerticalAlignment="Center"
+                                               FontFamily="Segoe UI Variable"/>
+
+                                    <!-- Course Name -->
+                                    <TextBlock Grid.Column="1"
+                                               Text="{Binding Name}"
+                                               FontSize="13"
+                                               Foreground="White"
+                                               VerticalAlignment="Center"
+                                               Margin="16,0,0,0"
+                                               TextTrimming="CharacterEllipsis"
+                                               FontFamily="Segoe UI Variable"/>
+
+                                    <!-- Mark -->
+                                    <StackPanel Grid.Column="2" Orientation="Horizontal" VerticalAlignment="Center" Margin="16,0,0,0">
+                                        <!-- Grade dot -->
+                                        <Border Width="8" Height="8" CornerRadius="4"
+                                                Background="{Binding GradeColor, Converter={StaticResource StringToBrushConverter}}"
+                                                Margin="0,0,8,0" VerticalAlignment="Center">
+                                            <Border.Effect>
+                                                <DropShadowEffect Color="{Binding GradeColor}" BlurRadius="6" ShadowDepth="0" Opacity="0.5"/>
+                                            </Border.Effect>
+                                        </Border>
+                                        <TextBlock Text="{Binding DisplayMark}"
+                                                   FontSize="14"
+                                                   FontWeight="Bold"
+                                                   Foreground="{Binding GradeColor, Converter={StaticResource StringToBrushConverter}}"
+                                                   VerticalAlignment="Center"
+                                                   FontFamily="Segoe UI Variable"/>
+                                    </StackPanel>
+
+                                    <!-- Block -->
+                                    <TextBlock Grid.Column="3"
+                                               FontSize="13"
+                                               Foreground="#FF8B949E"
+                                               VerticalAlignment="Center"
+                                               Margin="16,0,0,0"
+                                               FontFamily="Segoe UI Variable">
+                                        <Run Text="P"/><Run Text="{Binding Block}"/>
+                                    </TextBlock>
+
+                                    <!-- Room -->
+                                    <TextBlock Grid.Column="4"
+                                               Text="{Binding Room}"
+                                               FontSize="13"
+                                               Foreground="#FF6E7681"
+                                               VerticalAlignment="Center"
+                                               Margin="16,0,0,0"
+                                               FontFamily="Segoe UI Variable"/>
+                                </Grid>
+                            </Border>
+                        </DataTemplate>
+                    </ItemsControl.ItemTemplate>
+                </ItemsControl>
+            </Grid>
+        </ScrollViewer>
+
+        <!-- Loading Overlay -->
+        <Grid Grid.Row="1"
+              Background="#DD0D1117"
+              Visibility="{Binding IsLoading, Converter={StaticResource BooleanToVisibilityConverter}}">
+            <StackPanel VerticalAlignment="Center" HorizontalAlignment="Center">
+                <Border Width="48" Height="48"
+                        BorderThickness="3"
+                        BorderBrush="#FF58A6FF"
+                        CornerRadius="24"
+                        Margin="0,0,0,16">
+                    <Border.RenderTransform>
+                        <RotateTransform Angle="0"/>
+                    </Border.RenderTransform>
+                    <Border.Triggers>
+                        <EventTrigger RoutedEvent="Loaded">
+                            <BeginStoryboard>
+                                <Storyboard RepeatBehavior="Forever">
+                                    <DoubleAnimation Storyboard.TargetProperty="(UIElement.RenderTransform).(RotateTransform.Angle)"
+                                                   From="0" To="360" Duration="0:0:1"/>
+                                </Storyboard>
+                            </BeginStoryboard>
+                        </EventTrigger>
+                    </Border.Triggers>
+                </Border>
+                <TextBlock Text="Loading grades..."
+                           Foreground="White"
+                           FontSize="16"
                            FontWeight="SemiBold"
                            HorizontalAlignment="Center"
-                           FontFamily="Segoe UI Variable Display"
-                           Margin="0,0,0,8"/>
-
-                <TextBlock Text="Fetching latest data from TeachAssist"
-                           Foreground="{StaticResource TextSecondary}"
-                           FontSize="14"
-                           HorizontalAlignment="Center"
-                           FontFamily="Segoe UI"/>
-
-                <!-- Skeleton Loading Cards -->
-                <StackPanel Margin="0,32,0,0" Orientation="Horizontal" HorizontalAlignment="Center">
-                    <Border Width="200" Height="120" Background="#FF161B22" CornerRadius="12" Margin="8"/>
-                    <Border Width="200" Height="120" Background="#FF161B22" CornerRadius="12" Margin="8"/>
-                    <Border Width="200" Height="120" Background="#FF161B22" CornerRadius="12" Margin="8"/>
-                </StackPanel>
+                           FontFamily="Segoe UI Variable Display"/>
             </StackPanel>
         </Grid>
 
         <!-- Empty State -->
-        <Grid x:Name="EmptyStateOverlay"
-              Grid.Row="1"
+        <Grid Grid.Row="1"
               Visibility="{Binding IsEmpty, Converter={StaticResource BooleanToVisibilityConverter}}">
             <StackPanel VerticalAlignment="Center" HorizontalAlignment="Center">
-                <Border Width="100" Height="100"
-                        Background="#FF161B22"
-                        CornerRadius="20"
-                        Margin="0,0,0,24">
-                    <TextBlock Text="📚"
-                               FontSize="48"
-                               HorizontalAlignment="Center"
-                               VerticalAlignment="Center"/>
-                </Border>
-
-                <TextBlock Text="No Courses Found"
-                           Foreground="{StaticResource TextPrimary}"
-                           FontSize="24"
-                           FontWeight="SemiBold"
-                           HorizontalAlignment="Center"
-                           FontFamily="Segoe UI Variable Display"
-                           Margin="0,0,0,12"/>
-
-                <TextBlock Text="Your course list will appear here once your teachers publish marks"
-                           Foreground="{StaticResource TextSecondary}"
-                           FontSize="14"
-                           HorizontalAlignment="Center"
-                           MaxWidth="400"
-                           TextWrapping="Wrap"
-                           FontFamily="Segoe UI"
-                           Margin="0,0,0,24"/>
-
-                <Button Command="{Binding LoadCoursesCommand}"
-                        Style="{StaticResource PrimaryButton}"
-                        Padding="24,12"
-                        FontSize="14">
+                <TextBlock Text="&#xE80F;" FontFamily="Segoe MDL2 Assets" FontSize="48" Foreground="#FF30363D" HorizontalAlignment="Center" Margin="0,0,0,16"/>
+                <TextBlock Text="No Courses Found" Foreground="White" FontSize="20" FontWeight="SemiBold" HorizontalAlignment="Center" FontFamily="Segoe UI Variable Display" Margin="0,0,0,8"/>
+                <TextBlock Text="Your courses will appear here once marks are published" Foreground="#FF8B949E" FontSize="13" HorizontalAlignment="Center" FontFamily="Segoe UI Variable" Margin="0,0,0,24"/>
+                <Button Command="{Binding LoadCoursesCommand}" Style="{StaticResource PrimaryButton}" Padding="20,10" FontSize="13">
                     <StackPanel Orientation="Horizontal">
-                        <TextBlock Text="&#xE117;"
-                                   FontFamily="Segoe MDL2 Assets"
-                                   FontSize="14"
-                                   VerticalAlignment="Center"
-                                   Margin="0,0,8,0"/>
-                        <TextBlock Text="Refresh"
-                                   VerticalAlignment="Center"/>
+                        <TextBlock Text="&#xE117;" FontFamily="Segoe MDL2 Assets" FontSize="13" VerticalAlignment="Center" Margin="0,0,8,0"/>
+                        <TextBlock Text="Refresh" VerticalAlignment="Center" Foreground="White"/>
                     </StackPanel>
                 </Button>
             </StackPanel>
         </Grid>
 
-        <!-- Error Message - Enhanced -->
+        <!-- Error Message -->
         <Border Grid.Row="1"
-                Background="Transparent"
-                CornerRadius="12"
-                Padding="24"
-                Margin="48,80,48,0"
+                Background="#FF161B22"
+                CornerRadius="10"
+                Padding="20"
+                Margin="32,60,32,0"
                 HorizontalAlignment="Center"
                 VerticalAlignment="Top"
                 BorderBrush="#FFF85149"
                 BorderThickness="1"
                 Visibility="{Binding ErrorMessage, Converter={StaticResource BooleanToVisibilityConverter}}">
-            <Border.Effect>
-                <DropShadowEffect Color="#FFF85149" BlurRadius="20" ShadowDepth="0" Opacity="0.3"/>
-            </Border.Effect>
-            <Grid>
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="Auto"/>
-                    <ColumnDefinition Width="*"/>
-                </Grid.ColumnDefinitions>
-
-                <Border Width="48" Height="48"
-                        Background="#FFF85149"
-                        CornerRadius="24"
-                        Margin="0,0,20,0">
-                    <TextBlock Text="&#xE7BA;"
-                               FontFamily="Segoe MDL2 Assets"
-                               FontSize="24"
-                               Foreground="White"
-                               HorizontalAlignment="Center"
-                               VerticalAlignment="Center"/>
-                </Border>
-
-                <StackPanel Grid.Column="1">
-                    <TextBlock Text="Error Loading Grades"
-                               Foreground="{StaticResource TextPrimary}"
-                               FontSize="18"
-                               FontWeight="SemiBold"
-                               FontFamily="Segoe UI Variable Display"
-                               Margin="0,0,0,8"/>
-                    <TextBlock Text="{Binding ErrorMessage}"
-                               Foreground="{StaticResource TextSecondary}"
-                               TextWrapping="Wrap"
-                               FontSize="14"
-                               MaxWidth="450"
-                               FontFamily="Segoe UI"
-                               Margin="0,0,0,16"/>
-                    <Button Command="{Binding LoadCoursesCommand}"
-                            Style="{StaticResource PrimaryButton}"
-                            Padding="20,10"
-                            FontSize="13">
-                        <StackPanel Orientation="Horizontal">
-                            <TextBlock Text="&#xE117;"
-                                       FontFamily="Segoe MDL2 Assets"
-                                       FontSize="13"
-                                       VerticalAlignment="Center"
-                                       Margin="0,0,8,0"/>
-                            <TextBlock Text="Try Again"
-                                       VerticalAlignment="Center"/>
-                        </StackPanel>
+            <StackPanel Orientation="Horizontal">
+                <TextBlock Text="&#xE7BA;" FontFamily="Segoe MDL2 Assets" FontSize="18" Foreground="#FFF85149" VerticalAlignment="Center" Margin="0,0,14,0"/>
+                <StackPanel>
+                    <TextBlock Text="{Binding ErrorMessage}" Foreground="#FF8B949E" TextWrapping="Wrap" FontSize="13" FontFamily="Segoe UI Variable" MaxWidth="400"/>
+                    <Button Command="{Binding LoadCoursesCommand}" Style="{StaticResource GhostButton}" Padding="8,4" FontSize="12" Margin="0,10,0,0">
+                        <TextBlock Text="Try Again"/>
                     </Button>
                 </StackPanel>
-            </Grid>
+            </StackPanel>
         </Border>
     </Grid>
 </Page>

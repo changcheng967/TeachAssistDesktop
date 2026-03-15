@@ -5,490 +5,191 @@
       xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
       mc:Ignorable="d"
       d:DesignHeight="600" d:DesignWidth="900"
-      Background="#FF0D1117"
+      Background="Transparent"
       Title="Settings - TeachAssist">
 
-    <Page.Resources>
-        <SolidColorBrush x:Key="CardBackground" Color="#FF161B22"/>
-        <SolidColorBrush x:Key="CardBorder" Color="#FF30363D"/>
-        <SolidColorBrush x:Key="TextPrimary" Color="#FFFFFFFF"/>
-        <SolidColorBrush x:Key="TextSecondary" Color="#FF8B949E"/>
-        <SolidColorBrush x:Key="Accent" Color="#FF58A6FF"/>
-        <SolidColorBrush x:Key="Success" Color="#FF238636"/>
-        <SolidColorBrush x:Key="Warning" Color="#FFD29922"/>
-        <SolidColorBrush x:Key="Danger" Color="#FFF85149"/>
-
-        <Style x:Key="CompactCard" TargetType="Border">
-            <Setter Property="Background" Value="{StaticResource CardBackground}"/>
-            <Setter Property="BorderBrush" Value="{StaticResource CardBorder}"/>
-            <Setter Property="BorderThickness" Value="1"/>
-            <Setter Property="CornerRadius" Value="8"/>
-            <Setter Property="Padding" Value="16"/>
-            <Setter Property="Margin" Value="0,0,0,12"/>
-        </Style>
-
-        <Style x:Key="CompactButton" TargetType="Button">
-            <Setter Property="Background" Value="#FF21262D"/>
-            <Setter Property="Foreground" Value="{StaticResource TextPrimary}"/>
-            <Setter Property="BorderThickness" Value="1"/>
-            <Setter Property="BorderBrush" Value="#FF30363D"/>
-            <Setter Property="Padding" Value="12,6"/>
-            <Setter Property="FontSize" Value="13"/>
-            <Setter Property="Cursor" Value="Hand"/>
-            <Setter Property="Template">
-                <Setter.Value>
-                    <ControlTemplate TargetType="Button">
-                        <Border Background="{TemplateBinding Background}"
-                                BorderBrush="{TemplateBinding BorderBrush}"
-                                BorderThickness="{TemplateBinding BorderThickness}"
-                                CornerRadius="6"
-                                Padding="{TemplateBinding Padding}">
-                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
-                        </Border>
-                    </ControlTemplate>
-                </Setter.Value>
-            </Setter>
-            <Style.Triggers>
-                <Trigger Property="IsMouseOver" Value="True">
-                    <Setter Property="Background" Value="#FF30363D"/>
-                    <Setter Property="BorderBrush" Value="{StaticResource Accent}"/>
-                </Trigger>
-            </Style.Triggers>
-        </Style>
-
-        <Style x:Key="PrimaryButton" TargetType="Button" BasedOn="{StaticResource CompactButton}">
-            <Setter Property="Background" Value="{StaticResource Success}"/>
-            <Setter Property="BorderBrush" Value="Transparent"/>
-            <Setter Property="Foreground" Value="White"/>
-            <Style.Triggers>
-                <Trigger Property="IsMouseOver" Value="True">
-                    <Setter Property="Background" Value="#FF2EA043"/>
-                    <Setter Property="BorderBrush" Value="Transparent"/>
-                </Trigger>
-            </Style.Triggers>
-        </Style>
-
-        <Style x:Key="DangerButton" TargetType="Button" BasedOn="{StaticResource CompactButton}">
-            <Setter Property="Background" Value="{StaticResource Danger}"/>
-            <Setter Property="BorderBrush" Value="Transparent"/>
-            <Setter Property="Foreground" Value="White"/>
-            <Style.Triggers>
-                <Trigger Property="IsMouseOver" Value="True">
-                    <Setter Property="Background" Value="#FFDA6F6E"/>
-                </Trigger>
-            </Style.Triggers>
-        </Style>
-    </Page.Resources>
-
-    <Grid Margin="0">
+    <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
 
-        <!-- Compact Header -->
-        <Border Grid.Row="0"
-                Background="#FF010409"
-                BorderBrush="#FF30363D"
-                BorderThickness="0,0,0,1"
-                Padding="20,12,20,12">
+        <!-- Top Bar -->
+        <Border Grid.Row="0" Background="#FF010409" Padding="24,16" BorderBrush="#FF21262D" BorderThickness="0,0,0,1">
             <Grid>
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="Auto"/>
                     <ColumnDefinition Width="*"/>
                 </Grid.ColumnDefinitions>
-
-                <Button Grid.Column="0"
-                        Content="← Back"
-                        Command="{Binding GoBackCommand}"
-                        Style="{StaticResource CompactButton}"
-                        Padding="8,4"
-                        FontSize="12"
-                        Margin="0,0,12,0"/>
-
-                <TextBlock Grid.Column="1"
-                           Text="Settings"
-                           FontSize="20"
-                           FontWeight="SemiBold"
-                           Foreground="{StaticResource TextPrimary}"
-                           VerticalAlignment="Center"/>
+                <Button Grid.Column="0" Command="{Binding GoBackCommand}" Style="{StaticResource GhostButton}" Padding="10,6" FontSize="12" Margin="0,0,12,0">
+                    <StackPanel Orientation="Horizontal">
+                        <TextBlock Text="&#xE72B;" FontFamily="Segoe MDL2 Assets" FontSize="12" VerticalAlignment="Center" Margin="0,0,6,0"/>
+                        <TextBlock Text="Back"/>
+                    </StackPanel>
+                </Button>
+                <TextBlock Grid.Column="1" Text="Settings" FontSize="18" FontWeight="SemiBold" Foreground="White" VerticalAlignment="Center" FontFamily="Segoe UI Variable Display"/>
             </Grid>
         </Border>
 
-        <!-- Compact Settings Content -->
-        <ScrollViewer Grid.Row="1"
-                      VerticalScrollBarVisibility="Auto"
-                      Padding="20,16,20,20">
-            <StackPanel MaxWidth="700">
-                <!-- Appearance Section -->
-                <TextBlock Text="APPEARANCE"
-                           FontSize="13"
-                           FontWeight="SemiBold"
-                           Foreground="{StaticResource TextSecondary}"
-                           Margin="0,0,0,8"/>
+        <!-- Content -->
+        <ScrollViewer Grid.Row="1" VerticalScrollBarVisibility="Auto" Padding="32,24,32,32" Background="#FF0D1117">
+            <Grid MaxWidth="640" HorizontalAlignment="Center">
+                <StackPanel>
 
-                <Border Style="{StaticResource CompactCard}" Margin="0,0,0,16">
-                    <StackPanel>
-                        <Grid Margin="0,0,0,8">
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="*"/>
-                                <ColumnDefinition Width="Auto"/>
-                            </Grid.ColumnDefinitions>
-
-                            <TextBlock Grid.Column="0"
-                                       Text="Dark Mode"
-                                       FontSize="14"
-                                       Foreground="{StaticResource TextPrimary}"
-                                       VerticalAlignment="Center"/>
-
-                            <CheckBox Grid.Column="1"
-                                      IsChecked="{Binding IsDarkMode}"
-                                      VerticalAlignment="Center"/>
-                        </Grid>
-
-                        <Border Background="#FF0D1117"
-                                Padding="12"
-                                CornerRadius="6"
-                                Margin="0,0,0,8">
+                    <!-- Appearance -->
+                    <TextBlock Text="Appearance" FontSize="11" FontWeight="SemiBold" Foreground="#FF6E7681" Margin="0,0,0,8" FontFamily="Segoe UI Variable"/>
+                    <Border Background="#FF161B22" CornerRadius="10" Padding="16" Margin="0,0,0,20" BorderBrush="#FF21262D" BorderThickness="1">
+                        <StackPanel>
+                            <Grid Margin="0,0,0,10">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="*"/>
+                                    <ColumnDefinition Width="Auto"/>
+                                </Grid.ColumnDefinitions>
+                                <TextBlock Grid.Column="0" Text="Dark Mode" FontSize="13" Foreground="White" VerticalAlignment="Center" FontFamily="Segoe UI Variable"/>
+                                <CheckBox Grid.Column="1" IsChecked="{Binding IsDarkMode}" VerticalAlignment="Center"/>
+                            </Grid>
+                            <Border Height="1" Background="#FF21262D" Margin="0,0,0,10"/>
                             <Grid>
                                 <Grid.ColumnDefinitions>
                                     <ColumnDefinition Width="*"/>
                                     <ColumnDefinition Width="Auto"/>
                                 </Grid.ColumnDefinitions>
-
-                                <TextBlock Grid.Column="0"
-                                           FontSize="12"
-                                           Foreground="{StaticResource TextSecondary}">
-                                    <Run Text="Auto-refresh grades every"/>
-                                    <Run Text="{Binding AutoRefreshInterval}" FontWeight="SemiBold"/>
-                                    <Run Text="minutes"/>
+                                <TextBlock Grid.Column="0" FontSize="12" Foreground="#FF8B949E" VerticalAlignment="Center" FontFamily="Segoe UI Variable">
+                                    <Run Text="Auto-refresh every"/><Run FontWeight="SemiBold" Text="{Binding AutoRefreshInterval}"/><Run Text=" min"/>
                                 </TextBlock>
-
-                                <ComboBox Grid.Column="1"
-                                          SelectedIndex="{Binding AutoRefreshIndex}"
-                                          Width="80"
-                                          FontSize="12">
-                                    <ComboBoxItem Content="Off"/>
-                                    <ComboBoxItem Content="5 min"/>
-                                    <ComboBoxItem Content="10 min"/>
-                                    <ComboBoxItem Content="15 min"/>
-                                    <ComboBoxItem Content="30 min"/>
+                                <ComboBox Grid.Column="1" SelectedIndex="{Binding AutoRefreshIndex}" Width="80" FontSize="12" Background="#FF0D1117">
+                                    <ComboBoxItem Content="Off"/><ComboBoxItem Content="5 min"/><ComboBoxItem Content="10 min"/><ComboBoxItem Content="15 min"/><ComboBoxItem Content="30 min"/>
                                 </ComboBox>
                             </Grid>
-                        </Border>
+                        </StackPanel>
+                    </Border>
 
-                        <CheckBox Content="Enable desktop notifications for grade changes"
-                                  IsChecked="{Binding EnableNotifications}"
-                                  FontSize="13"
-                                  Foreground="{StaticResource TextPrimary}"/>
-                    </StackPanel>
-                </Border>
-
-                <!-- Data & Export Section -->
-                <TextBlock Text="DATA &amp; EXPORT"
-                           FontSize="13"
-                           FontWeight="SemiBold"
-                           Foreground="{StaticResource TextSecondary}"
-                           Margin="0,0,0,8"/>
-
-                <Border Style="{StaticResource CompactCard}" Margin="0,0,0,16">
-                    <StackPanel>
-                        <Grid Margin="0,0,0,8">
-                            <Button Content="📊 Export All Grades to CSV"
-                                    Command="{Binding ExportToCsvCommand}"
-                                    Style="{StaticResource PrimaryButton}"
-                                    HorizontalAlignment="Left"/>
-
-                            <Button Content="📄 Export to PDF"
-                                    Command="{Binding ExportToPdfCommand}"
-                                    Style="{StaticResource PrimaryButton}"
-                                    HorizontalAlignment="Right"
-                                    Grid.Column="1"/>
-                        </Grid>
-
-                        <Button Content="📈 View Grade Trends"
-                                Command="{Binding ViewTrendsCommand}"
-                                Style="{StaticResource CompactButton}"
-                                Margin="0,0,0,8"/>
-
-                        <Button Content="🎯 Grade Goals"
-                                Command="{Binding GradeGoalsCommand}"
-                                Style="{StaticResource CompactButton}"
-                                Margin="0,0,0,8"/>
-
-                        <Button Content="🧮 What-If GPA Calculator"
-                                Command="{Binding WhatIfCalculatorCommand}"
-                                Style="{StaticResource CompactButton}"
-                                Margin="0,0,0,8"/>
-
-                        <Button Content="🔔 Check for Grade Updates"
-                                Command="{Binding CheckUpdatesCommand}"
-                                Style="{StaticResource PrimaryButton}"
-                                Margin="0,0,0,8"/>
-
-                        <Grid>
-                            <Button Content="🗑️ Clear Cached Data"
-                                    Command="{Binding ClearCacheCommand}"
-                                    Style="{StaticResource CompactButton}"
-                                    HorizontalAlignment="Left"/>
-
-                            <TextBlock Grid.Column="1"
-                                       FontSize="11"
-                                       Foreground="{StaticResource TextSecondary}"
-                                       VerticalAlignment="Center"
-                                       TextWrapping="Wrap"
-                                       MaxWidth="300"
-                                       TextAlignment="Right">
-                                Removes stored credentials and cached data
-                            </TextBlock>
-                        </Grid>
-                    </StackPanel>
-                </Border>
-
-                <!-- Account Section -->
-                <TextBlock Text="ACCOUNT"
-                           FontSize="13"
-                           FontWeight="SemiBold"
-                           Foreground="{StaticResource TextSecondary}"
-                           Margin="0,0,0,8"/>
-
-                <Border Style="{StaticResource CompactCard}" Margin="0,0,0,16">
-                    <StackPanel>
-                        <Border Background="#FF0D1117"
-                                Padding="12"
-                                CornerRadius="6"
-                                Margin="0,0,0,8">
-                            <StackPanel>
-                                <TextBlock FontSize="12" Foreground="{StaticResource TextSecondary}">
-                                    <Run Text="Logged in as:"/>
-                                </TextBlock>
-                                <TextBlock FontSize="14"
-                                           FontWeight="SemiBold"
-                                           Foreground="{StaticResource TextPrimary}"
-                                           Margin="0,2,0,0">
-                                    <Run Text="{Binding Username}"/>
-                                </TextBlock>
-                            </StackPanel>
-                        </Border>
-
-                        <Grid>
-                            <Button Content="🔄 Refresh Grades"
-                                    Command="{Binding RefreshGradesCommand}"
-                                    Style="{StaticResource PrimaryButton}"
-                                    HorizontalAlignment="Left"/>
-
-                            <Button Content="🚪 Logout"
-                                    Command="{Binding LogoutCommand}"
-                                    Style="{StaticResource DangerButton}"
-                                    HorizontalAlignment="Right"/>
-                        </Grid>
-                    </StackPanel>
-                </Border>
-
-                <!-- Shortcuts Section -->
-                <TextBlock Text="KEYBOARD SHORTCUTS"
-                           FontSize="13"
-                           FontWeight="SemiBold"
-                           Foreground="{StaticResource TextSecondary}"
-                           Margin="0,0,0,8"/>
-
-                <Border Style="{StaticResource CompactCard}" Margin="0,0,0,16">
-                    <Grid>
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="*"/>
-                            <ColumnDefinition Width="*"/>
-                        </Grid.ColumnDefinitions>
-                        <Grid.RowDefinitions>
-                            <RowDefinition Height="Auto"/>
-                            <RowDefinition Height="Auto"/>
-                            <RowDefinition Height="Auto"/>
-                            <RowDefinition Height="Auto"/>
-                        </Grid.RowDefinitions>
-
-                        <TextBlock Grid.Row="0" Grid.Column="0"
-                                   FontSize="13"
-                                   Foreground="{StaticResource TextPrimary}"
-                                   Margin="0,0,0,6">
-                            <Run Text="Refresh"/>
-                        </TextBlock>
-                        <Border Grid.Row="0" Grid.Column="1"
-                                Background="#FF21262D"
-                                Padding="6,3"
-                                CornerRadius="4"
-                                HorizontalAlignment="Right"
-                                Margin="0,0,0,6">
-                            <TextBlock FontSize="11" Foreground="{StaticResource TextSecondary}">F5</TextBlock>
-                        </Border>
-
-                        <TextBlock Grid.Row="1" Grid.Column="0"
-                                   FontSize="13"
-                                   Foreground="{StaticResource TextPrimary}"
-                                   Margin="0,0,0,6">
-                            <Run Text="Settings"/>
-                        </TextBlock>
-                        <Border Grid.Row="1" Grid.Column="1"
-                                Background="#FF21262D"
-                                Padding="6,3"
-                                CornerRadius="4"
-                                HorizontalAlignment="Right"
-                                Margin="0,0,0,6">
-                            <TextBlock FontSize="11" Foreground="{StaticResource TextSecondary}">Ctrl + ,</TextBlock>
-                        </Border>
-
-                        <TextBlock Grid.Row="2" Grid.Column="0"
-                                   FontSize="13"
-                                   Foreground="{StaticResource TextPrimary}"
-                                   Margin="0,0,0,6">
-                            <Run Text="Export"/>
-                        </TextBlock>
-                        <Border Grid.Row="2" Grid.Column="1"
-                                Background="#FF21262D"
-                                Padding="6,3"
-                                CornerRadius="4"
-                                HorizontalAlignment="Right"
-                                Margin="0,0,0,6">
-                            <TextBlock FontSize="11" Foreground="{StaticResource TextSecondary}">Ctrl + E</TextBlock>
-                        </Border>
-
-                        <TextBlock Grid.Row="3" Grid.Column="0"
-                                   FontSize="13"
-                                   Foreground="{StaticResource TextPrimary}">
-                            <Run Text="Go Back"/>
-                        </TextBlock>
-                        <Border Grid.Row="3" Grid.Column="1"
-                                Background="#FF21262D"
-                                Padding="6,3"
-                                CornerRadius="4"
-                                HorizontalAlignment="Right">
-                            <TextBlock FontSize="11" Foreground="{StaticResource TextSecondary}">Esc</TextBlock>
-                        </Border>
-                    </Grid>
-                </Border>
-
-                <!-- About Section -->
-                <TextBlock Text="ABOUT"
-                           FontSize="13"
-                           FontWeight="SemiBold"
-                           Foreground="{StaticResource TextSecondary}"
-                           Margin="0,0,0,8"/>
-
-                <Border Style="{StaticResource CompactCard}">
-                    <StackPanel>
+                    <!-- Tools -->
+                    <TextBlock Text="Tools" FontSize="11" FontWeight="SemiBold" Foreground="#FF6E7681" Margin="0,0,0,8" FontFamily="Segoe UI Variable"/>
+                    <Border Background="#FF161B22" CornerRadius="10" Padding="16" Margin="0,0,0,20" BorderBrush="#FF21262D" BorderThickness="1">
                         <Grid>
                             <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="Auto"/>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="10"/>
                                 <ColumnDefinition Width="*"/>
                             </Grid.ColumnDefinitions>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="Auto"/><RowDefinition Height="8"/><RowDefinition Height="Auto"/><RowDefinition Height="8"/><RowDefinition Height="Auto"/>
+                            </Grid.RowDefinitions>
 
-                            <Ellipse Width="32" Height="32"
-                                     Fill="{StaticResource Success}"
-                                     Margin="0,0,12,0">
-                                <Ellipse.Effect>
-                                    <DropShadowEffect Color="#FF238636" BlurRadius="6" Opacity="0.4"/>
-                                </Ellipse.Effect>
-                            </Ellipse>
-
-                            <StackPanel Grid.Column="1">
-                                <TextBlock FontSize="15"
-                                           FontWeight="SemiBold"
-                                           Foreground="{StaticResource TextPrimary}">
-                                    <Run Text="TeachAssist Desktop"/>
-                                </TextBlock>
-                                <TextBlock FontSize="12"
-                                           Foreground="{StaticResource TextSecondary}"
-                                           Margin="0,2,0,0">
-                                    <Run Text="Version "/>
-                                    <Run Text="{Binding AppVersion}" FontWeight="SemiBold"/>
-                                    <Run Text=" • "/>
-                                    <Run Text="by " FontWeight="Normal"/>
-                                    <Run Text="changcheng967" FontWeight="SemiBold" Foreground="{StaticResource Accent}"/>
-                                </TextBlock>
-                            </StackPanel>
+                            <Button Grid.Row="0" Grid.Column="0" Command="{Binding ViewTrendsCommand}" Style="{StaticResource GhostButton}" Padding="10,8" HorizontalAlignment="Stretch">
+                                <StackPanel Orientation="Horizontal"><TextBlock Text="&#xE7E7;" FontFamily="Segoe MDL2 Assets" FontSize="13" VerticalAlignment="Center" Margin="0,0,8,0" Foreground="#FF58A6FF"/><TextBlock Text="Grade Trends" FontFamily="Segoe UI Variable"/></StackPanel>
+                            </Button>
+                            <Button Grid.Row="0" Grid.Column="2" Command="{Binding GradeGoalsCommand}" Style="{StaticResource GhostButton}" Padding="10,8" HorizontalAlignment="Stretch">
+                                <StackPanel Orientation="Horizontal"><TextBlock Text="&#xE7E8;" FontFamily="Segoe MDL2 Assets" FontSize="13" VerticalAlignment="Center" Margin="0,0,8,0" Foreground="#FF238636"/><TextBlock Text="Grade Goals" FontFamily="Segoe UI Variable"/></StackPanel>
+                            </Button>
+                            <Button Grid.Row="2" Grid.Column="0" Command="{Binding WhatIfCalculatorCommand}" Style="{StaticResource GhostButton}" Padding="10,8" HorizontalAlignment="Stretch">
+                                <StackPanel Orientation="Horizontal"><TextBlock Text="&#xE789;" FontFamily="Segoe MDL2 Assets" FontSize="13" VerticalAlignment="Center" Margin="0,0,8,0" Foreground="#FFD29922"/><TextBlock Text="What-If Calculator" FontFamily="Segoe UI Variable"/></StackPanel>
+                            </Button>
+                            <Button Grid.Row="2" Grid.Column="2" Command="{Binding CheckUpdatesCommand}" Style="{StaticResource GhostButton}" Padding="10,8" HorizontalAlignment="Stretch">
+                                <StackPanel Orientation="Horizontal"><TextBlock Text="&#xE117;" FontFamily="Segoe MDL2 Assets" FontSize="13" VerticalAlignment="Center" Margin="0,0,8,0" Foreground="#FF238636"/><TextBlock Text="Check Updates" FontFamily="Segoe UI Variable"/></StackPanel>
+                            </Button>
+                            <Button Grid.Row="4" Grid.Column="0" Command="{Binding ExportToCsvCommand}" Style="{StaticResource PrimaryButton}" Padding="10,8" HorizontalAlignment="Stretch">
+                                <StackPanel Orientation="Horizontal"><TextBlock Text="&#xE7B3;" FontFamily="Segoe MDL2 Assets" FontSize="13" VerticalAlignment="Center" Margin="0,0,8,0"/><TextBlock Text="Export CSV" Foreground="White" FontFamily="Segoe UI Variable"/></StackPanel>
+                            </Button>
+                            <Button Grid.Row="4" Grid.Column="2" Command="{Binding ExportToPdfCommand}" Style="{StaticResource PrimaryButton}" Padding="10,8" HorizontalAlignment="Stretch">
+                                <StackPanel Orientation="Horizontal"><TextBlock Text="&#xE8A5;" FontFamily="Segoe MDL2 Assets" FontSize="13" VerticalAlignment="Center" Margin="0,0,8,0"/><TextBlock Text="Export PDF" Foreground="White" FontFamily="Segoe UI Variable"/></StackPanel>
+                            </Button>
                         </Grid>
+                    </Border>
 
-                        <TextBlock FontSize="12"
-                                   Foreground="{StaticResource TextSecondary}"
-                                   Margin="0,8,0,0"
-                                   TextWrapping="Wrap"
-                                   LineHeight="16">
-                            A premium Windows desktop application for YRDSB students to check their TeachAssist grades with advanced analytics, grade goals, and what-if calculations.
-                        </TextBlock>
+                    <!-- Account -->
+                    <TextBlock Text="Account" FontSize="11" FontWeight="SemiBold" Foreground="#FF6E7681" Margin="0,0,0,8" FontFamily="Segoe UI Variable"/>
+                    <Border Background="#FF161B22" CornerRadius="10" Padding="16" Margin="0,0,0,20" BorderBrush="#FF21262D" BorderThickness="1">
+                        <StackPanel>
+                            <Border Background="#FF0D1117" CornerRadius="6" Padding="12" Margin="0,0,0,12">
+                                <TextBlock FontSize="12" Foreground="#FF6E7681" FontFamily="Segoe UI Variable">
+                                    <Run Text="Logged in as "/><Run Text="{Binding Username}" FontWeight="SemiBold" Foreground="#FF8B949E"/>
+                                </TextBlock>
+                            </Border>
+                            <Grid>
+                                <Button Command="{Binding RefreshGradesCommand}" Style="{StaticResource PrimaryButton}" Padding="10,8" HorizontalAlignment="Left">
+                                    <StackPanel Orientation="Horizontal"><TextBlock Text="&#xE117;" FontFamily="Segoe MDL2 Assets" FontSize="13" VerticalAlignment="Center" Margin="0,0,8,0"/><TextBlock Text="Refresh Grades" Foreground="White" FontFamily="Segoe UI Variable"/></StackPanel>
+                                </Button>
+                                <Button Command="{Binding LogoutCommand}" Style="{StaticResource DangerButton}" Padding="10,8" HorizontalAlignment="Right">
+                                    <StackPanel Orientation="Horizontal"><TextBlock Text="&#xE7E8;" FontFamily="Segoe MDL2 Assets" FontSize="13" VerticalAlignment="Center" Margin="0,0,8,0"/><TextBlock Text="Logout" Foreground="White" FontFamily="Segoe UI Variable"/></StackPanel>
+                                </Button>
+                            </Grid>
+                        </StackPanel>
+                    </Border>
 
-                        <Border Background="#FF0D1117"
-                                Padding="10"
-                                CornerRadius="6"
-                                Margin="0,12,0,0">
-                            <TextBlock FontSize="11" Foreground="{StaticResource TextSecondary}">
-                                <Run Text="💡 Tip: Right-click courses for quick actions"/>
-                            </TextBlock>
-                        </Border>
-                    </StackPanel>
-                </Border>
-            </StackPanel>
+                    <!-- Data -->
+                    <TextBlock Text="Data" FontSize="11" FontWeight="SemiBold" Foreground="#FF6E7681" Margin="0,0,0,8" FontFamily="Segoe UI Variable"/>
+                    <Border Background="#FF161B22" CornerRadius="10" Padding="16" Margin="0,0,0,20" BorderBrush="#FF21262D" BorderThickness="1">
+                        <Button Command="{Binding ClearCacheCommand}" Style="{StaticResource GhostButton}" Padding="10,8" HorizontalAlignment="Left">
+                            <StackPanel Orientation="Horizontal"><TextBlock Text="&#xE74D;" FontFamily="Segoe MDL2 Assets" FontSize="13" VerticalAlignment="Center" Margin="0,0,8,0"/><TextBlock Text="Clear Cached Data" FontFamily="Segoe UI Variable"/></StackPanel>
+                        </Button>
+                    </Border>
+
+                    <!-- Shortcuts -->
+                    <TextBlock Text="Keyboard Shortcuts" FontSize="11" FontWeight="SemiBold" Foreground="#FF6E7681" Margin="0,0,0,8" FontFamily="Segoe UI Variable"/>
+                    <Border Background="#FF161B22" CornerRadius="10" Padding="16" Margin="0,0,0,20" BorderBrush="#FF21262D" BorderThickness="1">
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="*"/>
+                            </Grid.ColumnDefinitions>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="28"/><RowDefinition Height="28"/><RowDefinition Height="28"/><RowDefinition Height="28"/>
+                            </Grid.RowDefinitions>
+                            <TextBlock Grid.Row="0" Grid.Column="0" FontSize="12" Foreground="#FF8B949E" VerticalAlignment="Center" FontFamily="Segoe UI Variable">Refresh</TextBlock>
+                            <Border Grid.Row="0" Grid.Column="1" Background="#FF21262D" Padding="6,2" CornerRadius="4" HorizontalAlignment="Right"><TextBlock FontSize="11" Foreground="#FF6E7681" FontFamily="Segoe UI Variable">F5</TextBlock></Border>
+                            <TextBlock Grid.Row="1" Grid.Column="0" FontSize="12" Foreground="#FF8B949E" VerticalAlignment="Center" FontFamily="Segoe UI Variable">Settings</TextBlock>
+                            <Border Grid.Row="1" Grid.Column="1" Background="#FF21262D" Padding="6,2" CornerRadius="4" HorizontalAlignment="Right"><TextBlock FontSize="11" Foreground="#FF6E7681" FontFamily="Segoe UI Variable">Ctrl + ,</TextBlock></Border>
+                            <TextBlock Grid.Row="2" Grid.Column="0" FontSize="12" Foreground="#FF8B949E" VerticalAlignment="Center" FontFamily="Segoe UI Variable">Export</TextBlock>
+                            <Border Grid.Row="2" Grid.Column="1" Background="#FF21262D" Padding="6,2" CornerRadius="4" HorizontalAlignment="Right"><TextBlock FontSize="11" Foreground="#FF6E7681" FontFamily="Segoe UI Variable">Ctrl + E</TextBlock></Border>
+                            <TextBlock Grid.Row="3" Grid.Column="0" FontSize="12" Foreground="#FF8B949E" VerticalAlignment="Center" FontFamily="Segoe UI Variable">Go Back</TextBlock>
+                            <Border Grid.Row="3" Grid.Column="1" Background="#FF21262D" Padding="6,2" CornerRadius="4" HorizontalAlignment="Right"><TextBlock FontSize="11" Foreground="#FF6E7681" FontFamily="Segoe UI Variable">Esc</TextBlock></Border>
+                        </Grid>
+                    </Border>
+
+                    <!-- About -->
+                    <TextBlock Text="About" FontSize="11" FontWeight="SemiBold" Foreground="#FF6E7681" Margin="0,0,0,8" FontFamily="Segoe UI Variable"/>
+                    <Border Background="#FF161B22" CornerRadius="10" Padding="16" BorderBrush="#FF21262D" BorderThickness="1">
+                        <StackPanel>
+                            <StackPanel Orientation="Horizontal">
+                                <Border Width="28" Height="28" CornerRadius="6" Background="#FF238636" Margin="0,0,10,0"/>
+                                <StackPanel>
+                                    <TextBlock FontSize="14" FontWeight="SemiBold" Foreground="White" FontFamily="Segoe UI Variable">TeachAssist Desktop</TextBlock>
+                                    <TextBlock FontSize="11" Foreground="#FF6E7681" FontFamily="Segoe UI Variable">
+                                        <Run Text="Version "/><Run Text="{Binding AppVersion}" FontWeight="SemiBold"/><Run Text=" by changcheng967" FontWeight="Normal"/>
+                                    </TextBlock>
+                                </StackPanel>
+                            </StackPanel>
+                        </StackPanel>
+                    </Border>
+
+                </StackPanel>
+            </Grid>
         </ScrollViewer>
 
         <!-- Loading Overlay -->
-        <Grid Grid.Row="1"
-              Background="#DD0D1117"
-              Visibility="{Binding IsLoading, Converter={StaticResource BooleanToVisibilityConverter}}">
-            <StackPanel VerticalAlignment="Center" HorizontalAlignment="Center">
-                <Border Width="40" Height="40"
-                        BorderThickness="2"
-                        BorderBrush="{StaticResource Accent}"
-                        CornerRadius="20"
-                        Margin="0,0,0,12">
-                    <Border.RenderTransform>
-                        <RotateTransform Angle="0"/>
-                    </Border.RenderTransform>
-                    <Border.Triggers>
-                        <EventTrigger RoutedEvent="Loaded">
-                            <BeginStoryboard>
-                                <Storyboard RepeatBehavior="Forever">
-                                    <DoubleAnimation Storyboard.TargetProperty="(UIElement.RenderTransform).(RotateTransform.Angle)"
-                                                   From="0" To="360" Duration="0:0:1"/>
-                                </Storyboard>
-                            </BeginStoryboard>
-                        </EventTrigger>
-                    </Border.Triggers>
-                </Border>
-                <TextBlock Text="Processing..."
-                           Foreground="{StaticResource TextPrimary}"
-                           FontSize="14"
-                           FontWeight="SemiBold"
-                           HorizontalAlignment="Center"/>
-            </StackPanel>
+        <Grid Grid.Row="1" Background="#CC000000" Visibility="{Binding IsLoading, Converter={StaticResource BooleanToVisibilityConverter}}">
+            <Border Width="40" Height="40" BorderThickness="3" BorderBrush="#FF58A6FF" CornerRadius="20" VerticalAlignment="Center" HorizontalAlignment="Center">
+                <Border.RenderTransform><RotateTransform Angle="0"/></Border.RenderTransform>
+                <Border.Triggers>
+                    <EventTrigger RoutedEvent="Loaded">
+                        <BeginStoryboard><Storyboard RepeatBehavior="Forever"><DoubleAnimation Storyboard.TargetProperty="(UIElement.RenderTransform).(RotateTransform.Angle)" From="0" To="360" Duration="0:0:1"/></Storyboard></BeginStoryboard>
+                    </EventTrigger>
+                </Border.Triggers>
+            </Border>
         </Grid>
 
         <!-- Status Message -->
-        <Border Grid.Row="1"
-                Background="{StaticResource Success}"
-                CornerRadius="8"
-                Padding="16,12"
-                Margin="20,60,20,0"
-                HorizontalAlignment="Center"
-                VerticalAlignment="Top"
+        <Border Grid.Row="1" Background="#FF238636" CornerRadius="8" Padding="14,10" Margin="24,48,24,0" HorizontalAlignment="Center" VerticalAlignment="Top"
                 Visibility="{Binding SuccessMessage, Converter={StaticResource StringToVisibilityConverter}}">
-            <TextBlock Text="{Binding SuccessMessage}"
-                       Foreground="White"
-                       FontSize="13"
-                       FontWeight="Medium"
-                       TextWrapping="Wrap"/>
+            <TextBlock Text="{Binding SuccessMessage}" Foreground="White" FontSize="13" FontWeight="Medium" TextWrapping="Wrap" FontFamily="Segoe UI Variable"/>
         </Border>
 
         <!-- Error Message -->
-        <Border Grid.Row="1"
-                Background="{StaticResource Danger}"
-                CornerRadius="8"
-                Padding="16,12"
-                Margin="20,60,20,0"
-                HorizontalAlignment="Center"
-                VerticalAlignment="Top"
+        <Border Grid.Row="1" Background="#FFF85149" CornerRadius="8" Padding="14,10" Margin="24,48,24,0" HorizontalAlignment="Center" VerticalAlignment="Top"
                 Visibility="{Binding ErrorMessage, Converter={StaticResource BooleanToVisibilityConverter}}">
-            <TextBlock Text="{Binding ErrorMessage}"
-                       Foreground="White"
-                       FontSize="13"
-                       FontWeight="Medium"
-                       TextWrapping="Wrap"/>
+            <TextBlock Text="{Binding ErrorMessage}" Foreground="White" FontSize="13" FontWeight="Medium" TextWrapping="Wrap" FontFamily="Segoe UI Variable"/>
         </Border>
     </Grid>
 </Page>

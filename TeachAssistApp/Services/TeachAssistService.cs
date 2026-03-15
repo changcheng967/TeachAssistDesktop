@@ -238,6 +238,24 @@ public class TeachAssistService : ITeachAssistService
                     var subjectIdMatch = Regex.Match(href, @"subject_id=(\d+)");
                     var studentIdMatch = Regex.Match(href, @"student_id=(\d+)");
 
+                    // Extract block and room from cell 0 (pattern: "Block: P1  - rm. GYM C")
+                    int block = 0;
+                    string room = "";
+                    var blockMatch = Regex.Match(cell0Text, @"Block:\s*(\d+)");
+                    if (!blockMatch.Success)
+                    {
+                        blockMatch = Regex.Match(cell0Text, @"Block:\s*P(\d+)");
+                    }
+                    if (blockMatch.Success && int.TryParse(blockMatch.Groups[1].Value, out var blockNum))
+                    {
+                        block = blockNum;
+                    }
+                    var roomMatch = Regex.Match(cell0Text, @"rm\.\s*(.+?)(?:\s*$|\s*<)", RegexOptions.Multiline);
+                    if (roomMatch.Success)
+                    {
+                        room = roomMatch.Groups[1].Value.Trim();
+                    }
+
                     // Extract course code from cell 0
                     var courseCodeMatch = Regex.Match(cell0Text, @"([A-Z]{3}\d[A-Z]\d-\d{1,2})"); // Standard: XXX#X#-##
                     if (!courseCodeMatch.Success)
@@ -264,6 +282,8 @@ public class TeachAssistService : ITeachAssistService
                     {
                         Code = courseCode,
                         Name = courseName,
+                        Block = block,
+                        Room = room,
                         SubjectId = subjectIdMatch.Success ? subjectIdMatch.Groups[1].Value : null,
                         StudentId = studentIdMatch.Success ? studentIdMatch.Groups[1].Value : null,
                         ReportUrl = href // Store full resolved URL for fetching details

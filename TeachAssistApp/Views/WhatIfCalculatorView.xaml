@@ -5,259 +5,283 @@
         Height="550" Width="500"
         WindowStartupLocation="CenterOwner"
         ResizeMode="CanMinimize"
-        Background="#FF0D1117">
+        Background="#FF0D1117"
+        WindowStyle="None"
+        AllowsTransparency="True"
+        BorderThickness="1"
+        BorderBrush="#FF30363D"
+        Loaded="Window_Loaded">
+    <Window.Effect>
+        <DropShadowEffect Color="#000000" BlurRadius="50" ShadowDepth="0" Opacity="0.5"/>
+    </Window.Effect>
 
-    <Window.Resources>
-        <SolidColorBrush x:Key="CardBackground" Color="#FF161B22"/>
-        <SolidColorBrush x:Key="TextPrimary" Color="#FFFFFFFF"/>
-        <SolidColorBrush x:Key="TextSecondary" Color="#FF8B949E"/>
-        <SolidColorBrush x:Key="Accent" Color="#FF58A6FF"/>
-        <SolidColorBrush x:Key="Success" Color="#FF238636"/>
+    <Border CornerRadius="12" Background="#FF0D1117">
+        <Border.RenderTransform>
+            <ScaleTransform ScaleX="1" ScaleY="1" CenterX="0.5" CenterY="0.5"/>
+        </Border.RenderTransform>
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="*"/>
+            </Grid.RowDefinitions>
 
-        <Style x:Key="ModernButton" TargetType="Button">
-            <Setter Property="Background" Value="{StaticResource Accent}"/>
-            <Setter Property="Foreground" Value="White"/>
-            <Setter Property="BorderThickness" Value="0"/>
-            <Setter Property="Padding" Value="16,8"/>
-            <Setter Property="FontSize" Value="13"/>
-            <Setter Property="Cursor" Value="Hand"/>
-            <Setter Property="Template">
-                <Setter.Value>
-                    <ControlTemplate TargetType="Button">
-                        <Border Background="{TemplateBinding Background}"
-                                CornerRadius="6"
-                                Padding="{TemplateBinding Padding}">
-                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+            <!-- Custom Title Bar -->
+            <Border Grid.Row="0"
+                    Background="{StaticResource TitleBarBrush}"
+                    Padding="24,16,24,16"
+                    BorderBrush="{StaticResource CardBorder}"
+                    BorderThickness="0,0,0,1"
+                    CornerRadius="12,12,0,0">
+                <Grid>
+                    <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
+                        <Border Width="32" Height="32"
+                                CornerRadius="8"
+                                Margin="0,0,12,0"
+                                VerticalAlignment="Center">
+                            <Border.Background>
+                                <LinearGradientBrush StartPoint="0,0" EndPoint="1,1">
+                                    <GradientStop Color="#FFD29922" Offset="0"/>
+                                    <GradientStop Color="#FFDB6D28" Offset="1"/>
+                                </LinearGradientBrush>
+                            </Border.Background>
+                            <Border.Effect>
+                                <DropShadowEffect Color="#FFD29922" BlurRadius="15" ShadowDepth="0" Opacity="0.4"/>
+                            </Border.Effect>
+                            <TextBlock Text="&#xE789;"
+                                       FontFamily="Segoe MDL2 Assets"
+                                       FontSize="16"
+                                       Foreground="White"
+                                       HorizontalAlignment="Center"
+                                       VerticalAlignment="Center"/>
                         </Border>
-                    </ControlTemplate>
-                </Setter.Value>
-            </Setter>
-            <Style.Triggers>
-                <Trigger Property="IsMouseOver" Value="True">
-                    <Setter Property="Opacity" Value="0.8"/>
-                </Trigger>
-            </Style.Triggers>
-        </Style>
-    </Window.Resources>
-
-    <Border Padding="30">
-        <StackPanel>
-            <!-- Header -->
-            <TextBlock Text="🧮 What-If Calculator"
-                       FontSize="22"
-                       FontWeight="SemiBold"
-                       Foreground="{StaticResource TextPrimary}"
-                       Margin="0,0,0,20"/>
-
-            <!-- Current GPA Display -->
-            <Border Background="{StaticResource CardBackground}"
-                    CornerRadius="10"
-                    Padding="20"
-                    Margin="0,0,0,20">
-                <StackPanel>
-                    <TextBlock Text="Current Average"
-                               FontSize="13"
-                               Foreground="{StaticResource TextSecondary}"
-                               Margin="0,0,0,8"/>
-                    <TextBlock FontSize="36"
-                               FontWeight="Bold"
-                               Foreground="{StaticResource Accent}">
-                        <Run Text="{Binding CurrentGpa, StringFormat=\{0:F1\}%}"/>
-                    </TextBlock>
-                    <TextBlock FontSize="12"
-                               Foreground="{StaticResource TextSecondary}"
-                               Margin="0,8,0,0">
-                        <Run Text="Across "/>
-                        <Run Text="{Binding CourseCount}" FontWeight="SemiBold"/>
-                        <Run Text=" courses"/>
-                    </TextBlock>
-                </StackPanel>
+                        <TextBlock Text="What-If Calculator"
+                                   FontSize="20"
+                                   FontWeight="SemiBold"
+                                   Foreground="{StaticResource TextPrimary}"
+                                   VerticalAlignment="Center"
+                                   FontFamily="Segoe UI Variable Display"/>
+                    </StackPanel>
+                    <Button Content="&#xE711;"
+                            FontFamily="Segoe MDL2 Assets"
+                            HorizontalAlignment="Right"
+                            Style="{StaticResource SubWindowCloseButton}"
+                            Command="{Binding CloseCommand}"/>
+                </Grid>
             </Border>
 
-            <!-- Add Hypothetical Assignment -->
-            <TextBlock Text="Add Hypothetical Assignment"
-                       FontSize="15"
-                       FontWeight="SemiBold"
-                       Foreground="{StaticResource TextPrimary}"
-                       Margin="0,0,0,12"/>
-
-            <Border Background="{StaticResource CardBackground}"
-                    CornerRadius="10"
-                    Padding="16"
-                    Margin="0,0,0,20">
+            <!-- Content -->
+            <ScrollViewer Grid.Row="1" VerticalScrollBarVisibility="Auto" Padding="28,20,28,28">
                 <StackPanel>
-                    <!-- Assignment Name -->
-                    <TextBlock Text="Assignment Name"
-                               FontSize="12"
-                               Foreground="{StaticResource TextSecondary}"
-                               Margin="0,0,0,6"/>
-                    <TextBox Text="{Binding NewAssignmentName, UpdateSourceTrigger=PropertyChanged}"
-                             FontSize="13"
-                             Padding="8"
-                             Background="#FF0D1117"
-                             Foreground="{StaticResource TextPrimary}"
-                             BorderBrush="#FF30363D"
-                             BorderThickness="1"
-                             Margin="0,0,0,12"/>
-
-                    <!-- Mark and Weight Row -->
-                    <Grid Margin="0,0,0,12">
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="*"/>
-                            <ColumnDefinition Width="12"/>
-                            <ColumnDefinition Width="*"/>
-                        </Grid.ColumnDefinitions>
-
-                        <StackPanel Grid.Column="0">
-                            <TextBlock Text="Mark (%)"
-                                       FontSize="12"
+                    <!-- Current GPA Display -->
+                    <Border Background="{StaticResource CardBackground}"
+                            CornerRadius="10"
+                            Padding="20"
+                            Margin="0,0,0,20"
+                            BorderBrush="{StaticResource CardBorder}"
+                            BorderThickness="1">
+                        <StackPanel>
+                            <TextBlock Text="Current Average"
+                                       FontSize="13"
                                        Foreground="{StaticResource TextSecondary}"
-                                       Margin="0,0,0,6"/>
-                            <TextBox Text="{Binding NewAssignmentMark, UpdateSourceTrigger=PropertyChanged}"
-                                     FontSize="13"
-                                     Padding="8"
-                                     Background="#FF0D1117"
-                                     Foreground="{StaticResource TextPrimary}"
-                                     BorderBrush="#FF30363D"
-                                     BorderThickness="1"/>
-                        </StackPanel>
-
-                        <StackPanel Grid.Column="2">
-                            <TextBlock Text="Weight (%)"
-                                       FontSize="12"
+                                       Margin="0,0,0,8"/>
+                            <TextBlock FontSize="36"
+                                       FontWeight="Bold"
+                                       Foreground="{StaticResource Accent}">
+                                <Run Text="{Binding CurrentGpa, StringFormat=\{0:F1\}%}"/>
+                            </TextBlock>
+                            <TextBlock FontSize="12"
                                        Foreground="{StaticResource TextSecondary}"
-                                       Margin="0,0,0,6"/>
-                            <TextBox Text="{Binding NewAssignmentWeight, UpdateSourceTrigger=PropertyChanged}"
-                                     FontSize="13"
-                                     Padding="8"
-                                     Background="#FF0D1117"
-                                     Foreground="{StaticResource TextPrimary}"
-                                     BorderBrush="#FF30363D"
-                                     BorderThickness="1"/>
+                                       Margin="0,8,0,0">
+                                <Run Text="Across "/>
+                                <Run Text="{Binding CourseCount}" FontWeight="SemiBold"/>
+                                <Run Text=" courses"/>
+                            </TextBlock>
                         </StackPanel>
-                    </Grid>
+                    </Border>
 
-                    <!-- Add Button -->
-                    <Button Content="➕ Add Assignment"
-                            Command="{Binding AddAssignmentCommand}"
-                            Style="{StaticResource ModernButton}"
-                            HorizontalAlignment="Stretch"/>
-                </StackPanel>
-            </Border>
-
-            <!-- Hypothetical Results -->
-            <Border Background="#FF238636"
-                    CornerRadius="10"
-                    Padding="16"
-                    Margin="0,0,0,12"
-                    Visibility="{Binding HasHypotheticalAssignments, Converter={StaticResource BooleanToVisibilityConverter}}">
-                <StackPanel>
-                    <TextBlock Text="📊 Projected Average"
-                               FontSize="13"
-                               Foreground="White"
-                               Opacity="0.9"
-                               Margin="0,0,0,8"/>
-                    <TextBlock FontSize="32"
-                               FontWeight="Bold"
-                               Foreground="White">
-                        <Run Text="{Binding ProjectedGpa, StringFormat=\{0:F1\}%}"/>
-                    </TextBlock>
-                    <TextBlock FontSize="11"
-                               Foreground="White"
-                               Opacity="0.8"
-                               Margin="0,4,0,0">
-                        <Run Text="Difference: "/>
-                        <Run Text="{Binding GpaDifference, StringFormat=\{0:+0.0;-0.0\}%}"/>
-                    </TextBlock>
-                </StackPanel>
-            </Border>
-
-            <!-- Hypothetical Assignments List -->
-            <Border Background="{StaticResource CardBackground}"
-                    CornerRadius="10"
-                    Padding="16"
-                    Visibility="{Binding HasHypotheticalAssignments, Converter={StaticResource BooleanToVisibilityConverter}}">
-                <StackPanel>
-                    <TextBlock Text="Hypothetical Assignments"
-                               FontSize="13"
+                    <!-- Add Hypothetical Assignment -->
+                    <TextBlock Text="Add Hypothetical Assignment"
+                               FontSize="15"
                                FontWeight="SemiBold"
                                Foreground="{StaticResource TextPrimary}"
-                               Margin="0,0,0,8"/>
+                               Margin="0,0,0,12"/>
 
-                    <ItemsControl ItemsSource="{Binding HypotheticalAssignments}">
-                        <ItemsControl.ItemTemplate>
-                            <DataTemplate>
-                                <Border Background="#FF0D1117"
-                                        CornerRadius="6"
-                                        Padding="10,8"
-                                        Margin="0,0,0,6">
-                                    <Grid>
-                                        <Grid.ColumnDefinitions>
-                                            <ColumnDefinition Width="*"/>
-                                            <ColumnDefinition Width="Auto"/>
-                                            <ColumnDefinition Width="Auto"/>
-                                        </Grid.ColumnDefinitions>
+                    <Border Background="{StaticResource CardBackground}"
+                            CornerRadius="10"
+                            Padding="16"
+                            Margin="0,0,0,20"
+                            BorderBrush="{StaticResource CardBorder}"
+                            BorderThickness="1">
+                        <StackPanel>
+                            <!-- Assignment Name -->
+                            <TextBlock Text="Assignment Name"
+                                       FontSize="12"
+                                       Foreground="{StaticResource TextSecondary}"
+                                       Margin="0,0,0,6"/>
+                            <TextBox Text="{Binding NewAssignmentName, UpdateSourceTrigger=PropertyChanged}"
+                                     FontSize="13"
+                                     Padding="8"
+                                     Background="{StaticResource BackgroundBrush}"
+                                     Foreground="{StaticResource TextPrimary}"
+                                     BorderBrush="{StaticResource CardBorder}"
+                                     BorderThickness="1"
+                                     Margin="0,0,0,12"/>
 
-                                        <TextBlock Grid.Column="0"
-                                                   Text="{Binding Name}"
-                                                   FontSize="13"
-                                                   Foreground="{StaticResource TextPrimary}"
-                                                   VerticalAlignment="Center"/>
+                            <!-- Mark and Weight Row -->
+                            <Grid Margin="0,0,0,12">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="*"/>
+                                    <ColumnDefinition Width="12"/>
+                                    <ColumnDefinition Width="*"/>
+                                </Grid.ColumnDefinitions>
 
-                                        <TextBlock Grid.Column="1"
-                                                   Text="{Binding Mark, StringFormat=\{0:F0\}%}"
-                                                   FontSize="12"
-                                                   FontWeight="SemiBold"
-                                                   Foreground="{StaticResource Accent}"
-                                                   VerticalAlignment="Center"
-                                                   Margin="0,0,12,0"/>
+                                <StackPanel Grid.Column="0">
+                                    <TextBlock Text="Mark (%)"
+                                               FontSize="12"
+                                               Foreground="{StaticResource TextSecondary}"
+                                               Margin="0,0,0,6"/>
+                                    <TextBox Text="{Binding NewAssignmentMark, UpdateSourceTrigger=PropertyChanged}"
+                                             FontSize="13"
+                                             Padding="8"
+                                             Background="{StaticResource BackgroundBrush}"
+                                             Foreground="{StaticResource TextPrimary}"
+                                             BorderBrush="{StaticResource CardBorder}"
+                                             BorderThickness="1"/>
+                                </StackPanel>
 
-                                        <Button Grid.Column="2"
-                                                Content="✕"
-                                                Command="{Binding RemoveCommand}"
-                                                CommandParameter="{Binding}"
-                                                Background="Transparent"
-                                                Foreground="{StaticResource TextSecondary}"
-                                                BorderThickness="0"
-                                                FontSize="14"
-                                                Padding="6"
-                                                Cursor="Hand">
-                                            <Button.Style>
-                                                <Style TargetType="Button">
-                                                    <Setter Property="Template">
-                                                        <Setter.Value>
-                                                            <ControlTemplate TargetType="Button">
-                                                                <Border Background="{TemplateBinding Background}"
-                                                                        CornerRadius="4"
-                                                                        Padding="{TemplateBinding Padding}">
-                                                                    <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
-                                                                </Border>
-                                                            </ControlTemplate>
-                                                        </Setter.Value>
-                                                    </Setter>
-                                                    <Style.Triggers>
-                                                        <Trigger Property="IsMouseOver" Value="True">
-                                                            <Setter Property="Foreground" Value="#FFF85149"/>
-                                                        </Trigger>
-                                                    </Style.Triggers>
-                                                </Style>
-                                            </Button.Style>
-                                        </Button>
-                                    </Grid>
-                                </Border>
-                            </DataTemplate>
-                        </ItemsControl.ItemTemplate>
-                    </ItemsControl>
+                                <StackPanel Grid.Column="2">
+                                    <TextBlock Text="Weight (%)"
+                                               FontSize="12"
+                                               Foreground="{StaticResource TextSecondary}"
+                                               Margin="0,0,0,6"/>
+                                    <TextBox Text="{Binding NewAssignmentWeight, UpdateSourceTrigger=PropertyChanged}"
+                                             FontSize="13"
+                                             Padding="8"
+                                             Background="{StaticResource BackgroundBrush}"
+                                             Foreground="{StaticResource TextPrimary}"
+                                             BorderBrush="{StaticResource CardBorder}"
+                                             BorderThickness="1"/>
+                                </StackPanel>
+                            </Grid>
+
+                            <!-- Add Button -->
+                            <Button Content="Add Assignment"
+                                    Command="{Binding AddAssignmentCommand}"
+                                    Style="{StaticResource ModernButton}"
+                                    HorizontalAlignment="Stretch"/>
+                        </StackPanel>
+                    </Border>
+
+                    <!-- Hypothetical Results -->
+                    <Border Background="#FF238636"
+                            CornerRadius="10"
+                            Padding="16"
+                            Margin="0,0,0,12"
+                            Visibility="{Binding HasHypotheticalAssignments, Converter={StaticResource BooleanToVisibilityConverter}}">
+                        <StackPanel>
+                            <TextBlock Text="Projected Average"
+                                       FontSize="13"
+                                       Foreground="White"
+                                       Opacity="0.9"
+                                       Margin="0,0,0,8"/>
+                            <TextBlock FontSize="32"
+                                       FontWeight="Bold"
+                                       Foreground="White">
+                                <Run Text="{Binding ProjectedGpa, StringFormat=\{0:F1\}%}"/>
+                            </TextBlock>
+                            <TextBlock FontSize="11"
+                                       Foreground="White"
+                                       Opacity="0.8"
+                                       Margin="0,4,0,0">
+                                <Run Text="Difference: "/>
+                                <Run Text="{Binding GpaDifference, StringFormat=\{0:+0.0;-0.0\}%}"/>
+                            </TextBlock>
+                        </StackPanel>
+                    </Border>
+
+                    <!-- Hypothetical Assignments List -->
+                    <Border Background="{StaticResource CardBackground}"
+                            CornerRadius="10"
+                            Padding="16"
+                            BorderBrush="{StaticResource CardBorder}"
+                            BorderThickness="1"
+                            Visibility="{Binding HasHypotheticalAssignments, Converter={StaticResource BooleanToVisibilityConverter}}">
+                        <StackPanel>
+                            <TextBlock Text="Hypothetical Assignments"
+                                       FontSize="13"
+                                       FontWeight="SemiBold"
+                                       Foreground="{StaticResource TextPrimary}"
+                                       Margin="0,0,0,8"/>
+
+                            <ItemsControl ItemsSource="{Binding HypotheticalAssignments}">
+                                <ItemsControl.ItemTemplate>
+                                    <DataTemplate>
+                                        <Border Background="{StaticResource BackgroundBrush}"
+                                                CornerRadius="6"
+                                                Padding="10,8"
+                                                Margin="0,0,0,6">
+                                            <Grid>
+                                                <Grid.ColumnDefinitions>
+                                                    <ColumnDefinition Width="*"/>
+                                                    <ColumnDefinition Width="Auto"/>
+                                                    <ColumnDefinition Width="Auto"/>
+                                                </Grid.ColumnDefinitions>
+
+                                                <TextBlock Grid.Column="0"
+                                                           Text="{Binding Name}"
+                                                           FontSize="13"
+                                                           Foreground="{StaticResource TextPrimary}"
+                                                           VerticalAlignment="Center"/>
+
+                                                <TextBlock Grid.Column="1"
+                                                           Text="{Binding Mark, StringFormat=\{0:F0\}%}"
+                                                           FontSize="12"
+                                                           FontWeight="SemiBold"
+                                                           Foreground="{StaticResource Accent}"
+                                                           VerticalAlignment="Center"
+                                                           Margin="0,0,12,0"/>
+
+                                                <Button Grid.Column="2"
+                                                        Content="&#xE711;"
+                                                        FontFamily="Segoe MDL2 Assets"
+                                                        Command="{Binding RemoveCommand}"
+                                                        CommandParameter="{Binding}"
+                                                        Background="Transparent"
+                                                        Foreground="{StaticResource TextSecondary}"
+                                                        BorderThickness="0"
+                                                        FontSize="14"
+                                                        Padding="6"
+                                                        Cursor="Hand">
+                                                    <Button.Style>
+                                                        <Style TargetType="Button">
+                                                            <Setter Property="Template">
+                                                                <Setter.Value>
+                                                                    <ControlTemplate TargetType="Button">
+                                                                        <Border Background="{TemplateBinding Background}"
+                                                                                CornerRadius="4"
+                                                                                Padding="{TemplateBinding Padding}">
+                                                                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                                                                        </Border>
+                                                                    </ControlTemplate>
+                                                                </Setter.Value>
+                                                            </Setter>
+                                                            <Style.Triggers>
+                                                                <Trigger Property="IsMouseOver" Value="True">
+                                                                    <Setter Property="Foreground" Value="#FFF85149"/>
+                                                                </Trigger>
+                                                            </Style.Triggers>
+                                                        </Style>
+                                                    </Button.Style>
+                                                </Button>
+                                            </Grid>
+                                        </Border>
+                                    </DataTemplate>
+                                </ItemsControl.ItemTemplate>
+                            </ItemsControl>
+                        </StackPanel>
+                    </Border>
                 </StackPanel>
-            </Border>
-
-            <!-- Close Button -->
-            <Button Content="Close"
-                    Command="{Binding CloseCommand}"
-                    Style="{StaticResource ModernButton}"
-                    HorizontalAlignment="Right"
-                    Margin="0,12,0,0"
-                    Background="#FF30363D"/>
-        </StackPanel>
+            </ScrollViewer>
+        </Grid>
     </Border>
 </Window>

@@ -1,6 +1,7 @@
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
+using System.Windows.Media;
 using System.Windows.Media.Animation;
 using Microsoft.Extensions.DependencyInjection;
 using TeachAssistApp.Helpers;
@@ -33,7 +34,7 @@ public partial class MainWindow : Window
         // Add keyboard shortcuts
         this.KeyDown += MainWindow_KeyDown;
 
-        // Navigate to login page initially with animation
+        // Navigate to login page initially
         NavigateTo("Login");
     }
 
@@ -97,7 +98,7 @@ public partial class MainWindow : Window
     private void Window_Loaded(object sender, RoutedEventArgs e)
     {
         // Apply fade-in animation on load
-        var fadeIn = (Storyboard)FindResource("FadeInAnimation");
+        var fadeIn = (Storyboard)FindResource("WindowFadeIn");
         fadeIn.Begin(this);
     }
 
@@ -159,16 +160,83 @@ public partial class MainWindow : Window
         if (page != null)
         {
             System.Diagnostics.Debug.WriteLine($"  Navigating to page");
-            ContentFrame.Navigate(page);
-
-            // Apply slide-in animation
-            var slideIn = (Storyboard)FindResource("SlideInAnimation");
-            slideIn.Begin(ContentFrame);
+            // First navigation or empty Frame: skip animation, navigate instantly
+            if (ContentFrame.Content == null)
+            {
+                try
+                {
+                    ContentFrame.Navigate(page);
+                    System.Diagnostics.Debug.WriteLine($"  Instant navigation (first load)");
+                }
+                catch (Exception ex)
+                {
+                    System.Diagnostics.Debug.WriteLine($"  Instant navigation failed: {ex.Message}");
+                }
+            }
+            else
+            {
+                try
+                {
+                    AnimateTransition(page, baseView == "CourseDetail");
+                }
+                catch
+                {
+                    ContentFrame.Navigate(page);
+                }
+            }
         }
         else
         {
             System.Diagnostics.Debug.WriteLine($"  Page is null, navigation failed");
         }
+    }
+
+    private void AnimateTransition(Page newPage, bool isForward)
+    {
+        // Simple fade-out then navigate and fade-in
+        var fadeOut = new DoubleAnimation
+        {
+            From = 1,
+            To = 0,
+            Duration = TimeSpan.FromMilliseconds(200),
+            EasingFunction = new CubicEase { EasingMode = EasingMode.EaseIn }
+        };
+
+        var outSb = new Storyboard();
+        Storyboard.SetTarget(fadeOut, ContentFrame);
+        Storyboard.SetTargetProperty(fadeOut, new PropertyPath(UIElement.OpacityProperty));
+        outSb.Children.Add(fadeOut);
+
+        outSb.Completed += (_, _) =>
+        {
+            Dispatcher.Invoke(() =>
+            {
+                try
+                {
+                    ContentFrame.Navigate(newPage);
+                    ContentFrame.Opacity = 0;
+
+                    var fadeIn = new DoubleAnimation
+                    {
+                        From = 0,
+                        To = 1,
+                        Duration = TimeSpan.FromMilliseconds(300),
+                        EasingFunction = new CubicEase { EasingMode = EasingMode.EaseOut }
+                    };
+                    var inSb = new Storyboard();
+                    Storyboard.SetTarget(fadeIn, ContentFrame);
+                    Storyboard.SetTargetProperty(fadeIn, new PropertyPath(UIElement.OpacityProperty));
+                    inSb.Children.Add(fadeIn);
+                    inSb.Begin(this);
+                }
+                catch
+                {
+                    // Fallback: navigate without animation
+                }
+            });
+        };
+
+        outSb.Begin(this);
     }
 
     #region Window Control Events

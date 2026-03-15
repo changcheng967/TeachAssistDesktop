@@ -5,29 +5,42 @@
       xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
       mc:Ignorable="d"
       d:DesignHeight="800" d:DesignWidth="1000"
-      Background="#FF0D1117"
+      Background="Transparent"
       Title="Login - TeachAssist">
 
-    <Grid>
-        <!-- Login Card -->
-        <Border Width="420"
-                VerticalAlignment="Center"
-                HorizontalAlignment="Center"
-                Background="#FF161B22"
-                CornerRadius="16"
-                BorderBrush="#FF30363D"
-                BorderThickness="1"
-                Padding="48,40,48,40">
-            <Border.Effect>
-                <DropShadowEffect Color="#000000" BlurRadius="50" ShadowDepth="0" Opacity="0.5"/>
-            </Border.Effect>
+    <Grid Background="#FF0D1117">
+        <Grid.RenderTransform>
+            <TranslateTransform X="0" Y="0"/>
+        </Grid.RenderTransform>
+        <Grid.Triggers>
+            <EventTrigger RoutedEvent="Loaded">
+                <BeginStoryboard>
+                    <Storyboard>
+                        <DoubleAnimation Storyboard.TargetProperty="(UIElement.Opacity)"
+                                         From="0" To="1" Duration="0:0:0.5">
+                            <DoubleAnimation.EasingFunction>
+                                <CubicEase EasingMode="EaseOut"/>
+                            </DoubleAnimation.EasingFunction>
+                        </DoubleAnimation>
+                    </Storyboard>
+                </BeginStoryboard>
+            </EventTrigger>
+        </Grid.Triggers>
 
-            <StackPanel>
+        <!-- Split layout: Left brand panel + Right form -->
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="420"/>
+        </Grid.ColumnDefinitions>
+
+        <!-- Left Panel: Brand -->
+        <Grid Grid.Column="0" Background="#FF010409">
+            <StackPanel VerticalAlignment="Center" HorizontalAlignment="Center" Margin="60">
                 <!-- Logo -->
-                <Border Width="72" Height="72"
-                        CornerRadius="16"
+                <Border Width="80" Height="80"
+                        CornerRadius="20"
                         HorizontalAlignment="Center"
-                        Margin="0,0,0,24">
+                        Margin="0,0,0,32">
                     <Border.Background>
                         <LinearGradientBrush StartPoint="0,0" EndPoint="1,1">
                             <GradientStop Color="#FF58A6FF" Offset="0"/>
@@ -35,10 +48,10 @@
                         </LinearGradientBrush>
                     </Border.Background>
                     <Border.Effect>
-                        <DropShadowEffect Color="#FF58A6FF" BlurRadius="25" ShadowDepth="0" Opacity="0.5"/>
+                        <DropShadowEffect Color="#FF58A6FF" BlurRadius="30" ShadowDepth="0" Opacity="0.4"/>
                     </Border.Effect>
                     <TextBlock Text="TA"
-                               FontSize="28"
+                               FontSize="32"
                                FontWeight="Bold"
                                Foreground="White"
                                HorizontalAlignment="Center"
@@ -46,220 +59,229 @@
                                FontFamily="Segoe UI Variable Display"/>
                 </Border>
 
-                <!-- Title -->
-                <TextBlock Text="Sign in to TeachAssist"
-                           FontSize="22"
-                           FontWeight="SemiBold"
-                           Foreground="{StaticResource TextPrimary}"
+                <TextBlock Text="TeachAssist"
+                           FontSize="36"
+                           FontWeight="Bold"
+                           Foreground="White"
                            HorizontalAlignment="Center"
-                           Margin="0,0,0,8"/>
+                           FontFamily="Segoe UI Variable Display"
+                           Margin="0,0,0,12"/>
 
-                <TextBlock Text="Enter your YRDSB credentials"
-                           FontSize="13"
-                           Foreground="{StaticResource TextSecondary}"
+                <TextBlock Text="Desktop"
+                           FontSize="36"
+                           FontWeight="Bold"
                            HorizontalAlignment="Center"
-                           Margin="0,0,0,8"/>
+                           FontFamily="Segoe UI Variable Display"
+                           Margin="0,0,0,24">
+                    <TextBlock.Foreground>
+                        <LinearGradientBrush StartPoint="0,0" EndPoint="1,0">
+                            <GradientStop Color="#FF58A6FF" Offset="0"/>
+                            <GradientStop Color="#FF238636" Offset="1"/>
+                        </LinearGradientBrush>
+                    </TextBlock.Foreground>
+                </TextBlock>
 
-                <!-- Demo Hint -->
-                <Border Background="#FF21262D"
-                        Padding="10,8"
-                        CornerRadius="6"
-                        HorizontalAlignment="Center"
-                        Margin="0,0,0,28">
-                    <TextBlock Text="Use 'demo' to test with sample grades"
-                               FontSize="11"
-                               Foreground="{StaticResource TextSecondary}"
-                               FontStyle="Italic"/>
-                </Border>
+                <TextBlock Text="Track your YRDSB grades with style."
+                           FontSize="15"
+                           Foreground="#FF8B949E"
+                           HorizontalAlignment="Center"
+                           FontFamily="Segoe UI Variable"
+                           Margin="0,0,0,40"/>
 
-                <!-- Error Message -->
-                <Border x:Name="ErrorBorder"
-                        Background="#3D1818"
-                        BorderBrush="#FFf85149"
-                        BorderThickness="1"
-                        CornerRadius="6"
-                        Padding="12,10"
-                        Margin="0,0,0,20"
-                        Visibility="{Binding ErrorMessage, Converter={StaticResource StringToVisibilityConverter}}">
-                    <TextBlock Text="{Binding ErrorMessage}"
-                               Foreground="#FFf85149"
-                               FontSize="12"
-                               TextWrapping="Wrap"/>
-                </Border>
-
-                <!-- Username -->
-                <StackPanel Margin="0,0,0,16">
-                    <TextBlock Text="Student Number"
-                               FontSize="12"
-                               FontWeight="SemiBold"
-                               Foreground="{StaticResource TextPrimary}"
-                               Margin="0,0,0,6"/>
-                    <Border Background="#FF0D1117"
-                            BorderBrush="#FF30363D"
-                            BorderThickness="1"
-                            CornerRadius="6">
-                        <Grid Margin="12,10">
-                            <TextBlock Text="&#xE77B;"
-                                       FontFamily="Segoe MDL2 Assets"
-                                       FontSize="14"
-                                       Foreground="{StaticResource TextSecondary}"
-                                       VerticalAlignment="Center"/>
-                            <TextBox Text="{Binding Username, UpdateSourceTrigger=PropertyChanged}"
-                                     Background="Transparent"
-                                     Foreground="{StaticResource TextPrimary}"
-                                     BorderThickness="0"
-                                     FontSize="13"
-                                     Padding="28,0,0,0"
-                                     VerticalAlignment="Center"
-                                     VerticalContentAlignment="Center">
-                                <TextBox.InputBindings>
-                                    <KeyBinding Key="Enter" Command="{Binding LoginCommand}"/>
-                                </TextBox.InputBindings>
-                            </TextBox>
-                        </Grid>
+                <!-- Feature pills -->
+                <StackPanel HorizontalAlignment="Center" Orientation="Horizontal">
+                    <Border Background="#FF161B22" CornerRadius="20" Padding="12,8" Margin="0,0,8,0">
+                        <TextBlock FontSize="12" Foreground="#FF8B949E" FontFamily="Segoe UI Variable">
+                            <Run Text="&#xE7E7;" FontFamily="Segoe MDL2 Assets" Foreground="#FF58A6FF"/>
+                            <Run Text="  Grade Trends"/>
+                        </TextBlock>
+                    </Border>
+                    <Border Background="#FF161B22" CornerRadius="20" Padding="12,8" Margin="0,0,8,0">
+                        <TextBlock FontSize="12" Foreground="#FF8B949E" FontFamily="Segoe UI Variable">
+                            <Run Text="&#xE7E8;" FontFamily="Segoe MDL2 Assets" Foreground="#FF238636"/>
+                            <Run Text="  Goal Tracking"/>
+                        </TextBlock>
+                    </Border>
+                    <Border Background="#FF161B22" CornerRadius="20" Padding="12,8">
+                        <TextBlock FontSize="12" Foreground="#FF8B949E" FontFamily="Segoe UI Variable">
+                            <Run Text="&#xE789;" FontFamily="Segoe MDL2 Assets" Foreground="#FFD29922"/>
+                            <Run Text="  What-If Calc"/>
+                        </TextBlock>
                     </Border>
                 </StackPanel>
-
-                <!-- Password -->
-                <StackPanel Margin="0,0,0,20">
-                    <TextBlock Text="Password"
-                               FontSize="12"
-                               FontWeight="SemiBold"
-                               Foreground="{StaticResource TextPrimary}"
-                               Margin="0,0,0,6"/>
-                    <Border Background="#FF0D1117"
-                            BorderBrush="#FF30363D"
-                            BorderThickness="1"
-                            CornerRadius="6">
-                        <Grid Margin="12,10">
-                            <TextBlock Text="&#xE72E;"
-                                       FontFamily="Segoe MDL2 Assets"
-                                       FontSize="14"
-                                       Foreground="{StaticResource TextSecondary}"
-                                       VerticalAlignment="Center"/>
-                            <PasswordBox x:Name="PasswordBox"
-                                         Background="Transparent"
-                                         Foreground="{StaticResource TextPrimary}"
-                                         BorderThickness="0"
-                                         FontSize="13"
-                                         Padding="28,0,0,0"
-                                         VerticalAlignment="Center"
-                                         VerticalContentAlignment="Center"
-                                         PasswordChanged="PasswordBox_PasswordChanged"
-                                         KeyDown="PasswordBox_KeyDown"/>
-                        </Grid>
-                    </Border>
-                </StackPanel>
-
-                <!-- Remember Me -->
-                <CheckBox Content="Remember me"
-                          IsChecked="{Binding RememberMe}"
-                          Foreground="{StaticResource TextPrimary}"
-                          FontSize="12"
-                          Margin="0,0,0,20"/>
-
-                <!-- Login Button -->
-                <Button Content="Sign In"
-                        Command="{Binding LoginCommand}"
-                        HorizontalAlignment="Stretch"
-                        Padding="0,14"
-                        FontSize="14"
-                        FontWeight="SemiBold"
-                        Background="#FF238636"
-                        Foreground="White"
-                        BorderThickness="0"
-                        Cursor="Hand">
-                    <Button.Template>
-                        <ControlTemplate TargetType="Button">
-                            <Border x:Name="ButtonBorder"
-                                    Background="{TemplateBinding Background}"
-                                    CornerRadius="6"
-                                    Padding="{TemplateBinding Padding}"
-                                    Cursor="Hand">
-                                <Border.Effect>
-                                    <DropShadowEffect Color="#FF238636" BlurRadius="15" ShadowDepth="0" Opacity="0.3"/>
-                                </Border.Effect>
-                                <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center">
-                                    <ContentPresenter.Resources>
-                                        <Style TargetType="TextBlock">
-                                            <Setter Property="Foreground" Value="White"/>
-                                        </Style>
-                                    </ContentPresenter.Resources>
-                                </ContentPresenter>
-                            </Border>
-                            <ControlTemplate.Triggers>
-                                <Trigger Property="IsMouseOver" Value="True">
-                                    <Setter TargetName="ButtonBorder" Property="Background" Value="#FF2EA043"/>
-                                </Trigger>
-                                <Trigger Property="IsEnabled" Value="False">
-                                    <Setter TargetName="ButtonBorder" Property="Background" Value="#FF30363D"/>
-                                    <Setter TargetName="ButtonBorder" Property="Effect">
-                                        <Setter.Value>
-                                            <DropShadowEffect Color="#000000" BlurRadius="0" ShadowDepth="0" Opacity="0"/>
-                                        </Setter.Value>
-                                    </Setter>
-                                </Trigger>
-                            </ControlTemplate.Triggers>
-                        </ControlTemplate>
-                    </Button.Template>
-                </Button>
             </StackPanel>
-        </Border>
+        </Grid>
+
+        <!-- Right Panel: Login Form -->
+        <StackPanel Grid.Column="1" VerticalAlignment="Center" Margin="48">
+            <!-- Form Header -->
+            <TextBlock Text="Welcome back"
+                       FontSize="28"
+                       FontWeight="SemiBold"
+                       Foreground="White"
+                       FontFamily="Segoe UI Variable Display"
+                       Margin="0,0,0,6"/>
+
+            <TextBlock Text="Sign in with your YRDSB student credentials"
+                       FontSize="13"
+                       Foreground="#FF8B949E"
+                       FontFamily="Segoe UI Variable"
+                       Margin="0,0,0,32"/>
+
+            <!-- Error Message -->
+            <Border Background="#3D1A1A"
+                    BorderBrush="#FFF85149"
+                    BorderThickness="1"
+                    CornerRadius="8"
+                    Padding="14,12"
+                    Margin="0,0,0,20"
+                    Visibility="{Binding ErrorMessage, Converter={StaticResource StringToVisibilityConverter}}">
+                <StackPanel Orientation="Horizontal">
+                    <TextBlock Text="&#xE783;" FontFamily="Segoe MDL2 Assets" FontSize="14" Foreground="#FFF85149" VerticalAlignment="Center" Margin="0,0,10,0"/>
+                    <TextBlock Text="{Binding ErrorMessage}"
+                               Foreground="#FFF85149"
+                               FontSize="13"
+                               TextWrapping="Wrap"
+                               VerticalAlignment="Center"/>
+                </StackPanel>
+            </Border>
+
+            <!-- Student Number Field -->
+            <StackPanel Margin="0,0,0,16">
+                <TextBlock Text="Student Number"
+                           FontSize="13"
+                           FontWeight="SemiBold"
+                           Foreground="White"
+                           Margin="0,0,0,8"
+                           FontFamily="Segoe UI Variable"/>
+                <Border Background="#FF161B22"
+                        BorderBrush="#FF30363D"
+                        BorderThickness="1"
+                        CornerRadius="8"
+                        Padding="4">
+                    <Grid Margin="12,10">
+                        <TextBlock Text="&#xE77B;"
+                                   FontFamily="Segoe MDL2 Assets"
+                                   FontSize="16"
+                                   Foreground="#FF6E7681"
+                                   VerticalAlignment="Center"/>
+                        <TextBox Text="{Binding Username, UpdateSourceTrigger=PropertyChanged}"
+                                 Background="Transparent"
+                                 Foreground="White"
+                                 BorderThickness="0"
+                                 FontSize="14"
+                                 Padding="32,0,0,0"
+                                 VerticalAlignment="Center"
+                                 VerticalContentAlignment="Center"
+                                 CaretBrush="White"
+                                 FontFamily="Segoe UI Variable">
+                            <TextBox.InputBindings>
+                                <KeyBinding Key="Enter" Command="{Binding LoginCommand}"/>
+                            </TextBox.InputBindings>
+                        </TextBox>
+                    </Grid>
+                </Border>
+            </StackPanel>
+
+            <!-- Password Field -->
+            <StackPanel Margin="0,0,0,20">
+                <TextBlock Text="Password"
+                           FontSize="13"
+                           FontWeight="SemiBold"
+                           Foreground="White"
+                           Margin="0,0,0,8"
+                           FontFamily="Segoe UI Variable"/>
+                <Border Background="#FF161B22"
+                        BorderBrush="#FF30363D"
+                        BorderThickness="1"
+                        CornerRadius="8"
+                        Padding="4">
+                    <Grid Margin="12,10">
+                        <TextBlock Text="&#xE72E;"
+                                   FontFamily="Segoe MDL2 Assets"
+                                   FontSize="16"
+                                   Foreground="#FF6E7681"
+                                   VerticalAlignment="Center"/>
+                        <PasswordBox x:Name="PasswordBox"
+                                     Background="Transparent"
+                                     Foreground="White"
+                                     BorderThickness="0"
+                                     FontSize="14"
+                                     Padding="32,0,0,0"
+                                     VerticalAlignment="Center"
+                                     VerticalContentAlignment="Center"
+                                     CaretBrush="White"
+                                     PasswordChanged="PasswordBox_PasswordChanged"
+                                     KeyDown="PasswordBox_KeyDown"
+                                     FontFamily="Segoe UI Variable"/>
+                    </Grid>
+                </Border>
+            </StackPanel>
+
+            <!-- Remember Me -->
+            <CheckBox Content="Remember me"
+                      IsChecked="{Binding RememberMe}"
+                      Foreground="#FF8B949E"
+                      FontSize="13"
+                      Margin="0,0,0,24"
+                      FontFamily="Segoe UI Variable"/>
+
+            <!-- Login Button -->
+            <Button Content="Sign In"
+                    Command="{Binding LoginCommand}"
+                    Style="{StaticResource PrimaryButton}"
+                    HorizontalAlignment="Stretch"
+                    Padding="0,14"
+                    FontSize="15"
+                    FontWeight="SemiBold"
+                    FontFamily="Segoe UI Variable"
+                    Height="48"
+                    Margin="0,0,0,16"/>
+
+            <!-- Demo Hint -->
+            <Border Background="#FF161B22"
+                    Padding="12,10"
+                    CornerRadius="8"
+                    HorizontalAlignment="Center">
+                <TextBlock FontSize="12" Foreground="#FF6E7681" FontFamily="Segoe UI Variable">
+                    <Run Text="&#xE946;" FontFamily="Segoe MDL2 Assets"/>
+                    <Run Text=" Type "/>
+                    <Run Text="demo" FontWeight="SemiBold" Foreground="#FF8B949E"/>
+                    <Run Text=" to test with sample grades"/>
+                </TextBlock>
+            </Border>
+        </StackPanel>
 
         <!-- Loading Overlay -->
-        <Grid x:Name="LoadingOverlay"
-              Background="#DD000000"
+        <Grid Grid.ColumnSpan="2"
+              Background="#CC000000"
               Visibility="{Binding IsLoading, Converter={StaticResource BooleanToVisibilityConverter}}">
             <StackPanel VerticalAlignment="Center" HorizontalAlignment="Center">
-                <!-- Dual Ring Spinner -->
-                <Grid Width="70" Height="70" Margin="0,0,0,16">
-                    <!-- Outer Ring -->
-                    <Border Width="70" Height="70"
-                            BorderThickness="3"
-                            BorderBrush="#FF58A6FF"
-                            CornerRadius="35"
-                            Opacity="0.3">
-                        <Border.RenderTransform>
-                            <RotateTransform Angle="0"/>
-                        </Border.RenderTransform>
-                        <Border.Triggers>
-                            <EventTrigger RoutedEvent="Loaded">
-                                <BeginStoryboard>
-                                    <Storyboard RepeatBehavior="Forever">
-                                        <DoubleAnimation Storyboard.TargetProperty="(UIElement.RenderTransform).(RotateTransform.Angle)"
-                                                       From="0" To="360" Duration="0:0:2"/>
-                                    </Storyboard>
-                                </BeginStoryboard>
-                            </EventTrigger>
-                        </Border.Triggers>
-                    </Border>
-
-                    <!-- Inner Ring -->
-                    <Border Width="50" Height="50"
-                            BorderThickness="3"
-                            BorderBrush="#FF238636"
-                            CornerRadius="25">
-                        <Border.RenderTransform>
-                            <RotateTransform Angle="0"/>
-                        </Border.RenderTransform>
-                        <Border.Triggers>
-                            <EventTrigger RoutedEvent="Loaded">
-                                <BeginStoryboard>
-                                    <Storyboard RepeatBehavior="Forever">
-                                        <DoubleAnimation Storyboard.TargetProperty="(UIElement.RenderTransform).(RotateTransform.Angle)"
-                                                       From="360" To="0" Duration="0:0:1.5"/>
-                                    </Storyboard>
-                                </BeginStoryboard>
-                            </EventTrigger>
-                        </Border.Triggers>
-                    </Border>
-                </Grid>
-
+                <Border Width="56" Height="56"
+                        BorderThickness="3"
+                        BorderBrush="#FF58A6FF"
+                        CornerRadius="28"
+                        Margin="0,0,0,20">
+                    <Border.RenderTransform>
+                        <RotateTransform Angle="0"/>
+                    </Border.RenderTransform>
+                    <Border.Triggers>
+                        <EventTrigger RoutedEvent="Loaded">
+                            <BeginStoryboard>
+                                <Storyboard RepeatBehavior="Forever">
+                                    <DoubleAnimation Storyboard.TargetProperty="(UIElement.RenderTransform).(RotateTransform.Angle)"
+                                                   From="0" To="360" Duration="0:0:1"/>
+                                </Storyboard>
+                            </BeginStoryboard>
+                        </EventTrigger>
+                    </Border.Triggers>
+                </Border>
                 <TextBlock Text="Signing in..."
-                           Foreground="{StaticResource TextPrimary}"
+                           Foreground="White"
                            FontSize="16"
                            FontWeight="SemiBold"
-                           HorizontalAlignment="Center"/>
+                           HorizontalAlignment="Center"
+                           FontFamily="Segoe UI Variable Display"/>
             </StackPanel>
         </Grid>
     </Grid>
