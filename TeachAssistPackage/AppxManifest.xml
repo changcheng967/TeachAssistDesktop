@@ -6,7 +6,7 @@
 
   <Identity Name="changcheng967.TeachAssistDesktop"
             Publisher="CN=52C84AF2-939E-4010-8F14-E9E00B7BDA21"
-            Version="3.0.0.0"
+            Version="3.0.1.0"
             ProcessorArchitecture="x64" />
 
   <Properties>
