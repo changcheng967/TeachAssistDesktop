@@ -139,9 +139,8 @@ public partial class MainWindow : FluentWindow
         if (page != null)
         {
             _currentView = baseView;
-            // Place page directly in ContentArea Grid
-            ContentArea.Children.Clear();
-            ContentArea.Children.Add(page);
+            // Navigate Frame to the page (Frame is the proper host for Page)
+            ContentArea.Navigate(page);
         }
     }
 

@@ -21,10 +21,17 @@ public partial class App : Application
         base.OnStartup(e);
 
         // Apply initial theme from Windows settings
-        ApplicationThemeManager.Apply(
-            ApplicationThemeManager.GetSystemTheme() == SystemTheme.Dark
-                ? ApplicationTheme.Dark
-                : ApplicationTheme.Light);
+        try
+        {
+            ApplicationThemeManager.Apply(
+                ApplicationThemeManager.GetSystemTheme() == SystemTheme.Dark
+                    ? ApplicationTheme.Dark
+                    : ApplicationTheme.Light);
+        }
+        catch
+        {
+            // Theme detection is non-critical
+        }
 
         _host = Host.CreateDefaultBuilder()
             .ConfigureServices((context, services) =>

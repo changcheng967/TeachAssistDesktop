@@ -41,6 +41,6 @@
         </ui:NavigationView>
 
         <!-- Content area (separate from NavigationView to avoid frame/scroll conflicts) -->
-        <Grid x:Name="ContentArea" Grid.Column="1" Margin="0,32,0,0"/>
+        <Frame x:Name="ContentArea" Grid.Column="1" Margin="0,32,0,0" NavigationUIVisibility="Hidden"/>
     </Grid>
 </ui:FluentWindow>
