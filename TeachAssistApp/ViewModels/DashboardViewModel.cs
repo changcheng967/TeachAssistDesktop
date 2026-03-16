@@ -38,6 +38,9 @@ public partial class DashboardViewModel : ObservableObject
     [ObservableProperty]
     private bool _isEmpty;
 
+    [ObservableProperty]
+    private string _schoolName = "YRDSB";
+
     private readonly IServiceProvider _serviceProvider;
 
     public DashboardViewModel(
@@ -76,7 +79,9 @@ public partial class DashboardViewModel : ObservableObject
             if (Courses.Count == 0)
             {
                 ErrorMessage = _teachAssistService.LastError ?? "No courses found. Check your credentials and try again.";
+#if DEBUG
                 System.Diagnostics.Debug.WriteLine($"No courses loaded. Error: {_teachAssistService.LastError}");
+#endif
             }
 
             CalculateStatistics();
@@ -84,7 +89,9 @@ public partial class DashboardViewModel : ObservableObject
         catch (Exception ex)
         {
             ErrorMessage = $"Failed to load courses: {ex.Message}";
+#if DEBUG
             System.Diagnostics.Debug.WriteLine($"LoadCoursesAsync exception: {ex}");
+#endif
         }
         finally
         {
@@ -97,10 +104,12 @@ public partial class DashboardViewModel : ObservableObject
     {
         if (course != null)
         {
+#if DEBUG
             System.Diagnostics.Debug.WriteLine($"SelectCourse called: {course.Code}");
             System.Diagnostics.Debug.WriteLine($"  SubjectId: {course.SubjectId}");
             System.Diagnostics.Debug.WriteLine($"  StudentId: {course.StudentId}");
             System.Diagnostics.Debug.WriteLine($"  Assignments count: {course.Assignments.Count}");
+#endif
 
             // Navigate to course detail
             _navigationService.NavigateTo($"CourseDetail|{course.Code}");

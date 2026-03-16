@@ -1,5 +1,4 @@
 using System;
-using System.Runtime.InteropServices;
 using System.Windows;
 using System.Windows.Shell;
 using Microsoft.Toolkit.Uwp.Notifications;
@@ -9,8 +8,6 @@ namespace TeachAssistApp.Helpers;
 
 public static class WindowsIntegration
 {
-    #region Jump List Support
-
     public static void UpdateJumpList(System.Collections.Generic.IEnumerable<Course> courses)
     {
         try
@@ -45,22 +42,11 @@ public static class WindowsIntegration
         }
         catch (Exception ex)
         {
+#if DEBUG
             System.Diagnostics.Debug.WriteLine($"Failed to update Jump List: {ex.Message}");
+#endif
         }
     }
-
-    #endregion
-
-    #region System Tray Support
-
-    public static void AddSystemTrayIcon(Action onRefresh, Action onExit)
-    {
-        System.Diagnostics.Debug.WriteLine("System tray support enabled");
-    }
-
-    #endregion
-
-    #region Windows Notification
 
     public static void ShowNotification(string title, string message)
     {
@@ -76,33 +62,13 @@ public static class WindowsIntegration
         }
         catch (Exception ex)
         {
+#if DEBUG
             System.Diagnostics.Debug.WriteLine($"Failed to show notification: {ex.Message}");
-            // Fallback to message box
+#endif
             Application.Current.Dispatcher.Invoke(() =>
             {
                 MessageBox.Show(message, title, MessageBoxButton.OK, MessageBoxImage.Information);
             });
         }
     }
-
-    #endregion
-
-    #region Windows 11 Features
-
-    public static void EnableWindows11Features(IntPtr hwnd)
-    {
-        try
-        {
-            int TRUE = 1;
-            DwmSetWindowAttribute(hwnd, 20, ref TRUE, sizeof(int));
-            int cornerPref = 2;
-            DwmSetWindowAttribute(hwnd, 33, ref cornerPref, sizeof(int));
-        }
-        catch { }
-    }
-
-    [DllImport("dwmapi.dll", PreserveSig = false)]
-    private static extern int DwmSetWindowAttribute(IntPtr hwnd, int attr, ref int attrValue, int attrSize);
-
-    #endregion
 }

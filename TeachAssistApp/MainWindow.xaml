@@ -31,8 +31,7 @@
                            IsBackButtonVisible="Collapsed"
                            IsPaneToggleVisible="False"
                            OpenPaneLength="200"
-                           Margin="0,32,0,0"
-                           SelectionChanged="RootNavigation_SelectionChanged">
+                           Margin="0,32,0,0">
 
             <ui:NavigationView.MenuItems>
                 <ui:NavigationViewItem Content="Dashboard" Icon="{ui:SymbolIcon Home24}" Tag="Dashboard"/>

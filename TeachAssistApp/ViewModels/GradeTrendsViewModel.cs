@@ -73,7 +73,9 @@ public partial class GradeTrendsViewModel : ObservableObject
         }
         catch (Exception ex)
         {
+#if DEBUG
             System.Diagnostics.Debug.WriteLine($"Error loading trends: {ex.Message}");
+#endif
             Insights.Add($"Error loading data: {ex.Message}");
         }
     }

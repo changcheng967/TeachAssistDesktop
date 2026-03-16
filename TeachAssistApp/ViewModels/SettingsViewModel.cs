@@ -39,9 +39,6 @@ public partial class SettingsViewModel : ObservableObject
     private bool _isDarkMode;
 
     [ObservableProperty]
-    private bool _enableNotifications = true;
-
-    [ObservableProperty]
     private int _autoRefreshIndex = 0;
 
     [ObservableProperty]
@@ -65,8 +62,8 @@ public partial class SettingsViewModel : ObservableObject
         _serviceProvider = serviceProvider;
         _pdfExporter = pdfExporter;
 
-        // Sync dark mode toggle with current application theme
-        _isDarkMode = ApplicationThemeManager.GetSystemTheme() == SystemTheme.Dark;
+        // Dark mode is the default — sync toggle to match
+        _isDarkMode = true;
 
         LoadUserData();
     }
@@ -316,7 +313,7 @@ public partial class SettingsViewModel : ObservableObject
     }
 
     [RelayCommand]
-    private async Task CheckUpdatesAsync()
+    private async Task RefreshSummaryAsync()
     {
         IsLoading = true;
         ErrorMessage = null;
@@ -327,13 +324,13 @@ public partial class SettingsViewModel : ObservableObject
             var courses = await _teachAssistService.GetCoursesAsync();
             var coursesWithMarks = courses.Where(c => c.HasValidMark).ToList();
 
-            SuccessMessage = $"🔔 Checked! You have {coursesWithMarks.Count} graded courses. Average: {coursesWithMarks.Average(c => c.NumericMark ?? 0):F1}%";
+            SuccessMessage = $"Refreshed! You have {coursesWithMarks.Count} graded courses. Average: {coursesWithMarks.Average(c => c.NumericMark ?? 0):F1}%";
             await Task.Delay(3000);
             SuccessMessage = null;
         }
         catch (Exception ex)
         {
-            ErrorMessage = $"Failed to check for updates: {ex.Message}";
+            ErrorMessage = $"Failed to refresh summary: {ex.Message}";
         }
         finally
         {

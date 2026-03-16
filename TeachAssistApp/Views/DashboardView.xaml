@@ -28,7 +28,7 @@
                            FontWeight="SemiBold"
                            Foreground="{DynamicResource TextFillColorPrimaryBrush}"
                            Margin="0,0,0,4"/>
-                <TextBlock Text="Pierre Elliott Trudeau High School"
+                <TextBlock Text="{Binding SchoolName}"
                            FontSize="14"
                            Foreground="{DynamicResource TextFillColorSecondaryBrush}"/>
             </StackPanel>
@@ -36,7 +36,7 @@
             <ui:Button Grid.Column="1" Content="Refresh"
                        Command="{Binding LoadCoursesCommand}"
                        Appearance="Primary"
-                       Icon="{ui:SymbolIcon ArrowSync24}"
+                       Icon="{ui:SymbolIcon ArrowSyncCheckmark24}"
                        VerticalAlignment="Top"
                        Margin="0,4,0,0"/>
         </Grid>
@@ -149,7 +149,7 @@
 
         <!-- Loading Overlay -->
         <Grid Grid.RowSpan="3"
-              Background="#AA000000"
+              Background="#99000000"
               Visibility="{Binding IsLoading, Converter={StaticResource BooleanToVisibilityConverter}}">
             <StackPanel VerticalAlignment="Center" HorizontalAlignment="Center">
                 <ui:ProgressRing IsIndeterminate="True" Width="48" Height="48" Margin="0,0,0,16"/>

@@ -217,7 +217,7 @@
     </ScrollViewer>
 
     <!-- Loading Overlay (outside ScrollViewer so it overlays) -->
-    <Grid Background="#AA000000"
+    <Grid Background="#99000000"
           Visibility="{Binding IsLoading, Converter={StaticResource BooleanToVisibilityConverter}}">
         <ui:ProgressRing IsIndeterminate="True" Width="40" Height="40" VerticalAlignment="Center" HorizontalAlignment="Center"/>
     </Grid>

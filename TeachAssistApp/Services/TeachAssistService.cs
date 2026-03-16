@@ -54,7 +54,9 @@ public class TeachAssistService : ITeachAssistService
         // Demo mode for testing
         if (UseDemoMode || username.Equals("demo", StringComparison.OrdinalIgnoreCase))
         {
+#if DEBUG
             System.Diagnostics.Debug.WriteLine("Using demo mode with mock data");
+#endif
             _cachedCourses = GetMockCourses();
             IsLoggedIn = true;
             return true;
@@ -63,13 +65,17 @@ public class TeachAssistService : ITeachAssistService
         // Direct login to TeachAssist root API (FAST - no 3rd party timeout)
         try
         {
+#if DEBUG
             System.Diagnostics.Debug.WriteLine("Logging in to TeachAssist...");
+#endif
             return await TryDirectLoginAsync(username, password);
         }
         catch (Exception ex)
         {
             _lastError = $"Direct login failed: {ex.Message}";
+#if DEBUG
             System.Diagnostics.Debug.WriteLine($"Direct login exception: {ex}");
+#endif
             return false;
         }
     }
@@ -90,7 +96,9 @@ public class TeachAssistService : ITeachAssistService
             var postResponse = await _httpClient.PostAsync("https://ta.yrdsb.ca/yrdsb/", content);
 
             var responseContent = await postResponse.Content.ReadAsStringAsync();
+#if DEBUG
             System.Diagnostics.Debug.WriteLine($"Login POST response, status: {postResponse.StatusCode}, length: {responseContent.Length}");
+#endif
 
             // Check for login failure indicators
             if (responseContent.Contains("Invalid") || responseContent.Contains("failed") ||
@@ -108,7 +116,9 @@ public class TeachAssistService : ITeachAssistService
             {
                 IsLoggedIn = true;
                 _cachedCourses = courses;
+#if DEBUG
                 System.Diagnostics.Debug.WriteLine($"Successfully parsed {_cachedCourses.Count} courses from login response");
+#endif
                 return true;
             }
 
@@ -119,7 +129,9 @@ public class TeachAssistService : ITeachAssistService
         catch (HttpRequestException ex)
         {
             _lastError = $"Network error: {ex.Message}";
+#if DEBUG
             System.Diagnostics.Debug.WriteLine($"HTTP request exception: {ex}");
+#endif
             return false;
         }
         catch (TaskCanceledException)
@@ -142,18 +154,24 @@ public class TeachAssistService : ITeachAssistService
             var courseTable = doc.DocumentNode.SelectSingleNode("//table[@width='85%']");
             if (courseTable == null)
             {
+#if DEBUG
                 System.Diagnostics.Debug.WriteLine("ParseStudentPage: Could not find course table with width='85%'");
+#endif
                 return courses;
             }
 
             var rows = courseTable.SelectNodes(".//tr");
             if (rows == null || rows.Count < 2)
             {
+#if DEBUG
                 System.Diagnostics.Debug.WriteLine("ParseStudentPage: Course table has no data rows");
+#endif
                 return courses;
             }
 
+#if DEBUG
             System.Diagnostics.Debug.WriteLine($"ParseStudentPage: Found {rows.Count - 1} data rows in course table");
+#endif
 
             // Skip first row (header)
             for (int i = 1; i < rows.Count; i++)
@@ -282,19 +300,27 @@ public class TeachAssistService : ITeachAssistService
                     }
 
                     courses.Add(course);
+#if DEBUG
                     System.Diagnostics.Debug.WriteLine($"Parsed course: {course.Code} - {course.Name} - Mark: {course.OverallMark} - SubjectId: {course.SubjectId}");
+#endif
                 }
                 catch (Exception ex)
                 {
+#if DEBUG
                     System.Diagnostics.Debug.WriteLine($"Error parsing course row: {ex.Message}");
+#endif
                 }
             }
 
+#if DEBUG
             System.Diagnostics.Debug.WriteLine($"Total courses parsed: {courses.Count}");
+#endif
         }
         catch (Exception ex)
         {
+#if DEBUG
             System.Diagnostics.Debug.WriteLine($"ParseStudentPage exception: {ex}");
+#endif
         }
 
         return courses;
@@ -349,7 +375,9 @@ public class TeachAssistService : ITeachAssistService
         // Return cached courses from login
         if (_cachedCourses != null && _cachedCourses.Count > 0)
         {
+#if DEBUG
             System.Diagnostics.Debug.WriteLine($"Returning {_cachedCourses.Count} cached courses");
+#endif
             return await Task.FromResult(_cachedCourses);
         }
 
@@ -399,7 +427,9 @@ public class TeachAssistService : ITeachAssistService
         }
         catch (Exception ex)
         {
+#if DEBUG
             System.Diagnostics.Debug.WriteLine($"Parse API courses exception: {ex}");
+#endif
         }
 
         return new List<Course>();
@@ -450,7 +480,9 @@ public class TeachAssistService : ITeachAssistService
             course.WeightTable = ParseApiWeightTable(weightElement);
         }
 
+#if DEBUG
         System.Diagnostics.Debug.WriteLine($"Parsed course: {course.Code} - {course.Name} - Mark: {course.OverallMark}");
+#endif
         return course;
     }
 
@@ -622,12 +654,15 @@ public class TeachAssistService : ITeachAssistService
         }
         catch (Exception ex)
         {
+#if DEBUG
             System.Diagnostics.Debug.WriteLine($"Error during logout: {ex.Message}");
+#endif
         }
     }
 
     public async Task<Course?> GetCourseDetailsAsync(string subjectId, string studentId)
     {
+#if DEBUG
         System.Diagnostics.Debug.WriteLine($"GetCourseDetailsAsync called: subject_id={subjectId}, student_id={studentId}");
 
         // Debug: Show cookies
@@ -637,11 +672,14 @@ public class TeachAssistService : ITeachAssistService
         {
             System.Diagnostics.Debug.WriteLine($"    {cookie.Name} = {cookie.Value}");
         }
+#endif
 
         if (!IsLoggedIn)
         {
             _lastError = "Not logged in";
+#if DEBUG
             System.Diagnostics.Debug.WriteLine($"  Not logged in");
+#endif
             return null;
         }
 
@@ -669,9 +707,13 @@ public class TeachAssistService : ITeachAssistService
                 fallbackUrl = $"https://ta.yrdsb.ca/live/students/viewReport.php?subject_id={subjectId}&student_id={studentId}";
             }
 
+#if DEBUG
             System.Diagnostics.Debug.WriteLine($"  Primary URL: {primaryUrl}");
+#endif
             var response = await _httpClient.GetAsync(primaryUrl);
+#if DEBUG
             System.Diagnostics.Debug.WriteLine($"  Response status: {response.StatusCode}");
+#endif
 
             string html = string.Empty;
             bool needRetry = false;
@@ -679,11 +721,15 @@ public class TeachAssistService : ITeachAssistService
             if (response.IsSuccessStatusCode)
             {
                 html = await response.Content.ReadAsStringAsync();
+#if DEBUG
                 System.Diagnostics.Debug.WriteLine($"  HTML length: {html.Length}");
+#endif
 
                 if (html.Length < 5000)
                 {
+#if DEBUG
                     System.Diagnostics.Debug.WriteLine($"  HTML too small ({html.Length} bytes), likely an error page");
+#endif
                     needRetry = true;
                 }
             }
@@ -694,21 +740,29 @@ public class TeachAssistService : ITeachAssistService
 
             if (needRetry)
             {
+#if DEBUG
                 System.Diagnostics.Debug.WriteLine($"  Trying fallback: {fallbackUrl}");
+#endif
                 response = await _httpClient.GetAsync(fallbackUrl);
+#if DEBUG
                 System.Diagnostics.Debug.WriteLine($"  Fallback response status: {response.StatusCode}");
+#endif
 
                 if (response.IsSuccessStatusCode)
                 {
                     html = await response.Content.ReadAsStringAsync();
+#if DEBUG
                     System.Diagnostics.Debug.WriteLine($"  HTML length: {html.Length}");
+#endif
                 }
             }
 
             if (response.IsSuccessStatusCode && !string.IsNullOrEmpty(html))
             {
                 var parsedCourse = ParseCourseDetail(html, subjectId, studentId);
+#if DEBUG
                 System.Diagnostics.Debug.WriteLine($"  Parsed course has {parsedCourse?.Assignments.Count ?? 0} assignments");
+#endif
                 return parsedCourse;
             }
             else
@@ -720,7 +774,9 @@ public class TeachAssistService : ITeachAssistService
         catch (Exception ex)
         {
             _lastError = $"Error fetching course details: {ex.Message}";
+#if DEBUG
             System.Diagnostics.Debug.WriteLine($"GetCourseDetailsAsync exception: {ex}");
+#endif
             return null;
         }
     }
@@ -735,7 +791,9 @@ public class TeachAssistService : ITeachAssistService
     {
         try
         {
+#if DEBUG
             System.Diagnostics.Debug.WriteLine("ParseCourseDetail: detecting template type");
+#endif
 
             // Template B signatures (check first — more specific)
             bool isOe = html.Contains("By Overall Expectation") ||
@@ -751,29 +809,39 @@ public class TeachAssistService : ITeachAssistService
 
             if (isOe && !hasCategoryColors)
             {
+#if DEBUG
                 System.Diagnostics.Debug.WriteLine("  => Template B (Overall Expectation)");
+#endif
                 return ParseOECourseDetail(html, subjectId, studentId);
             }
 
             if (hasCategoryColors || hasStandardTable)
             {
+#if DEBUG
                 System.Diagnostics.Debug.WriteLine("  => Template A (Standard Category)");
+#endif
                 return ParseStandardCourseDetail(html, subjectId, studentId);
             }
 
             if (isOe)
             {
+#if DEBUG
                 System.Diagnostics.Debug.WriteLine("  => Template B (Overall Expectation, no category colors)");
+#endif
                 return ParseOECourseDetail(html, subjectId, studentId);
             }
 
             // Template C fallback
+#if DEBUG
             System.Diagnostics.Debug.WriteLine("  => Template C (Fallback)");
+#endif
             return ParseFallbackCourseDetail(html, subjectId, studentId);
         }
         catch (Exception ex)
         {
+#if DEBUG
             System.Diagnostics.Debug.WriteLine($"ParseCourseDetail exception: {ex}");
+#endif
             return null;
         }
     }
@@ -796,7 +864,9 @@ public class TeachAssistService : ITeachAssistService
             string? courseCode = ExtractCourseCode(doc);
             if (string.IsNullOrEmpty(courseCode))
             {
+#if DEBUG
                 System.Diagnostics.Debug.WriteLine("  No course code found in h2 tag");
+#endif
                 return null;
             }
 
@@ -807,7 +877,9 @@ public class TeachAssistService : ITeachAssistService
                 StudentId = studentId,
                 Name = "Course" // Will be filled from cached course list
             };
+#if DEBUG
             System.Diagnostics.Debug.WriteLine($"  Course code: {course.Code}");
+#endif
 
             // Find the assignment table
             var assignTable = doc.DocumentNode.SelectSingleNode("//table[@border='1'][@cellpadding='3'][@cellspacing='0'][@width='100%']");
@@ -818,7 +890,9 @@ public class TeachAssistService : ITeachAssistService
                 var rows = assignTable.SelectNodes(".//tr");
                 if (rows != null)
                 {
+#if DEBUG
                     System.Diagnostics.Debug.WriteLine($"  Found {rows.Count} rows in assignment table");
+#endif
 
                     for (int i = 0; i < rows.Count; i++)
                     {
@@ -838,7 +912,9 @@ public class TeachAssistService : ITeachAssistService
                                 assignmentName.Contains("Category", StringComparison.OrdinalIgnoreCase))
                                 continue;
 
+#if DEBUG
                             System.Diagnostics.Debug.WriteLine($"    Processing: '{assignmentName}'");
+#endif
 
                             // --- Extract feedback from second row of pair ---
                             string? feedback = null;
@@ -894,14 +970,18 @@ public class TeachAssistService : ITeachAssistService
                         }
                         catch (Exception ex)
                         {
+#if DEBUG
                             System.Diagnostics.Debug.WriteLine($"    Error parsing row: {ex.Message}");
+#endif
                         }
                     }
                 }
             }
             else
             {
+#if DEBUG
                 System.Diagnostics.Debug.WriteLine("  No assignment table found");
+#endif
             }
 
             // --- Weight table: <table cellpadding="5"> with bgcolor-based rows ---
@@ -910,12 +990,16 @@ public class TeachAssistService : ITeachAssistService
             // --- Overall mark ---
             ExtractOverallMark(html, course);
 
+#if DEBUG
             System.Diagnostics.Debug.WriteLine($"Parsed Template A: {course.Code} - {course.Assignments.Count} assignments, Overall: {course.OverallMark}");
+#endif
             return course;
         }
         catch (Exception ex)
         {
+#if DEBUG
             System.Diagnostics.Debug.WriteLine($"ParseStandardCourseDetail exception: {ex}");
+#endif
             return null;
         }
     }
@@ -957,7 +1041,9 @@ public class TeachAssistService : ITeachAssistService
                 IsCGCFormat = true
             };
 
+#if DEBUG
             System.Diagnostics.Debug.WriteLine($"  OE Course code: {course.Code}");
+#endif
 
             // --- Primary: Parse Chart.js bubble chart data (real OE format) ---
             ParseOEChartJsData(html, course);
@@ -965,7 +1051,9 @@ public class TeachAssistService : ITeachAssistService
             // --- Fallback: If no Chart.js data found, try traditional Assessment Tasks table ---
             if (course.Assignments.Count == 0)
             {
+#if DEBUG
                 System.Diagnostics.Debug.WriteLine("  No Chart.js data found, trying traditional OE table format");
+#endif
                 var doc = new HtmlDocument();
                 doc.LoadHtml(html);
                 ParseOETaskTable(html, doc, course, "Assessment Tasks");
@@ -1001,12 +1089,16 @@ public class TeachAssistService : ITeachAssistService
                 ExtractOverallMark(html, course);
             }
 
+#if DEBUG
             System.Diagnostics.Debug.WriteLine($"Parsed Template B (OE): {course.Code} - {course.Assignments.Count} assignments, {course.AssignmentTrends.Count} trends, Overall: {course.OverallMark}");
+#endif
             return course;
         }
         catch (Exception ex)
         {
+#if DEBUG
             System.Diagnostics.Debug.WriteLine($"ParseOECourseDetail exception: {ex}");
+#endif
             return null;
         }
     }
@@ -1077,7 +1169,9 @@ public class TeachAssistService : ITeachAssistService
             searchPos = closeBrace + 1;
         }
 
+#if DEBUG
         System.Diagnostics.Debug.WriteLine($"  Found {charts.Count} Chart.js instances");
+#endif
 
         foreach (var (expectationHint, chartBody) in charts)
         {
@@ -1178,7 +1272,9 @@ public class TeachAssistService : ITeachAssistService
                             Type = assessmentType
                         });
 
+#if DEBUG
                         System.Diagnostics.Debug.WriteLine($"    OE Chart: {names[i]} | {expectationCode} | {mark}% | type={assessmentType}");
+#endif
                     }
 
                     pos = objEnd + 1;
@@ -1186,7 +1282,9 @@ public class TeachAssistService : ITeachAssistService
             }
             catch (Exception ex)
             {
+#if DEBUG
                 System.Diagnostics.Debug.WriteLine($"    Error parsing Chart.js block: {ex.Message}");
+#endif
             }
         }
     }
@@ -1215,7 +1313,9 @@ public class TeachAssistService : ITeachAssistService
     {
         try
         {
+#if DEBUG
             System.Diagnostics.Debug.WriteLine("ParseFallbackCourseDetail: best-effort extraction");
+#endif
 
             var doc = new HtmlDocument();
             doc.LoadHtml(html);
@@ -1308,12 +1408,16 @@ public class TeachAssistService : ITeachAssistService
                     course.OverallMark = m;
             }
 
+#if DEBUG
             System.Diagnostics.Debug.WriteLine($"Parsed Template C (Fallback): {course.Code} - {course.Assignments.Count} assignments (partial), Overall: {course.OverallMark}");
+#endif
             return course;
         }
         catch (Exception ex)
         {
+#if DEBUG
             System.Diagnostics.Debug.WriteLine($"ParseFallbackCourseDetail exception: {ex}");
+#endif
             return null;
         }
     }
@@ -1392,7 +1496,9 @@ public class TeachAssistService : ITeachAssistService
             Feedback = feedback
         });
 
+#if DEBUG
         System.Diagnostics.Debug.WriteLine($"      {category}: {achieved}/{possible} weight={weight}");
+#endif
     }
 
     /// <summary>
@@ -1411,14 +1517,18 @@ public class TeachAssistService : ITeachAssistService
 
         if (weightTable == null)
         {
+#if DEBUG
             System.Diagnostics.Debug.WriteLine("  No weight table found");
+#endif
             return;
         }
 
         var rows = weightTable.SelectNodes(".//tr");
         if (rows == null) return;
 
+#if DEBUG
         System.Diagnostics.Debug.WriteLine($"  Found {rows.Count} weight table rows");
+#endif
 
         foreach (var row in rows)
         {
@@ -1459,14 +1569,18 @@ public class TeachAssistService : ITeachAssistService
                     if (double.TryParse(weightStr, out var weight) && weight > 0 && weight <= 100)
                     {
                         course.WeightTable.SetWeight(category, weight);
+#if DEBUG
                         System.Diagnostics.Debug.WriteLine($"    Weight: {category} = {weight}%");
+#endif
                         break;
                     }
                 }
             }
             catch (Exception ex)
             {
+#if DEBUG
                 System.Diagnostics.Debug.WriteLine($"    Error parsing weight row: {ex.Message}");
+#endif
             }
         }
     }
@@ -1589,7 +1703,9 @@ public class TeachAssistService : ITeachAssistService
         var rows = table.SelectNodes(".//tr");
         if (rows == null) return;
 
+#if DEBUG
         System.Diagnostics.Debug.WriteLine($"  OE table: {rows.Count} rows");
+#endif
 
         int dataRowCount = 0;
         foreach (var row in rows)
@@ -1706,14 +1822,20 @@ public class TeachAssistService : ITeachAssistService
                 }
 
                 dataRowCount++;
+#if DEBUG
                 System.Diagnostics.Debug.WriteLine($"    OE: {taskName} | {category} | {achieved}/{possible} | w={weight}");
+#endif
             }
             catch (Exception ex)
             {
+#if DEBUG
                 System.Diagnostics.Debug.WriteLine($"    OE row error: {ex.Message}");
+#endif
             }
         }
 
+#if DEBUG
         System.Diagnostics.Debug.WriteLine($"  OE table: extracted {dataRowCount} assignments");
+#endif
     }
 }

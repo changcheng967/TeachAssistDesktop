@@ -14,7 +14,6 @@ public partial class MainWindow : FluentWindow
     private readonly IServiceProvider _serviceProvider;
     private readonly Helpers.INavigationService _navigationService;
     private string _currentView = "";
-    private bool _suppressSelectionChange = false;
     private NavigationViewItem? _dashboardItem;
     private NavigationViewItem? _settingsItem;
     private string? _pendingNavigation;
@@ -71,13 +70,15 @@ public partial class MainWindow : FluentWindow
     {
         WindowsIntegration.UpdateJumpList([]);
 
-        // Cache nav items
+        // Cache nav items and wire click handlers
         foreach (var item in RootNavigation.MenuItems)
         {
             if (item is NavigationViewItem navItem)
             {
                 if (navItem.Tag?.ToString() == "Dashboard") _dashboardItem = navItem;
                 if (navItem.Tag?.ToString() == "Settings") _settingsItem = navItem;
+
+                navItem.PreviewMouseLeftButtonDown += NavItem_PreviewMouseLeftButtonDown;
             }
         }
 
@@ -86,6 +87,18 @@ public partial class MainWindow : FluentWindow
         {
             NavigateTo(_pendingNavigation);
             _pendingNavigation = null;
+        }
+    }
+
+    private void NavItem_PreviewMouseLeftButtonDown(object sender, MouseButtonEventArgs e)
+    {
+        if (sender is NavigationViewItem navItem)
+        {
+            var tag = navItem.Tag?.ToString();
+            if (tag != null && tag != _currentView)
+            {
+                _navigationService.NavigateTo(tag);
+            }
         }
     }
 
@@ -151,38 +164,11 @@ public partial class MainWindow : FluentWindow
 
     private void HighlightNavItem(NavigationViewItem? item)
     {
-        _suppressSelectionChange = true;
-        try
+        foreach (var mi in RootNavigation.MenuItems)
         {
-            foreach (var mi in RootNavigation.MenuItems)
-            {
-                if (mi is NavigationViewItem nvi) nvi.IsActive = false;
-            }
-            if (item != null) item.IsActive = true;
+            if (mi is NavigationViewItem nvi) nvi.IsActive = false;
         }
-        finally
-        {
-            _suppressSelectionChange = false;
-        }
-    }
-
-    private void RootNavigation_SelectionChanged(object sender, RoutedEventArgs args)
-    {
-        if (_suppressSelectionChange)
-            return;
-
-        foreach (var item in RootNavigation.MenuItems)
-        {
-            if (item is NavigationViewItem navItem && navItem.IsActive)
-            {
-                var tag = navItem.Tag?.ToString();
-                if (tag != null && tag != _currentView)
-                {
-                    _navigationService.NavigateTo(tag);
-                }
-                return;
-            }
-        }
+        if (item != null) item.IsActive = true;
     }
 
     protected override void OnClosed(EventArgs e)

@@ -72,7 +72,9 @@ public partial class WhatIfCalculatorViewModel : ObservableObject
         }
         catch (Exception ex)
         {
+#if DEBUG
             System.Diagnostics.Debug.WriteLine($"Error loading courses: {ex.Message}");
+#endif
         }
     }
 

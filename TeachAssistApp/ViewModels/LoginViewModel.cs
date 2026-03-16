@@ -93,13 +93,17 @@ public partial class LoginViewModel : ObservableObject
             {
                 // Show the service's error message
                 ErrorMessage = _teachAssistService.LastError ?? "Invalid username or password. Please try again.";
+#if DEBUG
                 System.Diagnostics.Debug.WriteLine($"Login failed. Error: {_teachAssistService.LastError}");
+#endif
             }
         }
         catch (Exception ex)
         {
             ErrorMessage = $"An error occurred: {ex.Message}";
+#if DEBUG
             System.Diagnostics.Debug.WriteLine($"Login exception: {ex}");
+#endif
         }
         finally
         {

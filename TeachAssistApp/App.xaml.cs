@@ -20,13 +20,22 @@ public partial class App : Application
     {
         base.OnStartup(e);
 
-        // Apply initial theme from Windows settings
+        // Catch all unhandled exceptions to prevent crashes
+        DispatcherUnhandledException += (sender, args) =>
+        {
+            System.Diagnostics.Debug.WriteLine($"UNHANDLED: {args.Exception}");
+            System.Windows.MessageBox.Show(
+                "An unexpected error occurred. Please try again or restart the app.",
+                "TeachAssist Error",
+                System.Windows.MessageBoxButton.OK,
+                System.Windows.MessageBoxImage.Error);
+            args.Handled = true;
+        };
+
+        // Apply dark theme by default
         try
         {
-            ApplicationThemeManager.Apply(
-                ApplicationThemeManager.GetSystemTheme() == SystemTheme.Dark
-                    ? ApplicationTheme.Dark
-                    : ApplicationTheme.Light);
+            ApplicationThemeManager.Apply(ApplicationTheme.Dark);
         }
         catch
         {
@@ -262,29 +271,6 @@ public class IntZeroToBoolConverter : System.Windows.Data.IValueConverter
     }
 
     public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
-    {
-        throw new NotImplementedException();
-    }
-}
-
-public class TrendPointConverter : System.Windows.Data.IMultiValueConverter
-{
-    public object Convert(object[] values, Type targetType, object parameter, CultureInfo culture)
-    {
-        if (values.Length >= 2 && values[0] is int index && values[1] is int totalCount)
-        {
-            const double chartWidth = 700;
-            const double startX = 30;
-
-            if (totalCount <= 1)
-                return startX;
-
-            return startX + (index * (chartWidth / (totalCount - 1)));
-        }
-        return 0.0;
-    }
-
-    public object[] ConvertBack(object value, Type[] targetTypes, object parameter, CultureInfo culture)
     {
         throw new NotImplementedException();
     }

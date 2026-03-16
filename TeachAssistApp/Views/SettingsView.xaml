@@ -71,17 +71,17 @@
                     </Grid.RowDefinitions>
 
                     <ui:CardAction Grid.Row="0" Grid.Column="0" Command="{Binding ViewTrendsCommand}"
-                                   Icon="{ui:SymbolIcon Trending24}" Content="Grade Trends"/>
+                                   Icon="{ui:SymbolIcon ArrowTrendingLines24}" Content="Grade Trends"/>
                     <ui:CardAction Grid.Row="0" Grid.Column="2" Command="{Binding GradeGoalsCommand}"
-                                   Icon="{ui:SymbolIcon Target24}" Content="Grade Goals"/>
+                                   Icon="{ui:SymbolIcon ChartMultiple24}" Content="Grade Goals"/>
                     <ui:CardAction Grid.Row="2" Grid.Column="0" Command="{Binding WhatIfCalculatorCommand}"
                                    Icon="{ui:SymbolIcon Calculator24}" Content="What-If Calculator"/>
                     <ui:CardAction Grid.Row="2" Grid.Column="2" Command="{Binding CheckUpdatesCommand}"
-                                   Icon="{ui:SymbolIcon ArrowSync24}" Content="Check Updates"/>
+                                   Icon="{ui:SymbolIcon ArrowSyncCheckmark24}" Content="Refresh Summary"/>
                     <ui:CardAction Grid.Row="4" Grid.Column="0" Command="{Binding ExportToCsvCommand}"
-                                   Icon="{ui:SymbolIcon ArrowDownload24}" Content="Export CSV"/>
+                                   Icon="{ui:SymbolIcon ArrowExportLtr24}" Content="Export CSV"/>
                     <ui:CardAction Grid.Row="4" Grid.Column="2" Command="{Binding ExportToPdfCommand}"
-                                   Icon="{ui:SymbolIcon Document24}" Content="Export PDF"/>
+                                   Icon="{ui:SymbolIcon Document24}" Content="Export Report (HTML)"/>
                 </Grid>
             </ui:Card>
 
@@ -98,9 +98,9 @@
                     </Border>
                     <Grid Margin="16,14">
                         <ui:Button Command="{Binding RefreshGradesCommand}" Appearance="Primary"
-                                   Icon="{ui:SymbolIcon ArrowSync24}" Content="Refresh Grades"/>
+                                   Icon="{ui:SymbolIcon ArrowSyncCheckmark24}" Content="Refresh Grades"/>
                         <ui:Button Command="{Binding LogoutCommand}" Appearance="Danger"
-                                   Icon="{ui:SymbolIcon Dismiss24}" Content="Logout"
+                                   Icon="{ui:SymbolIcon ArrowExportRtl24}" Content="Logout"
                                    HorizontalAlignment="Right"/>
                     </Grid>
                 </StackPanel>
@@ -168,7 +168,7 @@
     </ScrollViewer>
 
     <!-- Loading Overlay -->
-    <Grid Background="#AA000000"
+    <Grid Background="#99000000"
           Visibility="{Binding IsLoading, Converter={StaticResource BooleanToVisibilityConverter}}">
         <ui:ProgressRing IsIndeterminate="True" Width="40" Height="40" VerticalAlignment="Center" HorizontalAlignment="Center"/>
     </Grid>

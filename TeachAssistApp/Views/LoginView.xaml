@@ -165,7 +165,7 @@
 
         <!-- Loading Overlay -->
         <Grid Grid.ColumnSpan="2"
-              Background="#AA000000"
+              Background="#99000000"
               Visibility="{Binding IsLoading, Converter={StaticResource BooleanToVisibilityConverter}}">
             <StackPanel VerticalAlignment="Center" HorizontalAlignment="Center">
                 <ui:ProgressRing IsIndeterminate="True" Width="48" Height="48" Margin="0,0,0,20"/>

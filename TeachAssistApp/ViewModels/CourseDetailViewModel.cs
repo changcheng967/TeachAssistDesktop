@@ -92,7 +92,9 @@ public partial class CourseDetailViewModel : ObservableObject
 
     public async void LoadCourse(string courseCode)
     {
+#if DEBUG
         System.Diagnostics.Debug.WriteLine($"LoadCourse called with: {courseCode}");
+#endif
         IsLoading = true;
         ErrorMessage = null;
 
@@ -104,21 +106,27 @@ public partial class CourseDetailViewModel : ObservableObject
 
             if (SelectedCourse != null)
             {
+#if DEBUG
                 System.Diagnostics.Debug.WriteLine($"Found course: {SelectedCourse.Code}");
                 System.Diagnostics.Debug.WriteLine($"  SubjectId: {SelectedCourse.SubjectId}");
                 System.Diagnostics.Debug.WriteLine($"  StudentId: {SelectedCourse.StudentId}");
+#endif
 
                 // Fetch detailed assignment data from TeachAssist API
                 if (!string.IsNullOrEmpty(SelectedCourse.SubjectId) && !string.IsNullOrEmpty(SelectedCourse.StudentId))
                 {
+#if DEBUG
                     System.Diagnostics.Debug.WriteLine($"Fetching course details from API...");
+#endif
                     var detailedCourse = await _teachAssistService.GetCourseDetailsAsync(
                         SelectedCourse.SubjectId,
                         SelectedCourse.StudentId);
 
                     if (detailedCourse != null)
                     {
+#if DEBUG
                         System.Diagnostics.Debug.WriteLine($"API returned {detailedCourse.Assignments.Count} assignments");
+#endif
                         if (detailedCourse.Assignments.Count > 0)
                         {
                             SelectedCourse.Assignments = detailedCourse.Assignments;
@@ -127,12 +135,16 @@ public partial class CourseDetailViewModel : ObservableObject
                     }
                     else
                     {
+#if DEBUG
                         System.Diagnostics.Debug.WriteLine($"API returned null course");
+#endif
                     }
                 }
                 else
                 {
+#if DEBUG
                     System.Diagnostics.Debug.WriteLine($"Skipping API fetch - SubjectId or StudentId is null");
+#endif
                 }
 
                 // Group assignments by name
@@ -150,24 +162,32 @@ public partial class CourseDetailViewModel : ObservableObject
                     AssignmentGroups.Add(group);
                 }
 
+#if DEBUG
                 System.Diagnostics.Debug.WriteLine($"Loaded {AssignmentGroups.Count} assignment groups into UI");
+#endif
 
                 // Calculate category performance
                 IsOEFormat = SelectedCourse.IsCGCFormat;
                 CalculateCategoryPerformance();
+#if DEBUG
                 System.Diagnostics.Debug.WriteLine($"Calculated {CategoryPerformance.Count} category performance items");
+#endif
 
                 if (IsOEFormat)
                 {
                     CalculateExpectationPerformance();
+#if DEBUG
                     System.Diagnostics.Debug.WriteLine($"Calculated {ExpectationPerformance.Count} expectation performance items");
+#endif
                 }
 
                 HasWeightData = SelectedCourse.WeightTable.Weights.Count > 0;
 
                 // Populate trends for visualization
                 PopulateTrends();
+#if DEBUG
                 System.Diagnostics.Debug.WriteLine($"Loaded {AssignmentTrendsDisplay.Count} trends for visualization");
+#endif
 
                 // Calculate grade analytics
                 CalculateGradeAnalytics();
@@ -175,18 +195,24 @@ public partial class CourseDetailViewModel : ObservableObject
             else
             {
                 ErrorMessage = "Course not found.";
+#if DEBUG
                 System.Diagnostics.Debug.WriteLine($"Course not found: {courseCode}");
+#endif
             }
         }
         catch (Exception ex)
         {
             ErrorMessage = $"Failed to load course: {ex.Message}";
+#if DEBUG
             System.Diagnostics.Debug.WriteLine($"LoadCourse error: {ex}");
+#endif
         }
         finally
         {
             IsLoading = false;
+#if DEBUG
             System.Diagnostics.Debug.WriteLine($"LoadCourse complete. IsLoading={IsLoading}");
+#endif
         }
     }
 

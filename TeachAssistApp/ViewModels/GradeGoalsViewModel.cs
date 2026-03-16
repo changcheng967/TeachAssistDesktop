@@ -84,7 +84,9 @@ public partial class GradeGoalsViewModel : ObservableObject
         }
         catch (Exception ex)
         {
+#if DEBUG
             System.Diagnostics.Debug.WriteLine($"Error loading data: {ex.Message}");
+#endif
         }
     }
 
@@ -153,7 +155,9 @@ public partial class GradeGoalsViewModel : ObservableObject
         }
         catch (Exception ex)
         {
+#if DEBUG
             System.Diagnostics.Debug.WriteLine($"Error saving goal: {ex.Message}");
+#endif
         }
     }
 
@@ -175,7 +179,9 @@ public partial class GradeGoalsViewModel : ObservableObject
         }
         catch (Exception ex)
         {
+#if DEBUG
             System.Diagnostics.Debug.WriteLine($"Error loading goal: {ex.Message}");
+#endif
         }
         return 85; // Default goal
     }
