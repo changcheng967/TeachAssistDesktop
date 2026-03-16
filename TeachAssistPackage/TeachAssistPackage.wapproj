@@ -16,6 +16,7 @@
     <FileAlignment>512</FileAlignment>
     <ProjectTypeGuids>{A5A43C5B-DE2A-4C0C-9213-0A381AF9435A};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
     <AppxPackageSigningEnabled>false</AppxPackageSigningEnabled>
+    <EntryPointProjectUniqueName>..\TeachAssistApp\TeachAssistApp.csproj</EntryPointProjectUniqueName>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x64'">
     <OutputPath>bin\x64\Debug\</OutputPath>
@@ -27,7 +28,6 @@
     <PlatformTarget>x64</PlatformTarget>
     <UseVSHostingProcess>false</UseVSHostingProcess>
     <ErrorReport>prompt</ErrorReport>
-    <Prefer32Bit>true</Prefer32Bit>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|x64'">
     <OutputPath>bin\x64\Release\</OutputPath>
@@ -38,7 +38,6 @@
     <PlatformTarget>x64</PlatformTarget>
     <UseVSHostingProcess>false</UseVSHostingProcess>
     <ErrorReport>prompt</ErrorReport>
-    <Prefer32Bit>true</Prefer32Bit>
   </PropertyGroup>
   <ItemGroup>
     <AppxManifest Include="Package.appxmanifest">
@@ -56,10 +55,6 @@
   <ItemGroup>
     <ProjectReference Include="..\TeachAssistApp\TeachAssistApp.csproj" />
   </ItemGroup>
-  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
-  <!-- DesktopBridge targets - use /p:DesktopBridgePath=... if MSBuild can't find it automatically -->
-  <Import Project="$(DesktopBridgePath)Microsoft.NET.DisableStandardFrameworkResolution.targets"
-          Condition="Exists('$(DesktopBridgePath)Microsoft.NET.DisableStandardFrameworkResolution.targets')" />
-  <Import Project="$(DesktopBridgePath)Microsoft.DesktopBridge.targets"
-          Condition="Exists('$(DesktopBridgePath)Microsoft.DesktopBridge.targets')" />
+  <Import Project="$(MSBuildExtensionsPath)\Microsoft\DesktopBridge\Microsoft.NET.DisableStandardFrameworkResolution.targets" />
+  <Import Project="$(MSBuildExtensionsPath)\Microsoft\DesktopBridge\Microsoft.DesktopBridge.targets" />
 </Project>
