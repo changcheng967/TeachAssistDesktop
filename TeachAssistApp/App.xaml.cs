@@ -245,6 +245,21 @@ public class NullToVisibilityConverter : System.Windows.Data.IValueConverter
     }
 }
 
+public class IntZeroToBoolConverter : System.Windows.Data.IValueConverter
+{
+    public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
+    {
+        if (value is int count)
+            return count == 0;
+        return true;
+    }
+
+    public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
+    {
+        throw new NotImplementedException();
+    }
+}
+
 public class TrendPointConverter : System.Windows.Data.IMultiValueConverter
 {
     public object Convert(object[] values, Type targetType, object parameter, CultureInfo culture)

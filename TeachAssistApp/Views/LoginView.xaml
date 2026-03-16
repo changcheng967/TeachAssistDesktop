@@ -5,18 +5,18 @@
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
       xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
       mc:Ignorable="d"
-      d:DesignHeight="800" d:DesignWidth="1000"
-      Background="Transparent">
+      d:DesignHeight="800" d:DesignWidth="1000">
 
     <Grid>
         <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="1.2*"/>
             <ColumnDefinition Width="420"/>
         </Grid.ColumnDefinitions>
 
         <!-- Left Panel: Brand -->
-        <Grid Grid.Column="0" Background="{DynamicResource ControlFillColorDefaultBrush}">
+        <Border Grid.Column="0" Background="{DynamicResource ApplicationPageBackgroundThemeBrush}">
             <StackPanel VerticalAlignment="Center" HorizontalAlignment="Center" Margin="60">
+                <!-- Logo -->
                 <Border Width="80" Height="80"
                         CornerRadius="20"
                         HorizontalAlignment="Center"
@@ -82,84 +82,86 @@
                     </Border>
                 </StackPanel>
             </StackPanel>
-        </Grid>
+        </Border>
 
         <!-- Right Panel: Login Form -->
-        <StackPanel Grid.Column="1" VerticalAlignment="Center" Margin="48">
-            <TextBlock Text="Welcome back"
-                       FontSize="28"
-                       FontWeight="SemiBold"
-                       Foreground="{DynamicResource TextFillColorPrimaryBrush}"
-                       Margin="0,0,0,6"/>
+        <Border Grid.Column="1" Background="{DynamicResource ApplicationPageBackgroundThemeBrush}">
+            <ScrollViewer VerticalScrollBarVisibility="Auto" Padding="48">
+                <StackPanel VerticalAlignment="Center" MinHeight="500">
+                    <TextBlock Text="Welcome back"
+                               FontSize="28"
+                               FontWeight="SemiBold"
+                               Foreground="{DynamicResource TextFillColorPrimaryBrush}"
+                               Margin="0,0,0,6"/>
 
-            <TextBlock Text="Sign in with your YRDSB student credentials"
-                       FontSize="14"
-                       Foreground="{DynamicResource TextFillColorSecondaryBrush}"
-                       Margin="0,0,0,32"/>
+                    <TextBlock Text="Sign in with your YRDSB student credentials"
+                               FontSize="14"
+                               Foreground="{DynamicResource TextFillColorSecondaryBrush}"
+                               Margin="0,0,0,32"/>
 
-            <!-- Error Message -->
-            <ui:InfoBar Title="Login Failed"
-                        Message="{Binding ErrorMessage}"
-                        Severity="Error"
-                        IsOpen="{Binding ErrorMessage, Converter={StaticResource StringToBoolConverter}}"
-                        Margin="0,0,0,20"/>
+                    <!-- Error Message -->
+                    <ui:InfoBar Title="Login Failed"
+                                Message="{Binding ErrorMessage}"
+                                Severity="Error"
+                                IsOpen="{Binding ErrorMessage, Converter={StaticResource StringToBoolConverter}}"
+                                Margin="0,0,0,20"/>
 
-            <!-- Student Number Field -->
-            <StackPanel Margin="0,0,0,16">
-                <TextBlock Text="Student Number"
-                           FontSize="14"
-                           FontWeight="SemiBold"
-                           Foreground="{DynamicResource TextFillColorPrimaryBrush}"
-                           Margin="0,0,0,8"/>
-                <ui:TextBox Text="{Binding Username, UpdateSourceTrigger=PropertyChanged}"
-                            PlaceholderText="Enter your student number"
-                            Icon="{ui:SymbolIcon Person24}">
-                    <ui:TextBox.InputBindings>
-                        <KeyBinding Key="Enter" Command="{Binding LoginCommand}"/>
-                    </ui:TextBox.InputBindings>
-                </ui:TextBox>
-            </StackPanel>
+                    <!-- Student Number Field -->
+                        <TextBlock Text="Student Number"
+                                   FontSize="14"
+                                   FontWeight="SemiBold"
+                                   Foreground="{DynamicResource TextFillColorPrimaryBrush}"
+                                   Margin="0,0,0,8"/>
+                        <ui:TextBox Text="{Binding Username, UpdateSourceTrigger=PropertyChanged}"
+                                    PlaceholderText="Enter your student number"
+                                    Icon="{ui:SymbolIcon Person24}"
+                                    Margin="0,0,0,16">
+                            <ui:TextBox.InputBindings>
+                                <KeyBinding Key="Enter" Command="{Binding LoginCommand}"/>
+                            </ui:TextBox.InputBindings>
+                        </ui:TextBox>
 
-            <!-- Password Field -->
-            <StackPanel Margin="0,0,0,20">
-                <TextBlock Text="Password"
-                           FontSize="14"
-                           FontWeight="SemiBold"
-                           Foreground="{DynamicResource TextFillColorPrimaryBrush}"
-                           Margin="0,0,0,8"/>
-                <ui:PasswordBox x:Name="PasswordBox"
-                                PlaceholderText="Enter your password"
-                                PasswordChanged="PasswordBox_PasswordChanged"
-                                KeyDown="PasswordBox_KeyDown"/>
-            </StackPanel>
+                    <!-- Password Field -->
+                        <TextBlock Text="Password"
+                                   FontSize="14"
+                                   FontWeight="SemiBold"
+                                   Foreground="{DynamicResource TextFillColorPrimaryBrush}"
+                                   Margin="0,0,0,8"/>
+                        <ui:PasswordBox x:Name="PasswordBox"
+                                        PlaceholderText="Enter your password"
+                                        PasswordChanged="PasswordBox_PasswordChanged"
+                                        KeyDown="PasswordBox_KeyDown"
+                                        Margin="0,0,0,20"/>
 
-            <!-- Remember Me -->
-            <ui:ToggleSwitch Content="Remember me"
-                             IsChecked="{Binding RememberMe}"
-                             Margin="0,0,0,24"/>
+                    <!-- Remember Me -->
+                    <ui:ToggleSwitch Content="Remember me"
+                                     IsChecked="{Binding RememberMe}"
+                                     Margin="0,0,0,24"/>
 
-            <!-- Login Button -->
-            <ui:Button Content="Sign In"
-                       Command="{Binding LoginCommand}"
-                       Appearance="Primary"
-                       HorizontalAlignment="Stretch"
-                       FontSize="15"
-                       Height="44"
-                       Margin="0,0,0,16"/>
+                    <!-- Login Button -->
+                    <ui:Button Content="Sign In"
+                               Command="{Binding LoginCommand}"
+                               Appearance="Primary"
+                               HorizontalAlignment="Stretch"
+                               FontSize="15"
+                               Height="44"
+                               Margin="0,0,0,16"/>
 
-            <!-- Demo Hint -->
-            <Border Background="{DynamicResource CardBackgroundFillColorDefaultBrush}"
-                    Padding="12,10"
-                    CornerRadius="8"
-                    HorizontalAlignment="Center">
-                <TextBlock FontSize="13" Foreground="{DynamicResource TextFillColorTertiaryBrush}">
-                    <Run Text="&#xE946;" FontFamily="Segoe MDL2 Assets"/>
-                    <Run Text=" Type "/>
-                    <Run Text="demo" FontWeight="SemiBold" Foreground="{DynamicResource TextFillColorSecondaryBrush}"/>
-                    <Run Text=" to test with sample grades"/>
-                </TextBlock>
-            </Border>
-        </StackPanel>
+                    <!-- Demo Hint -->
+                    <Border Background="{DynamicResource CardBackgroundFillColorDefaultBrush}"
+                            Padding="12,10"
+                            CornerRadius="8"
+                            HorizontalAlignment="Center">
+                        <TextBlock FontSize="13" Foreground="{DynamicResource TextFillColorTertiaryBrush}">
+                            <Run Text="&#xE946;" FontFamily="Segoe MDL2 Assets"/>
+                            <Run Text=" Type "/>
+                            <Run Text="demo" FontWeight="SemiBold" Foreground="{DynamicResource TextFillColorSecondaryBrush}"/>
+                            <Run Text=" to test with sample grades"/>
+                        </TextBlock>
+                    </Border>
+                </StackPanel>
+            </ScrollViewer>
+        </Border>
 
         <!-- Loading Overlay -->
         <Grid Grid.ColumnSpan="2"

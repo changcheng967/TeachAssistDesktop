@@ -5,17 +5,17 @@
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
       xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
       mc:Ignorable="d"
-      d:DesignHeight="700" d:DesignWidth="1000"
-      Background="Transparent">
+      d:DesignHeight="700" d:DesignWidth="900"
+      Loaded="Page_Loaded">
 
-    <Grid>
+    <Grid Background="{DynamicResource ApplicationPageBackgroundThemeBrush}">
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
 
         <!-- Header -->
-        <StackPanel Grid.Row="0" Margin="32,24,32,16">
+        <StackPanel Grid.Row="0" Margin="32,28,32,16">
             <TextBlock Text="My Grades"
                        FontSize="28"
                        FontWeight="SemiBold"
@@ -32,61 +32,46 @@
                 <ui:CardControl.Header>
                     <StackPanel>
                         <TextBlock Text="Average" FontSize="12" Foreground="{DynamicResource TextFillColorTertiaryBrush}"/>
-                        <TextBlock Text="{Binding AverageMark, StringFormat={}{0:F1}%}" FontSize="24" FontWeight="Bold"
-                                   Foreground="{DynamicResource TextFillColorPrimaryBrush}"/>
+                        <TextBlock Text="{Binding AverageMark, StringFormat={}{0:F1}%}" FontSize="24" FontWeight="Bold"/>
                     </StackPanel>
                 </ui:CardControl.Header>
-                <ui:SymbolIcon Symbol="ChartMultiple24" />
+                <ui:SymbolIcon Symbol="ChartMultiple24" Margin="0,0,16,0"/>
             </ui:CardControl>
 
             <ui:CardControl Margin="0,0,12,0">
                 <ui:CardControl.Header>
                     <StackPanel>
                         <TextBlock Text="GPA" FontSize="12" Foreground="{DynamicResource TextFillColorTertiaryBrush}"/>
-                        <TextBlock Text="{Binding Gpa}" FontSize="24" FontWeight="Bold"
-                                   Foreground="{DynamicResource TextFillColorPrimaryBrush}"/>
+                        <TextBlock Text="{Binding Gpa}" FontSize="24" FontWeight="Bold"/>
                     </StackPanel>
                 </ui:CardControl.Header>
-                <ui:SymbolIcon Symbol="People24" />
+                <ui:SymbolIcon Symbol="People24" Margin="0,0,16,0"/>
             </ui:CardControl>
 
             <ui:CardControl>
                 <ui:CardControl.Header>
                     <StackPanel>
                         <TextBlock Text="Courses" FontSize="12" Foreground="{DynamicResource TextFillColorTertiaryBrush}"/>
-                        <TextBlock Text="{Binding CourseCount}" FontSize="24" FontWeight="Bold"
-                                   Foreground="{DynamicResource TextFillColorPrimaryBrush}"/>
+                        <TextBlock Text="{Binding CourseCount}" FontSize="24" FontWeight="Bold"/>
                     </StackPanel>
                 </ui:CardControl.Header>
-                <ui:SymbolIcon Symbol="Book24" />
+                <ui:SymbolIcon Symbol="Book24" Margin="0,0,16,0"/>
             </ui:CardControl>
 
             <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" VerticalAlignment="Center">
-                <ui:DropDownButton Content="Actions" Margin="0,0,8,0" Icon="{ui:SymbolIcon MoreHorizontal24}">
-                    <ui:DropDownButton.ContextMenu>
-                        <ContextMenu>
-                            <MenuItem Header="Grade Trends" Command="{Binding ViewTrendsCommand}"/>
-                            <MenuItem Header="What-If Calculator" Command="{Binding WhatIfCommand}"/>
-                            <MenuItem Header="Grade Goals" Command="{Binding GradeGoalsCommand}"/>
-                            <Separator/>
-                            <MenuItem Header="Export All Grades" Command="{Binding ExportCommand}"/>
-                            <MenuItem Header="Refresh" Command="{Binding LoadCoursesCommand}"/>
-                        </ContextMenu>
-                    </ui:DropDownButton.ContextMenu>
-                </ui:DropDownButton>
-                <ui:Button Content="Refresh" Command="{Binding LoadCoursesCommand}" Appearance="Primary" Icon="{ui:SymbolIcon ArrowSync24}"/>
+                <ui:Button Content="Refresh" Command="{Binding LoadCoursesCommand}" Appearance="Primary" Icon="{ui:SymbolIcon ArrowSync24}" Margin="0,0,8,0"/>
             </StackPanel>
         </StackPanel>
 
         <!-- Course List -->
         <ScrollViewer Grid.Row="1" VerticalScrollBarVisibility="Auto" Padding="32,0,32,32">
-            <ItemsControl ItemsSource="{Binding Courses}" x:Name="CourseItemsControl">
+            <ItemsControl x:Name="CourseItemsControl" ItemsSource="{Binding Courses}">
                 <ItemsControl.ItemTemplate>
                     <DataTemplate>
-                        <ui:CardAction Margin="0,0,0,8" MinHeight="72"
+                        <ui:CardAction Margin="0,0,0,8" MinHeight="72" Padding="4"
                                         Command="{Binding DataContext.SelectCourseCommand, RelativeSource={RelativeSource AncestorType=ItemsControl}}"
                                         CommandParameter="{Binding}">
-                            <Grid Margin="8">
+                            <Grid Margin="8,4">
                                 <Grid.ColumnDefinitions>
                                     <ColumnDefinition Width="120"/>
                                     <ColumnDefinition Width="*"/>
@@ -140,7 +125,7 @@
         </ScrollViewer>
 
         <!-- Loading Overlay -->
-        <Grid Grid.Row="1"
+        <Grid Grid.RowSpan="2"
               Background="#AA000000"
               Visibility="{Binding IsLoading, Converter={StaticResource BooleanToVisibilityConverter}}">
             <StackPanel VerticalAlignment="Center" HorizontalAlignment="Center">
@@ -157,9 +142,14 @@
         <Grid Grid.Row="1"
               Visibility="{Binding IsEmpty, Converter={StaticResource BooleanToVisibilityConverter}}">
             <StackPanel VerticalAlignment="Center" HorizontalAlignment="Center">
-                <ui:SymbolIcon Symbol="BookQuestionMark24" FontSize="48" Foreground="{DynamicResource TextFillColorDisabledBrush}" HorizontalAlignment="Center" Margin="0,0,0,16"/>
-                <TextBlock Text="No Courses Found" FontSize="20" FontWeight="SemiBold" HorizontalAlignment="Center" Margin="0,0,0,8"/>
-                <TextBlock Text="Your courses will appear here once marks are published" FontSize="14" HorizontalAlignment="Center" Foreground="{DynamicResource TextFillColorSecondaryBrush}" Margin="0,0,0,24"/>
+                <ui:SymbolIcon Symbol="BookQuestionMark24" FontSize="48"
+                                   Foreground="{DynamicResource TextFillColorDisabledBrush}"
+                                   HorizontalAlignment="Center" Margin="0,0,0,16"/>
+                <TextBlock Text="No Courses Found" FontSize="20" FontWeight="SemiBold"
+                           HorizontalAlignment="Center" Margin="0,0,0,8"/>
+                <TextBlock Text="Your courses will appear here once marks are published" FontSize="14"
+                           Foreground="{DynamicResource TextFillColorSecondaryBrush}"
+                           HorizontalAlignment="Center" Margin="0,0,0,24"/>
                 <ui:Button Content="Refresh" Command="{Binding LoadCoursesCommand}" Appearance="Primary" Icon="{ui:SymbolIcon ArrowSync24}"/>
             </StackPanel>
         </Grid>
@@ -169,7 +159,7 @@
                     Title="Error"
                     Message="{Binding ErrorMessage}"
                     Severity="Error"
-                    IsOpen="{Binding ErrorMessage, Converter={StaticResource BooleanToVisibilityConverter}}"
+                    IsOpen="{Binding ErrorMessage, Converter={StaticResource StringToBoolConverter}}"
                     Margin="32,60,32,0"
                     HorizontalAlignment="Center"
                     VerticalAlignment="Top"

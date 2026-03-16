@@ -109,7 +109,7 @@
                 <!-- Motivational Message -->
                 <ui:InfoBar Message="{Binding MotivationalMessage}"
                             Severity="Informational"
-                            IsOpen="{Binding ShowMotivation, Converter={StaticResource BooleanToVisibilityConverter}}"
+                            IsOpen="{Binding ShowMotivation}"
                             Margin="0,0,0,20"/>
             </StackPanel>
         </ScrollViewer>

@@ -104,18 +104,18 @@ public partial class MainWindow : FluentWindow
                 var loginViewModel = _serviceProvider.GetRequiredService<LoginViewModel>();
                 _ = loginViewModel.LoadSavedCredentialsAsync();
                 page.DataContext = loginViewModel;
-                RootNavigation.IsPaneVisible = false;
+                RootNavigation.Visibility = Visibility.Collapsed;
                 break;
             case "Dashboard":
                 page = _serviceProvider.GetRequiredService<DashboardView>();
                 page.DataContext = _serviceProvider.GetRequiredService<DashboardViewModel>();
-                RootNavigation.IsPaneVisible = true;
+                RootNavigation.Visibility = Visibility.Visible;
                 HighlightNavItem(_dashboardItem);
                 break;
             case "Settings":
                 page = _serviceProvider.GetRequiredService<SettingsView>();
                 page.DataContext = _serviceProvider.GetRequiredService<SettingsViewModel>();
-                RootNavigation.IsPaneVisible = true;
+                RootNavigation.Visibility = Visibility.Visible;
                 HighlightNavItem(_settingsItem);
                 break;
             case "CourseDetail":
@@ -132,14 +132,16 @@ public partial class MainWindow : FluentWindow
                     page = _serviceProvider.GetRequiredService<CourseDetailView>();
                     page.DataContext = _serviceProvider.GetRequiredService<CourseDetailViewModel>();
                 }
-                RootNavigation.IsPaneVisible = true;
+                RootNavigation.Visibility = Visibility.Visible;
                 break;
         }
 
         if (page != null)
         {
             _currentView = baseView;
-            RootNavigation.ReplaceContent(page);
+            // Place page directly in ContentArea Grid
+            ContentArea.Children.Clear();
+            ContentArea.Children.Add(page);
         }
     }
 
@@ -148,7 +150,6 @@ public partial class MainWindow : FluentWindow
         _suppressSelectionChange = true;
         try
         {
-            // Deselect all, select target
             foreach (var mi in RootNavigation.MenuItems)
             {
                 if (mi is NavigationViewItem nvi) nvi.IsActive = false;

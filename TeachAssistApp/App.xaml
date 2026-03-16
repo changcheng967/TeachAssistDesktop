@@ -21,6 +21,7 @@
             <local:PercentageConverter x:Key="PercentageConverter"/>
             <local:ImpactDeltaToColorConverter x:Key="ImpactDeltaToColorConverter"/>
             <local:NullToVisibilityConverter x:Key="NullToVisibilityConverter"/>
+            <local:IntZeroToBoolConverter x:Key="IntZeroToBoolConverter"/>
         </ResourceDictionary>
     </Application.Resources>
 </Application>
