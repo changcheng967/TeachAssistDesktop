@@ -10,6 +10,13 @@ export default defineConfig({
     electron([
       {
         entry: 'src/main/index.ts',
+        vite: {
+          build: {
+            rollupOptions: {
+              external: ['node:sqlite', 'undici'],
+            },
+          },
+        },
       },
       {
         entry: 'src/main/preload.ts',

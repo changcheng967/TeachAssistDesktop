@@ -4,9 +4,9 @@ import { loginAsync, getCourseDetailAsync } from './services/teachassist-service
 import { saveCredentials, getCredentials, clearCredentials } from './services/credential-service';
 import { exportCsv, exportHtmlReport } from './services/export-service';
 import type { Course } from '../renderer/types/course';
-import Store from 'electron-store';
+import { JsonStore } from './services/json-store';
 
-const store = new Store({ name: 'settings' });
+const store = new JsonStore('settings');
 
 // In-memory course cache
 let cachedCourses: Course[] = [];

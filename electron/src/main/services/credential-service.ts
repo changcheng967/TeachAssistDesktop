@@ -1,11 +1,8 @@
 import { safeStorage } from 'electron';
-import Store from 'electron-store';
+import { JsonStore } from './json-store';
 import log from 'electron-log';
 
-const store = new Store({
-  name: 'credentials',
-  encryptionKey: 'teachassist-desktop-v4',
-});
+const store = new JsonStore('credentials');
 
 const KEY_USERNAME = 'saved_username';
 const KEY_PASSWORD = 'saved_password';
