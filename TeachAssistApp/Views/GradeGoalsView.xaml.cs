@@ -10,6 +10,7 @@ public partial class GradeGoalsView : FluentWindow
     public GradeGoalsView(IServiceProvider serviceProvider)
     {
         InitializeComponent();
+        Owner = Application.Current.MainWindow;
         var viewModel = serviceProvider.GetRequiredService<GradeGoalsViewModel>();
         viewModel.RequestClose += (s, e) => Close();
         DataContext = viewModel;

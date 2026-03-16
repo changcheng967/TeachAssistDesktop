@@ -10,6 +10,7 @@ public partial class WhatIfCalculatorView : FluentWindow
     public WhatIfCalculatorView(IServiceProvider serviceProvider)
     {
         InitializeComponent();
+        Owner = Application.Current.MainWindow;
         var viewModel = serviceProvider.GetRequiredService<WhatIfCalculatorViewModel>();
         viewModel.RequestClose += (s, e) => Close();
         DataContext = viewModel;
