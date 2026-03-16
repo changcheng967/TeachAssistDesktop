@@ -1,12 +1,12 @@
 <Page x:Class="TeachAssistApp.Views.SettingsView"
       xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
       xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:ui="http://schemas.lepo.co/wpfui/2022/xaml"
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
       xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
       mc:Ignorable="d"
-      d:DesignHeight="600" d:DesignWidth="900"
-      Background="Transparent"
-      Title="Settings - TeachAssist">
+      d:DesignHeight="600" d:DesignWidth="800"
+      Background="Transparent">
 
     <Grid>
         <Grid.RowDefinitions>
@@ -14,182 +14,192 @@
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
 
-        <!-- Top Bar -->
-        <Border Grid.Row="0" Background="#FF010409" Padding="24,16" BorderBrush="#FF21262D" BorderThickness="0,0,0,1">
-            <Grid>
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="Auto"/>
-                    <ColumnDefinition Width="*"/>
-                </Grid.ColumnDefinitions>
-                <Button Grid.Column="0" Command="{Binding GoBackCommand}" Style="{StaticResource GhostButton}" Padding="10,6" FontSize="12" Margin="0,0,12,0">
-                    <StackPanel Orientation="Horizontal">
-                        <TextBlock Text="&#xE72B;" FontFamily="Segoe MDL2 Assets" FontSize="12" VerticalAlignment="Center" Margin="0,0,6,0"/>
-                        <TextBlock Text="Back"/>
-                    </StackPanel>
-                </Button>
-                <TextBlock Grid.Column="1" Text="Settings" FontSize="18" FontWeight="SemiBold" Foreground="White" VerticalAlignment="Center" FontFamily="Segoe UI Variable Display"/>
-            </Grid>
-        </Border>
+        <!-- Header -->
+        <StackPanel Grid.Row="0" Margin="32,24,32,16">
+            <TextBlock Text="Settings"
+                       FontSize="28"
+                       FontWeight="SemiBold"
+                       Foreground="{DynamicResource TextFillColorPrimaryBrush}"/>
+        </StackPanel>
 
         <!-- Content -->
-        <ScrollViewer Grid.Row="1" VerticalScrollBarVisibility="Auto" Padding="32,24,32,32" Background="#FF0D1117">
-            <Grid MaxWidth="640" HorizontalAlignment="Center">
-                <StackPanel>
+        <ScrollViewer Grid.Row="1" VerticalScrollBarVisibility="Auto" Padding="32,0,32,32">
+            <StackPanel MaxWidth="640">
 
-                    <!-- Appearance -->
-                    <TextBlock Text="Appearance" FontSize="11" FontWeight="SemiBold" Foreground="#FF6E7681" Margin="0,0,0,8" FontFamily="Segoe UI Variable"/>
-                    <Border Background="#FF161B22" CornerRadius="10" Padding="16" Margin="0,0,0,20" BorderBrush="#FF21262D" BorderThickness="1">
-                        <StackPanel>
-                            <Grid Margin="0,0,0,10">
-                                <Grid.ColumnDefinitions>
-                                    <ColumnDefinition Width="*"/>
-                                    <ColumnDefinition Width="Auto"/>
-                                </Grid.ColumnDefinitions>
-                                <TextBlock Grid.Column="0" Text="Dark Mode" FontSize="13" Foreground="White" VerticalAlignment="Center" FontFamily="Segoe UI Variable"/>
-                                <CheckBox Grid.Column="1" IsChecked="{Binding IsDarkMode}" VerticalAlignment="Center"/>
-                            </Grid>
-                            <Border Height="1" Background="#FF21262D" Margin="0,0,0,10"/>
-                            <Grid>
-                                <Grid.ColumnDefinitions>
-                                    <ColumnDefinition Width="*"/>
-                                    <ColumnDefinition Width="Auto"/>
-                                </Grid.ColumnDefinitions>
-                                <TextBlock Grid.Column="0" FontSize="12" Foreground="#FF8B949E" VerticalAlignment="Center" FontFamily="Segoe UI Variable">
-                                    <Run Text="Auto-refresh every"/><Run FontWeight="SemiBold" Text="{Binding AutoRefreshInterval}"/><Run Text=" min"/>
-                                </TextBlock>
-                                <ComboBox Grid.Column="1" SelectedIndex="{Binding AutoRefreshIndex}" Width="80" FontSize="12" Background="#FF0D1117">
-                                    <ComboBoxItem Content="Off"/><ComboBoxItem Content="5 min"/><ComboBoxItem Content="10 min"/><ComboBoxItem Content="15 min"/><ComboBoxItem Content="30 min"/>
-                                </ComboBox>
-                            </Grid>
-                        </StackPanel>
-                    </Border>
-
-                    <!-- Tools -->
-                    <TextBlock Text="Tools" FontSize="11" FontWeight="SemiBold" Foreground="#FF6E7681" Margin="0,0,0,8" FontFamily="Segoe UI Variable"/>
-                    <Border Background="#FF161B22" CornerRadius="10" Padding="16" Margin="0,0,0,20" BorderBrush="#FF21262D" BorderThickness="1">
-                        <Grid>
+                <!-- Appearance -->
+                <TextBlock Text="Appearance" FontSize="12" FontWeight="SemiBold"
+                           Foreground="{DynamicResource TextFillColorTertiaryBrush}" Margin="0,0,0,8"/>
+                <ui:Card Margin="0,0,0,20">
+                    <StackPanel>
+                        <Grid Margin="16,14">
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition Width="*"/>
-                                <ColumnDefinition Width="10"/>
-                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="Auto"/>
                             </Grid.ColumnDefinitions>
-                            <Grid.RowDefinitions>
-                                <RowDefinition Height="Auto"/><RowDefinition Height="8"/><RowDefinition Height="Auto"/><RowDefinition Height="8"/><RowDefinition Height="Auto"/>
-                            </Grid.RowDefinitions>
-
-                            <Button Grid.Row="0" Grid.Column="0" Command="{Binding ViewTrendsCommand}" Style="{StaticResource GhostButton}" Padding="10,8" HorizontalAlignment="Stretch">
-                                <StackPanel Orientation="Horizontal"><TextBlock Text="&#xE7E7;" FontFamily="Segoe MDL2 Assets" FontSize="13" VerticalAlignment="Center" Margin="0,0,8,0" Foreground="#FF58A6FF"/><TextBlock Text="Grade Trends" FontFamily="Segoe UI Variable"/></StackPanel>
-                            </Button>
-                            <Button Grid.Row="0" Grid.Column="2" Command="{Binding GradeGoalsCommand}" Style="{StaticResource GhostButton}" Padding="10,8" HorizontalAlignment="Stretch">
-                                <StackPanel Orientation="Horizontal"><TextBlock Text="&#xE7E8;" FontFamily="Segoe MDL2 Assets" FontSize="13" VerticalAlignment="Center" Margin="0,0,8,0" Foreground="#FF238636"/><TextBlock Text="Grade Goals" FontFamily="Segoe UI Variable"/></StackPanel>
-                            </Button>
-                            <Button Grid.Row="2" Grid.Column="0" Command="{Binding WhatIfCalculatorCommand}" Style="{StaticResource GhostButton}" Padding="10,8" HorizontalAlignment="Stretch">
-                                <StackPanel Orientation="Horizontal"><TextBlock Text="&#xE789;" FontFamily="Segoe MDL2 Assets" FontSize="13" VerticalAlignment="Center" Margin="0,0,8,0" Foreground="#FFD29922"/><TextBlock Text="What-If Calculator" FontFamily="Segoe UI Variable"/></StackPanel>
-                            </Button>
-                            <Button Grid.Row="2" Grid.Column="2" Command="{Binding CheckUpdatesCommand}" Style="{StaticResource GhostButton}" Padding="10,8" HorizontalAlignment="Stretch">
-                                <StackPanel Orientation="Horizontal"><TextBlock Text="&#xE117;" FontFamily="Segoe MDL2 Assets" FontSize="13" VerticalAlignment="Center" Margin="0,0,8,0" Foreground="#FF238636"/><TextBlock Text="Check Updates" FontFamily="Segoe UI Variable"/></StackPanel>
-                            </Button>
-                            <Button Grid.Row="4" Grid.Column="0" Command="{Binding ExportToCsvCommand}" Style="{StaticResource PrimaryButton}" Padding="10,8" HorizontalAlignment="Stretch">
-                                <StackPanel Orientation="Horizontal"><TextBlock Text="&#xE7B3;" FontFamily="Segoe MDL2 Assets" FontSize="13" VerticalAlignment="Center" Margin="0,0,8,0"/><TextBlock Text="Export CSV" Foreground="White" FontFamily="Segoe UI Variable"/></StackPanel>
-                            </Button>
-                            <Button Grid.Row="4" Grid.Column="2" Command="{Binding ExportToPdfCommand}" Style="{StaticResource PrimaryButton}" Padding="10,8" HorizontalAlignment="Stretch">
-                                <StackPanel Orientation="Horizontal"><TextBlock Text="&#xE8A5;" FontFamily="Segoe MDL2 Assets" FontSize="13" VerticalAlignment="Center" Margin="0,0,8,0"/><TextBlock Text="Export PDF" Foreground="White" FontFamily="Segoe UI Variable"/></StackPanel>
-                            </Button>
+                            <TextBlock Grid.Column="0" Text="Dark Mode" FontSize="14" VerticalAlignment="Center"/>
+                            <ui:ToggleSwitch Grid.Column="1" IsChecked="{Binding IsDarkMode}" VerticalAlignment="Center"/>
                         </Grid>
-                    </Border>
-
-                    <!-- Account -->
-                    <TextBlock Text="Account" FontSize="11" FontWeight="SemiBold" Foreground="#FF6E7681" Margin="0,0,0,8" FontFamily="Segoe UI Variable"/>
-                    <Border Background="#FF161B22" CornerRadius="10" Padding="16" Margin="0,0,0,20" BorderBrush="#FF21262D" BorderThickness="1">
-                        <StackPanel>
-                            <Border Background="#FF0D1117" CornerRadius="6" Padding="12" Margin="0,0,0,12">
-                                <TextBlock FontSize="12" Foreground="#FF6E7681" FontFamily="Segoe UI Variable">
-                                    <Run Text="Logged in as "/><Run Text="{Binding Username}" FontWeight="SemiBold" Foreground="#FF8B949E"/>
-                                </TextBlock>
-                            </Border>
-                            <Grid>
-                                <Button Command="{Binding RefreshGradesCommand}" Style="{StaticResource PrimaryButton}" Padding="10,8" HorizontalAlignment="Left">
-                                    <StackPanel Orientation="Horizontal"><TextBlock Text="&#xE117;" FontFamily="Segoe MDL2 Assets" FontSize="13" VerticalAlignment="Center" Margin="0,0,8,0"/><TextBlock Text="Refresh Grades" Foreground="White" FontFamily="Segoe UI Variable"/></StackPanel>
-                                </Button>
-                                <Button Command="{Binding LogoutCommand}" Style="{StaticResource DangerButton}" Padding="10,8" HorizontalAlignment="Right">
-                                    <StackPanel Orientation="Horizontal"><TextBlock Text="&#xE7E8;" FontFamily="Segoe MDL2 Assets" FontSize="13" VerticalAlignment="Center" Margin="0,0,8,0"/><TextBlock Text="Logout" Foreground="White" FontFamily="Segoe UI Variable"/></StackPanel>
-                                </Button>
-                            </Grid>
-                        </StackPanel>
-                    </Border>
-
-                    <!-- Data -->
-                    <TextBlock Text="Data" FontSize="11" FontWeight="SemiBold" Foreground="#FF6E7681" Margin="0,0,0,8" FontFamily="Segoe UI Variable"/>
-                    <Border Background="#FF161B22" CornerRadius="10" Padding="16" Margin="0,0,0,20" BorderBrush="#FF21262D" BorderThickness="1">
-                        <Button Command="{Binding ClearCacheCommand}" Style="{StaticResource GhostButton}" Padding="10,8" HorizontalAlignment="Left">
-                            <StackPanel Orientation="Horizontal"><TextBlock Text="&#xE74D;" FontFamily="Segoe MDL2 Assets" FontSize="13" VerticalAlignment="Center" Margin="0,0,8,0"/><TextBlock Text="Clear Cached Data" FontFamily="Segoe UI Variable"/></StackPanel>
-                        </Button>
-                    </Border>
-
-                    <!-- Shortcuts -->
-                    <TextBlock Text="Keyboard Shortcuts" FontSize="11" FontWeight="SemiBold" Foreground="#FF6E7681" Margin="0,0,0,8" FontFamily="Segoe UI Variable"/>
-                    <Border Background="#FF161B22" CornerRadius="10" Padding="16" Margin="0,0,0,20" BorderBrush="#FF21262D" BorderThickness="1">
-                        <Grid>
+                        <Separator Margin="16,0"/>
+                        <Grid Margin="16,14">
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition Width="*"/>
-                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="Auto"/>
                             </Grid.ColumnDefinitions>
-                            <Grid.RowDefinitions>
-                                <RowDefinition Height="28"/><RowDefinition Height="28"/><RowDefinition Height="28"/><RowDefinition Height="28"/>
-                            </Grid.RowDefinitions>
-                            <TextBlock Grid.Row="0" Grid.Column="0" FontSize="12" Foreground="#FF8B949E" VerticalAlignment="Center" FontFamily="Segoe UI Variable">Refresh</TextBlock>
-                            <Border Grid.Row="0" Grid.Column="1" Background="#FF21262D" Padding="6,2" CornerRadius="4" HorizontalAlignment="Right"><TextBlock FontSize="11" Foreground="#FF6E7681" FontFamily="Segoe UI Variable">F5</TextBlock></Border>
-                            <TextBlock Grid.Row="1" Grid.Column="0" FontSize="12" Foreground="#FF8B949E" VerticalAlignment="Center" FontFamily="Segoe UI Variable">Settings</TextBlock>
-                            <Border Grid.Row="1" Grid.Column="1" Background="#FF21262D" Padding="6,2" CornerRadius="4" HorizontalAlignment="Right"><TextBlock FontSize="11" Foreground="#FF6E7681" FontFamily="Segoe UI Variable">Ctrl + ,</TextBlock></Border>
-                            <TextBlock Grid.Row="2" Grid.Column="0" FontSize="12" Foreground="#FF8B949E" VerticalAlignment="Center" FontFamily="Segoe UI Variable">Export</TextBlock>
-                            <Border Grid.Row="2" Grid.Column="1" Background="#FF21262D" Padding="6,2" CornerRadius="4" HorizontalAlignment="Right"><TextBlock FontSize="11" Foreground="#FF6E7681" FontFamily="Segoe UI Variable">Ctrl + E</TextBlock></Border>
-                            <TextBlock Grid.Row="3" Grid.Column="0" FontSize="12" Foreground="#FF8B949E" VerticalAlignment="Center" FontFamily="Segoe UI Variable">Go Back</TextBlock>
-                            <Border Grid.Row="3" Grid.Column="1" Background="#FF21262D" Padding="6,2" CornerRadius="4" HorizontalAlignment="Right"><TextBlock FontSize="11" Foreground="#FF6E7681" FontFamily="Segoe UI Variable">Esc</TextBlock></Border>
+                            <TextBlock Grid.Column="0" FontSize="13" VerticalAlignment="Center"
+                                       Foreground="{DynamicResource TextFillColorSecondaryBrush}">
+                                <Run Text="Auto-refresh every"/><Run FontWeight="SemiBold" Text="{Binding AutoRefreshInterval}"/><Run Text=" min"/>
+                            </TextBlock>
+                            <ComboBox Grid.Column="1" SelectedIndex="{Binding AutoRefreshIndex}" Width="100" FontSize="13">
+                                <ComboBoxItem Content="Off"/>
+                                <ComboBoxItem Content="5 min"/>
+                                <ComboBoxItem Content="10 min"/>
+                                <ComboBoxItem Content="15 min"/>
+                                <ComboBoxItem Content="30 min"/>
+                            </ComboBox>
                         </Grid>
-                    </Border>
+                    </StackPanel>
+                </ui:Card>
 
-                    <!-- About -->
-                    <TextBlock Text="About" FontSize="11" FontWeight="SemiBold" Foreground="#FF6E7681" Margin="0,0,0,8" FontFamily="Segoe UI Variable"/>
-                    <Border Background="#FF161B22" CornerRadius="10" Padding="16" BorderBrush="#FF21262D" BorderThickness="1">
+                <!-- Tools -->
+                <TextBlock Text="Tools" FontSize="12" FontWeight="SemiBold"
+                           Foreground="{DynamicResource TextFillColorTertiaryBrush}" Margin="0,0,0,8"/>
+                <ui:Card Margin="0,0,0,20">
+                    <Grid Margin="16,14">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="10"/>
+                            <ColumnDefinition Width="*"/>
+                        </Grid.ColumnDefinitions>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="10"/>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="10"/>
+                            <RowDefinition Height="Auto"/>
+                        </Grid.RowDefinitions>
+
+                        <ui:CardAction Grid.Row="0" Grid.Column="0" Command="{Binding ViewTrendsCommand}"
+                                       Icon="{ui:SymbolIcon Trending24}" Content="Grade Trends"/>
+                        <ui:CardAction Grid.Row="0" Grid.Column="2" Command="{Binding GradeGoalsCommand}"
+                                       Icon="{ui:SymbolIcon Target24}" Content="Grade Goals"/>
+                        <ui:CardAction Grid.Row="2" Grid.Column="0" Command="{Binding WhatIfCalculatorCommand}"
+                                       Icon="{ui:SymbolIcon Calculator24}" Content="What-If Calculator"/>
+                        <ui:CardAction Grid.Row="2" Grid.Column="2" Command="{Binding CheckUpdatesCommand}"
+                                       Icon="{ui:SymbolIcon ArrowSync24}" Content="Check Updates"/>
+                        <ui:CardAction Grid.Row="4" Grid.Column="0" Command="{Binding ExportToCsvCommand}"
+                                       Icon="{ui:SymbolIcon ArrowDownload24}" Content="Export CSV"/>
+                        <ui:CardAction Grid.Row="4" Grid.Column="2" Command="{Binding ExportToPdfCommand}"
+                                       Icon="{ui:SymbolIcon Document24}" Content="Export PDF"/>
+                    </Grid>
+                </ui:Card>
+
+                <!-- Account -->
+                <TextBlock Text="Account" FontSize="12" FontWeight="SemiBold"
+                           Foreground="{DynamicResource TextFillColorTertiaryBrush}" Margin="0,0,0,8"/>
+                <ui:Card Margin="0,0,0,20">
+                    <StackPanel>
+                        <Border Margin="16,14,16,0" Background="{DynamicResource ControlFillColorDefaultBrush}"
+                                CornerRadius="6" Padding="12">
+                            <TextBlock FontSize="13" Foreground="{DynamicResource TextFillColorSecondaryBrush}">
+                                <Run Text="Logged in as "/><Run Text="{Binding Username}" FontWeight="SemiBold"/>
+                            </TextBlock>
+                        </Border>
+                        <Grid Margin="16,14">
+                            <ui:Button Command="{Binding RefreshGradesCommand}" Appearance="Primary"
+                                       Icon="{ui:SymbolIcon ArrowSync24}" Content="Refresh Grades"/>
+                            <ui:Button Command="{Binding LogoutCommand}" Appearance="Danger"
+                                       Icon="{ui:SymbolIcon Dismiss24}" Content="Logout"
+                                       HorizontalAlignment="Right"/>
+                        </Grid>
+                    </StackPanel>
+                </ui:Card>
+
+                <!-- Data -->
+                <TextBlock Text="Data" FontSize="12" FontWeight="SemiBold"
+                           Foreground="{DynamicResource TextFillColorTertiaryBrush}" Margin="0,0,0,8"/>
+                <ui:Card Margin="0,0,0,20">
+                    <ui:CardAction Command="{Binding ClearCacheCommand}"
+                                   Icon="{ui:SymbolIcon Delete24}" Content="Clear Cached Data"
+                                   Margin="8"/>
+                </ui:Card>
+
+                <!-- Keyboard Shortcuts -->
+                <TextBlock Text="Keyboard Shortcuts" FontSize="12" FontWeight="SemiBold"
+                           Foreground="{DynamicResource TextFillColorTertiaryBrush}" Margin="0,0,0,8"/>
+                <ui:Card Margin="0,0,0,20">
+                    <Grid Margin="16,14">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="*"/>
+                        </Grid.ColumnDefinitions>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="32"/>
+                            <RowDefinition Height="32"/>
+                            <RowDefinition Height="32"/>
+                            <RowDefinition Height="32"/>
+                        </Grid.RowDefinitions>
+
+                        <TextBlock Grid.Row="0" Grid.Column="0" FontSize="14" VerticalAlignment="Center"
+                                   Foreground="{DynamicResource TextFillColorSecondaryBrush}">Refresh</TextBlock>
+                        <ui:Badge Grid.Row="0" Grid.Column="1" Content="F5" HorizontalAlignment="Right"/>
+
+                        <TextBlock Grid.Row="1" Grid.Column="0" FontSize="14" VerticalAlignment="Center"
+                                   Foreground="{DynamicResource TextFillColorSecondaryBrush}">Settings</TextBlock>
+                        <ui:Badge Grid.Row="1" Grid.Column="1" Content="Ctrl + ," HorizontalAlignment="Right"/>
+
+                        <TextBlock Grid.Row="2" Grid.Column="0" FontSize="14" VerticalAlignment="Center"
+                                   Foreground="{DynamicResource TextFillColorSecondaryBrush}">Export</TextBlock>
+                        <ui:Badge Grid.Row="2" Grid.Column="1" Content="Ctrl + E" HorizontalAlignment="Right"/>
+
+                        <TextBlock Grid.Row="3" Grid.Column="0" FontSize="14" VerticalAlignment="Center"
+                                   Foreground="{DynamicResource TextFillColorSecondaryBrush}">Go Back</TextBlock>
+                        <ui:Badge Grid.Row="3" Grid.Column="1" Content="Esc" HorizontalAlignment="Right"/>
+                    </Grid>
+                </ui:Card>
+
+                <!-- About -->
+                <TextBlock Text="About" FontSize="12" FontWeight="SemiBold"
+                           Foreground="{DynamicResource TextFillColorTertiaryBrush}" Margin="0,0,0,8"/>
+                <ui:Card Margin="0,0,0,20">
+                    <StackPanel Orientation="Horizontal" Margin="16,14">
+                        <Border Width="32" Height="32" CornerRadius="8" Background="#FF238636" Margin="0,0,12,0"/>
                         <StackPanel>
-                            <StackPanel Orientation="Horizontal">
-                                <Border Width="28" Height="28" CornerRadius="6" Background="#FF238636" Margin="0,0,10,0"/>
-                                <StackPanel>
-                                    <TextBlock FontSize="14" FontWeight="SemiBold" Foreground="White" FontFamily="Segoe UI Variable">TeachAssist Desktop</TextBlock>
-                                    <TextBlock FontSize="11" Foreground="#FF6E7681" FontFamily="Segoe UI Variable">
-                                        <Run Text="Version "/><Run Text="{Binding AppVersion}" FontWeight="SemiBold"/><Run Text=" by changcheng967" FontWeight="Normal"/>
-                                    </TextBlock>
-                                </StackPanel>
-                            </StackPanel>
+                            <TextBlock FontSize="15" FontWeight="SemiBold">TeachAssist Desktop</TextBlock>
+                            <TextBlock FontSize="12" Foreground="{DynamicResource TextFillColorSecondaryBrush}">
+                                <Run Text="Version "/><Run Text="{Binding AppVersion}" FontWeight="SemiBold"/><Run Text=" by changcheng967"/>
+                            </TextBlock>
                         </StackPanel>
-                    </Border>
+                    </StackPanel>
+                </ui:Card>
 
-                </StackPanel>
-            </Grid>
+            </StackPanel>
         </ScrollViewer>
 
         <!-- Loading Overlay -->
-        <Grid Grid.Row="1" Background="#CC000000" Visibility="{Binding IsLoading, Converter={StaticResource BooleanToVisibilityConverter}}">
-            <Border Width="40" Height="40" BorderThickness="3" BorderBrush="#FF58A6FF" CornerRadius="20" VerticalAlignment="Center" HorizontalAlignment="Center">
-                <Border.RenderTransform><RotateTransform Angle="0"/></Border.RenderTransform>
-                <Border.Triggers>
-                    <EventTrigger RoutedEvent="Loaded">
-                        <BeginStoryboard><Storyboard RepeatBehavior="Forever"><DoubleAnimation Storyboard.TargetProperty="(UIElement.RenderTransform).(RotateTransform.Angle)" From="0" To="360" Duration="0:0:1"/></Storyboard></BeginStoryboard>
-                    </EventTrigger>
-                </Border.Triggers>
-            </Border>
+        <Grid Grid.Row="1" Background="#AA000000"
+              Visibility="{Binding IsLoading, Converter={StaticResource BooleanToVisibilityConverter}}">
+            <ui:ProgressRing IsIndeterminate="True" Width="40" Height="40" VerticalAlignment="Center" HorizontalAlignment="Center"/>
         </Grid>
 
-        <!-- Status Message -->
-        <Border Grid.Row="1" Background="#FF238636" CornerRadius="8" Padding="14,10" Margin="24,48,24,0" HorizontalAlignment="Center" VerticalAlignment="Top"
-                Visibility="{Binding SuccessMessage, Converter={StaticResource StringToVisibilityConverter}}">
-            <TextBlock Text="{Binding SuccessMessage}" Foreground="White" FontSize="13" FontWeight="Medium" TextWrapping="Wrap" FontFamily="Segoe UI Variable"/>
-        </Border>
+        <!-- Success Message -->
+        <ui:InfoBar Grid.Row="1"
+                    Message="{Binding SuccessMessage}"
+                    Severity="Success"
+                    IsOpen="{Binding SuccessMessage, Converter={StaticResource StringToVisibilityConverter}}"
+                    Margin="32,48,32,0"
+                    HorizontalAlignment="Center"
+                    VerticalAlignment="Top"
+                    MaxWidth="500"/>
 
         <!-- Error Message -->
-        <Border Grid.Row="1" Background="#FFF85149" CornerRadius="8" Padding="14,10" Margin="24,48,24,0" HorizontalAlignment="Center" VerticalAlignment="Top"
-                Visibility="{Binding ErrorMessage, Converter={StaticResource BooleanToVisibilityConverter}}">
-            <TextBlock Text="{Binding ErrorMessage}" Foreground="White" FontSize="13" FontWeight="Medium" TextWrapping="Wrap" FontFamily="Segoe UI Variable"/>
-        </Border>
+        <ui:InfoBar Grid.Row="1"
+                    Title="Error"
+                    Message="{Binding ErrorMessage}"
+                    Severity="Error"
+                    IsOpen="{Binding ErrorMessage, Converter={StaticResource BooleanToVisibilityConverter}}"
+                    Margin="32,48,32,0"
+                    HorizontalAlignment="Center"
+                    VerticalAlignment="Top"
+                    MaxWidth="500"/>
     </Grid>
 </Page>

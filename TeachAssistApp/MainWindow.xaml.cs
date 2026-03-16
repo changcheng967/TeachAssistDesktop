@@ -1,68 +1,65 @@
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Animation;
 using Microsoft.Extensions.DependencyInjection;
 using TeachAssistApp.Helpers;
 using TeachAssistApp.ViewModels;
 using TeachAssistApp.Views;
+using Wpf.Ui.Controls;
 
 namespace TeachAssistApp;
 
-public partial class MainWindow : Window
+public partial class MainWindow : FluentWindow
 {
     private readonly IServiceProvider _serviceProvider;
-    private readonly INavigationService _navigationService;
+    private readonly Helpers.INavigationService _navigationService;
+    private string _currentView = "";
+    private bool _suppressSelectionChange = false;
+    private NavigationViewItem? _dashboardItem;
+    private NavigationViewItem? _settingsItem;
+    private string? _pendingNavigation;
 
     public MainWindow(IServiceProvider serviceProvider)
     {
         InitializeComponent();
         _serviceProvider = serviceProvider;
-        _navigationService = serviceProvider.GetRequiredService<INavigationService>();
+        _navigationService = serviceProvider.GetRequiredService<Helpers.INavigationService>();
 
-        // Subscribe to navigation events
         _navigationService.OnNavigate += OnNavigate;
-
-        // Enable Windows 11 effects
-        if (Windows11Helper.IsWindows11OrGreater())
-        {
-            Windows11Helper.EnableWindows11Effects(this);
-            Windows11Helper.ApplySnapLayoutHints(this);
-        }
-
-        // Add keyboard shortcuts
         this.KeyDown += MainWindow_KeyDown;
 
-        // Navigate to login page initially
-        NavigateTo("Login");
+        // Defer initial navigation to after the window is loaded
+        _pendingNavigation = "Login";
     }
 
     private void MainWindow_KeyDown(object sender, KeyEventArgs e)
     {
-        // F5 - Refresh
         if (e.Key == Key.F5)
         {
-            HandleRefresh();
+            if (_currentView == "Dashboard")
+            {
+                var viewModel = _serviceProvider.GetRequiredService<DashboardViewModel>();
+                viewModel.LoadCoursesCommand.Execute(null);
+            }
             e.Handled = true;
         }
-        // Ctrl + , - Settings
         else if (e.Key == Key.OemComma && Keyboard.Modifiers == ModifierKeys.Control)
         {
             _navigationService.NavigateTo("Settings");
             e.Handled = true;
         }
-        // Ctrl + E - Export
         else if (e.Key == Key.E && Keyboard.Modifiers == ModifierKeys.Control)
         {
-            HandleExport();
+            if (_currentView == "Dashboard")
+            {
+                var settingsViewModel = _serviceProvider.GetRequiredService<SettingsViewModel>();
+                _ = settingsViewModel.ExportToCsvCommand.ExecuteAsync(null);
+            }
             e.Handled = true;
         }
-        // Escape - Go back to Dashboard
         else if (e.Key == Key.Escape)
         {
-            var currentPage = ContentFrame.Content;
-            if (currentPage != null && currentPage.GetType().Name != "DashboardView")
+            if (_currentView != "Dashboard" && _currentView != "Login")
             {
                 _navigationService.NavigateTo("Dashboard");
                 e.Handled = true;
@@ -70,79 +67,61 @@ public partial class MainWindow : Window
         }
     }
 
-    private void HandleRefresh()
-    {
-        var currentPage = ContentFrame.Content;
-        if (currentPage is DashboardView)
-        {
-            var viewModel = _serviceProvider.GetRequiredService<DashboardViewModel>();
-            viewModel.LoadCoursesCommand.Execute(null);
-        }
-        else if (currentPage is CourseDetailView)
-        {
-            var viewModel = _serviceProvider.GetRequiredService<CourseDetailViewModel>();
-            // Refresh current course
-        }
-    }
-
-    private async void HandleExport()
-    {
-        var currentPage = ContentFrame.Content;
-        if (currentPage is DashboardView)
-        {
-            var settingsViewModel = _serviceProvider.GetRequiredService<SettingsViewModel>();
-            await settingsViewModel.ExportToCsvCommand.ExecuteAsync(null);
-        }
-    }
-
     private void Window_Loaded(object sender, RoutedEventArgs e)
     {
-        // Apply fade-in animation on load
-        var fadeIn = (Storyboard)FindResource("WindowFadeIn");
-        fadeIn.Begin(this);
+        WindowsIntegration.UpdateJumpList([]);
+
+        // Cache nav items
+        foreach (var item in RootNavigation.MenuItems)
+        {
+            if (item is NavigationViewItem navItem)
+            {
+                if (navItem.Tag?.ToString() == "Dashboard") _dashboardItem = navItem;
+                if (navItem.Tag?.ToString() == "Settings") _settingsItem = navItem;
+            }
+        }
+
+        // Process deferred navigation
+        if (_pendingNavigation != null)
+        {
+            NavigateTo(_pendingNavigation);
+            _pendingNavigation = null;
+        }
     }
 
-    private void OnNavigate(string viewName)
-    {
-        NavigateTo(viewName);
-    }
+    private void OnNavigate(string viewName) => NavigateTo(viewName);
 
     private void NavigateTo(string viewName)
     {
-        System.Diagnostics.Debug.WriteLine($"NavigateTo called: {viewName}");
         Page? page = null;
-
-        // Parse view name with optional parameters (e.g., "CourseDetail|ICS4U1-03")
         var parts = viewName.Split('|');
         var baseView = parts[0];
-        System.Diagnostics.Debug.WriteLine($"  Base view: {baseView}");
-        if (parts.Length > 1)
-        {
-            System.Diagnostics.Debug.WriteLine($"  Parameter: {parts[1]}");
-        }
 
         switch (baseView)
         {
             case "Login":
                 page = _serviceProvider.GetRequiredService<LoginView>();
                 var loginViewModel = _serviceProvider.GetRequiredService<LoginViewModel>();
-                // Reload credentials (will clear them after logout)
                 _ = loginViewModel.LoadSavedCredentialsAsync();
                 page.DataContext = loginViewModel;
+                RootNavigation.IsPaneVisible = false;
                 break;
             case "Dashboard":
                 page = _serviceProvider.GetRequiredService<DashboardView>();
                 page.DataContext = _serviceProvider.GetRequiredService<DashboardViewModel>();
+                RootNavigation.IsPaneVisible = true;
+                HighlightNavItem(_dashboardItem);
                 break;
             case "Settings":
                 page = _serviceProvider.GetRequiredService<SettingsView>();
                 page.DataContext = _serviceProvider.GetRequiredService<SettingsViewModel>();
+                RootNavigation.IsPaneVisible = true;
+                HighlightNavItem(_settingsItem);
                 break;
             case "CourseDetail":
                 if (parts.Length > 1)
                 {
                     var courseCode = parts[1];
-                    System.Diagnostics.Debug.WriteLine($"  Loading CourseDetailView for: {courseCode}");
                     page = _serviceProvider.GetRequiredService<CourseDetailView>();
                     var viewModel = _serviceProvider.GetRequiredService<CourseDetailViewModel>();
                     viewModel.LoadCourse(courseCode);
@@ -150,139 +129,56 @@ public partial class MainWindow : Window
                 }
                 else
                 {
-                    System.Diagnostics.Debug.WriteLine($"  Loading CourseDetailView without course code");
                     page = _serviceProvider.GetRequiredService<CourseDetailView>();
                     page.DataContext = _serviceProvider.GetRequiredService<CourseDetailViewModel>();
                 }
+                RootNavigation.IsPaneVisible = true;
                 break;
         }
 
         if (page != null)
         {
-            System.Diagnostics.Debug.WriteLine($"  Navigating to page");
-            // First navigation or empty Frame: skip animation, navigate instantly
-            if (ContentFrame.Content == null)
+            _currentView = baseView;
+            RootNavigation.ReplaceContent(page);
+        }
+    }
+
+    private void HighlightNavItem(NavigationViewItem? item)
+    {
+        _suppressSelectionChange = true;
+        try
+        {
+            // Deselect all, select target
+            foreach (var mi in RootNavigation.MenuItems)
             {
-                try
-                {
-                    ContentFrame.Navigate(page);
-                    System.Diagnostics.Debug.WriteLine($"  Instant navigation (first load)");
-                }
-                catch (Exception ex)
-                {
-                    System.Diagnostics.Debug.WriteLine($"  Instant navigation failed: {ex.Message}");
-                }
+                if (mi is NavigationViewItem nvi) nvi.IsActive = false;
             }
-            else
+            if (item != null) item.IsActive = true;
+        }
+        finally
+        {
+            _suppressSelectionChange = false;
+        }
+    }
+
+    private void RootNavigation_SelectionChanged(object sender, RoutedEventArgs args)
+    {
+        if (_suppressSelectionChange)
+            return;
+
+        foreach (var item in RootNavigation.MenuItems)
+        {
+            if (item is NavigationViewItem navItem && navItem.IsActive)
             {
-                try
+                var tag = navItem.Tag?.ToString();
+                if (tag != null && tag != _currentView)
                 {
-                    AnimateTransition(page, baseView == "CourseDetail");
+                    _navigationService.NavigateTo(tag);
                 }
-                catch
-                {
-                    ContentFrame.Navigate(page);
-                }
+                return;
             }
         }
-        else
-        {
-            System.Diagnostics.Debug.WriteLine($"  Page is null, navigation failed");
-        }
     }
-
-    private void AnimateTransition(Page newPage, bool isForward)
-    {
-        // Simple fade-out then navigate and fade-in
-        var fadeOut = new DoubleAnimation
-        {
-            From = 1,
-            To = 0,
-            Duration = TimeSpan.FromMilliseconds(200),
-            EasingFunction = new CubicEase { EasingMode = EasingMode.EaseIn }
-        };
-
-        var outSb = new Storyboard();
-        Storyboard.SetTarget(fadeOut, ContentFrame);
-        Storyboard.SetTargetProperty(fadeOut, new PropertyPath(UIElement.OpacityProperty));
-        outSb.Children.Add(fadeOut);
-
-        outSb.Completed += (_, _) =>
-        {
-            Dispatcher.Invoke(() =>
-            {
-                try
-                {
-                    ContentFrame.Navigate(newPage);
-                    ContentFrame.Opacity = 0;
-
-                    var fadeIn = new DoubleAnimation
-                    {
-                        From = 0,
-                        To = 1,
-                        Duration = TimeSpan.FromMilliseconds(300),
-                        EasingFunction = new CubicEase { EasingMode = EasingMode.EaseOut }
-                    };
-                    var inSb = new Storyboard();
-                    Storyboard.SetTarget(fadeIn, ContentFrame);
-                    Storyboard.SetTargetProperty(fadeIn, new PropertyPath(UIElement.OpacityProperty));
-                    inSb.Children.Add(fadeIn);
-                    inSb.Begin(this);
-                }
-                catch
-                {
-                    // Fallback: navigate without animation
-                }
-            });
-        };
-
-        outSb.Begin(this);
-    }
-
-    #region Window Control Events
-
-    private void TitleBar_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
-    {
-        if (e.ClickCount == 2)
-        {
-            // Double click to maximize/restore
-            Maximize_Click(sender, e);
-        }
-        else
-        {
-            // Drag to move
-            if (WindowState == WindowState.Maximized)
-            {
-                // When maximized, restore to normal and move
-                var point = Mouse.GetPosition(this);
-                WindowState = WindowState.Normal;
-                // Adjust position to keep mouse relative to window
-                Left = point.X - (RestoreBounds.Width / 2);
-                Top = point.Y;
-            }
-
-            DragMove();
-        }
-    }
-
-    private void Minimize_Click(object sender, RoutedEventArgs e)
-    {
-        WindowState = WindowState.Minimized;
-    }
-
-    private void Maximize_Click(object sender, RoutedEventArgs e)
-    {
-        WindowState = WindowState == WindowState.Maximized
-            ? WindowState.Normal
-            : WindowState.Maximized;
-    }
-
-    private void Close_Click(object sender, RoutedEventArgs e)
-    {
-        Close();
-    }
-
-    #endregion
 
     protected override void OnClosed(EventArgs e)
     {

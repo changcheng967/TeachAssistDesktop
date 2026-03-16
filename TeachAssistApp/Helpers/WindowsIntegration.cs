@@ -2,6 +2,7 @@ using System;
 using System.Runtime.InteropServices;
 using System.Windows;
 using System.Windows.Shell;
+using Microsoft.Toolkit.Uwp.Notifications;
 using TeachAssistApp.Models;
 
 namespace TeachAssistApp.Helpers;
@@ -21,12 +22,10 @@ public static class WindowsIntegration
                 JumpList.SetJumpList(Application.Current, jumpList);
             }
 
-            // Clear existing items
             jumpList.JumpItems.Clear();
             jumpList.ShowFrequentCategory = false;
             jumpList.ShowRecentCategory = false;
 
-            // Add courses to Jump List
             foreach (var course in courses.Take(courses.Count() > 10 ? 10 : courses.Count()))
             {
                 if (!course.HasValidMark) continue;
@@ -43,7 +42,6 @@ public static class WindowsIntegration
             }
 
             jumpList.Apply();
-            System.Diagnostics.Debug.WriteLine($"Updated Jump List with {courses.Count()} courses");
         }
         catch (Exception ex)
         {
@@ -57,16 +55,7 @@ public static class WindowsIntegration
 
     public static void AddSystemTrayIcon(Action onRefresh, Action onExit)
     {
-        try
-        {
-            // System tray implementation requires NotifyIcon
-            // This is a placeholder for Windows Forms integration
-            System.Diagnostics.Debug.WriteLine("System tray support enabled");
-        }
-        catch (Exception ex)
-        {
-            System.Diagnostics.Debug.WriteLine($"Failed to add system tray: {ex.Message}");
-        }
+        System.Diagnostics.Debug.WriteLine("System tray support enabled");
     }
 
     #endregion
@@ -77,20 +66,22 @@ public static class WindowsIntegration
     {
         try
         {
-            // Use Windows 11 notification center
             Application.Current.Dispatcher.Invoke(() =>
             {
-                // For now, simple message box - full toast notifications require WinRT
-                MessageBox.Show(
-                    message,
-                    title,
-                    MessageBoxButton.OK,
-                    MessageBoxImage.Information);
+                new ToastContentBuilder()
+                    .AddText(title)
+                    .AddText(message)
+                    .Show();
             });
         }
         catch (Exception ex)
         {
             System.Diagnostics.Debug.WriteLine($"Failed to show notification: {ex.Message}");
+            // Fallback to message box
+            Application.Current.Dispatcher.Invoke(() =>
+            {
+                MessageBox.Show(message, title, MessageBoxButton.OK, MessageBoxImage.Information);
+            });
         }
     }
 
@@ -102,14 +93,9 @@ public static class WindowsIntegration
     {
         try
         {
-            // Windows 11 Mica and acrylic effects
             int TRUE = 1;
-
-            // Enable immersive dark mode
             DwmSetWindowAttribute(hwnd, 20, ref TRUE, sizeof(int));
-
-            // Set corner preference to round (Windows 11 style)
-            int cornerPref = 2; // DWMWCP_ROUND
+            int cornerPref = 2;
             DwmSetWindowAttribute(hwnd, 33, ref cornerPref, sizeof(int));
         }
         catch { }

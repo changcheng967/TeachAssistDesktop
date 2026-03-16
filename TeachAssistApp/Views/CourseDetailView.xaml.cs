@@ -33,6 +33,7 @@ public partial class CourseDetailView : Page
     private void CreatePlotControl()
     {
         _plotControl = new WpfPlot();
+        _plotControl.UserInputProcessor.Disable();
         ChartHost.Content = _plotControl;
     }
 

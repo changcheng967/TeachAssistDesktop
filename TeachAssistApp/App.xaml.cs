@@ -6,6 +6,7 @@ using TeachAssistApp.Services;
 using TeachAssistApp.ViewModels;
 using TeachAssistApp.Views;
 using TeachAssistApp.Helpers;
+using Wpf.Ui.Appearance;
 
 namespace TeachAssistApp;
 
@@ -19,13 +20,19 @@ public partial class App : Application
     {
         base.OnStartup(e);
 
+        // Apply initial theme from Windows settings
+        ApplicationThemeManager.Apply(
+            ApplicationThemeManager.GetSystemTheme() == SystemTheme.Dark
+                ? ApplicationTheme.Dark
+                : ApplicationTheme.Light);
+
         _host = Host.CreateDefaultBuilder()
             .ConfigureServices((context, services) =>
             {
                 // Services
                 services.AddSingleton<ITeachAssistService, TeachAssistService>();
                 services.AddSingleton<ICredentialService, CredentialService>();
-                services.AddSingleton<INavigationService, NavigationService>();
+                services.AddSingleton<Helpers.INavigationService, Helpers.NavigationService>();
                 services.AddSingleton<PdfExporter>();
 
                 // ViewModels
@@ -49,6 +56,9 @@ public partial class App : Application
 
         var mainWindow = _host.Services.GetRequiredService<MainWindow>();
         mainWindow.Show();
+
+        // Watch for system theme changes (must be called after Show)
+        SystemThemeWatcher.Watch(mainWindow as Wpf.Ui.Controls.FluentWindow);
     }
 
     protected override void OnExit(ExitEventArgs e)
@@ -241,7 +251,6 @@ public class TrendPointConverter : System.Windows.Data.IMultiValueConverter
     {
         if (values.Length >= 2 && values[0] is int index && values[1] is int totalCount)
         {
-            // Chart width: 700 pixels
             const double chartWidth = 700;
             const double startX = 30;
 
