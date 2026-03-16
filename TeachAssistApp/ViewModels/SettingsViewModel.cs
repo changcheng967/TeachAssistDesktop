@@ -11,6 +11,7 @@ using TeachAssistApp.Services;
 using TeachAssistApp.Helpers;
 using TeachAssistApp.Views;
 using Microsoft.Extensions.DependencyInjection;
+using Wpf.Ui.Appearance;
 
 namespace TeachAssistApp.ViewModels;
 
@@ -23,7 +24,7 @@ public partial class SettingsViewModel : ObservableObject
     private readonly PdfExporter _pdfExporter;
 
     [ObservableProperty]
-    private string _appVersion = "2.0.0";
+    private string _appVersion = "3.0.0";
 
     [ObservableProperty]
     private bool _isLoading;
@@ -35,7 +36,7 @@ public partial class SettingsViewModel : ObservableObject
     private string? _successMessage;
 
     [ObservableProperty]
-    private bool _isDarkMode = true;
+    private bool _isDarkMode;
 
     [ObservableProperty]
     private bool _enableNotifications = true;
@@ -64,6 +65,9 @@ public partial class SettingsViewModel : ObservableObject
         _serviceProvider = serviceProvider;
         _pdfExporter = pdfExporter;
 
+        // Sync dark mode toggle with current application theme
+        _isDarkMode = ApplicationThemeManager.GetSystemTheme() == SystemTheme.Dark;
+
         LoadUserData();
     }
 
@@ -82,7 +86,12 @@ public partial class SettingsViewModel : ObservableObject
 
     partial void OnIsDarkModeChanged(bool value)
     {
-        // Theme switching logic could be implemented here
+        try
+        {
+            Wpf.Ui.Appearance.ApplicationThemeManager.Apply(
+                value ? Wpf.Ui.Appearance.ApplicationTheme.Dark : Wpf.Ui.Appearance.ApplicationTheme.Light);
+        }
+        catch { }
     }
 
     partial void OnAutoRefreshIndexChanged(int value)

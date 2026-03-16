@@ -2,7 +2,6 @@ using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Media;
 using ScottPlot;
 using ScottPlot.WPF;
 using TeachAssistApp.Models;
@@ -13,20 +12,46 @@ namespace TeachAssistApp.Views;
 public partial class CourseDetailView : Page
 {
     private WpfPlot? _plotControl;
+    private CourseDetailViewModel? _viewModel;
 
     public CourseDetailView()
     {
         InitializeComponent();
         Loaded += OnLoaded;
+        Unloaded += OnUnloaded;
     }
 
     private void OnLoaded(object sender, RoutedEventArgs e)
     {
         if (DataContext is CourseDetailViewModel vm)
         {
-            vm.PropertyChanged += OnViewModelPropertyChanged;
+            // Clean up previous subscription if any
+            if (_viewModel != null && _viewModel != vm)
+            {
+                _viewModel.PropertyChanged -= OnViewModelPropertyChanged;
+            }
+
+            _viewModel = vm;
+            _viewModel.PropertyChanged += OnViewModelPropertyChanged;
+
+            // Dispose old plot control if re-navigating
+            if (_plotControl != null)
+            {
+                ChartHost.Content = null;
+                _plotControl = null;
+            }
+
             CreatePlotControl();
-            RenderChart(vm.GradeTimeline);
+            RenderChart(_viewModel.GradeTimeline);
+        }
+    }
+
+    private void OnUnloaded(object sender, RoutedEventArgs e)
+    {
+        if (_viewModel != null)
+        {
+            _viewModel.PropertyChanged -= OnViewModelPropertyChanged;
+            _viewModel = null;
         }
     }
 
@@ -76,15 +101,11 @@ public partial class CourseDetailView : Page
             // High-impact highlights
             var highImpactXs = new List<double>();
             var highImpactYs = new List<double>();
-            var highImpactColors = new List<ScottPlot.Color>();
 
             foreach (var point in timeline.Where(t => t.IsHighImpact && !t.FirstPoint))
             {
                 highImpactXs.Add(point.Index);
                 highImpactYs.Add(point.CumulativeGrade);
-                highImpactColors.Add(point.Impact >= 0
-                    ? ScottPlot.Color.FromHex("#238636")
-                    : ScottPlot.Color.FromHex("#F85149"));
             }
 
             if (highImpactXs.Count > 0)
@@ -121,7 +142,7 @@ public partial class CourseDetailView : Page
             plot.Axes.SetLimitsX(-0.5, xs.Length - 0.5);
 
             // Legend
-            plot.Legend.Location = Alignment.UpperLeft;
+            plot.Legend.Alignment = Alignment.UpperLeft;
             plot.Legend.BackgroundColor = ScottPlot.Color.FromHex("#161B22").WithAlpha(0.9);
             plot.Legend.FontColor = ScottPlot.Color.FromHex("#C9D1D9");
             plot.Legend.OutlineColor = ScottPlot.Color.FromHex("#30363D");
@@ -144,6 +165,6 @@ public partial class CourseDetailView : Page
     private static string Truncate(string value, int maxLength)
     {
         if (string.IsNullOrEmpty(value) || value.Length <= maxLength) return value;
-        return value[..maxLength] + "…";
+        return value[..maxLength] + "\u2026";
     }
 }

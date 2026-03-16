@@ -190,7 +190,7 @@ public partial class DashboardViewModel : ObservableObject
         }
         catch (Exception ex)
         {
-            System.Diagnostics.Debug.WriteLine($"Export failed: {ex.Message}");
+            ErrorMessage = $"Export failed: {ex.Message}";
         }
     }
 }

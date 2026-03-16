@@ -92,18 +92,6 @@ public class TeachAssistService : ITeachAssistService
             var responseContent = await postResponse.Content.ReadAsStringAsync();
             System.Diagnostics.Debug.WriteLine($"Login POST response, status: {postResponse.StatusCode}, length: {responseContent.Length}");
 
-            // Save full HTML to debug file
-            try
-            {
-                var debugPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "login_response.html");
-                await File.WriteAllTextAsync(debugPath, responseContent);
-                System.Diagnostics.Debug.WriteLine($"Saved login HTML to: {debugPath}");
-            }
-            catch (Exception ex)
-            {
-                System.Diagnostics.Debug.WriteLine($"Failed to save debug HTML: {ex.Message}");
-            }
-
             // Check for login failure indicators
             if (responseContent.Contains("Invalid") || responseContent.Contains("failed") ||
                 responseContent.Contains("incorrect") || responseContent.Contains("not found"))

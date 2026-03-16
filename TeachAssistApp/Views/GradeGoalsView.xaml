@@ -53,7 +53,7 @@
                                 <Run Text=" more to reach your goal"/>
                             </TextBlock>
 
-                            <TextBlock FontSize="12" Foreground="#4CAF50"
+                            <TextBlock FontSize="12" Foreground="#FF238636"
                                        HorizontalAlignment="Right"
                                        Visibility="{Binding OnTrack, Converter={StaticResource BooleanToVisibilityConverter}}">
                                 On track
@@ -81,7 +81,7 @@
                                                     CommandParameter="{Binding Percent}">
                                         <StackPanel HorizontalAlignment="Center">
                                             <TextBlock Text="{Binding Percent, StringFormat={}{0:F0}%}" FontSize="20" FontWeight="Bold"
-                                                       Foreground="{Binding Color}" HorizontalAlignment="Center"/>
+                                                       Foreground="{Binding Color, Converter={StaticResource StringToBrushConverter}}" HorizontalAlignment="Center"/>
                                             <TextBlock Text="{Binding Label}" FontSize="12"
                                                        Foreground="{DynamicResource TextFillColorSecondaryBrush}" HorizontalAlignment="Center"/>
                                         </StackPanel>
