@@ -127,7 +127,9 @@ public partial class MainWindow : FluentWindow
                 break;
             case "Settings":
                 page = _serviceProvider.GetRequiredService<SettingsView>();
-                page.DataContext = _serviceProvider.GetRequiredService<SettingsViewModel>();
+                var settingsViewModel = _serviceProvider.GetRequiredService<SettingsViewModel>();
+                page.DataContext = settingsViewModel;
+                _ = settingsViewModel.RefreshUserDataAsync();
                 RootNavigation.Visibility = Visibility.Visible;
                 HighlightNavItem(_settingsItem);
                 break;

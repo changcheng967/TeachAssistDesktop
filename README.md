@@ -1,149 +1,118 @@
-# TeachAssist Desktop Application
+# TeachAssist Desktop
 
-> A modern Windows desktop application for YRDSB students to check their TeachAssist grades with advanced analytics and a beautiful UI.
+> A modern Windows desktop application for YRDSB students to check their TeachAssist grades with advanced analytics and a polished Fluent UI.
 
-![TeachAssist](https://img.shields.io/badge/version-2.0.0-blue)
-![.NET](https://img.shields.io/badge/.NET-9.0-purple)
-![Platform](https://img.shields.io/badge/platform-Windows-blue)
+![TeachAssist](https://img.shields.io/badge/version-3.0.0-blue)
+![.NET](https://img.shields.io/badge/.NET-10.0-purple)
+![Platform](https://img.shields.io/badge/platform-Windows_10%2B-blue)
 ![License](https://img.shields.io/badge/license-MIT-green)
+![Microsoft Store](https://img.shields.io/badge/Microsoft_Store-Coming_Soon-0078D4)
 
 ## Features
 
-- Modern Dark UI - Clean, professional interface
-- Smart Course Decoding - Automatically decodes Ontario course codes
-- Grade Goals - Set grade goals and track your progress
-- Grade Trends - Visualize your assignment performance over time
-- What-If Calculator - Simulate how future assignments affect your grade
-- Color-Coded Grades - Instant visual feedback on your performance
-- Secure Login - Credentials stored securely using Windows Credential Manager
-- Fast & Lightweight - Built with .NET 9 and WPF
+- **Fluent Design UI** — Windows 11 native feel with WPF-UI, Mica backdrop, and dynamic theming (dark/light)
+- **Smart Course Decoding** — Automatically decodes Ontario course codes into human-readable descriptions
+- **Grade Trends** — Visualize your assignment performance over time with ScottPlot charts
+- **What-If Calculator** — Simulate how future assignments affect your final grade
+- **Grade Goals** — Set grade targets and track your progress toward them
+- **Export Reports** — Export your grades as CSV or HTML (printable as PDF)
+- **Color-Coded Grades** — Instant visual feedback on your performance
+- **Secure Login** — Credentials stored in Windows Credential Manager
+- **Keyboard Shortcuts** — F5 to refresh, Ctrl+E to export, Ctrl+, for settings
+- **Check for Updates** — Built-in update checker via GitHub Releases
+- **Fast & Lightweight** — Built on .NET 10 and WPF
 
-## Getting Started
+## Installation
 
-### Prerequisites
+### Microsoft Store (Recommended)
 
-- Windows 10 or Windows 11 (64-bit)
-- Approximately 150 MB free disk space
+Available on the [Microsoft Store](https://apps.microsoft.com) — search for "TeachAssist Desktop".
 
-### Installation
+### Manual
 
-1. Download the latest release from [Releases](../../releases)
-2. Extract `TeachAssistApp-Release.zip`
-3. Run `TeachAssistApp.exe`
-4. Login with your YRDSB credentials
-
-**Demo Mode:** Use username `demo` to test with sample data.
+1. Download the latest `.msix` from [Releases](../../releases)
+2. Double-click to install
+3. Login with your YRDSB student number and password
 
 ### Building from Source
 
 ```bash
-# Clone the repository
-git clone https://github.com/changcheng967/TeachAssist.git
-
-# Navigate to the project directory
-cd TeachAssist
-
-# Open in Visual Studio 2022
-# Or build using CLI:
-dotnet build --configuration Release
-
-# Run the application
-dotnet run
+git clone https://github.com/changcheng967/TeachAssistDesktop.git
+cd TeachAssistDesktop
+dotnet build TeachAssistApp/TeachAssistApp.csproj -c Release
+dotnet run --project TeachAssistApp/TeachAssistApp.csproj
 ```
 
 ## Usage
 
-### Course Code Decoding
-
-The application automatically decodes Ontario course codes:
-
-| Code | Decoded |
-|------|---------|
-| ICS4U1-03 | Computer Science • Grade 12 University |
-| MHF4U1-02 | Advanced Functions • Grade 12 University |
-| CGC1W1-08 | Geography of Canada • Grade 9 Destreamed |
-| ESLEO1-02 | ESL • Level E |
-
 ### Grade Color Coding
 
-- Green (90%+) - Level 4, A range
-- Gold (80-89%) - Level 3, B range
-- Orange (70-79%) - Level 2, C range
-- Red (60-69%) - Level 1, passing
-- Dark Red (Below 60%) - Below expectations
-- Gray (N/A) - No marks yet
+| Range | Color | Level |
+|-------|-------|-------|
+| 90%+ | Green | Level 4, A |
+| 80-89% | Gold | Level 3, B |
+| 70-79% | Orange | Level 2, C |
+| 60-69% | Red | Level 1 |
+| < 60% | Dark Red | Below expectations |
+
+### Keyboard Shortcuts
+
+| Shortcut | Action |
+|----------|--------|
+| F5 | Refresh grades |
+| Ctrl+E | Export grades |
+| Ctrl+, | Open settings |
+| Esc | Go back |
 
 ## Tech Stack
 
-- **Framework:** .NET 9.0
-- **UI:** WPF (Windows Presentation Foundation)
-- **Architecture:** MVVM with CommunityToolkit.Mvvm
-- **Language:** C#
+- **Framework:** .NET 10.0 (WPF)
+- **UI Library:** WPF-UI 4.2.0 (Fluent Design)
+- **Architecture:** MVVM + DI (Microsoft.Extensions.DependencyInjection)
+- **MVVM Toolkit:** CommunityToolkit.Mvvm 8.4.0
+- **Charts:** ScottPlot.WPF 5.1.57
 - **HTML Parsing:** HtmlAgilityPack
+- **Notifications:** Microsoft.Toolkit.Uwp.Notifications
 - **Credential Storage:** Windows Credential Manager
-
-## Project Structure
-
-```
-TeachAssistApp/
-├── Models/           # Data models (Course, Assignment, etc.)
-├── ViewModels/       # MVVM ViewModels
-├── Views/            # XAML views
-├── Services/         # Business logic (TeachAssist, Credentials)
-├── Helpers/          # Utility classes (CourseCodeParser, Converters)
-├── Converters/       # WPF value converters
-└── Resources/        # Styles and templates
-```
 
 ## Privacy & Security
 
 - Credentials stored ONLY locally in Windows Credential Manager
 - No telemetry or data collection
-- No internet connection required after login (cached data)
+- No third-party analytics
 - All data stored locally on your computer
-- Clear all data option in Settings
+- Clear all cached data from Settings at any time
 
 **This application is NOT affiliated with or endorsed by YRDSB or TeachAssist.**
 
-## Troubleshooting
-
-### Login Issues
-- Verify your YRDSB student number and password
-- Ensure `ta.yrdsb.ca` is accessible
-- Try the demo account (username: `demo`)
-
-### Grades Not Loading
-- Check your internet connection
-- Click the "Refresh" button
-- Clear cached data in Settings
-
 ## Changelog
 
+### Version 3.0.0
+- Complete UI overhaul with WPF-UI Fluent Design (Mica backdrop, dynamic theming)
+- Added grade trends visualization (ScottPlot)
+- Added What-If Calculator for grade simulation
+- Added Grade Goals with progress tracking
+- Added CSV and HTML report export
+- Added check for updates feature
+- Fixed stale username on account switch
+- Removed dead code and unused themes
+- Production crash handler
+- Microsoft Store packaging (MSIX)
+
 ### Version 2.0.0
-- Complete UI/UX redesign with premium dark theme
-- Course code decoding for Ontario curriculum
-- Grade goals system with progress tracking
-- Enhanced card layout with color-coded accents
-- Improved login page
-- Fixed text overlap issues
-- Added room and block info to cards
-- Fixed decimal precision in stats
+- Dark theme redesign
+- Course code decoding
+- Grade goals system
+- Improved card layout with color-coded accents
 
 ### Version 1.0.0
 - Initial release
 - Basic grade viewing
-- Dashboard with course cards
 
 ## Credits
 
 **Developed by:** [changcheng967](https://github.com/changcheng967)
 
-**Built with:**
-- [.NET 9.0](https://dotnet.microsoft.com/download/dotnet/9.0)
-- [WPF](https://docs.microsoft.com/en-us/dotnet/desktop/wpf/)
-- [CommunityToolkit.Mvvm](https://github.com/CommunityToolkit/dotnet)
-- [HtmlAgilityPack](https://html-agility-pack.net/)
-
 ## License
 
-This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+This project is licensed under the MIT License.

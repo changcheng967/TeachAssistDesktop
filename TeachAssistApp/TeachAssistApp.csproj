@@ -16,6 +16,7 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Content Include="logo.png" CopyToOutputDirectory="PreserveNewest"/>
     <PackageReference Include="CommunityToolkit.Mvvm" Version="8.4.0" />
     <PackageReference Include="CredentialManagement" Version="1.0.2" />
     <PackageReference Include="HtmlAgilityPack" Version="1.12.4" />

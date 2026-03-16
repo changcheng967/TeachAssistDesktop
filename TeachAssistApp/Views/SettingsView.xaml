@@ -76,8 +76,8 @@
                                    Icon="{ui:SymbolIcon ChartMultiple24}" Content="Grade Goals"/>
                     <ui:CardAction Grid.Row="2" Grid.Column="0" Command="{Binding WhatIfCalculatorCommand}"
                                    Icon="{ui:SymbolIcon Calculator24}" Content="What-If Calculator"/>
-                    <ui:CardAction Grid.Row="2" Grid.Column="2" Command="{Binding CheckUpdatesCommand}"
-                                   Icon="{ui:SymbolIcon ArrowSyncCheckmark24}" Content="Refresh Summary"/>
+                    <ui:CardAction Grid.Row="2" Grid.Column="2" Command="{Binding CheckForUpdatesCommand}"
+                                   Icon="{ui:SymbolIcon ArrowSyncCheckmark24}" Content="Check for Updates"/>
                     <ui:CardAction Grid.Row="4" Grid.Column="0" Command="{Binding ExportToCsvCommand}"
                                    Icon="{ui:SymbolIcon ArrowExportLtr24}" Content="Export CSV"/>
                     <ui:CardAction Grid.Row="4" Grid.Column="2" Command="{Binding ExportToPdfCommand}"
@@ -154,12 +154,16 @@
                        Foreground="{DynamicResource TextFillColorTertiaryBrush}" Margin="0,0,0,8"/>
             <ui:Card Margin="0,0,0,20">
                 <StackPanel Orientation="Horizontal" Margin="16,14">
-                    <Border Width="32" Height="32" CornerRadius="8" Background="#FF238636" Margin="0,0,12,0"/>
+                    <Border Width="32" Height="32" CornerRadius="8" Margin="0,0,12,0" ClipToBounds="True">
+                        <Image Source="/logo.png" Stretch="UniformToFill"/>
+                    </Border>
                     <StackPanel>
                         <TextBlock FontSize="15" FontWeight="SemiBold">TeachAssist Desktop</TextBlock>
                         <TextBlock FontSize="12" Foreground="{DynamicResource TextFillColorSecondaryBrush}">
                             <Run Text="Version "/><Run Text="{Binding AppVersion}" FontWeight="SemiBold"/><Run Text=" by changcheng967"/>
                         </TextBlock>
+                        <TextBlock FontSize="12" Foreground="{DynamicResource TextFillColorTertiaryBrush}"
+                                   Text="{Binding UpdateStatus}" Visibility="{Binding UpdateStatus, Converter={StaticResource StringToVisibilityConverter}}"/>
                     </StackPanel>
                 </StackPanel>
             </ui:Card>

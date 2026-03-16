@@ -4,6 +4,8 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Net.Http;
+using System.Text.Json;
 using System.Threading.Tasks;
 using System.Windows;
 using TeachAssistApp.Models;
@@ -25,6 +27,12 @@ public partial class SettingsViewModel : ObservableObject
 
     [ObservableProperty]
     private string _appVersion = "3.0.0";
+
+    [ObservableProperty]
+    private string _updateStatus = string.Empty;
+
+    [ObservableProperty]
+    private bool _isCheckingForUpdates;
 
     [ObservableProperty]
     private bool _isLoading;
@@ -81,6 +89,26 @@ public partial class SettingsViewModel : ObservableObject
         catch { }
     }
 
+    public async Task RefreshUserDataAsync()
+    {
+        try
+        {
+            var creds = await _credentialService.GetCredentialsAsync();
+            if (!string.IsNullOrEmpty(creds.username))
+            {
+                Username = creds.username;
+            }
+            else
+            {
+                Username = "Student";
+            }
+        }
+        catch
+        {
+            Username = "Student";
+        }
+    }
+
     partial void OnIsDarkModeChanged(bool value)
     {
         try
@@ -115,6 +143,9 @@ public partial class SettingsViewModel : ObservableObject
         {
             await _teachAssistService.LogoutAsync();
             await _credentialService.ClearCredentialsAsync();
+            Username = "Student";
+            _cachedCourses = null;
+            UpdateStatus = string.Empty;
             _navigationService.NavigateTo("Login");
         }
         catch (Exception ex)
@@ -309,6 +340,50 @@ public partial class SettingsViewModel : ObservableObject
         catch (Exception ex)
         {
             ErrorMessage = $"Failed to open grade goals: {ex.Message}";
+        }
+    }
+
+    [RelayCommand]
+    private async Task CheckForUpdatesAsync()
+    {
+        IsCheckingForUpdates = true;
+        UpdateStatus = "Checking for updates...";
+        ErrorMessage = null;
+        SuccessMessage = null;
+
+        try
+        {
+            using var client = new HttpClient();
+            client.DefaultRequestHeaders.Add("User-Agent", "TeachAssistDesktop");
+            var response = await client.GetStringAsync("https://api.github.com/repos/changcheng967/TeachAssistDesktop/releases/latest");
+            var json = JsonDocument.Parse(response);
+            var latestTag = json.RootElement.GetProperty("tag_name").GetString();
+
+            var current = new Version(AppVersion);
+            var latest = new Version(latestTag.TrimStart('v'));
+
+            if (latest > current)
+            {
+                var url = json.RootElement.GetProperty("html_url").GetString();
+                UpdateStatus = $"Update available: v{latest}! Tap to download.";
+                SuccessMessage = $"New version v{latest} available.";
+            }
+            else
+            {
+                UpdateStatus = "You're on the latest version.";
+                SuccessMessage = "You're on the latest version!";
+                await Task.Delay(2000);
+                SuccessMessage = null;
+            }
+        }
+        catch (Exception ex)
+        {
+            UpdateStatus = "Could not check for updates.";
+            ErrorMessage = $"Update check failed: {ex.Message}";
+        }
+        finally
+        {
+            IsCheckingForUpdates = false;
         }
     }
 
