@@ -3,7 +3,7 @@
   "version": "4.0.0",
   "description": "TeachAssist Desktop — Electron + React + TypeScript",
   "type": "module",
-  "main": "dist-electron/main/index.js",
+  "main": "dist-electron/index.js",
   "scripts": {
     "dev": "vite",
     "build": "tsc && vite build && electron-builder",
