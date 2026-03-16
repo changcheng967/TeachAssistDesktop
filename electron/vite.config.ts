@@ -14,6 +14,9 @@ export default defineConfig({
           build: {
             rollupOptions: {
               external: ['node:sqlite', 'undici'],
+              output: {
+                format: 'cjs',
+              },
             },
           },
         },
@@ -22,6 +25,15 @@ export default defineConfig({
         entry: 'src/main/preload.ts',
         onstart(options) {
           options.reload();
+        },
+        vite: {
+          build: {
+            rollupOptions: {
+              output: {
+                format: 'cjs',
+              },
+            },
+          },
         },
       },
     ]),
