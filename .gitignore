@@ -167,6 +167,12 @@ publish/
 *.publishsettings
 orleans.codegen.cs
 
+# MSIX packages
+*.msix
+*.appx
+*.appxupload
+*.appxbundle
+
 # Azure Functions
 local.settings.json
 
