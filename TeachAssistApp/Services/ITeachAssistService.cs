@@ -11,4 +11,5 @@ public interface ITeachAssistService
     Task LogoutAsync();
     bool IsLoggedIn { get; }
     string? LastError { get; }
+    string SchoolName { get; }
 }

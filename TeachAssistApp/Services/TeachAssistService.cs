@@ -24,6 +24,7 @@ public class TeachAssistService : ITeachAssistService
 
     public bool IsLoggedIn { get; private set; }
     public string? LastError => _lastError;
+    public string SchoolName { get; private set; } = "YRDSB";
 
     // Enable demo mode for testing without real credentials
     public static bool UseDemoMode { get; set; } = false;
@@ -107,6 +108,19 @@ public class TeachAssistService : ITeachAssistService
                 _lastError = "Invalid username or password";
                 IsLoggedIn = false;
                 return false;
+            }
+
+            // Extract school name from the page (e.g., "Pierre Elliott Trudeau High School")
+            var schoolMatch = Regex.Match(responseContent, @"<h2>(.*?)</h2>");
+            if (schoolMatch.Success)
+            {
+                var rawSchool = schoolMatch.Groups[1].Value.Trim();
+                // Clean up any nested HTML tags
+                rawSchool = Regex.Replace(rawSchool, @"<[^>]+>", "");
+                if (!string.IsNullOrWhiteSpace(rawSchool))
+                {
+                    SchoolName = rawSchool;
+                }
             }
 
             // Parse courses from the response HTML (subject_id comes from hrefs in the course list)
@@ -193,10 +207,25 @@ public class TeachAssistService : ITeachAssistService
                         if (cells.Count > 1)
                             anchor = cells[1].SelectSingleNode(".//a");
                     }
-                    if (anchor == null) continue;
 
-                    var anchorText = anchor.InnerText.Trim();
-                    var href = anchor.GetAttributeValue("href", "");
+                    var anchorText = anchor?.InnerText.Trim() ?? "";
+                    var href = anchor?.GetAttributeValue("href", "") ?? "";
+                    string? markStatus = null;
+
+                    // Check for "Please see teacher" status (no anchor but still a valid course)
+                    if (anchor == null)
+                    {
+                        var cell2Text = cells[2].InnerText.Trim();
+                        if (cell2Text.Contains("Please see teacher", StringComparison.OrdinalIgnoreCase) ||
+                            cell2Text.Contains("no mark", StringComparison.OrdinalIgnoreCase))
+                        {
+                            markStatus = "No mark posted";
+                        }
+                        else
+                        {
+                            continue; // Skip rows with no info at all
+                        }
+                    }
 
                     // Extract mark from anchor text
                     // Pattern 1: "current mark = 85%"
@@ -268,13 +297,23 @@ public class TeachAssistService : ITeachAssistService
                     {
                         courseCodeMatch = Regex.Match(cell0Text, @"([A-Z]{4,5}\d-\d{1,2})"); // ESL: XXXXX#-##
                     }
+
+                    // Also accept non-standard codes like LUNCH-84
+                    var lunchMatch = Regex.Match(cell0Text, @"(LUNCH-\d+)", RegexOptions.IgnoreCase);
+                    bool isLunch = false;
+                    if (!courseCodeMatch.Success && lunchMatch.Success)
+                    {
+                        courseCodeMatch = lunchMatch;
+                        isLunch = true;
+                    }
+
                     if (!courseCodeMatch.Success) continue;
 
                     var courseCode = courseCodeMatch.Groups[1].Value;
 
                     // Extract descriptive name (text after " : ")
                     var colonIdx = cell0Text.IndexOf(':');
-                    var courseName = Helpers.CourseCodeParser.GetDisplayText(courseCode);
+                    var courseName = isLunch ? "Lunch Break" : Helpers.CourseCodeParser.GetDisplayText(courseCode);
                     if (colonIdx >= 0)
                     {
                         var rawName = cell0Text.Substring(colonIdx + 1).Trim();
@@ -292,7 +331,9 @@ public class TeachAssistService : ITeachAssistService
                         Room = room,
                         SubjectId = subjectIdMatch.Success ? subjectIdMatch.Groups[1].Value : null,
                         StudentId = studentIdMatch.Success ? studentIdMatch.Groups[1].Value : null,
-                        ReportUrl = href // Store full resolved URL for fetching details
+                        ReportUrl = href, // Store full resolved URL for fetching details
+                        IsLunch = isLunch,
+                        MarkStatus = markStatus
                     };
                     if (mark.HasValue)
                     {

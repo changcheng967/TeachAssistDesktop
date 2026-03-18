@@ -231,5 +231,15 @@
                 HorizontalAlignment="Center"
                 VerticalAlignment="Top"
                 MaxWidth="500"/>
+
+    <!-- No Report Message -->
+    <ui:InfoBar Title="No Report Available"
+                Message="{Binding NoReportMessage}"
+                Severity="Informational"
+                IsOpen="{Binding NoReportMessage, Converter={StaticResource StringToBoolConverter}}"
+                Margin="32,60,32,0"
+                HorizontalAlignment="Center"
+                VerticalAlignment="Top"
+                MaxWidth="500"/>
     </Grid>
 </Page>

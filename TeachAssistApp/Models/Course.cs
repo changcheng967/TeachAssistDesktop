@@ -19,6 +19,8 @@ public class Course
     public string? StudentId { get; set; }
     public string? ReportUrl { get; set; } // Full URL from course list href
     public bool PartiallyParsed { get; set; } // True when parsed by fallback parser
+    public bool IsLunch { get; set; }
+    public string? MarkStatus { get; set; } // "No mark posted" etc.
 
     public string DisplayMark => OverallMark?.ToString() ?? "N/A";
 

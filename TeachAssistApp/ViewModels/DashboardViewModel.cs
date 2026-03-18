@@ -102,7 +102,7 @@ public partial class DashboardViewModel : ObservableObject
     [RelayCommand]
     private void SelectCourse(Course? course)
     {
-        if (course != null)
+        if (course != null && !course.IsLunch)
         {
 #if DEBUG
             System.Diagnostics.Debug.WriteLine($"SelectCourse called: {course.Code}");
@@ -121,7 +121,11 @@ public partial class DashboardViewModel : ObservableObject
         // Check if empty (no courses)
         IsEmpty = Courses.Count == 0 && !IsLoading;
 
-        var validCourses = Courses.Where(c => c.HasValidMark).ToList();
+        // Update school name from service
+        SchoolName = _teachAssistService.SchoolName;
+
+        var academicCourses = Courses.Where(c => !c.IsLunch);
+        var validCourses = academicCourses.Where(c => c.HasValidMark).ToList();
 
         if (validCourses.Any())
         {
@@ -147,7 +151,7 @@ public partial class DashboardViewModel : ObservableObject
             Gpa = "N/A";
         }
 
-        CourseCount = Courses.Count;
+        CourseCount = academicCourses.Count();
     }
 
     [RelayCommand]

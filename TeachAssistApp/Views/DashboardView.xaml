@@ -98,7 +98,7 @@
                                 <Grid.ColumnDefinitions>
                                     <ColumnDefinition Width="100"/>
                                     <ColumnDefinition Width="*"/>
-                                    <ColumnDefinition Width="70"/>
+                                    <ColumnDefinition Width="120"/>
                                     <ColumnDefinition Width="50"/>
                                     <ColumnDefinition Width="Auto"/>
                                 </Grid.ColumnDefinitions>
@@ -110,13 +110,16 @@
                                            Foreground="{DynamicResource TextFillColorSecondaryBrush}"
                                            VerticalAlignment="Center"/>
 
-                                <TextBlock Grid.Column="1"
-                                           Text="{Binding Name}"
-                                           FontSize="14"
-                                           Foreground="{DynamicResource TextFillColorPrimaryBrush}"
-                                           VerticalAlignment="Center"
-                                           Margin="16,0,0,0"
-                                           TextTrimming="CharacterEllipsis"/>
+                                <StackPanel Grid.Column="1" VerticalAlignment="Center" Margin="16,0,0,0">
+                                    <TextBlock Text="{Binding Name}"
+                                               FontSize="14"
+                                               Foreground="{DynamicResource TextFillColorPrimaryBrush}"
+                                               TextTrimming="CharacterEllipsis"/>
+                                    <TextBlock FontSize="11"
+                                               Foreground="{DynamicResource TextFillColorTertiaryBrush}"
+                                               Visibility="{Binding MarkStatus, Converter={StaticResource StringToVisibilityConverter}}"
+                                               Text="{Binding MarkStatus}"/>
+                                </StackPanel>
 
                                 <TextBlock Grid.Column="2"
                                            Text="{Binding DisplayMark}"

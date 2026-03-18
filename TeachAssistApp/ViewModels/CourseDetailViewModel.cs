@@ -40,6 +40,9 @@ public partial class CourseDetailViewModel : ObservableObject
     private string? _errorMessage;
 
     [ObservableProperty]
+    private string? _noReportMessage;
+
+    [ObservableProperty]
     private bool _hasTrends;
 
     [ObservableProperty]
@@ -97,6 +100,7 @@ public partial class CourseDetailViewModel : ObservableObject
 #endif
         IsLoading = true;
         ErrorMessage = null;
+        NoReportMessage = null;
 
         try
         {
@@ -106,6 +110,15 @@ public partial class CourseDetailViewModel : ObservableObject
 
             if (SelectedCourse != null)
             {
+                // Check if course has no report available
+                if (SelectedCourse.MarkStatus == "No mark posted")
+                {
+                    NoReportMessage = "No mark has been posted for this course yet. Check back later or contact your teacher.";
+                }
+                else if (string.IsNullOrEmpty(SelectedCourse.SubjectId))
+                {
+                    NoReportMessage = "Report details are not available for this course.";
+                }
 #if DEBUG
                 System.Diagnostics.Debug.WriteLine($"Found course: {SelectedCourse.Code}");
                 System.Diagnostics.Debug.WriteLine($"  SubjectId: {SelectedCourse.SubjectId}");
