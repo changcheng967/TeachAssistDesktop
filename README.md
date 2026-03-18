@@ -2,7 +2,7 @@
 
 > A modern Windows desktop application for YRDSB students to check their TeachAssist grades with advanced analytics and a polished Fluent UI.
 
-![TeachAssist](https://img.shields.io/badge/version-3.0.0-blue)
+![TeachAssist](https://img.shields.io/badge/version-3.1.0-blue)
 ![.NET](https://img.shields.io/badge/.NET-10.0-purple)
 ![Platform](https://img.shields.io/badge/platform-Windows_10%2B-blue)
 ![License](https://img.shields.io/badge/license-MIT-green)
@@ -11,7 +11,9 @@
 ## Features
 
 - **Fluent Design UI** — Windows 11 native feel with WPF-UI, Mica backdrop, and dynamic theming (dark/light)
+- **Full Timetable** — See all your courses including lunch, even before marks are posted
 - **Smart Course Decoding** — Automatically decodes Ontario course codes into human-readable descriptions
+- **Real School Name** — Displays your actual school from TeachAssist
 - **Grade Trends** — Visualize your assignment performance over time with ScottPlot charts
 - **What-If Calculator** — Simulate how future assignments affect your final grade
 - **Grade Goals** — Set grade targets and track your progress toward them
@@ -86,6 +88,13 @@ dotnet run --project TeachAssistApp/TeachAssistApp.csproj
 **This application is NOT affiliated with or endorsed by YRDSB or TeachAssist.**
 
 ## Changelog
+
+### Version 3.1.0
+- Show all courses in timetable, including lunch blocks
+- Display courses without posted marks with "No mark posted" status
+- Extract real school name from TeachAssist page
+- Course detail shows info banner when report isn't available
+- Lunch excluded from GPA/average calculations
 
 ### Version 3.0.0
 - Complete UI overhaul with WPF-UI Fluent Design (Mica backdrop, dynamic theming)
