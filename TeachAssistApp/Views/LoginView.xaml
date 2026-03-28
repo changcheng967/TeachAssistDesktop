@@ -17,43 +17,20 @@
         <Border Grid.Column="0" Background="{DynamicResource ApplicationPageBackgroundThemeBrush}">
             <StackPanel VerticalAlignment="Center" HorizontalAlignment="Center" Margin="60">
                 <!-- Logo -->
-                <Border Width="80" Height="80"
-                        CornerRadius="20"
+                <Border Width="96" Height="96"
+                        CornerRadius="22"
                         HorizontalAlignment="Center"
-                        Margin="0,0,0,32">
-                    <Border.Background>
-                        <LinearGradientBrush StartPoint="0,0" EndPoint="1,1">
-                            <GradientStop Color="#FF58A6FF" Offset="0"/>
-                            <GradientStop Color="#FF238636" Offset="1"/>
-                        </LinearGradientBrush>
-                    </Border.Background>
-                    <TextBlock Text="TA"
-                               FontSize="32"
-                               FontWeight="Bold"
-                               Foreground="White"
-                               HorizontalAlignment="Center"
-                               VerticalAlignment="Center"/>
+                        Margin="0,0,0,32"
+                        ClipToBounds="True">
+                    <Image Source="/logo.png" Stretch="UniformToFill"/>
                 </Border>
 
-                <TextBlock Text="TeachAssist"
-                           FontSize="36"
+                <TextBlock Text="TeachAssist Desktop"
+                           FontSize="34"
                            FontWeight="Bold"
                            Foreground="{DynamicResource TextFillColorPrimaryBrush}"
                            HorizontalAlignment="Center"
                            Margin="0,0,0,12"/>
-
-                <TextBlock Text="Desktop"
-                           FontSize="36"
-                           FontWeight="Bold"
-                           HorizontalAlignment="Center"
-                           Margin="0,0,0,24">
-                    <TextBlock.Foreground>
-                        <LinearGradientBrush StartPoint="0,0" EndPoint="1,0">
-                            <GradientStop Color="#FF58A6FF" Offset="0"/>
-                            <GradientStop Color="#FF238636" Offset="1"/>
-                        </LinearGradientBrush>
-                    </TextBlock.Foreground>
-                </TextBlock>
 
                 <TextBlock Text="Track your YRDSB grades with style."
                            FontSize="16"
@@ -64,19 +41,19 @@
                 <StackPanel HorizontalAlignment="Center" Orientation="Horizontal">
                     <Border Background="{DynamicResource CardBackgroundFillColorDefaultBrush}" CornerRadius="20" Padding="12,8" Margin="0,0,8,0">
                         <TextBlock FontSize="13" Foreground="{DynamicResource TextFillColorSecondaryBrush}">
-                            <Run Text="&#xE7E7;" FontFamily="Segoe MDL2 Assets" Foreground="#FF58A6FF"/>
+                            <Run Text="&#xE946;" FontFamily="Segoe MDL2 Assets" Foreground="#FF58A6FF"/>
                             <Run Text="  Grade Trends"/>
                         </TextBlock>
                     </Border>
                     <Border Background="{DynamicResource CardBackgroundFillColorDefaultBrush}" CornerRadius="20" Padding="12,8" Margin="0,0,8,0">
                         <TextBlock FontSize="13" Foreground="{DynamicResource TextFillColorSecondaryBrush}">
-                            <Run Text="&#xE7E8;" FontFamily="Segoe MDL2 Assets" Foreground="#FF238636"/>
+                            <Run Text="&#xE945;" FontFamily="Segoe MDL2 Assets" Foreground="#FF238636"/>
                             <Run Text="  Goal Tracking"/>
                         </TextBlock>
                     </Border>
                     <Border Background="{DynamicResource CardBackgroundFillColorDefaultBrush}" CornerRadius="20" Padding="12,8">
                         <TextBlock FontSize="13" Foreground="{DynamicResource TextFillColorSecondaryBrush}">
-                            <Run Text="&#xE789;" FontFamily="Segoe MDL2 Assets" Foreground="#FFD29922"/>
+                            <Run Text="&#xE94A;" FontFamily="Segoe MDL2 Assets" Foreground="#FFD29922"/>
                             <Run Text="  What-If Calc"/>
                         </TextBlock>
                     </Border>
@@ -107,31 +84,31 @@
                                 Margin="0,0,0,20"/>
 
                     <!-- Student Number Field -->
-                        <TextBlock Text="Student Number"
-                                   FontSize="14"
-                                   FontWeight="SemiBold"
-                                   Foreground="{DynamicResource TextFillColorPrimaryBrush}"
-                                   Margin="0,0,0,8"/>
-                        <ui:TextBox Text="{Binding Username, UpdateSourceTrigger=PropertyChanged}"
-                                    PlaceholderText="Enter your student number"
-                                    Icon="{ui:SymbolIcon Person24}"
-                                    Margin="0,0,0,16">
-                            <ui:TextBox.InputBindings>
-                                <KeyBinding Key="Enter" Command="{Binding LoginCommand}"/>
-                            </ui:TextBox.InputBindings>
-                        </ui:TextBox>
+                    <TextBlock Text="Student Number"
+                               FontSize="14"
+                               FontWeight="SemiBold"
+                               Foreground="{DynamicResource TextFillColorPrimaryBrush}"
+                               Margin="0,0,0,8"/>
+                    <ui:TextBox Text="{Binding Username, UpdateSourceTrigger=PropertyChanged}"
+                                PlaceholderText="Enter your student number"
+                                Icon="{ui:SymbolIcon Person24}"
+                                Margin="0,0,0,16">
+                        <ui:TextBox.InputBindings>
+                            <KeyBinding Key="Enter" Command="{Binding LoginCommand}"/>
+                        </ui:TextBox.InputBindings>
+                    </ui:TextBox>
 
                     <!-- Password Field -->
-                        <TextBlock Text="Password"
-                                   FontSize="14"
-                                   FontWeight="SemiBold"
-                                   Foreground="{DynamicResource TextFillColorPrimaryBrush}"
-                                   Margin="0,0,0,8"/>
-                        <ui:PasswordBox x:Name="PasswordBox"
-                                        PlaceholderText="Enter your password"
-                                        PasswordChanged="PasswordBox_PasswordChanged"
-                                        KeyDown="PasswordBox_KeyDown"
-                                        Margin="0,0,0,20"/>
+                    <TextBlock Text="Password"
+                               FontSize="14"
+                               FontWeight="SemiBold"
+                               Foreground="{DynamicResource TextFillColorPrimaryBrush}"
+                               Margin="0,0,0,8"/>
+                    <ui:PasswordBox x:Name="PasswordBox"
+                                    PlaceholderText="Enter your password"
+                                    PasswordChanged="PasswordBox_PasswordChanged"
+                                    KeyDown="PasswordBox_KeyDown"
+                                    Margin="0,0,0,20"/>
 
                     <!-- Remember Me -->
                     <ui:ToggleSwitch Content="Remember me"

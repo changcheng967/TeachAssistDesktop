@@ -3,6 +3,7 @@ using System.Windows.Controls;
 using System.Windows.Input;
 using Microsoft.Extensions.DependencyInjection;
 using TeachAssistApp.Helpers;
+using TeachAssistApp.Services;
 using TeachAssistApp.ViewModels;
 using TeachAssistApp.Views;
 using Wpf.Ui.Controls;
@@ -27,8 +28,23 @@ public partial class MainWindow : FluentWindow
         _navigationService.OnNavigate += OnNavigate;
         this.KeyDown += MainWindow_KeyDown;
 
-        // Defer initial navigation to after the window is loaded
+        // Attempt auto-login with saved credentials; fall back to Login page
         _pendingNavigation = "Login";
+
+        Loaded += async (_, _) =>
+        {
+            var credentialService = _serviceProvider.GetRequiredService<ICredentialService>();
+            var (username, password) = await credentialService.GetCredentialsAsync();
+            if (!string.IsNullOrEmpty(username) && !string.IsNullOrEmpty(password))
+            {
+                var teachAssistService = _serviceProvider.GetRequiredService<ITeachAssistService>();
+                var success = await teachAssistService.LoginAsync(username, password);
+                if (success)
+                {
+                    _navigationService.NavigateTo("Dashboard");
+                }
+            }
+        };
     }
 
     private void MainWindow_KeyDown(object sender, KeyEventArgs e)

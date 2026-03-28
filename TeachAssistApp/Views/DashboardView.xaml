@@ -94,6 +94,18 @@
                         <ui:CardAction Margin="0,0,0,8" MinHeight="68" Padding="16,12"
                                         Command="{Binding DataContext.SelectCourseCommand, RelativeSource={RelativeSource AncestorType=ItemsControl}}"
                                         CommandParameter="{Binding}">
+                            <ui:CardAction.Style>
+                                <Style TargetType="ui:CardAction">
+                                    <Style.Triggers>
+                                        <DataTrigger Binding="{Binding IsLunch}" Value="True">
+                                            <Setter Property="Opacity" Value="0.5"/>
+                                        </DataTrigger>
+                                        <DataTrigger Binding="{Binding MarkStatus}" Value="No mark posted">
+                                            <Setter Property="Opacity" Value="0.7"/>
+                                        </DataTrigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </ui:CardAction.Style>
                             <Grid>
                                 <Grid.ColumnDefinitions>
                                     <ColumnDefinition Width="100"/>
@@ -108,7 +120,19 @@
                                            FontSize="14"
                                            FontWeight="SemiBold"
                                            Foreground="{DynamicResource TextFillColorSecondaryBrush}"
-                                           VerticalAlignment="Center"/>
+                                           VerticalAlignment="Center"
+                                           FontStyle="Italic">
+                                    <TextBlock.Style>
+                                        <Style TargetType="TextBlock">
+                                            <Style.Triggers>
+                                                <DataTrigger Binding="{Binding IsLunch}" Value="True">
+                                                    <Setter Property="FontStyle" Value="Italic"/>
+                                                    <Setter Property="Foreground" Value="{DynamicResource TextFillColorTertiaryBrush}"/>
+                                                </DataTrigger>
+                                            </Style.Triggers>
+                                        </Style>
+                                    </TextBlock.Style>
+                                </TextBlock>
 
                                 <StackPanel Grid.Column="1" VerticalAlignment="Center" Margin="16,0,0,0">
                                     <TextBlock Text="{Binding Name}"
@@ -127,7 +151,19 @@
                                            FontWeight="Bold"
                                            Foreground="{Binding GradeColor, Converter={StaticResource StringToBrushConverter}}"
                                            VerticalAlignment="Center"
-                                           Margin="12,0,0,0"/>
+                                           Margin="12,0,0,0"
+                                           FontStyle="Italic">
+                                    <TextBlock.Style>
+                                        <Style TargetType="TextBlock">
+                                            <Style.Triggers>
+                                                <DataTrigger Binding="{Binding IsLunch}" Value="True">
+                                                    <Setter Property="FontWeight" Value="Normal"/>
+                                                    <Setter Property="FontSize" Value="13"/>
+                                                </DataTrigger>
+                                            </Style.Triggers>
+                                        </Style>
+                                    </TextBlock.Style>
+                                </TextBlock>
 
                                 <TextBlock Grid.Column="3"
                                            FontSize="13"
