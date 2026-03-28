@@ -29,22 +29,7 @@ public partial class MainWindow : FluentWindow
         this.KeyDown += MainWindow_KeyDown;
 
         // Attempt auto-login with saved credentials; fall back to Login page
-        _pendingNavigation = "Login";
-
-        Loaded += async (_, _) =>
-        {
-            var credentialService = _serviceProvider.GetRequiredService<ICredentialService>();
-            var (username, password) = await credentialService.GetCredentialsAsync();
-            if (!string.IsNullOrEmpty(username) && !string.IsNullOrEmpty(password))
-            {
-                var teachAssistService = _serviceProvider.GetRequiredService<ITeachAssistService>();
-                var success = await teachAssistService.LoginAsync(username, password);
-                if (success)
-                {
-                    _navigationService.NavigateTo("Dashboard");
-                }
-            }
-        };
+        _pendingNavigation = "AutoLogin";
     }
 
     private void MainWindow_KeyDown(object sender, KeyEventArgs e)
@@ -82,6 +67,39 @@ public partial class MainWindow : FluentWindow
         }
     }
 
+    private async Task AutoLoginAsync()
+    {
+        try
+        {
+            var credentialService = _serviceProvider.GetRequiredService<ICredentialService>();
+            var (username, password) = await credentialService.GetCredentialsAsync();
+            if (!string.IsNullOrEmpty(username) && !string.IsNullOrEmpty(password))
+            {
+                // Show login page with loading state while we attempt login
+                NavigateTo("Login");
+                var loginViewModel = _serviceProvider.GetRequiredService<LoginViewModel>();
+                loginViewModel.IsLoading = true;
+
+                var teachAssistService = _serviceProvider.GetRequiredService<ITeachAssistService>();
+                var success = await teachAssistService.LoginAsync(username, password);
+                loginViewModel.IsLoading = false;
+                if (success)
+                {
+                    _navigationService.NavigateTo("Dashboard");
+                }
+                // If login failed, stay on Login page (user can manually re-enter)
+            }
+            else
+            {
+                NavigateTo("Login");
+            }
+        }
+        catch
+        {
+            NavigateTo("Login");
+        }
+    }
+
     private void Window_Loaded(object sender, RoutedEventArgs e)
     {
         WindowsIntegration.UpdateJumpList([]);
@@ -99,7 +117,12 @@ public partial class MainWindow : FluentWindow
         }
 
         // Process deferred navigation
-        if (_pendingNavigation != null)
+        if (_pendingNavigation == "AutoLogin")
+        {
+            _pendingNavigation = null;
+            _ = AutoLoginAsync();
+        }
+        else if (_pendingNavigation != null)
         {
             NavigateTo(_pendingNavigation);
             _pendingNavigation = null;
