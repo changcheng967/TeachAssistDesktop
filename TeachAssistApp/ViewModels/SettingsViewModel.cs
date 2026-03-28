@@ -26,7 +26,7 @@ public partial class SettingsViewModel : ObservableObject
     private readonly PdfExporter _pdfExporter;
 
     [ObservableProperty]
-    private string _appVersion = "3.2.0";
+    private string _appVersion = "3.3.0";
 
     [ObservableProperty]
     private string _updateStatus = string.Empty;
@@ -115,6 +115,7 @@ public partial class SettingsViewModel : ObservableObject
         {
             Wpf.Ui.Appearance.ApplicationThemeManager.Apply(
                 value ? Wpf.Ui.Appearance.ApplicationTheme.Dark : Wpf.Ui.Appearance.ApplicationTheme.Light);
+            App.UpdateOverlayBrush(value);
         }
         catch { }
     }

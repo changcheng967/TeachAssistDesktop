@@ -1,5 +1,6 @@
 using System.Globalization;
 using System.Windows;
+using System.Windows.Media;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using TeachAssistApp.Services;
@@ -75,6 +76,16 @@ public partial class App : Application
 
         // Watch for system theme changes (must be called after Show)
         SystemThemeWatcher.Watch(mainWindow as Wpf.Ui.Controls.FluentWindow);
+    }
+
+    public static void UpdateOverlayBrush(bool isDark)
+    {
+        if (Current.Resources["OverlayBrush"] is SolidColorBrush brush)
+        {
+            brush.Color = isDark
+                ? Color.FromArgb(153, 0, 0, 0)
+                : Color.FromArgb(153, 245, 245, 244);
+        }
     }
 
     protected override void OnExit(ExitEventArgs e)
@@ -160,15 +171,10 @@ public class MarkToColorConverter : System.Windows.Data.IValueConverter
 {
     public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
     {
-        if (value is double percentage)
-        {
-            if (percentage >= 80)
-                return new System.Windows.Media.SolidColorBrush(System.Windows.Media.Color.FromRgb(76, 175, 80)); // Green
-            if (percentage >= 70)
-                return new System.Windows.Media.SolidColorBrush(System.Windows.Media.Color.FromRgb(255, 193, 7)); // Yellow
-            return new System.Windows.Media.SolidColorBrush(System.Windows.Media.Color.FromRgb(244, 67, 54)); // Red
-        }
-        return new System.Windows.Media.SolidColorBrush(System.Windows.Media.Colors.Gray);
+        var mark = value as double?;
+        var colorHex = GradeColorHelper.GetColor(mark);
+        return new System.Windows.Media.SolidColorBrush(
+            (System.Windows.Media.Color)System.Windows.Media.ColorConverter.ConvertFromString(colorHex));
     }
 
     public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)

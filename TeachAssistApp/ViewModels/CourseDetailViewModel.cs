@@ -431,12 +431,7 @@ public partial class CourseDetailViewModel : ObservableObject
         }
     }
 
-    private string GetTrendColor(double mark)
-    {
-        if (mark >= 90) return "#FF238636"; // Excellent - Green
-        if (mark >= 80) return "#FFD29922"; // Good - Gold/Yellow
-        return "#FFDB6D28"; // Needs Improvement - Orange
-    }
+    private string GetTrendColor(double mark) => GradeColorHelper.GetColor(mark);
 
     [RelayCommand]
     private void GoBack()
@@ -453,21 +448,7 @@ public class CategoryPerformance
     public double Weight { get; set; }
     public int AssignmentCount { get; set; }
 
-    public string GradeColor
-    {
-        get
-        {
-            if (Percentage >= 95) return "#FF2EA043";
-            if (Percentage >= 90) return "#FF3FB950";
-            if (Percentage >= 85) return "#FF238636";
-            if (Percentage >= 80) return "#FFD29922";
-            if (Percentage >= 75) return "#FF9A6700";
-            if (Percentage >= 70) return "#FFDB6D28";
-            if (Percentage >= 65) return "#FFA57104";
-            if (Percentage >= 60) return "#FFf85149";
-            return "#FFD73A49";
-        }
-    }
+    public string GradeColor => GradeColorHelper.GetColor(Percentage);
 }
 
 public class AssignmentTrendDisplay

@@ -172,7 +172,7 @@
     </ScrollViewer>
 
     <!-- Loading Overlay -->
-    <Grid Background="#99000000"
+    <Grid Background="{DynamicResource OverlayBrush}"
           Visibility="{Binding IsLoading, Converter={StaticResource BooleanToVisibilityConverter}}">
         <ui:ProgressRing IsIndeterminate="True" Width="40" Height="40" VerticalAlignment="Center" HorizontalAlignment="Center"/>
     </Grid>
@@ -184,7 +184,12 @@
                 Margin="32,48,32,0"
                 HorizontalAlignment="Center"
                 VerticalAlignment="Top"
-                MaxWidth="500"/>
+                MaxWidth="500"
+                RenderTransformOrigin="0.5,0" Style="{StaticResource AnimatedInfoBar}">
+        <ui:InfoBar.RenderTransform>
+            <TranslateTransform Y="0"/>
+        </ui:InfoBar.RenderTransform>
+    </ui:InfoBar>
 
     <!-- Error Message -->
     <ui:InfoBar Title="Error"
@@ -194,6 +199,11 @@
                 Margin="32,48,32,0"
                 HorizontalAlignment="Center"
                 VerticalAlignment="Top"
-                MaxWidth="500"/>
+                MaxWidth="500"
+                RenderTransformOrigin="0.5,0" Style="{StaticResource AnimatedInfoBar}">
+        <ui:InfoBar.RenderTransform>
+            <TranslateTransform Y="0"/>
+        </ui:InfoBar.RenderTransform>
+    </ui:InfoBar>
     </Grid>
 </Page>

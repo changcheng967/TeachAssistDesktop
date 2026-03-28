@@ -193,13 +193,7 @@ public partial class MainWindow : FluentWindow
         if (page != null)
         {
             _currentView = baseView;
-            // Navigate Frame to the page (Frame is the proper host for Page)
-            // Remove back entries to prevent unbounded journal growth
-            while (ContentArea.CanGoBack)
-            {
-                ContentArea.RemoveBackEntry();
-            }
-            ContentArea.Navigate(page);
+            ContentArea.Content = page;
         }
     }
 

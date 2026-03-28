@@ -10,6 +10,8 @@ namespace TeachAssistApp.Views;
 
 public partial class DashboardView : Page
 {
+    private static readonly CubicEase EaseOut = new() { EasingMode = EasingMode.EaseOut };
+
     public DashboardView()
     {
         InitializeComponent();
@@ -19,11 +21,12 @@ public partial class DashboardView : Page
     {
         try
         {
+            AnimateStatsEntrance();
             AnimateCardsEntrance();
         }
         catch
         {
-            // Entrance animation is non-critical, swallow errors
+            // Entrance animation is non-critical
         }
     }
 
@@ -43,6 +46,43 @@ public partial class DashboardView : Page
             menu.PlacementTarget = button;
             menu.Placement = System.Windows.Controls.Primitives.PlacementMode.Bottom;
             menu.IsOpen = true;
+        }
+    }
+
+    private void AnimateStatsEntrance()
+    {
+        var cards = new[] { StatAvg, StatGpa, StatCourses };
+        for (int i = 0; i < cards.Length; i++)
+        {
+            var card = cards[i];
+            if (card == null) continue;
+
+            var delay = TimeSpan.FromMilliseconds(i * 80);
+
+            var fadeIn = new DoubleAnimation
+            {
+                From = 0, To = 1,
+                Duration = TimeSpan.FromMilliseconds(300),
+                BeginTime = delay,
+                EasingFunction = EaseOut
+            };
+            var slideUp = new DoubleAnimation
+            {
+                From = 20, To = 0,
+                Duration = TimeSpan.FromMilliseconds(300),
+                BeginTime = delay,
+                EasingFunction = EaseOut
+            };
+
+            Storyboard.SetTarget(fadeIn, card);
+            Storyboard.SetTargetProperty(fadeIn, new PropertyPath(UIElement.OpacityProperty));
+            Storyboard.SetTarget(slideUp, card);
+            Storyboard.SetTargetProperty(slideUp, new PropertyPath("(UIElement.RenderTransform).(TranslateTransform.Y)"));
+
+            var sb = new Storyboard();
+            sb.Children.Add(fadeIn);
+            sb.Children.Add(slideUp);
+            sb.Begin(this);
         }
     }
 
@@ -70,16 +110,14 @@ public partial class DashboardView : Page
             var container = CourseItemsControl.ItemContainerGenerator.ContainerFromIndex(i) as ContentPresenter;
             if (container == null) continue;
 
-            // Only animate opacity to avoid conflicting with hover RenderTransform
             var delay = TimeSpan.FromMilliseconds(i * 50);
 
             var fadeIn = new DoubleAnimation
             {
-                From = 0,
-                To = 1,
+                From = 0, To = 1,
                 Duration = TimeSpan.FromMilliseconds(300),
                 BeginTime = delay,
-                EasingFunction = new CubicEase { EasingMode = EasingMode.EaseOut }
+                EasingFunction = EaseOut
             };
 
             Storyboard.SetTarget(fadeIn, container);

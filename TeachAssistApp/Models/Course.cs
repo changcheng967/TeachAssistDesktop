@@ -28,24 +28,7 @@ public class Course
 
     public double? NumericMark => OverallMark as double?;
 
-    public string GradeColor
-    {
-        get
-        {
-            if (!HasValidMark) return "#FF30363D"; // Subtle gray for N/A
-
-            var mark = (double)OverallMark!;
-            if (mark >= 95) return "#FF2EA043"; // Forest Green - A+
-            if (mark >= 90) return "#FF3FB950"; // Green - A
-            if (mark >= 85) return "#FF238636"; // Darker Green - A-
-            if (mark >= 80) return "#FFD29922"; // Gold - B+
-            if (mark >= 75) return "#FF9A6700"; // Darker Gold - B
-            if (mark >= 70) return "#FFDB6D28"; // Orange - B-
-            if (mark >= 65) return "#FFA57104"; // Dark Orange - C+
-            if (mark >= 60) return "#FFf85149"; // Red - C
-            return "#FFD73A49"; // Darker Red - Below C
-        }
-    }
+    public string GradeColor => TeachAssistApp.Helpers.GradeColorHelper.GetColor(NumericMark);
 
     public string GradeLevel
     {

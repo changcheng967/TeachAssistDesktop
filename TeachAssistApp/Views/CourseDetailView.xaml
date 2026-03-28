@@ -76,7 +76,7 @@
                             <StackPanel>
                                 <TextBlock Text="Best Impact" FontSize="12" Foreground="{DynamicResource TextFillColorTertiaryBrush}" TextTrimming="CharacterEllipsis"/>
                                 <TextBlock Text="{Binding BestAssignmentName}" FontSize="13" FontWeight="SemiBold" TextTrimming="CharacterEllipsis" MaxHeight="20"/>
-                                <TextBlock Text="{Binding BestAssignmentImpact, StringFormat={}{0:+0.0;-0.0;0.0}%}" FontSize="16" FontWeight="Bold" Foreground="#FF238636" Margin="0,2,0,0"/>
+                                <TextBlock Text="{Binding BestAssignmentImpact, StringFormat={}{0:+0.0;-0.0;0.0}%}" FontSize="16" FontWeight="Bold" Foreground="{StaticResource SuccessBrush}" Margin="0,2,0,0"/>
                             </StackPanel>
                         </ui:Card>
                     </StackPanel>
@@ -217,7 +217,7 @@
     </ScrollViewer>
 
     <!-- Loading Overlay (outside ScrollViewer so it overlays) -->
-    <Grid Background="#99000000"
+    <Grid Background="{DynamicResource OverlayBrush}"
           Visibility="{Binding IsLoading, Converter={StaticResource BooleanToVisibilityConverter}}">
         <ui:ProgressRing IsIndeterminate="True" Width="40" Height="40" VerticalAlignment="Center" HorizontalAlignment="Center"/>
     </Grid>
@@ -230,7 +230,12 @@
                 Margin="32,60,32,0"
                 HorizontalAlignment="Center"
                 VerticalAlignment="Top"
-                MaxWidth="500"/>
+                MaxWidth="500"
+                RenderTransformOrigin="0.5,0" Style="{StaticResource AnimatedInfoBar}">
+        <ui:InfoBar.RenderTransform>
+            <TranslateTransform Y="0"/>
+        </ui:InfoBar.RenderTransform>
+    </ui:InfoBar>
 
     <!-- No Report Message -->
     <ui:InfoBar Title="No Report Available"
@@ -240,6 +245,11 @@
                 Margin="32,60,32,0"
                 HorizontalAlignment="Center"
                 VerticalAlignment="Top"
-                MaxWidth="500"/>
+                MaxWidth="500"
+                RenderTransformOrigin="0.5,0" Style="{StaticResource AnimatedInfoBar}">
+        <ui:InfoBar.RenderTransform>
+            <TranslateTransform Y="0"/>
+        </ui:InfoBar.RenderTransform>
+    </ui:InfoBar>
     </Grid>
 </Page>

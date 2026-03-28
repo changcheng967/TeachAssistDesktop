@@ -41,19 +41,19 @@
                 <StackPanel HorizontalAlignment="Center" Orientation="Horizontal">
                     <Border Background="{DynamicResource CardBackgroundFillColorDefaultBrush}" CornerRadius="20" Padding="12,8" Margin="0,0,8,0">
                         <TextBlock FontSize="13" Foreground="{DynamicResource TextFillColorSecondaryBrush}">
-                            <Run Text="&#xE946;" FontFamily="Segoe MDL2 Assets" Foreground="#FF58A6FF"/>
+                            <Run Text="&#xE946;" FontFamily="Segoe MDL2 Assets" Foreground="{StaticResource InfoBrush}"/>
                             <Run Text="  Grade Trends"/>
                         </TextBlock>
                     </Border>
                     <Border Background="{DynamicResource CardBackgroundFillColorDefaultBrush}" CornerRadius="20" Padding="12,8" Margin="0,0,8,0">
                         <TextBlock FontSize="13" Foreground="{DynamicResource TextFillColorSecondaryBrush}">
-                            <Run Text="&#xE945;" FontFamily="Segoe MDL2 Assets" Foreground="#FF238636"/>
+                            <Run Text="&#xE945;" FontFamily="Segoe MDL2 Assets" Foreground="{StaticResource SuccessBrush}"/>
                             <Run Text="  Goal Tracking"/>
                         </TextBlock>
                     </Border>
                     <Border Background="{DynamicResource CardBackgroundFillColorDefaultBrush}" CornerRadius="20" Padding="12,8">
                         <TextBlock FontSize="13" Foreground="{DynamicResource TextFillColorSecondaryBrush}">
-                            <Run Text="&#xE94A;" FontFamily="Segoe MDL2 Assets" Foreground="#FFD29922"/>
+                            <Run Text="&#xE94A;" FontFamily="Segoe MDL2 Assets" Foreground="{StaticResource WarningBrush}"/>
                             <Run Text="  What-If Calc"/>
                         </TextBlock>
                     </Border>
@@ -122,7 +122,9 @@
                                HorizontalAlignment="Stretch"
                                FontSize="15"
                                Height="44"
-                               Margin="0,0,0,16"/>
+                               Margin="0,0,0,16"
+                               Style="{StaticResource AnimatedButton}"
+                               RenderTransformOrigin="0.5,0.5"/>
 
                     <!-- Demo Hint -->
                     <Border Background="{DynamicResource CardBackgroundFillColorDefaultBrush}"
@@ -142,12 +144,12 @@
 
         <!-- Loading Overlay -->
         <Grid Grid.ColumnSpan="2"
-              Background="#99000000"
+              Background="{DynamicResource OverlayBrush}"
               Visibility="{Binding IsLoading, Converter={StaticResource BooleanToVisibilityConverter}}">
             <StackPanel VerticalAlignment="Center" HorizontalAlignment="Center">
                 <ui:ProgressRing IsIndeterminate="True" Width="48" Height="48" Margin="0,0,0,20"/>
                 <TextBlock Text="Signing in..."
-                           Foreground="White"
+                           Foreground="{DynamicResource TextFillColorPrimaryBrush}"
                            FontSize="16"
                            FontWeight="SemiBold"
                            HorizontalAlignment="Center"/>

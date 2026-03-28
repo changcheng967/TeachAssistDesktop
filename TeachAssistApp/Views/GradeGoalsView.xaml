@@ -53,7 +53,7 @@
                                 <Run Text=" more to reach your goal"/>
                             </TextBlock>
 
-                            <TextBlock FontSize="12" Foreground="#FF238636"
+                            <TextBlock FontSize="12" Foreground="{StaticResource SuccessBrush}"
                                        HorizontalAlignment="Right"
                                        Visibility="{Binding OnTrack, Converter={StaticResource BooleanToVisibilityConverter}}">
                                 On track
@@ -100,7 +100,8 @@
                                 <ui:TextBox Text="{Binding CustomGoal, UpdateSourceTrigger=PropertyChanged}"
                                             PlaceholderText="%" Width="80" VerticalAlignment="Center"/>
                                 <ui:Button Content="Set" Command="{Binding SetCustomGoalCommand}"
-                                           Appearance="Primary" Margin="8,0,0,0" VerticalAlignment="Center"/>
+                                           Appearance="Primary" Margin="8,0,0,0" VerticalAlignment="Center"
+                                           Style="{StaticResource AnimatedButton}" RenderTransformOrigin="0.5,0.5"/>
                             </StackPanel>
                         </Grid>
                     </StackPanel>

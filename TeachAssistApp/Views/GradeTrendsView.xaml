@@ -25,13 +25,13 @@
                     <ui:Card Margin="0,0,12,0">
                         <StackPanel Margin="16,12">
                             <TextBlock Text="Highest Mark" FontSize="12" Foreground="{DynamicResource TextFillColorTertiaryBrush}" Margin="0,0,0,4"/>
-                            <TextBlock Text="{Binding HighestMark, StringFormat={}{0:F1}%}" FontSize="28" FontWeight="Bold" Foreground="#FF238636"/>
+                            <TextBlock Text="{Binding HighestMark, StringFormat={}{0:F1}%}" FontSize="28" FontWeight="Bold" Foreground="{StaticResource SuccessBrush}"/>
                         </StackPanel>
                     </ui:Card>
                     <ui:Card>
                         <StackPanel Margin="16,12">
                             <TextBlock Text="Lowest Mark" FontSize="12" Foreground="{DynamicResource TextFillColorTertiaryBrush}" Margin="0,0,0,4"/>
-                            <TextBlock Text="{Binding LowestMark, StringFormat={}{0:F1}%}" FontSize="28" FontWeight="Bold" Foreground="#FFD29922"/>
+                            <TextBlock Text="{Binding LowestMark, StringFormat={}{0:F1}%}" FontSize="28" FontWeight="Bold" Foreground="{StaticResource WarningBrush}"/>
                         </StackPanel>
                     </ui:Card>
                 </StackPanel>
@@ -92,7 +92,8 @@
                 </ui:Card>
 
                 <ui:Button Content="Close" Command="{Binding CloseCommand}" Appearance="Secondary"
-                           HorizontalAlignment="Right"/>
+                           HorizontalAlignment="Right"
+                           Style="{StaticResource AnimatedButton}" RenderTransformOrigin="0.5,0.5"/>
             </StackPanel>
         </ScrollViewer>
     </Grid>
