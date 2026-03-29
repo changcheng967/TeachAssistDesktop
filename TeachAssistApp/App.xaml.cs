@@ -1,4 +1,5 @@
 using System.Globalization;
+using System.IO;
 using System.Windows;
 using System.Windows.Media;
 using Microsoft.Extensions.DependencyInjection;
@@ -14,6 +15,10 @@ namespace TeachAssistApp;
 public partial class App : Application
 {
     private IHost? _host;
+    private static readonly string LogDir = Path.Combine(
+        Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData),
+        "TeachAssistApp");
+    private static readonly string LogFile = Path.Combine(LogDir, "error.log");
 
     public IServiceProvider? Services => _host?.Services;
 
@@ -21,16 +26,34 @@ public partial class App : Application
     {
         base.OnStartup(e);
 
-        // Catch all unhandled exceptions to prevent crashes
+        // Ensure log directory exists
+        try { Directory.CreateDirectory(LogDir); } catch { }
+
+        // Catch UI thread unhandled exceptions with full details
         DispatcherUnhandledException += (sender, args) =>
         {
-            System.Diagnostics.Debug.WriteLine($"UNHANDLED: {args.Exception}");
+            var ex = args.Exception;
+            var message = FormatException(ex);
+            LogError("UI Unhandled", ex);
             System.Windows.MessageBox.Show(
-                "An unexpected error occurred. Please try again or restart the app.",
+                $"{message}\n\nLog saved to: {LogFile}",
                 "TeachAssist Error",
-                System.Windows.MessageBoxButton.OK,
-                System.Windows.MessageBoxImage.Error);
+                System.Windows.MessageBoxButton.OK, System.Windows.MessageBoxImage.Error);
             args.Handled = true;
+        };
+
+        // Catch non-UI thread exceptions
+        AppDomain.CurrentDomain.UnhandledException += (sender, args) =>
+        {
+            var ex = args.ExceptionObject as Exception;
+            LogError("AppDomain Unhandled", ex);
+        };
+
+        // Catch unobserved task exceptions
+        TaskScheduler.UnobservedTaskException += (sender, args) =>
+        {
+            LogError("UnobservedTask", args.Exception);
+            args.SetObserved();
         };
 
         // Apply dark theme by default
@@ -43,43 +66,104 @@ public partial class App : Application
             // Theme detection is non-critical
         }
 
-        _host = Host.CreateDefaultBuilder()
-            .ConfigureServices((context, services) =>
+        try
+        {
+            _host = Host.CreateDefaultBuilder()
+                .ConfigureServices((context, services) =>
+                {
+                    // Services
+                    services.AddSingleton<ITeachAssistService, TeachAssistService>();
+                    services.AddSingleton<ICredentialService, CredentialService>();
+                    services.AddSingleton<ICourseCacheService, CourseCacheService>();
+                    services.AddSingleton<Helpers.INavigationService, Helpers.NavigationService>();
+                    services.AddSingleton<PdfExporter>();
+
+                    // ViewModels
+                    services.AddSingleton<MainViewModel>();
+                    services.AddSingleton<LoginViewModel>();
+                    services.AddSingleton<DashboardViewModel>();
+                    services.AddSingleton<CourseDetailViewModel>();
+                    services.AddSingleton<SettingsViewModel>();
+                    services.AddSingleton<WhatIfCalculatorViewModel>();
+                    services.AddSingleton<GradeTrendsViewModel>();
+                    services.AddSingleton<GradeGoalsViewModel>();
+
+                    // Views
+                    services.AddSingleton<MainWindow>();
+                    services.AddSingleton<LoginView>();
+                    services.AddSingleton<DashboardView>();
+                    services.AddSingleton<CourseDetailView>();
+                    services.AddSingleton<SettingsView>();
+                })
+                .Build();
+        }
+        catch (Exception ex)
+        {
+            LogError("DI build failed", ex);
+            System.Windows.MessageBox.Show(
+                $"Failed to initialize app services:\n\n{FormatException(ex)}\n\nLog: {LogFile}",
+                "TeachAssist Startup Error", System.Windows.MessageBoxButton.OK, System.Windows.MessageBoxImage.Error);
+            Shutdown();
+            return;
+        }
+
+        try
+        {
+            var mainWindow = _host.Services.GetRequiredService<MainWindow>();
+            mainWindow.Show();
+
+            // Watch for system theme changes (must be called after Show)
+            try
             {
-                // Services
-                services.AddSingleton<ITeachAssistService, TeachAssistService>();
-                services.AddSingleton<ICredentialService, CredentialService>();
-                services.AddSingleton<ICourseCacheService, CourseCacheService>();
-                services.AddSingleton<Helpers.INavigationService, Helpers.NavigationService>();
-                services.AddSingleton<PdfExporter>();
+                SystemThemeWatcher.Watch(mainWindow as Wpf.Ui.Controls.FluentWindow);
+            }
+            catch { }
 
-                // ViewModels
-                services.AddSingleton<MainViewModel>();
-                services.AddSingleton<LoginViewModel>();
-                services.AddSingleton<DashboardViewModel>();
-                services.AddSingleton<CourseDetailViewModel>();
-                services.AddSingleton<SettingsViewModel>();
-                services.AddSingleton<WhatIfCalculatorViewModel>();
-                services.AddSingleton<GradeTrendsViewModel>();
-                services.AddSingleton<GradeGoalsViewModel>();
+            // Initialize overlay brush to match current theme
+            UpdateOverlayBrush(IsDarkTheme());
+        }
+        catch (Exception ex)
+        {
+            LogError("Window creation failed", ex);
+            System.Windows.MessageBox.Show(
+                $"Failed to create main window:\n\n{FormatException(ex)}\n\nLog: {LogFile}",
+                "TeachAssist Startup Error", System.Windows.MessageBoxButton.OK, System.Windows.MessageBoxImage.Error);
+            Shutdown();
+        }
+    }
 
-                // Views
-                services.AddSingleton<MainWindow>();
-                services.AddSingleton<LoginView>();
-                services.AddSingleton<DashboardView>();
-                services.AddSingleton<CourseDetailView>();
-                services.AddSingleton<SettingsView>();
-            })
-            .Build();
+    private static string FormatException(Exception? ex)
+    {
+        if (ex == null) return "Unknown error (null exception)";
+        var lines = new System.Text.StringBuilder();
+        lines.AppendLine($"{ex.GetType().Name}: {ex.Message}");
+        if (ex.StackTrace != null)
+        {
+            var frames = ex.StackTrace.Split('\n');
+            for (int i = 0; i < Math.Min(5, frames.Length); i++)
+                lines.AppendLine(frames[i].Trim());
+        }
+        if (ex.InnerException != null)
+        {
+            lines.AppendLine($"\nInner: {ex.InnerException.GetType().Name}: {ex.InnerException.Message}");
+            if (ex.InnerException.StackTrace != null)
+            {
+                var frames = ex.InnerException.StackTrace.Split('\n');
+                for (int i = 0; i < Math.Min(3, frames.Length); i++)
+                    lines.AppendLine(frames[i].Trim());
+            }
+        }
+        return lines.ToString();
+    }
 
-        var mainWindow = _host.Services.GetRequiredService<MainWindow>();
-        mainWindow.Show();
-
-        // Watch for system theme changes (must be called after Show)
-        SystemThemeWatcher.Watch(mainWindow as Wpf.Ui.Controls.FluentWindow);
-
-        // Initialize overlay brush to match current theme
-        UpdateOverlayBrush(IsDarkTheme());
+    public static void LogError(string context, Exception? ex)
+    {
+        try
+        {
+            var entry = $"[{DateTime.Now:yyyy-MM-dd HH:mm:ss}] [{context}]\n{FormatException(ex)}\n{new string('-', 60)}\n";
+            File.AppendAllText(LogFile, entry);
+        }
+        catch { }
     }
 
     public static bool IsDarkTheme()
@@ -99,12 +183,11 @@ public partial class App : Application
 
     public static void UpdateOverlayBrush(bool isDark)
     {
-        if (Current.Resources["OverlayBrush"] is SolidColorBrush brush)
-        {
-            brush.Color = isDark
+        // Replace the entire brush instead of modifying Color (XAML brushes may be frozen)
+        Current.Resources["OverlayBrush"] = new SolidColorBrush(
+            isDark
                 ? Color.FromArgb(153, 0, 0, 0)
-                : Color.FromArgb(153, 245, 245, 244);
-        }
+                : Color.FromArgb(153, 245, 245, 244));
     }
 
     protected override void OnExit(ExitEventArgs e)

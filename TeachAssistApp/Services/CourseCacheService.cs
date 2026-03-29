@@ -28,10 +28,19 @@ public class CourseCacheService : ICourseCacheService
 
     public CourseCacheService()
     {
-        _cacheDir = Path.Combine(
-            Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData),
-            "TeachAssistApp", "cache");
-        Directory.CreateDirectory(_cacheDir);
+        try
+        {
+            _cacheDir = Path.Combine(
+                Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData),
+                "TeachAssistApp", "cache");
+            Directory.CreateDirectory(_cacheDir);
+        }
+        catch
+        {
+            // Fallback to temp directory if LocalApplicationData is inaccessible
+            _cacheDir = Path.Combine(Path.GetTempPath(), "TeachAssistApp", "cache");
+            try { Directory.CreateDirectory(_cacheDir); } catch { }
+        }
     }
 
     public async Task SaveCoursesAsync(string username, List<Course> courses)

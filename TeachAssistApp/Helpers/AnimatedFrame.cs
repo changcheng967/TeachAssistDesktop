@@ -10,12 +10,6 @@ public class AnimatedFrame : ContentControl
     private static readonly CubicEase EaseOut = new() { EasingMode = EasingMode.EaseOut };
     private static readonly CubicEase EaseIn = new() { EasingMode = EasingMode.EaseIn };
 
-    static AnimatedFrame()
-    {
-        DefaultStyleKeyProperty.OverrideMetadata(typeof(AnimatedFrame),
-            new FrameworkPropertyMetadata(typeof(AnimatedFrame)));
-    }
-
     protected override void OnContentChanged(object oldContent, object newContent)
     {
         base.OnContentChanged(oldContent, newContent);

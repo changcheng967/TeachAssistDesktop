@@ -17,28 +17,31 @@
         <Border Grid.Column="0" Background="{DynamicResource ApplicationPageBackgroundThemeBrush}">
             <StackPanel VerticalAlignment="Center" HorizontalAlignment="Center" Margin="60">
                 <!-- Logo -->
-                <Border Width="96" Height="96"
+                <Border x:Name="BrandLogo" Width="96" Height="96"
                         CornerRadius="22"
                         HorizontalAlignment="Center"
                         Margin="0,0,0,32"
-                        ClipToBounds="True">
+                        ClipToBounds="True"
+                        Opacity="0">
                     <Image Source="/logo.png" Stretch="UniformToFill"/>
                 </Border>
 
-                <TextBlock Text="TeachAssist Desktop"
+                <TextBlock x:Name="BrandTitle" Text="TeachAssist Desktop"
                            FontSize="34"
                            FontWeight="Bold"
                            Foreground="{DynamicResource TextFillColorPrimaryBrush}"
                            HorizontalAlignment="Center"
-                           Margin="0,0,0,12"/>
+                           Margin="0,0,0,12"
+                           Opacity="0"/>
 
-                <TextBlock Text="Track your YRDSB grades with style."
+                <TextBlock x:Name="BrandSubtitle" Text="Track your YRDSB grades with style."
                            FontSize="16"
                            Foreground="{DynamicResource TextFillColorSecondaryBrush}"
                            HorizontalAlignment="Center"
-                           Margin="0,0,0,40"/>
+                           Margin="0,0,0,40"
+                           Opacity="0"/>
 
-                <StackPanel HorizontalAlignment="Center" Orientation="Horizontal">
+                <StackPanel x:Name="BrandBadges" HorizontalAlignment="Center" Orientation="Horizontal" Opacity="0">
                     <Border Background="{DynamicResource CardBackgroundFillColorDefaultBrush}" CornerRadius="20" Padding="12,8" Margin="0,0,8,0">
                         <TextBlock FontSize="13" Foreground="{DynamicResource TextFillColorSecondaryBrush}">
                             <Run Text="&#xE946;" FontFamily="Segoe MDL2 Assets" Foreground="{StaticResource InfoBrush}"/>
@@ -62,7 +65,7 @@
         </Border>
 
         <!-- Right Panel: Login Form -->
-        <Border Grid.Column="1" Background="{DynamicResource ApplicationPageBackgroundThemeBrush}">
+        <Border x:Name="FormPanel" Grid.Column="1" Background="{DynamicResource ApplicationPageBackgroundThemeBrush}" Opacity="0">
             <ScrollViewer VerticalScrollBarVisibility="Auto" Padding="48">
                 <StackPanel VerticalAlignment="Center" MinHeight="500">
                     <TextBlock Text="Welcome back"

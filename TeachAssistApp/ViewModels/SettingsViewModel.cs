@@ -26,7 +26,7 @@ public partial class SettingsViewModel : ObservableObject
     private readonly PdfExporter _pdfExporter;
 
     [ObservableProperty]
-    private string _appVersion = "3.3.0";
+    private string _appVersion = "4.0.0";
 
     [ObservableProperty]
     private string _updateStatus = string.Empty;
@@ -369,9 +369,30 @@ public partial class SettingsViewModel : ObservableObject
 
             if (latest > current)
             {
-                var url = json.RootElement.GetProperty("html_url").GetString();
-                UpdateStatus = $"Update available: v{latest}! Tap to download.";
-                SuccessMessage = $"New version v{latest} available.";
+                UpdateStatus = $"Update available: v{latest}! Opening Microsoft Store...";
+                SuccessMessage = $"New version v{latest} available. Opening Microsoft Store...";
+                // Open Microsoft Store page for TeachAssist Desktop
+                try
+                {
+                    System.Diagnostics.Process.Start(new System.Diagnostics.ProcessStartInfo
+                    {
+                        FileName = "ms-windows-store://pdp/?ProductId=9P6CSMJZJT14",
+                        UseShellExecute = true
+                    });
+                }
+                catch
+                {
+                    // Fallback: open in browser
+                    try
+                    {
+                        System.Diagnostics.Process.Start(new System.Diagnostics.ProcessStartInfo
+                        {
+                            FileName = "https://apps.microsoft.com/detail/9P6CSMJZJT14",
+                            UseShellExecute = true
+                        });
+                    }
+                    catch { }
+                }
             }
             else
             {
