@@ -168,6 +168,8 @@ public partial class SettingsViewModel : ObservableObject
 
         try
         {
+            _teachAssistService.ClearCache();
+            _cachedCourses = null;
             await _credentialService.ClearCredentialsAsync();
             SuccessMessage = "✅ Cached data cleared successfully!";
             await Task.Delay(2000);
@@ -361,7 +363,9 @@ public partial class SettingsViewModel : ObservableObject
             var latestTag = json.RootElement.GetProperty("tag_name").GetString();
 
             var current = new Version(AppVersion);
-            var latest = new Version(latestTag.TrimStart('v'));
+            var latestTagStr = json.RootElement.GetProperty("tag_name").GetString();
+            if (string.IsNullOrEmpty(latestTagStr)) { UpdateStatus = "Could not determine latest version."; return; }
+            var latest = new Version(latestTagStr.TrimStart('v'));
 
             if (latest > current)
             {
@@ -400,7 +404,10 @@ public partial class SettingsViewModel : ObservableObject
             var courses = await _teachAssistService.GetCoursesAsync();
             var coursesWithMarks = courses.Where(c => c.HasValidMark).ToList();
 
-            SuccessMessage = $"Refreshed! You have {coursesWithMarks.Count} graded courses. Average: {coursesWithMarks.Average(c => c.NumericMark ?? 0):F1}%";
+            if (coursesWithMarks.Count > 0)
+                SuccessMessage = $"Refreshed! You have {coursesWithMarks.Count} graded courses. Average: {coursesWithMarks.Average(c => c.NumericMark ?? 0):F1}%";
+            else
+                SuccessMessage = "Refreshed! No graded courses found.";
             await Task.Delay(3000);
             SuccessMessage = null;
         }

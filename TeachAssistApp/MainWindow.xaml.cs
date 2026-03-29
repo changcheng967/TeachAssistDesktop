@@ -1,6 +1,8 @@
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
+using System.Windows.Media.Animation;
+using System.Windows.Navigation;
 using Microsoft.Extensions.DependencyInjection;
 using TeachAssistApp.Helpers;
 using TeachAssistApp.Services;
@@ -193,7 +195,24 @@ public partial class MainWindow : FluentWindow
         if (page != null)
         {
             _currentView = baseView;
-            ContentArea.Content = page;
+            while (ContentArea.CanGoBack)
+                ContentArea.RemoveBackEntry();
+            ContentArea.Navigate(page);
+        }
+    }
+
+    private void ContentArea_Navigated(object sender, NavigationEventArgs e)
+    {
+        if (e.Content is FrameworkElement fe)
+        {
+            fe.Opacity = 0;
+            var fadeIn = new DoubleAnimation
+            {
+                From = 0, To = 1,
+                Duration = TimeSpan.FromMilliseconds(200),
+                EasingFunction = new CubicEase { EasingMode = EasingMode.EaseOut }
+            };
+            fe.BeginAnimation(UIElement.OpacityProperty, fadeIn);
         }
     }
 

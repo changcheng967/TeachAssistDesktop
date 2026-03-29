@@ -49,6 +49,7 @@ public partial class App : Application
                 // Services
                 services.AddSingleton<ITeachAssistService, TeachAssistService>();
                 services.AddSingleton<ICredentialService, CredentialService>();
+                services.AddSingleton<ICourseCacheService, CourseCacheService>();
                 services.AddSingleton<Helpers.INavigationService, Helpers.NavigationService>();
                 services.AddSingleton<PdfExporter>();
 
@@ -158,7 +159,14 @@ public class StringToBrushConverter : System.Windows.Data.IValueConverter
         var color = value as string;
         if (string.IsNullOrEmpty(color)) return new System.Windows.Media.SolidColorBrush(System.Windows.Media.Colors.Gray);
 
-        return new System.Windows.Media.SolidColorBrush((System.Windows.Media.Color)System.Windows.Media.ColorConverter.ConvertFromString(color));
+        try
+        {
+            return new System.Windows.Media.SolidColorBrush((System.Windows.Media.Color)System.Windows.Media.ColorConverter.ConvertFromString(color));
+        }
+        catch
+        {
+            return new System.Windows.Media.SolidColorBrush(System.Windows.Media.Colors.Gray);
+        }
     }
 
     public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)

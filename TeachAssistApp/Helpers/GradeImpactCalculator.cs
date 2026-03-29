@@ -31,8 +31,9 @@ public static class GradeImpactCalculator
             double weight;
             if (hasWeights)
             {
+                // Use the max category weight to avoid inflating multi-category assignments
                 var categories = g.Assignments.Select(a => a.Category).Distinct();
-                weight = categories.Sum(c => weightTable.GetWeight(c) ?? 0);
+                weight = categories.Max(c => weightTable.GetWeight(c) ?? 0);
             }
             else
             {
@@ -82,7 +83,7 @@ public static class GradeImpactCalculator
             totalWeight += item.Weight;
 
             double cumulativeAfter = weightedSum / totalWeight;
-            double impact = i == 0 ? 0 : cumulativeAfter - cumulativeBefore;
+            double impact = cumulativeAfter - cumulativeBefore;
 
             timeline.Add(new GradeTimelinePoint
             {

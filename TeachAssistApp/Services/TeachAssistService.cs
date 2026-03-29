@@ -17,6 +17,7 @@ public class TeachAssistService : ITeachAssistService
 {
     private readonly HttpClient _httpClient;
     private readonly HttpClientHandler _httpClientHandler;
+    private readonly ICourseCacheService _courseCacheService;
     private string? _username;
     private string? _password;
     private List<Course>? _cachedCourses;
@@ -29,8 +30,9 @@ public class TeachAssistService : ITeachAssistService
     // Enable demo mode for testing without real credentials
     public static bool UseDemoMode { get; set; } = false;
 
-    public TeachAssistService()
+    public TeachAssistService(ICourseCacheService courseCacheService)
     {
+        _courseCacheService = courseCacheService;
         _httpClientHandler = new HttpClientHandler
         {
             CookieContainer = new CookieContainer(),
@@ -130,6 +132,9 @@ public class TeachAssistService : ITeachAssistService
             {
                 IsLoggedIn = true;
                 _cachedCourses = courses;
+
+                // Save to disk cache so students can view grades even if teacher blocks access later
+                _ = _courseCacheService.SaveCoursesAsync(_username!, courses);
 #if DEBUG
                 System.Diagnostics.Debug.WriteLine($"Successfully parsed {_cachedCourses.Count} courses from login response");
 #endif
@@ -423,6 +428,18 @@ public class TeachAssistService : ITeachAssistService
         }
 
         _lastError = "No courses found. Try demo mode (username: demo) or login again.";
+
+        // Try loading from disk cache (teacher may have blocked access)
+        if (_username != null)
+        {
+            var cached = await _courseCacheService.LoadCoursesAsync(_username);
+            if (cached != null && cached.Count > 0)
+            {
+                _cachedCourses = cached;
+                return cached;
+            }
+        }
+
         return new List<Course>();
     }
 
@@ -669,6 +686,12 @@ public class TeachAssistService : ITeachAssistService
         };
     }
 
+    public void ClearCache()
+    {
+        _cachedCourses = null;
+        _courseCacheService.ClearAll();
+    }
+
     public async Task LogoutAsync()
     {
         _cachedCourses = null;
@@ -804,12 +827,16 @@ public class TeachAssistService : ITeachAssistService
 #if DEBUG
                 System.Diagnostics.Debug.WriteLine($"  Parsed course has {parsedCourse?.Assignments.Count ?? 0} assignments");
 #endif
+                // Save to disk cache
+                if (parsedCourse != null && _username != null)
+                {
+                    _ = _courseCacheService.SaveCourseDetailsAsync(_username, subjectId, parsedCourse);
+                }
                 return parsedCourse;
             }
             else
             {
                 _lastError = $"Failed to fetch course details: {response.StatusCode}";
-                return null;
             }
         }
         catch (Exception ex)
@@ -818,8 +845,22 @@ public class TeachAssistService : ITeachAssistService
 #if DEBUG
             System.Diagnostics.Debug.WriteLine($"GetCourseDetailsAsync exception: {ex}");
 #endif
-            return null;
         }
+
+        // Fall back to disk cache (teacher may have blocked access)
+        if (_username != null)
+        {
+            var cached = await _courseCacheService.LoadCourseDetailsAsync(_username, subjectId);
+            if (cached != null)
+            {
+#if DEBUG
+                System.Diagnostics.Debug.WriteLine($"  Loaded {cached.Assignments.Count} assignments from disk cache");
+#endif
+                return cached;
+            }
+        }
+
+        return null;
     }
 
     /// <summary>
@@ -1791,7 +1832,7 @@ public class TeachAssistService : ITeachAssistService
                         expectation = secondText;
                         var markParts = thirdText.Split('/');
                         double.TryParse(markParts[0].Trim(), out achieved);
-                        possible = markParts.Length > 1 && double.TryParse(markParts[1].Trim(), out var p) ? p : achieved;
+                        possible = markParts.Length > 1 && double.TryParse(markParts[1].Trim(), out var p) ? p : 0;
                         double.TryParse(cells[3].InnerText.Trim().TrimEnd('%'), out weight);
                     }
                     else
@@ -1809,7 +1850,7 @@ public class TeachAssistService : ITeachAssistService
                     var markStr = cells[1].InnerText.Trim();
                     var markParts = markStr.Split('/');
                     double.TryParse(markParts[0].Trim(), out achieved);
-                    possible = markParts.Length > 1 && double.TryParse(markParts[1].Trim(), out var p) ? p : achieved;
+                    possible = markParts.Length > 1 && double.TryParse(markParts[1].Trim(), out var p) ? p : 0;
                     double.TryParse(cells[2].InnerText.Trim().TrimEnd('%'), out weight);
                 }
                 else if (cells.Count >= 2)
@@ -1841,7 +1882,7 @@ public class TeachAssistService : ITeachAssistService
                 {
                     Name = taskName,
                     MarkAchieved = achieved,
-                    MarkPossible = possible > 0 ? possible : achieved,
+                    MarkPossible = possible > 0 ? possible : 0,
                     Weight = weight,
                     Category = category
                 };

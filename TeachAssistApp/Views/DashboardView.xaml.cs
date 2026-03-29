@@ -86,8 +86,10 @@ public partial class DashboardView : Page
         }
     }
 
+    private bool _cardsAnimating;
     private void AnimateCardsEntrance()
     {
+        if (_cardsAnimating) return;
         if (CourseItemsControl.Items.Count == 0)
         {
             CourseItemsControl.ItemContainerGenerator.StatusChanged += (s, args) =>
@@ -97,6 +99,7 @@ public partial class DashboardView : Page
                     if (CourseItemsControl.ItemContainerGenerator.Status == System.Windows.Controls.Primitives.GeneratorStatus.ContainersGenerated
                         && CourseItemsControl.Items.Count > 0)
                     {
+                        _cardsAnimating = false;
                         AnimateCardsEntrance();
                     }
                 }
@@ -104,6 +107,8 @@ public partial class DashboardView : Page
             };
             return;
         }
+
+        _cardsAnimating = true;
 
         for (int i = 0; i < CourseItemsControl.Items.Count; i++)
         {
