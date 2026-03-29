@@ -412,10 +412,10 @@ public partial class CourseDetailViewModel : ObservableObject
 
         // Summary stats
         var lastPoint = timeline.Last();
+        var firstPoint = timeline.First();
         CurrentGrade = lastPoint.CumulativeGrade;
-        // Grade change = last cumulative minus the baseline (0 before any assignments)
-        // For single-assignment courses, this is just the first assignment's grade
-        GradeChangeTotal = lastPoint.CumulativeGrade;
+        // Grade change = how the grade evolved from first to last assignment
+        GradeChangeTotal = lastPoint.CumulativeGrade - (timeline.Count > 1 ? firstPoint.CumulativeGrade : 0);
         GradeChangeDisplay = $"{(GradeChangeTotal >= 0 ? "+" : "")}{GradeChangeTotal:F1}%";
 
         var highImpacts = impacts.Values.Where(v => v.IsHighImpact).ToList();

@@ -9,8 +9,8 @@ namespace TeachAssistApp.Helpers;
 public static class GradeImpactCalculator
 {
     /// <summary>
-    /// Represents an assignment group with its per-category scores.
-    /// E.g., "Unit 1 Test" might have KU: 75%, T: 80%, C: 85%.
+    /// One scored item per assignment group, with per-category percentage scores.
+    /// E.g., "Unit 1 Test" might have KU: 75%, T: 80%, C: 90%.
     /// </summary>
     private record ScoredItem(
         string Name,
@@ -29,7 +29,6 @@ public static class GradeImpactCalculator
 
         foreach (var g in groups)
         {
-            // Collect scores per category (average if multiple marks in same category)
             var catScoreLists = new Dictionary<string, List<double>>();
             foreach (var a in g.Assignments)
             {
@@ -69,21 +68,59 @@ public static class GradeImpactCalculator
             .ThenBy(x => x.Name)
             .ToList();
 
-        // Compute the FINAL grade's category state (all items) for contribution calculation
-        var finalCatState = GetCategoryState(items, items.Count - 1);
+        // ---- TIMELINE: cumulative grade over time (for chart) ----
+        for (int i = 0; i < items.Count; i++)
+        {
+            var subset = items.Take(i + 1).ToList();
+            double cumulativeGrade = ComputeGrade(subset, weightTable, hasWeights);
+
+            timeline.Add(new GradeTimelinePoint
+            {
+                Index = i,
+                AssignmentName = items[i].Name,
+                Date = items[i].Date,
+                CumulativeGrade = cumulativeGrade,
+                Impact = 0, // filled below
+                IsHighImpact = false,
+                FirstPoint = i == 0
+            });
+        }
+
+        // ---- IMPACTS: leave-one-out ----
+        // For each assignment, compute: final_grade - grade_without_this_assignment
+        // This directly answers: "How much does this assignment affect my current grade?"
+        //   Positive = this assignment helped your grade
+        //   Negative = this assignment hurt your grade
+
+        double finalGrade = ComputeGrade(items, weightTable, hasWeights);
+
+        // Category state for contribution calculation
+        var finalCatState = GetCategoryState(items);
         double totalActiveWeight = hasWeights
             ? finalCatState.Where(c => c.Value.Count > 0)
                 .Sum(c => weightTable.GetWeight(c.Key) ?? 0)
             : 0;
 
-        // Compute each assignment's contribution to the FINAL grade
-        var contributions = new Dictionary<string, double>();
-        foreach (var item in items)
+        for (int i = 0; i < items.Count; i++)
         {
+            var item = items[i];
+
+            // Compute grade WITHOUT this assignment
+            var remaining = new List<ScoredItem>(items.Count - 1);
+            for (int j = 0; j < items.Count; j++)
+            {
+                if (j != i) remaining.Add(items[j]);
+            }
+            double gradeWithout = remaining.Count > 0
+                ? ComputeGrade(remaining, weightTable, hasWeights)
+                : 0;
+
+            double impact = finalGrade - gradeWithout;
+
+            // Weighted contribution: portion of final grade from this assignment
             double contrib = 0;
             if (hasWeights && totalActiveWeight > 0)
             {
-                // contribution = sum over categories: score_c * weight_c / (n_c * total_active_weight)
                 foreach (var kv in item.CategoryScores)
                 {
                     var w = weightTable.GetWeight(kv.Key) ?? 0;
@@ -94,40 +131,21 @@ public static class GradeImpactCalculator
             }
             else
             {
-                // Equal weight: each group contributes equally
                 contrib = items.Count > 0 ? item.CategoryScores.Values.Average() / items.Count : 0;
             }
-            contributions[item.Name] = contrib;
-        }
-
-        // Build timeline: compute running grade at each step
-        for (int i = 0; i < items.Count; i++)
-        {
-            var item = items[i];
-            double before = i > 0 ? ComputeGrade(items, weightTable, hasWeights, i - 1) : 0;
-            double after = ComputeGrade(items, weightTable, hasWeights, i);
-            double impact = after - before;
-
-            timeline.Add(new GradeTimelinePoint
-            {
-                Index = i,
-                AssignmentName = item.Name,
-                Date = item.Date,
-                CumulativeGrade = after,
-                Impact = impact,
-                IsHighImpact = false,
-                FirstPoint = i == 0
-            });
 
             impacts[item.Name] = new AssignmentImpact
             {
                 AssignmentName = item.Name,
                 ImpactDelta = impact,
-                WeightedContribution = contributions.GetValueOrDefault(item.Name, 0),
+                WeightedContribution = contrib,
                 IsHighImpact = false,
-                CumulativeBefore = double.IsNaN(before) ? 0 : before,
-                CumulativeAfter = after
+                CumulativeBefore = gradeWithout,
+                CumulativeAfter = finalGrade
             };
+
+            // Also set impact on timeline point
+            timeline[i].Impact = impact;
         }
 
         // Mark high impacts: |impact| >= 3.0 OR top 3 by magnitude
@@ -146,14 +164,14 @@ public static class GradeImpactCalculator
     }
 
     /// <summary>
-    /// Compute the weighted grade considering all items up to index upTo.
-    /// Correct approach: group by category → average within each → weight across.
+    /// Compute the weighted grade for a set of items.
+    /// Correct formula: group by category → average within each → weight across.
     /// </summary>
-    private static double ComputeGrade(List<ScoredItem> items, WeightTable weightTable, bool hasWeights, int upTo)
+    private static double ComputeGrade(List<ScoredItem> items, WeightTable weightTable, bool hasWeights)
     {
-        if (upTo < 0 || items.Count == 0) return 0;
+        if (items.Count == 0) return 0;
 
-        var catState = GetCategoryState(items, upTo);
+        var catState = GetCategoryState(items);
 
         if (!hasWeights)
         {
@@ -179,12 +197,12 @@ public static class GradeImpactCalculator
     }
 
     /// <summary>
-    /// Collect all per-category scores from items up to a given index.
+    /// Collect all per-category scores from items.
     /// </summary>
-    private static Dictionary<string, List<double>> GetCategoryState(List<ScoredItem> items, int upTo)
+    private static Dictionary<string, List<double>> GetCategoryState(List<ScoredItem> items)
     {
         var state = new Dictionary<string, List<double>>();
-        foreach (var item in items.Take(upTo + 1))
+        foreach (var item in items)
         {
             foreach (var kv in item.CategoryScores)
             {
