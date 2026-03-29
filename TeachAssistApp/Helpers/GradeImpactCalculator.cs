@@ -16,7 +16,7 @@ public static class GradeImpactCalculator
         var hasWeights = weightTable.Weights.Count > 0;
 
         // Build scored list: groups with valid marks and computed score + weight
-        var scored = new List<(AssignmentGroup Group, double Score, double Weight)>();
+        var scored = new List<(AssignmentGroup Group, double Score, double Weight, string Category)>();
 
         foreach (var g in groups.Where(g => g.HasAnyMark))
         {
@@ -29,25 +29,28 @@ public static class GradeImpactCalculator
             double avgPercentage = validMarks.Average(a => a.Percentage ?? 0);
 
             double weight;
+            string category;
             if (hasWeights)
             {
                 // Use the max category weight to avoid inflating multi-category assignments
-                var categories = g.Assignments.Select(a => a.Category).Distinct();
+                var categories = g.Assignments.Select(a => a.Category).Distinct().ToList();
+                category = categories.FirstOrDefault() ?? "O";
                 weight = categories.Max(c => weightTable.GetWeight(c) ?? 0);
             }
             else
             {
+                category = "O";
                 weight = 1.0; // normalized to 1/N below
             }
 
-            scored.Add((g, avgPercentage, weight));
+            scored.Add((g, avgPercentage, weight, category));
         }
 
         // For equal-weight courses, normalize to 1/N
         if (!hasWeights && scored.Count > 0)
         {
             var eqWeight = 1.0 / scored.Count;
-            scored = scored.Select(x => (x.Group, x.Score, eqWeight)).ToList();
+            scored = scored.Select(x => (x.Group, x.Score, eqWeight, x.Category)).ToList();
         }
 
         // Sort by date (best effort), fall back to list order
@@ -70,6 +73,25 @@ public static class GradeImpactCalculator
             .ThenBy(x => x.Group.Name)
             .ToList();
 
+        // Pre-compute weighted contribution for each assignment.
+        // Weighted contribution = score * (categoryWeight / numAssignmentsInCategory)
+        var categoryAssignmentCounts = scored
+            .GroupBy(x => x.Category)
+            .ToDictionary(g => g.Key, g => g.Count());
+
+        var contributions = new Dictionary<string, double>();
+        foreach (var item in scored)
+        {
+            var count = categoryAssignmentCounts.GetValueOrDefault(item.Category, 1);
+            // Contribution = percentage score * (category weight / assignments in that category)
+            // E.g., KU=25%, 3 KU assignments, scored 80% → 80% * (25%/3) = 6.67%
+            var contribution = item.Weight > 0
+                ? item.Score * (item.Weight / count / 100.0) * 100.0
+                : 0;
+            contributions[item.Group.Name] = contribution;
+        }
+
+        // Build cumulative timeline and running impacts
         double weightedSum = 0;
         double totalWeight = 0;
 
@@ -100,6 +122,7 @@ public static class GradeImpactCalculator
             {
                 AssignmentName = item.Group.Name,
                 ImpactDelta = impact,
+                WeightedContribution = contributions.GetValueOrDefault(item.Group.Name, 0),
                 IsHighImpact = false, // set below
                 CumulativeBefore = cumulativeBefore,
                 CumulativeAfter = cumulativeAfter
