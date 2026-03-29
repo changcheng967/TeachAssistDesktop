@@ -104,10 +104,9 @@ public static class GradeImpactCalculator
         for (int i = 0; i < items.Count; i++)
         {
             var item = items[i];
-            double before = i > 0 ? ComputeGrade(items, weightTable, hasWeights, i - 1) : double.NaN;
+            double before = i > 0 ? ComputeGrade(items, weightTable, hasWeights, i - 1) : 0;
             double after = ComputeGrade(items, weightTable, hasWeights, i);
-            // First assignment just establishes baseline — no previous grade to compare against
-            double impact = double.IsNaN(before) ? 0 : after - before;
+            double impact = after - before;
 
             timeline.Add(new GradeTimelinePoint
             {
