@@ -158,4 +158,59 @@
         <Setter Property="Foreground" Value="{DynamicResource TextFillColorTertiaryBrush}"/>
         <Setter Property="Margin" Value="0,0,0,8"/>
     </Style>
+
+    <!-- ══════════════════════════════════════════════════════════
+         GRADIENT PROGRESS BAR — rounded, gradient-filled, animated
+         ══════════════════════════════════════════════════════════ -->
+    <Style x:Key="GradientProgressBar" TargetType="ProgressBar">
+        <Setter Property="Height" Value="6"/>
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="ProgressBar">
+                    <Grid>
+                        <!-- Track -->
+                        <Border x:Name="PART_Track" CornerRadius="3"
+                                Background="{DynamicResource ControlFillColorDefaultBrush}"/>
+                        <!-- Fill -->
+                        <Border x:Name="PART_Indicator" CornerRadius="3"
+                                HorizontalAlignment="Left"
+                                Background="{StaticResource AccentGradientHorizontal}"/>
+                    </Grid>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <!-- Grade-colored progress bar -->
+    <Style x:Key="GradeProgressBar" TargetType="ProgressBar">
+        <Setter Property="Height" Value="6"/>
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="ProgressBar">
+                    <Grid>
+                        <Border x:Name="PART_Track" CornerRadius="3"
+                                Background="{DynamicResource ControlFillColorDefaultBrush}"/>
+                        <Border x:Name="PART_Indicator" CornerRadius="3"
+                                HorizontalAlignment="Left"/>
+                    </Grid>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <!-- ══════════════════════════════════════════════════════════
+         GRADIENT HEADING — gradient text effect for key titles
+         ══════════════════════════════════════════════════════════ -->
+    <Style x:Key="GradientHeading" TargetType="TextBlock">
+        <Setter Property="FontSize" Value="28"/>
+        <Setter Property="FontWeight" Value="SemiBold"/>
+        <Setter Property="Foreground">
+            <Setter.Value>
+                <LinearGradientBrush StartPoint="0,0.5" EndPoint="1,0.5">
+                    <GradientStop Color="#6366F1" Offset="0"/>
+                    <GradientStop Color="#A78BFA" Offset="1"/>
+                </LinearGradientBrush>
+            </Setter.Value>
+        </Setter>
+    </Style>
 </ResourceDictionary>

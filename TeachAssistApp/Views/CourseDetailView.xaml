@@ -164,7 +164,8 @@
                                     <ui:Badge Content="{Binding Code}" Margin="0,0,0,8"/>
                                     <TextBlock Text="{Binding Percentage, StringFormat={}{0:F1}%}" FontSize="22" FontWeight="Bold"
                                                Foreground="{Binding GradeColor, Converter={StaticResource StringToBrushConverter}}" Margin="0,0,0,6"/>
-                                    <ProgressBar Height="6" Value="{Binding Percentage}" Maximum="100"/>
+                                    <ProgressBar Height="6" Value="{Binding Percentage, Mode=OneWay}" Maximum="100"
+                                                 Style="{StaticResource GradientProgressBar}"/>
                                     <TextBlock FontSize="12" Foreground="{DynamicResource TextFillColorTertiaryBrush}" Margin="0,6,0,0">
                                         <Run Text="{Binding AssignmentCount}"/><Run Text=" assessments"/>
                                     </TextBlock>

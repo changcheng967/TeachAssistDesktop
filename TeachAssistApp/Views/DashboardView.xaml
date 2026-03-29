@@ -29,9 +29,7 @@
 
                 <StackPanel Grid.Column="0">
                     <TextBlock Text="My Grades"
-                               FontSize="28"
-                               FontWeight="SemiBold"
-                               Foreground="{DynamicResource TextFillColorPrimaryBrush}"
+                               Style="{StaticResource GradientHeading}"
                                Margin="0,0,0,4"/>
                     <TextBlock Text="{Binding SchoolName}"
                                FontSize="14"
@@ -115,12 +113,11 @@
             </Border>
 
             <!-- Animated progress bar under hero -->
-            <Grid x:Name="HeroProgressBar" Margin="0,12,0,0" Height="4" Opacity="0">
-                <Border CornerRadius="2" Background="{DynamicResource ControlFillColorDefaultBrush}"/>
-                <ProgressBar Value="{Binding AverageMark}" Maximum="100"
-                             Foreground="{StaticResource AccentGradient}"
-                             Background="Transparent" BorderThickness="0"/>
-            </Grid>
+            <ProgressBar x:Name="HeroProgressBar" Margin="0,14,0,0"
+                         Style="{StaticResource GradientProgressBar}"
+                         Height="4"
+                         Value="{Binding AverageMark, Mode=OneWay}" Maximum="100"
+                         Opacity="0"/>
 
             <!-- Section label -->
             <TextBlock x:Name="CourseSectionLabel" Text="Courses"
@@ -238,24 +235,46 @@
                                                        Text="{Binding MarkStatus}"/>
                                             <!-- Mini grade progress bar -->
                                             <ProgressBar Height="4" Margin="0,6,60,0"
+                                                         Style="{StaticResource GradeProgressBar}"
                                                          Value="{Binding NumericMark, Mode=OneWay}" Maximum="100"
                                                          Visibility="{Binding HasValidMark, Converter={StaticResource BooleanToVisibilityConverter}}"
                                                          Foreground="{Binding GradeColor, Converter={StaticResource StringToBrushConverter}}"/>
                                         </StackPanel>
 
-                                        <!-- Grade display -->
+                                        <!-- Grade circle indicator -->
+                                        <Border Grid.Column="2" Width="52" Height="52" CornerRadius="26"
+                                                Background="{DynamicResource ControlFillColorDefaultBrush}"
+                                                VerticalAlignment="Center" HorizontalAlignment="Center"
+                                                Visibility="{Binding HasValidMark, Converter={StaticResource BooleanToVisibilityConverter}}">
+                                            <Border CornerRadius="24" Margin="3"
+                                                    Background="{DynamicResource CardBackgroundFillColorDefaultBrush}">
+                                                <Grid>
+                                                    <!-- Colored ring -->
+                                                    <Ellipse Stroke="{Binding GradeColor, Converter={StaticResource StringToBrushConverter}}"
+                                                             StrokeThickness="2.5" Fill="Transparent" Margin="2"
+                                                             Opacity="0.4"/>
+                                                    <!-- Grade text -->
+                                                    <TextBlock Text="{Binding DisplayMark}"
+                                                               FontSize="14" FontWeight="Bold"
+                                                               Foreground="{Binding GradeColor, Converter={StaticResource StringToBrushConverter}}"
+                                                               HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                                                </Grid>
+                                            </Border>
+                                        </Border>
+
+                                        <!-- Fallback for lunch/non-graded -->
                                         <TextBlock Grid.Column="2"
                                                    Text="{Binding DisplayMark}"
-                                                   FontSize="20" FontWeight="Bold"
-                                                   Foreground="{Binding GradeColor, Converter={StaticResource StringToBrushConverter}}"
+                                                   Visibility="{Binding HasValidMark, Converter={StaticResource InvertedBooleanToVisibilityConverter}}"
+                                                   FontSize="14"
+                                                   Foreground="{DynamicResource TextFillColorTertiaryBrush}"
                                                    VerticalAlignment="Center"
                                                    HorizontalAlignment="Center">
                                             <TextBlock.Style>
                                                 <Style TargetType="TextBlock">
                                                     <Style.Triggers>
                                                         <DataTrigger Binding="{Binding IsLunch}" Value="True">
-                                                            <Setter Property="FontWeight" Value="Normal"/>
-                                                            <Setter Property="FontSize" Value="13"/>
+                                                            <Setter Property="FontStyle" Value="Italic"/>
                                                         </DataTrigger>
                                                     </Style.Triggers>
                                                 </Style>
