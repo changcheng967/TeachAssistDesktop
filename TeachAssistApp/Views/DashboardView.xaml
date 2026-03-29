@@ -238,7 +238,7 @@
                                                        Text="{Binding MarkStatus}"/>
                                             <!-- Mini grade progress bar -->
                                             <ProgressBar Height="4" Margin="0,6,60,0"
-                                                         Value="{Binding NumericMark}" Maximum="100"
+                                                         Value="{Binding NumericMark, Mode=OneWay}" Maximum="100"
                                                          Visibility="{Binding HasValidMark, Converter={StaticResource BooleanToVisibilityConverter}}"
                                                          Foreground="{Binding GradeColor, Converter={StaticResource StringToBrushConverter}}"/>
                                         </StackPanel>
