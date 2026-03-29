@@ -30,42 +30,40 @@ public partial class DashboardView : Page
             else
             {
                 // Ensure hero is visible on subsequent navigations
-                HeroStatCard.Opacity = 1;
-                HeroStatCard.RenderTransform = new TranslateTransform(0, 0);
-                HeroProgressBar.Opacity = 1;
+                BentoGrid.Opacity = 1;
+                BentoGrid.RenderTransform = new TranslateTransform(0, 0);
                 CourseSectionLabel.Opacity = 1;
             }
         }
         catch
         {
             // Entrance animation is non-critical — ensure visibility
-            HeroStatCard.Opacity = 1;
-            HeroProgressBar.Opacity = 1;
+            BentoGrid.Opacity = 1;
             CourseSectionLabel.Opacity = 1;
         }
     }
 
     private void AnimateHeroEntrance()
     {
-        // Hero stat card: fade + slide up
-        if (HeroStatCard != null)
+        // Bento grid: fade + slide up
+        if (BentoGrid != null)
         {
             var fadeIn = new DoubleAnimation
             {
                 From = 0, To = 1,
-                Duration = TimeSpan.FromMilliseconds(600),
+                Duration = TimeSpan.FromMilliseconds(700),
                 EasingFunction = SmoothEase
             };
             var slideUp = new DoubleAnimation
             {
-                From = 20, To = 0,
-                Duration = TimeSpan.FromMilliseconds(600),
+                From = 16, To = 0,
+                Duration = TimeSpan.FromMilliseconds(700),
                 EasingFunction = SmoothEase
             };
 
-            Storyboard.SetTarget(fadeIn, HeroStatCard);
+            Storyboard.SetTarget(fadeIn, BentoGrid);
             Storyboard.SetTargetProperty(fadeIn, new PropertyPath(UIElement.OpacityProperty));
-            Storyboard.SetTarget(slideUp, HeroStatCard);
+            Storyboard.SetTarget(slideUp, BentoGrid);
             Storyboard.SetTargetProperty(slideUp, new PropertyPath("(UIElement.RenderTransform).(TranslateTransform.Y)"));
 
             var sb = new Storyboard();
@@ -74,40 +72,22 @@ public partial class DashboardView : Page
             sb.Begin(this);
         }
 
-        // Progress bar: fade in + fill animation
-        if (HeroProgressBar != null)
-        {
-            var progressFade = new DoubleAnimation
-            {
-                From = 0, To = 1,
-                Duration = TimeSpan.FromMilliseconds(500),
-                BeginTime = TimeSpan.FromMilliseconds(300),
-                EasingFunction = SmoothEase
-            };
-            Storyboard.SetTarget(progressFade, HeroProgressBar);
-            Storyboard.SetTargetProperty(progressFade, new PropertyPath(UIElement.OpacityProperty));
-
-            var sb2 = new Storyboard();
-            sb2.Children.Add(progressFade);
-            sb2.Begin(this);
-        }
-
         // "Courses" label: fade in
         if (CourseSectionLabel != null)
         {
             var labelFade = new DoubleAnimation
             {
                 From = 0, To = 1,
-                Duration = TimeSpan.FromMilliseconds(400),
-                BeginTime = TimeSpan.FromMilliseconds(500),
+                Duration = TimeSpan.FromMilliseconds(500),
+                BeginTime = TimeSpan.FromMilliseconds(600),
                 EasingFunction = SmoothEase
             };
             Storyboard.SetTarget(labelFade, CourseSectionLabel);
             Storyboard.SetTargetProperty(labelFade, new PropertyPath(UIElement.OpacityProperty));
 
-            var sb3 = new Storyboard();
-            sb3.Children.Add(labelFade);
-            sb3.Begin(this);
+            var sb2 = new Storyboard();
+            sb2.Children.Add(labelFade);
+            sb2.Begin(this);
         }
     }
 
@@ -132,19 +112,19 @@ public partial class DashboardView : Page
             var container = CourseItemsControl.ItemContainerGenerator.ContainerFromIndex(i) as ContentPresenter;
             if (container == null) continue;
 
-            var delay = TimeSpan.FromMilliseconds(550 + i * 70);
+            var delay = TimeSpan.FromMilliseconds(700 + i * 80);
 
             var fadeIn = new DoubleAnimation
             {
                 From = 0, To = 1,
-                Duration = TimeSpan.FromMilliseconds(400),
+                Duration = TimeSpan.FromMilliseconds(500),
                 BeginTime = delay,
                 EasingFunction = SmoothEase
             };
             var slideUp = new DoubleAnimation
             {
-                From = 10, To = 0,
-                Duration = TimeSpan.FromMilliseconds(400),
+                From = 12, To = 0,
+                Duration = TimeSpan.FromMilliseconds(500),
                 BeginTime = delay,
                 EasingFunction = SmoothEase
             };

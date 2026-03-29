@@ -11,28 +11,24 @@
         <ScrollViewer VerticalScrollBarVisibility="Auto">
             <StackPanel Margin="32,28,32,32" Background="{DynamicResource ApplicationPageBackgroundThemeBrush}">
 
-            <!-- Header with gradient accent -->
-            <Grid Margin="0,0,0,24">
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="*"/>
-                    <ColumnDefinition Width="Auto"/>
-                </Grid.ColumnDefinitions>
-                <StackPanel Grid.Column="0">
+            <!-- Header with accent line -->
+            <Grid Margin="0,0,0,28">
+                <StackPanel>
                     <TextBlock Text="Settings"
-                               FontSize="28"
+                               FontSize="26"
                                FontWeight="SemiBold"
                                Foreground="{DynamicResource TextFillColorPrimaryBrush}"
-                               Margin="0,0,0,4"/>
-                    <Border Width="60" Height="3" CornerRadius="1.5"
+                               Margin="0,0,0,6"/>
+                    <Border Width="50" Height="3" CornerRadius="1.5"
                             Background="{StaticResource AccentGradientHorizontal}"
                             HorizontalAlignment="Left"/>
                 </StackPanel>
             </Grid>
 
-            <!-- Appearance -->
+            <!-- APPEARANCE -->
             <TextBlock Text="APPEARANCE" FontSize="11" FontWeight="SemiBold"
-                       Foreground="{DynamicResource TextFillColorTertiaryBrush}" Margin="0,0,0,8"/>
-            <ui:Card Margin="0,0,0,24">
+                       Foreground="{DynamicResource TextFillColorTertiaryBrush}" Margin="0,0,0,10"/>
+            <ui:Card Margin="0,0,0,28">
                 <StackPanel>
                     <Grid Margin="16,14">
                         <Grid.ColumnDefinitions>
@@ -63,10 +59,10 @@
                 </StackPanel>
             </ui:Card>
 
-            <!-- Tools -->
+            <!-- TOOLS -->
             <TextBlock Text="TOOLS" FontSize="11" FontWeight="SemiBold"
-                       Foreground="{DynamicResource TextFillColorTertiaryBrush}" Margin="0,0,0,8"/>
-            <ui:Card Margin="0,0,0,24">
+                       Foreground="{DynamicResource TextFillColorTertiaryBrush}" Margin="0,0,0,10"/>
+            <ui:Card Margin="0,0,0,28">
                 <Grid Margin="16,14">
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="*"/>
@@ -96,10 +92,10 @@
                 </Grid>
             </ui:Card>
 
-            <!-- Account -->
+            <!-- ACCOUNT -->
             <TextBlock Text="ACCOUNT" FontSize="11" FontWeight="SemiBold"
-                       Foreground="{DynamicResource TextFillColorTertiaryBrush}" Margin="0,0,0,8"/>
-            <ui:Card Margin="0,0,0,20">
+                       Foreground="{DynamicResource TextFillColorTertiaryBrush}" Margin="0,0,0,10"/>
+            <ui:Card Margin="0,0,0,28">
                 <StackPanel>
                     <Border Margin="16,14,16,0" Background="{DynamicResource ControlFillColorDefaultBrush}"
                             CornerRadius="6" Padding="12">
@@ -117,19 +113,19 @@
                 </StackPanel>
             </ui:Card>
 
-            <!-- Data -->
+            <!-- DATA -->
             <TextBlock Text="DATA" FontSize="11" FontWeight="SemiBold"
-                       Foreground="{DynamicResource TextFillColorTertiaryBrush}" Margin="0,0,0,8"/>
-            <ui:Card Margin="0,0,0,20">
+                       Foreground="{DynamicResource TextFillColorTertiaryBrush}" Margin="0,0,0,10"/>
+            <ui:Card Margin="0,0,0,28">
                 <ui:CardAction Command="{Binding ClearCacheCommand}"
                                Icon="{ui:SymbolIcon Delete24}" Content="Clear Cached Data"
                                Margin="8"/>
             </ui:Card>
 
-            <!-- Keyboard Shortcuts -->
+            <!-- KEYBOARD SHORTCUTS -->
             <TextBlock Text="KEYBOARD SHORTCUTS" FontSize="11" FontWeight="SemiBold"
-                       Foreground="{DynamicResource TextFillColorTertiaryBrush}" Margin="0,0,0,8"/>
-            <ui:Card Margin="0,0,0,20">
+                       Foreground="{DynamicResource TextFillColorTertiaryBrush}" Margin="0,0,0,10"/>
+            <ui:Card Margin="0,0,0,28">
                 <Grid Margin="16,14">
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="*"/>
@@ -142,44 +138,52 @@
                         <RowDefinition Height="32"/>
                     </Grid.RowDefinitions>
 
-                    <TextBlock Grid.Row="0" Grid.Column="0" FontSize="14" VerticalAlignment="Center"
+                    <TextBlock Grid.Row="0" Grid.Column="0" FontSize="13" VerticalAlignment="Center"
                                Foreground="{DynamicResource TextFillColorSecondaryBrush}">Refresh</TextBlock>
                     <ui:Badge Grid.Row="0" Grid.Column="1" Content="F5" HorizontalAlignment="Right"/>
 
-                    <TextBlock Grid.Row="1" Grid.Column="0" FontSize="14" VerticalAlignment="Center"
+                    <TextBlock Grid.Row="1" Grid.Column="0" FontSize="13" VerticalAlignment="Center"
                                Foreground="{DynamicResource TextFillColorSecondaryBrush}">Settings</TextBlock>
                     <ui:Badge Grid.Row="1" Grid.Column="1" Content="Ctrl + ," HorizontalAlignment="Right"/>
 
-                    <TextBlock Grid.Row="2" Grid.Column="0" FontSize="14" VerticalAlignment="Center"
+                    <TextBlock Grid.Row="2" Grid.Column="0" FontSize="13" VerticalAlignment="Center"
                                Foreground="{DynamicResource TextFillColorSecondaryBrush}">Export</TextBlock>
                     <ui:Badge Grid.Row="2" Grid.Column="1" Content="Ctrl + E" HorizontalAlignment="Right"/>
 
-                    <TextBlock Grid.Row="3" Grid.Column="0" FontSize="14" VerticalAlignment="Center"
+                    <TextBlock Grid.Row="3" Grid.Column="0" FontSize="13" VerticalAlignment="Center"
                                Foreground="{DynamicResource TextFillColorSecondaryBrush}">Go Back</TextBlock>
                     <ui:Badge Grid.Row="3" Grid.Column="1" Content="Esc" HorizontalAlignment="Right"/>
                 </Grid>
             </ui:Card>
 
-            <!-- About -->
+            <!-- ABOUT -->
             <TextBlock Text="ABOUT" FontSize="11" FontWeight="SemiBold"
-                       Foreground="{DynamicResource TextFillColorTertiaryBrush}" Margin="0,0,0,8"/>
+                       Foreground="{DynamicResource TextFillColorTertiaryBrush}" Margin="0,0,0,10"/>
             <ui:Card Margin="0,0,0,20">
-                <StackPanel Orientation="Horizontal" Margin="16,14">
-                    <Border Width="40" Height="40" CornerRadius="10" Margin="0,0,14,0" ClipToBounds="True">
+                <Grid Margin="16,14">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto"/>
+                        <ColumnDefinition Width="12"/>
+                        <ColumnDefinition Width="*"/>
+                    </Grid.ColumnDefinitions>
+
+                    <!-- Logo with warm glow -->
+                    <Border Grid.Column="0" Width="44" Height="44" CornerRadius="12" ClipToBounds="True">
                         <Border.Effect>
-                            <DropShadowEffect Color="#6366F1" BlurRadius="16" ShadowDepth="0" Opacity="0.25" Direction="0"/>
+                            <DropShadowEffect Color="#6366F1" BlurRadius="14" ShadowDepth="0" Opacity="0.2" Direction="0"/>
                         </Border.Effect>
                         <Image Source="/logo.png" Stretch="UniformToFill"/>
                     </Border>
-                    <StackPanel VerticalAlignment="Center">
+
+                    <StackPanel Grid.Column="2" VerticalAlignment="Center">
                         <TextBlock FontSize="15" FontWeight="SemiBold">TeachAssist Desktop</TextBlock>
                         <TextBlock FontSize="12" Foreground="{DynamicResource TextFillColorSecondaryBrush}">
                             <Run Text="Version "/><Run Text="{Binding AppVersion}" FontWeight="SemiBold"/><Run Text=" by changcheng967"/>
                         </TextBlock>
-                        <TextBlock FontSize="12" Foreground="{DynamicResource TextFillColorTertiaryBrush}"
+                        <TextBlock FontSize="11" Foreground="{DynamicResource TextFillColorTertiaryBrush}"
                                    Text="{Binding UpdateStatus}" Visibility="{Binding UpdateStatus, Converter={StaticResource StringToVisibilityConverter}}"/>
                     </StackPanel>
-                </StackPanel>
+                </Grid>
             </ui:Card>
 
         </StackPanel>

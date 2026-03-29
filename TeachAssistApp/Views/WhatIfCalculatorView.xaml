@@ -16,25 +16,26 @@
         <Border Height="3" VerticalAlignment="Top" Margin="0,32,0,0"
                 Background="{StaticResource AccentGradientHorizontal}"/>
 
-        <ScrollViewer Margin="0,35,0,0" VerticalScrollBarVisibility="Auto" Padding="32,20,32,32">
+        <ScrollViewer Margin="0,35,0,0" VerticalScrollBarVisibility="Auto" Padding="32,24,32,32">
             <StackPanel>
-                <!-- Current Average with gradient accent -->
-                <Border Margin="0,0,0,20" CornerRadius="10"
-                        Background="{DynamicResource CardBackgroundFillColorDefaultBrush}">
+                <!-- Current Average — hero card -->
+                <Border Margin="0,0,0,20" CornerRadius="14"
+                        Background="{DynamicResource CardBackgroundFillColorDefaultBrush}"
+                        Effect="{StaticResource CardElevatedShadow}">
                     <Grid>
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="4"/>
                             <ColumnDefinition Width="*"/>
                         </Grid.ColumnDefinitions>
 
-                        <Border Grid.Column="0" CornerRadius="10,0,0,10"
+                        <Border Grid.Column="0" CornerRadius="14,0,0,14"
                                 Background="{StaticResource AccentGradient}"/>
 
-                        <StackPanel Grid.Column="1" Margin="20,16">
-                            <TextBlock Text="Current Average" FontSize="13"
+                        <StackPanel Grid.Column="1" Margin="24,20">
+                            <TextBlock Text="Current Average" FontSize="12"
                                        Foreground="{DynamicResource TextFillColorSecondaryBrush}" Margin="0,0,0,8"/>
-                            <TextBlock Text="{Binding CurrentGpa, StringFormat={}{0:F1}%}" FontSize="36" FontWeight="Bold"/>
-                            <TextBlock FontSize="12" Foreground="{DynamicResource TextFillColorSecondaryBrush}" Margin="0,8,0,0">
+                            <TextBlock Text="{Binding CurrentGpa, StringFormat={}{0:F1}%}" FontSize="40" FontWeight="Bold"/>
+                            <TextBlock FontSize="12" Foreground="{DynamicResource TextFillColorTertiaryBrush}" Margin="0,8,0,0">
                                 <Run Text="Across "/><Run Text="{Binding CourseCount}" FontWeight="SemiBold"/><Run Text=" courses"/>
                             </TextBlock>
                         </StackPanel>
@@ -42,12 +43,12 @@
                 </Border>
 
                 <!-- Add Hypothetical Assignment -->
-                <TextBlock Text="Add Hypothetical Assignment" FontSize="16" FontWeight="SemiBold" Margin="0,0,0,12"/>
+                <TextBlock Text="Add Hypothetical Assignment" FontSize="14" FontWeight="SemiBold" Margin="0,0,0,10"/>
 
                 <ui:Card Margin="0,0,0,20">
                     <StackPanel Margin="16,14">
-                        <TextBlock Text="Assignment Name" FontSize="12"
-                                   Foreground="{DynamicResource TextFillColorSecondaryBrush}" Margin="0,0,0,6"/>
+                        <TextBlock Text="Assignment Name" FontSize="11"
+                                   Foreground="{DynamicResource TextFillColorTertiaryBrush}" Margin="0,0,0,6"/>
                         <ui:TextBox Text="{Binding NewAssignmentName, UpdateSourceTrigger=PropertyChanged}"
                                     PlaceholderText="Enter name" Margin="0,0,0,12"/>
 
@@ -59,15 +60,15 @@
                             </Grid.ColumnDefinitions>
 
                             <StackPanel Grid.Column="0">
-                                <TextBlock Text="Mark (%)" FontSize="12"
-                                           Foreground="{DynamicResource TextFillColorSecondaryBrush}" Margin="0,0,0,6"/>
+                                <TextBlock Text="Mark (%)" FontSize="11"
+                                           Foreground="{DynamicResource TextFillColorTertiaryBrush}" Margin="0,0,0,6"/>
                                 <ui:TextBox Text="{Binding NewAssignmentMark, UpdateSourceTrigger=PropertyChanged}"
                                             PlaceholderText="0-100"/>
                             </StackPanel>
 
                             <StackPanel Grid.Column="2">
-                                <TextBlock Text="Weight (%)" FontSize="12"
-                                           Foreground="{DynamicResource TextFillColorSecondaryBrush}" Margin="0,0,0,6"/>
+                                <TextBlock Text="Weight (%)" FontSize="11"
+                                           Foreground="{DynamicResource TextFillColorTertiaryBrush}" Margin="0,0,0,6"/>
                                 <ui:TextBox Text="{Binding NewAssignmentWeight, UpdateSourceTrigger=PropertyChanged}"
                                             PlaceholderText="0-100"/>
                             </StackPanel>
@@ -78,9 +79,10 @@
                     </StackPanel>
                 </ui:Card>
 
-                <!-- Projected Results with color-coded difference -->
-                <Border Margin="0,0,0,12" CornerRadius="10"
+                <!-- Projected Results — with color-coded accent -->
+                <Border Margin="0,0,0,12" CornerRadius="12"
                         Background="{DynamicResource CardBackgroundFillColorDefaultBrush}"
+                        Effect="{StaticResource CardDefaultShadow}"
                         Visibility="{Binding HasHypotheticalAssignments, Converter={StaticResource BooleanToVisibilityConverter}}">
                     <Grid>
                         <Grid.ColumnDefinitions>
@@ -88,16 +90,16 @@
                             <ColumnDefinition Width="*"/>
                         </Grid.ColumnDefinitions>
 
-                        <Border Grid.Column="0" CornerRadius="10,0,0,10"
-                                Background="{Binding GpaDifference, Converter={StaticResource ImpactDeltaToColorConverter}}"/>
+                        <Border Grid.Column="0" CornerRadius="12,0,0,12"
+                                Background="{Binding GpaDifference, Converter={StaticResource ImpactDeltaToColorConverter}}" Opacity="0.7"/>
 
                         <StackPanel Grid.Column="1" Margin="20,16">
-                            <TextBlock Text="Projected Average" FontSize="13" Margin="0,0,0,8"/>
+                            <TextBlock Text="Projected Average" FontSize="11" Foreground="{DynamicResource TextFillColorTertiaryBrush}" Margin="0,0,0,8"/>
                             <TextBlock Text="{Binding ProjectedGpa, StringFormat={}{0:F1}%}" FontSize="32" FontWeight="Bold"/>
-                            <TextBlock FontSize="14" FontWeight="SemiBold" Margin="0,4,0,0"
+                            <TextBlock FontSize="13" FontWeight="SemiBold" Margin="0,4,0,0"
                                        Foreground="{Binding GpaDifference, Converter={StaticResource ImpactDeltaToColorConverter}}">
                                 <Run Text="{Binding GpaDifference, StringFormat={}{0:+0.0;-0.0}%}"/>
-                                <Run Text=" difference" FontSize="12" FontWeight="Normal"
+                                <Run Text=" difference" FontSize="11" FontWeight="Normal"
                                      Foreground="{DynamicResource TextFillColorSecondaryBrush}"/>
                             </TextBlock>
                         </StackPanel>
@@ -107,7 +109,7 @@
                 <!-- Hypothetical Assignments List -->
                 <ui:Card Visibility="{Binding HasHypotheticalAssignments, Converter={StaticResource BooleanToVisibilityConverter}}">
                     <StackPanel Margin="16,14">
-                        <TextBlock Text="Hypothetical Assignments" FontSize="14" FontWeight="SemiBold" Margin="0,0,0,8"/>
+                        <TextBlock Text="Hypothetical Assignments" FontSize="13" FontWeight="SemiBold" Margin="0,0,0,8"/>
                         <ItemsControl ItemsSource="{Binding HypotheticalAssignments}">
                             <ItemsControl.ItemTemplate>
                                 <DataTemplate>
@@ -118,16 +120,16 @@
                                             <ColumnDefinition Width="Auto"/>
                                         </Grid.ColumnDefinitions>
 
-                                        <TextBlock Grid.Column="0" Text="{Binding Name}" FontSize="14"
+                                        <TextBlock Grid.Column="0" Text="{Binding Name}" FontSize="13"
                                                    VerticalAlignment="Center"/>
 
                                         <TextBlock Grid.Column="1" Text="{Binding Mark, StringFormat={}{0:F0}%}"
-                                                   FontSize="13" FontWeight="SemiBold"
+                                                   FontSize="12" FontWeight="SemiBold"
                                                    VerticalAlignment="Center" Margin="0,0,12,0"/>
 
                                         <ui:Button Grid.Column="2" Content="&#xE711;" FontFamily="Segoe MDL2 Assets"
                                                    Command="{Binding RemoveCommand}" CommandParameter="{Binding}"
-                                                   Appearance="Secondary" Padding="6" FontSize="12"/>
+                                                   Appearance="Secondary" Padding="6" FontSize="11"/>
                                     </Grid>
                                 </DataTemplate>
                             </ItemsControl.ItemTemplate>

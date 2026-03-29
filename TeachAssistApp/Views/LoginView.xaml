@@ -14,45 +14,55 @@
         </Grid.ColumnDefinitions>
 
         <!-- ═══════════════════════════════════════════════════════
-             LEFT PANEL: BRAND
+             LEFT PANEL: BRAND — with depth layers
              ═══════════════════════════════════════════════════════ -->
         <Border Grid.Column="0" Background="{DynamicResource ApplicationPageBackgroundThemeBrush}">
             <Grid>
-                <!-- Visible gradient overlay on brand panel -->
-                <Border Background="{StaticResource AccentGradientSubtle}" Opacity="0.15"/>
+                <!-- Layered background: gradient tint -->
+                <Border Background="{StaticResource AccentGradientSubtle}" Opacity="0.10"/>
+
+                <!-- Decorative floating circles for depth -->
+                <Canvas>
+                    <Ellipse Canvas.Left="60" Canvas.Top="80" Width="180" Height="180"
+                             Fill="#6366F1" Opacity="0.03"/>
+                    <Ellipse Canvas.Right="40" Canvas.Bottom="60" Width="240" Height="240"
+                             Fill="#8B5CF6" Opacity="0.04"/>
+                    <Ellipse Canvas.Left="200" Canvas.Bottom="120" Width="100" Height="100"
+                             Fill="#F59E0B" Opacity="0.03"/>
+                </Canvas>
 
                 <StackPanel VerticalAlignment="Center" HorizontalAlignment="Center" Margin="60">
 
-                    <!-- Logo with glow -->
-                    <Border x:Name="BrandLogo" Width="100" Height="100"
-                            CornerRadius="24"
+                    <!-- Logo with soft glow -->
+                    <Border x:Name="BrandLogo" Width="96" Height="96"
+                            CornerRadius="22"
                             HorizontalAlignment="Center"
-                            Margin="0,0,0,36"
+                            Margin="0,0,0,32"
                             ClipToBounds="True"
                             Opacity="0" RenderTransformOrigin="0.5,0.5">
                         <Border.RenderTransform>
                             <ScaleTransform ScaleX="0.9" ScaleY="0.9"/>
                         </Border.RenderTransform>
                         <Border.Effect>
-                            <DropShadowEffect Color="#6366F1" BlurRadius="40" ShadowDepth="0" Opacity="0.5" Direction="0"/>
+                            <DropShadowEffect Color="#6366F1" BlurRadius="32" ShadowDepth="0" Opacity="0.35" Direction="0"/>
                         </Border.Effect>
                         <Image Source="/logo.png" Stretch="UniformToFill"/>
                     </Border>
 
-                    <!-- Animated gradient accent line under logo -->
-                    <Border x:Name="BrandAccentLine" Width="220" Height="3"
+                    <!-- Gradient accent line -->
+                    <Border x:Name="BrandAccentLine" Width="200" Height="3"
                             CornerRadius="1.5"
                             HorizontalAlignment="Center"
                             Background="{StaticResource AccentGradientHorizontal}"
-                            Margin="0,0,0,36"
+                            Margin="0,0,0,32"
                             Opacity="0"/>
 
                     <TextBlock x:Name="BrandTitle" Text="TeachAssist Desktop"
-                               FontSize="36"
+                               FontSize="34"
                                FontWeight="Bold"
                                Foreground="{DynamicResource TextFillColorPrimaryBrush}"
                                HorizontalAlignment="Center"
-                               Margin="0,0,0,12"
+                               Margin="0,0,0,10"
                                Opacity="0" RenderTransformOrigin="0.5,0.5">
                         <TextBlock.RenderTransform>
                             <TranslateTransform Y="12"/>
@@ -60,17 +70,17 @@
                     </TextBlock>
 
                     <TextBlock x:Name="BrandSubtitle" Text="Track your YRDSB grades with style."
-                               FontSize="16"
+                               FontSize="15"
                                Foreground="{DynamicResource TextFillColorSecondaryBrush}"
                                HorizontalAlignment="Center"
-                               Margin="0,0,0,44"
+                               Margin="0,0,0,40"
                                Opacity="0" RenderTransformOrigin="0.5,0.5">
                         <TextBlock.RenderTransform>
                             <TranslateTransform Y="12"/>
                         </TextBlock.RenderTransform>
                     </TextBlock>
 
-                    <!-- Feature badges with gradient left-border accents -->
+                    <!-- Feature badges — clean pills with colored dots -->
                     <StackPanel x:Name="BrandBadges" HorizontalAlignment="Center" Orientation="Horizontal" Opacity="0"
                                 RenderTransformOrigin="0.5,0.5">
                         <StackPanel.RenderTransform>
@@ -78,39 +88,33 @@
                         </StackPanel.RenderTransform>
 
                         <Border Background="{DynamicResource CardBackgroundFillColorDefaultBrush}"
-                                CornerRadius="20" Padding="14,10" Margin="0,0,10,0"
+                                CornerRadius="20" Padding="14,8" Margin="0,0,8,0"
                                 Effect="{StaticResource CardDefaultShadow}">
                             <StackPanel Orientation="Horizontal">
-                                <Border Width="8" Height="8" CornerRadius="4" Margin="0,0,8,0"
+                                <Border Width="7" Height="7" CornerRadius="4" Margin="0,0,8,0"
                                         Background="{StaticResource InfoBrush}" VerticalAlignment="Center"/>
-                                <TextBlock FontSize="13" Foreground="{DynamicResource TextFillColorSecondaryBrush}"
-                                           VerticalAlignment="Center">
-                                    Grade Trends
-                                </TextBlock>
+                                <TextBlock FontSize="12" Foreground="{DynamicResource TextFillColorSecondaryBrush}"
+                                           VerticalAlignment="Center">Grade Trends</TextBlock>
                             </StackPanel>
                         </Border>
                         <Border Background="{DynamicResource CardBackgroundFillColorDefaultBrush}"
-                                CornerRadius="20" Padding="14,10" Margin="0,0,10,0"
+                                CornerRadius="20" Padding="14,8" Margin="0,0,8,0"
                                 Effect="{StaticResource CardDefaultShadow}">
                             <StackPanel Orientation="Horizontal">
-                                <Border Width="8" Height="8" CornerRadius="4" Margin="0,0,8,0"
+                                <Border Width="7" Height="7" CornerRadius="4" Margin="0,0,8,0"
                                         Background="{StaticResource SuccessBrush}" VerticalAlignment="Center"/>
-                                <TextBlock FontSize="13" Foreground="{DynamicResource TextFillColorSecondaryBrush}"
-                                           VerticalAlignment="Center">
-                                    Goal Tracking
-                                </TextBlock>
+                                <TextBlock FontSize="12" Foreground="{DynamicResource TextFillColorSecondaryBrush}"
+                                           VerticalAlignment="Center">Goal Tracking</TextBlock>
                             </StackPanel>
                         </Border>
                         <Border Background="{DynamicResource CardBackgroundFillColorDefaultBrush}"
-                                CornerRadius="20" Padding="14,10"
+                                CornerRadius="20" Padding="14,8"
                                 Effect="{StaticResource CardDefaultShadow}">
                             <StackPanel Orientation="Horizontal">
-                                <Border Width="8" Height="8" CornerRadius="4" Margin="0,0,8,0"
+                                <Border Width="7" Height="7" CornerRadius="4" Margin="0,0,8,0"
                                         Background="{StaticResource WarningBrush}" VerticalAlignment="Center"/>
-                                <TextBlock FontSize="13" Foreground="{DynamicResource TextFillColorSecondaryBrush}"
-                                           VerticalAlignment="Center">
-                                    What-If Calc
-                                </TextBlock>
+                                <TextBlock FontSize="12" Foreground="{DynamicResource TextFillColorSecondaryBrush}"
+                                           VerticalAlignment="Center">What-If Calc</TextBlock>
                             </StackPanel>
                         </Border>
                     </StackPanel>
@@ -136,18 +140,18 @@
                         Background="{StaticResource AccentGradientHorizontal}"
                         Panel.ZIndex="1"/>
 
-                <ScrollViewer VerticalScrollBarVisibility="Auto" Padding="48" Margin="0,3,0,0">
-                    <StackPanel VerticalAlignment="Center" MinHeight="500">
+                <ScrollViewer VerticalScrollBarVisibility="Auto" Padding="44" Margin="0,3,0,0">
+                    <StackPanel VerticalAlignment="Center" MinHeight="480">
                         <TextBlock Text="Welcome back"
-                                   FontSize="28"
+                                   FontSize="26"
                                    FontWeight="SemiBold"
                                    Foreground="{DynamicResource TextFillColorPrimaryBrush}"
-                                   Margin="0,0,0,6"/>
+                                   Margin="0,0,0,4"/>
 
                         <TextBlock Text="Sign in with your YRDSB student credentials"
-                                   FontSize="14"
+                                   FontSize="13"
                                    Foreground="{DynamicResource TextFillColorSecondaryBrush}"
-                                   Margin="0,0,0,32"/>
+                                   Margin="0,0,0,28"/>
 
                         <!-- Error Message -->
                         <ui:InfoBar Title="Login Failed"
@@ -156,32 +160,30 @@
                                     IsOpen="{Binding ErrorMessage, Converter={StaticResource StringToBoolConverter}}"
                                     Margin="0,0,0,20"/>
 
-                        <!-- Student Number Field -->
+                        <!-- Student Number -->
                         <TextBlock Text="Student Number"
-                                   FontSize="14"
-                                   FontWeight="SemiBold"
+                                   FontSize="13" FontWeight="SemiBold"
                                    Foreground="{DynamicResource TextFillColorPrimaryBrush}"
-                                   Margin="0,0,0,8"/>
+                                   Margin="0,0,0,6"/>
                         <ui:TextBox Text="{Binding Username, UpdateSourceTrigger=PropertyChanged}"
                                     PlaceholderText="Enter your student number"
                                     Icon="{ui:SymbolIcon Person24}"
-                                    Margin="0,0,0,16">
+                                    Margin="0,0,0,14">
                             <ui:TextBox.InputBindings>
                                 <KeyBinding Key="Enter" Command="{Binding LoginCommand}"/>
                             </ui:TextBox.InputBindings>
                         </ui:TextBox>
 
-                        <!-- Password Field -->
+                        <!-- Password -->
                         <TextBlock Text="Password"
-                                   FontSize="14"
-                                   FontWeight="SemiBold"
+                                   FontSize="13" FontWeight="SemiBold"
                                    Foreground="{DynamicResource TextFillColorPrimaryBrush}"
-                                   Margin="0,0,0,8"/>
+                                   Margin="0,0,0,6"/>
                         <ui:PasswordBox x:Name="PasswordBox"
                                         PlaceholderText="Enter your password"
                                         PasswordChanged="PasswordBox_PasswordChanged"
                                         KeyDown="PasswordBox_KeyDown"
-                                        Margin="0,0,0,20"/>
+                                        Margin="0,0,0,18"/>
 
                         <!-- Remember Me -->
                         <ui:ToggleSwitch Content="Remember me"
@@ -195,16 +197,15 @@
                                    HorizontalAlignment="Stretch"
                                    FontSize="15"
                                    Height="44"
-                                   Margin="0,0,0,16"/>
+                                   Margin="0,0,0,20"/>
 
                         <!-- Demo Hint -->
                         <Border Background="{DynamicResource CardBackgroundFillColorDefaultBrush}"
-                                Padding="12,10"
+                                Padding="12,8"
                                 CornerRadius="8"
                                 HorizontalAlignment="Center">
-                            <TextBlock FontSize="13" Foreground="{DynamicResource TextFillColorTertiaryBrush}">
-                                <Run Text="&#xE946;" FontFamily="Segoe MDL2 Assets"/>
-                                <Run Text=" Type "/>
+                            <TextBlock FontSize="12" Foreground="{DynamicResource TextFillColorTertiaryBrush}">
+                                <Run Text="Type "/>
                                 <Run Text="demo" FontWeight="SemiBold" Foreground="{DynamicResource TextFillColorSecondaryBrush}"/>
                                 <Run Text=" to test with sample grades"/>
                             </TextBlock>
@@ -222,8 +223,7 @@
                 <ui:ProgressRing IsIndeterminate="True" Width="48" Height="48" Margin="0,0,0,20"/>
                 <TextBlock Text="Signing in..."
                            Foreground="{DynamicResource TextFillColorPrimaryBrush}"
-                           FontSize="16"
-                           FontWeight="SemiBold"
+                           FontSize="16" FontWeight="SemiBold"
                            HorizontalAlignment="Center"/>
             </StackPanel>
         </Grid>

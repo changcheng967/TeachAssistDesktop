@@ -3,11 +3,12 @@
                     xmlns:sys="clr-namespace:System;assembly=mscorlib">
 
     <!-- ══════════════════════════════════════════════════════════
-         ACCENT — used sparingly, only on brand/hero elements
+         ACCENT PALETTE — primary indigo + warm rose secondary
          ══════════════════════════════════════════════════════════ -->
     <LinearGradientBrush x:Key="AccentGradient" StartPoint="0,0" EndPoint="1,1">
         <GradientStop Color="#6366F1" Offset="0"/>
-        <GradientStop Color="#8B5CF6" Offset="1"/>
+        <GradientStop Color="#8B5CF6" Offset="0.5"/>
+        <GradientStop Color="#A78BFA" Offset="1"/>
     </LinearGradientBrush>
     <LinearGradientBrush x:Key="AccentGradientSubtle" StartPoint="0,0" EndPoint="1,1">
         <GradientStop Color="#312E81" Offset="0"/>
@@ -15,11 +16,36 @@
     </LinearGradientBrush>
     <LinearGradientBrush x:Key="AccentGradientHorizontal" StartPoint="0,0.5" EndPoint="1,0.5">
         <GradientStop Color="#6366F1" Offset="0"/>
+        <GradientStop Color="#8B5CF6" Offset="0.5"/>
         <GradientStop Color="#A78BFA" Offset="1"/>
     </LinearGradientBrush>
 
-    <!-- Soft glow — very subtle -->
+    <!-- Warm accent — used for highlights, badges, secondary emphasis -->
+    <LinearGradientBrush x:Key="WarmGradient" StartPoint="0,0" EndPoint="1,1">
+        <GradientStop Color="#F59E0B" Offset="0"/>
+        <GradientStop Color="#EF4444" Offset="1"/>
+    </LinearGradientBrush>
+    <LinearGradientBrush x:Key="WarmGradientSubtle" StartPoint="0,0.5" EndPoint="1,0.5">
+        <GradientStop Color="#FDE68A" Offset="0"/>
+        <GradientStop Color="#FCA5A5" Offset="1"/>
+    </LinearGradientBrush>
+
+    <!-- Success gradient — for positive indicators -->
+    <LinearGradientBrush x:Key="SuccessGradient" StartPoint="0,0" EndPoint="1,1">
+        <GradientStop Color="#10B981" Offset="0"/>
+        <GradientStop Color="#34D399" Offset="1"/>
+    </LinearGradientBrush>
+
+    <!-- Cool background tints — subtle card/section backgrounds -->
+    <LinearGradientBrush x:Key="CoolTintBrush" StartPoint="0,0" EndPoint="1,1">
+        <GradientStop Color="#6366F1" Offset="0"/>
+        <GradientStop Color="#8B5CF6" Offset="1"/>
+    </LinearGradientBrush>
+    <SolidColorBrush x:Key="WarmTintBrush" Color="#0FF59E0B"/>
+
+    <!-- Soft glow -->
     <DropShadowEffect x:Key="AccentGlow" Color="#6366F1" BlurRadius="24" ShadowDepth="0" Opacity="0.2" Direction="0"/>
+    <DropShadowEffect x:Key="WarmGlow" Color="#F59E0B" BlurRadius="20" ShadowDepth="0" Opacity="0.15" Direction="0"/>
 
     <!-- ══════════════════════════════════════════════════════════
          OVERLAY & STATUS
@@ -31,13 +57,15 @@
     <SolidColorBrush x:Key="InfoBrush" Color="#2563EB"/>
 
     <!-- ══════════════════════════════════════════════════════════
-         SHADOWS — macOS-style: very soft, barely visible
+         SHADOWS — layered macOS depth system
          ══════════════════════════════════════════════════════════ -->
-    <DropShadowEffect x:Key="CardHoverShadow" BlurRadius="24" ShadowDepth="6" Opacity="0.08" Direction="270"/>
     <DropShadowEffect x:Key="CardDefaultShadow" BlurRadius="12" ShadowDepth="2" Opacity="0.04" Direction="270"/>
+    <DropShadowEffect x:Key="CardHoverShadow" BlurRadius="24" ShadowDepth="6" Opacity="0.08" Direction="270"/>
+    <DropShadowEffect x:Key="CardElevatedShadow" BlurRadius="32" ShadowDepth="8" Opacity="0.10" Direction="270"/>
+    <DropShadowEffect x:Key="FloatingShadow" BlurRadius="40" ShadowDepth="12" Opacity="0.12" Direction="270"/>
 
     <!-- ══════════════════════════════════════════════════════════
-         TYPOGRAPHY
+         TYPOGRAPHY — deliberate scale with personality
          ══════════════════════════════════════════════════════════ -->
     <sys:Double x:Key="HeroFontSize">42</sys:Double>
     <sys:Double x:Key="DisplayFontSize">28</sys:Double>
@@ -45,9 +73,18 @@
     <sys:Double x:Key="H2FontSize">18</sys:Double>
     <sys:Double x:Key="BodyFontSize">14</sys:Double>
     <sys:Double x:Key="CaptionFontSize">12</sys:Double>
+    <sys:Double x:Key="MicroFontSize">11</sys:Double>
+
+    <!-- Label style — uppercase tracking, used for section dividers -->
+    <Style x:Key="SectionHeader" TargetType="TextBlock">
+        <Setter Property="FontSize" Value="11"/>
+        <Setter Property="FontWeight" Value="SemiBold"/>
+        <Setter Property="Foreground" Value="{DynamicResource TextFillColorTertiaryBrush}"/>
+        <Setter Property="Margin" Value="0,0,0,10"/>
+    </Style>
 
     <!-- ══════════════════════════════════════════════════════════
-         BUTTON — subtle press, no scale on hover (macOS feel)
+         BUTTON — subtle press
          ══════════════════════════════════════════════════════════ -->
     <Style x:Key="AnimatedButton" TargetType="ButtonBase">
         <Setter Property="RenderTransformOrigin" Value="0.5,0.5"/>
@@ -98,8 +135,10 @@
     </Style>
 
     <!-- ══════════════════════════════════════════════════════════
-         ELEVATED CARD — barely visible shadow, gentle hover
+         CARD STYLES — layered depth with personality
          ══════════════════════════════════════════════════════════ -->
+
+    <!-- Standard elevated card with gentle hover -->
     <Style x:Key="ElevatedCard" TargetType="Border">
         <Setter Property="Background" Value="{DynamicResource CardBackgroundFillColorDefaultBrush}"/>
         <Setter Property="CornerRadius" Value="12"/>
@@ -134,16 +173,24 @@
         </Style.Triggers>
     </Style>
 
-    <!-- Section header -->
-    <Style x:Key="SectionHeader" TargetType="TextBlock">
-        <Setter Property="FontSize" Value="13"/>
-        <Setter Property="FontWeight" Value="SemiBold"/>
-        <Setter Property="Foreground" Value="{DynamicResource TextFillColorTertiaryBrush}"/>
-        <Setter Property="Margin" Value="0,0,0,8"/>
+    <!-- Bento card — for stat tiles, no hover animation, just clean depth -->
+    <Style x:Key="BentoCard" TargetType="Border">
+        <Setter Property="Background" Value="{DynamicResource CardBackgroundFillColorDefaultBrush}"/>
+        <Setter Property="CornerRadius" Value="14"/>
+        <Setter Property="Effect" Value="{StaticResource CardDefaultShadow}"/>
+        <Setter Property="Padding" Value="20,16"/>
+    </Style>
+
+    <!-- Bento hero card — the big one, elevated shadow -->
+    <Style x:Key="BentoHeroCard" TargetType="Border">
+        <Setter Property="Background" Value="{DynamicResource CardBackgroundFillColorDefaultBrush}"/>
+        <Setter Property="CornerRadius" Value="16"/>
+        <Setter Property="Effect" Value="{StaticResource CardElevatedShadow}"/>
+        <Setter Property="Padding" Value="28,24"/>
     </Style>
 
     <!-- ══════════════════════════════════════════════════════════
-         PROGRESS BARS — rounded, clean
+         PROGRESS BARS — rounded, gradient fills
          ══════════════════════════════════════════════════════════ -->
     <Style x:Key="GradientProgressBar" TargetType="ProgressBar">
         <Setter Property="Height" Value="6"/>
@@ -177,7 +224,25 @@
         </Setter>
     </Style>
 
-    <!-- Gradient heading — used only on primary page titles -->
+    <!-- Thin progress — for inline/bento use -->
+    <Style x:Key="ThinProgressBar" TargetType="ProgressBar">
+        <Setter Property="Height" Value="4"/>
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="ProgressBar">
+                    <Grid>
+                        <Border x:Name="PART_Track" CornerRadius="2"
+                                Background="{DynamicResource ControlFillColorDefaultBrush}"/>
+                        <Border x:Name="PART_Indicator" CornerRadius="2"
+                                HorizontalAlignment="Left"
+                                Background="{StaticResource AccentGradientHorizontal}"/>
+                    </Grid>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <!-- Gradient heading — primary page titles -->
     <Style x:Key="GradientHeading" TargetType="TextBlock">
         <Setter Property="FontSize" Value="28"/>
         <Setter Property="FontWeight" Value="SemiBold"/>

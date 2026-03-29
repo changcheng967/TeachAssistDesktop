@@ -16,12 +16,12 @@
         </Grid.RowDefinitions>
 
         <!-- ═══════════════════════════════════════════════════════
-             HERO SECTION
+             HERO SECTION — Bento grid layout
              ═══════════════════════════════════════════════════════ -->
         <StackPanel Grid.Row="0" Margin="32,28,32,0" x:Name="HeroSection">
 
-            <!-- Header: Title + Refresh -->
-            <Grid Margin="0,0,0,20">
+            <!-- Header row -->
+            <Grid Margin="0,0,0,24">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="*"/>
                     <ColumnDefinition Width="Auto"/>
@@ -32,8 +32,8 @@
                                Style="{StaticResource GradientHeading}"
                                Margin="0,0,0,4"/>
                     <TextBlock Text="{Binding SchoolName}"
-                               FontSize="14"
-                               Foreground="{DynamicResource TextFillColorSecondaryBrush}"/>
+                               FontSize="13"
+                               Foreground="{DynamicResource TextFillColorTertiaryBrush}"/>
                 </StackPanel>
 
                 <ui:Button Grid.Column="1" Content="Refresh"
@@ -44,98 +44,117 @@
                            Margin="0,4,0,0"/>
             </Grid>
 
-            <!-- Hero Stats Card with elevated shadow -->
-            <Border x:Name="HeroStatCard" CornerRadius="16" Padding="0"
-                    Background="{DynamicResource CardBackgroundFillColorDefaultBrush}"
-                    Effect="{StaticResource CardHoverShadow}"
-                    Opacity="0" RenderTransformOrigin="0.5,1">
-                <Border.RenderTransform>
-                    <TranslateTransform Y="20"/>
-                </Border.RenderTransform>
-                <Grid>
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="5"/>
-                        <ColumnDefinition Width="*"/>
-                    </Grid.ColumnDefinitions>
+            <!-- Bento stat grid: 2 columns, big average on left, stacked stats on right -->
+            <Grid x:Name="BentoGrid" Margin="0,0,0,20" Opacity="0" RenderTransformOrigin="0.5,1">
+                <Grid.RenderTransform>
+                    <TranslateTransform Y="16"/>
+                </Grid.RenderTransform>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="1.4*"/>
+                    <ColumnDefinition Width="12"/>
+                    <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                </Grid.RowDefinitions>
 
-                    <!-- Gradient accent bar on left -->
-                    <Border Grid.Column="0" CornerRadius="16,0,0,16"
-                            Background="{StaticResource AccentGradient}"/>
-
-                    <!-- Stats content -->
-                    <Grid Grid.Column="1" Margin="28,24,28,24">
+                <!-- LEFT: Big average card with gradient accent -->
+                <Border Grid.Column="0" Style="{StaticResource BentoHeroCard}"
+                        CornerRadius="16">
+                    <Grid>
                         <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="Auto"/>
-                            <ColumnDefinition Width="40"/>
+                            <ColumnDefinition Width="5"/>
                             <ColumnDefinition Width="*"/>
                         </Grid.ColumnDefinitions>
 
-                        <!-- Big Average Number with animated counter -->
-                        <StackPanel Grid.Column="0" VerticalAlignment="Center">
+                        <!-- Gradient accent bar -->
+                        <Border Grid.Column="0" CornerRadius="16,0,0,16"
+                                Background="{StaticResource AccentGradient}"/>
+
+                        <StackPanel Grid.Column="1" VerticalAlignment="Center" Margin="24,8,24,8">
                             <TextBlock Text="AVERAGE" FontSize="11" FontWeight="SemiBold"
                                        Foreground="{DynamicResource TextFillColorTertiaryBrush}"
-                                       Margin="0,0,0,6"/>
+                                       Margin="0,0,0,8"
+                                       Opacity="0.8"/>
                             <TextBlock Text="{Binding AverageMark, StringFormat={}{0:F1}%}"
-                                       FontSize="48" FontWeight="Bold"
+                                       FontSize="52" FontWeight="Bold"
                                        Foreground="{DynamicResource TextFillColorPrimaryBrush}"
                                        helpers:NumericCounterBehavior.Animated="True"
                                        helpers:NumericCounterBehavior.TargetValue="{Binding AverageMark}"/>
+
+                            <!-- Thin progress bar -->
+                            <ProgressBar Margin="0,16,0,0"
+                                         Style="{StaticResource ThinProgressBar}"
+                                         Value="{Binding AverageMark, Mode=OneWay}" Maximum="100"/>
                         </StackPanel>
+                    </Grid>
+                </Border>
 
-                        <!-- Vertical divider -->
-                        <Border Grid.Column="1" Width="1" Background="{DynamicResource ControlStrokeColorDefaultBrush}"
-                                VerticalAlignment="Stretch" Margin="0,4,0,4"/>
+                <!-- RIGHT: Stacked GPA + Courses cards -->
+                <Grid Grid.Column="2">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="*"/>
+                        <RowDefinition Height="12"/>
+                        <RowDefinition Height="*"/>
+                    </Grid.RowDefinitions>
 
-                        <!-- Supporting stats -->
-                        <WrapPanel Grid.Column="2" Orientation="Horizontal"
-                                   VerticalAlignment="Center" HorizontalAlignment="Right">
-                            <!-- GPA -->
-                            <StackPanel Margin="28,0,0,0" HorizontalAlignment="Center">
+                    <!-- GPA card -->
+                    <Border Grid.Row="0" Style="{StaticResource BentoCard}" CornerRadius="14">
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="3"/>
+                                <ColumnDefinition Width="*"/>
+                            </Grid.ColumnDefinitions>
+                            <Border Grid.Column="0" CornerRadius="14,0,0,14"
+                                    Background="{StaticResource WarmGradient}" Opacity="0.6"/>
+                            <StackPanel Grid.Column="1" Margin="16,0,0,0" VerticalAlignment="Center">
                                 <TextBlock Text="GPA" FontSize="11" FontWeight="SemiBold"
                                            Foreground="{DynamicResource TextFillColorTertiaryBrush}"
-                                           HorizontalAlignment="Center" Margin="0,0,0,4"/>
-                                <TextBlock Text="{Binding Gpa}" FontSize="24" FontWeight="Bold"
-                                           Foreground="{DynamicResource TextFillColorPrimaryBrush}"
-                                           HorizontalAlignment="Center"/>
+                                           Margin="0,0,0,4" Opacity="0.8"/>
+                                <TextBlock Text="{Binding Gpa}" FontSize="28" FontWeight="Bold"
+                                           Foreground="{DynamicResource TextFillColorPrimaryBrush}"/>
                             </StackPanel>
-                            <!-- Courses -->
-                            <StackPanel Margin="28,0,0,0" HorizontalAlignment="Center">
+                        </Grid>
+                    </Border>
+
+                    <!-- Courses card -->
+                    <Border Grid.Row="2" Style="{StaticResource BentoCard}" CornerRadius="14">
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="3"/>
+                                <ColumnDefinition Width="*"/>
+                            </Grid.ColumnDefinitions>
+                            <Border Grid.Column="0" CornerRadius="14,0,0,14"
+                                    Background="{StaticResource SuccessGradient}" Opacity="0.6"/>
+                            <StackPanel Grid.Column="1" Margin="16,0,0,0" VerticalAlignment="Center">
                                 <TextBlock Text="COURSES" FontSize="11" FontWeight="SemiBold"
                                            Foreground="{DynamicResource TextFillColorTertiaryBrush}"
-                                           HorizontalAlignment="Center" Margin="0,0,0,4"/>
-                                <TextBlock Text="{Binding CourseCount}" FontSize="24" FontWeight="Bold"
-                                           Foreground="{DynamicResource TextFillColorPrimaryBrush}"
-                                           HorizontalAlignment="Center"/>
+                                           Margin="0,0,0,4" Opacity="0.8"/>
+                                <TextBlock Text="{Binding CourseCount}" FontSize="28" FontWeight="Bold"
+                                           Foreground="{DynamicResource TextFillColorPrimaryBrush}"/>
                             </StackPanel>
-                        </WrapPanel>
-                    </Grid>
+                        </Grid>
+                    </Border>
                 </Grid>
-            </Border>
-
-            <!-- Animated progress bar under hero -->
-            <ProgressBar x:Name="HeroProgressBar" Margin="0,14,0,0"
-                         Style="{StaticResource GradientProgressBar}"
-                         Height="4"
-                         Value="{Binding AverageMark, Mode=OneWay}" Maximum="100"
-                         Opacity="0"/>
+            </Grid>
 
             <!-- Section label -->
             <TextBlock x:Name="CourseSectionLabel" Text="Courses"
-                       FontSize="16" FontWeight="SemiBold"
+                       FontSize="15" FontWeight="SemiBold"
                        Foreground="{DynamicResource TextFillColorSecondaryBrush}"
-                       Margin="0,28,0,14"
+                       Margin="0,8,0,14"
                        Opacity="0"/>
         </StackPanel>
 
         <!-- ═══════════════════════════════════════════════════════
-             COURSE LIST
+             COURSE LIST — Clean, spaced cards
              ═══════════════════════════════════════════════════════ -->
         <ScrollViewer Grid.Row="1" VerticalScrollBarVisibility="Auto" Padding="32,0,32,32">
             <ItemsControl x:Name="CourseItemsControl" ItemsSource="{Binding Courses}">
                 <ItemsControl.ItemTemplate>
                     <DataTemplate>
                         <!-- Course card -->
-                        <Border Margin="0,0,0,6" CornerRadius="12"
+                        <Border Margin="0,0,0,8" CornerRadius="12"
                                 Background="{DynamicResource CardBackgroundFillColorDefaultBrush}"
                                 Effect="{StaticResource CardDefaultShadow}"
                                 RenderTransformOrigin="0.5,0.5">
@@ -150,7 +169,7 @@
                                                 <BeginStoryboard>
                                                     <Storyboard>
                                                         <DoubleAnimation Storyboard.TargetProperty="(UIElement.RenderTransform).(ScaleTransform.ScaleY)"
-                                                            To="1.008" Duration="0:0:0.25">
+                                                            To="1.006" Duration="0:0:0.35">
                                                             <DoubleAnimation.EasingFunction><QuadraticEase EasingMode="EaseInOut"/></DoubleAnimation.EasingFunction>
                                                         </DoubleAnimation>
                                                     </Storyboard>
@@ -160,7 +179,7 @@
                                                 <BeginStoryboard>
                                                     <Storyboard>
                                                         <DoubleAnimation Storyboard.TargetProperty="(UIElement.RenderTransform).(ScaleTransform.ScaleY)"
-                                                            To="1.0" Duration="0:0:0.2">
+                                                            To="1.0" Duration="0:0:0.3">
                                                             <DoubleAnimation.EasingFunction><QuadraticEase EasingMode="EaseInOut"/></DoubleAnimation.EasingFunction>
                                                         </DoubleAnimation>
                                                     </Storyboard>
@@ -180,7 +199,7 @@
                                 <!-- Thin grade color accent -->
                                 <Border Grid.Column="0" CornerRadius="12,0,0,12"
                                         Background="{Binding GradeColor, Converter={StaticResource StringToBrushConverter}}"
-                                        Opacity="0.7"/>
+                                        Opacity="0.6"/>
 
                                 <!-- Clickable content -->
                                 <Button Grid.Column="1"
@@ -195,7 +214,7 @@
                                             <ContentPresenter/>
                                         </ControlTemplate>
                                     </Button.Template>
-                                    <Grid Margin="20,14,20,14">
+                                    <Grid Margin="20,16,20,16">
                                         <Grid.ColumnDefinitions>
                                             <ColumnDefinition Width="80"/>
                                             <ColumnDefinition Width="*"/>

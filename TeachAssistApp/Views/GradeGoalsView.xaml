@@ -15,11 +15,12 @@
         <Border Height="3" VerticalAlignment="Top" Margin="0,32,0,0"
                 Background="{StaticResource AccentGradientHorizontal}"/>
 
-        <ScrollViewer Margin="0,35,0,0" VerticalScrollBarVisibility="Auto" Padding="32,20,32,32">
+        <ScrollViewer Margin="0,35,0,0" VerticalScrollBarVisibility="Auto" Padding="32,24,32,32">
             <StackPanel>
-                <!-- Current Average & Goal -->
-                <Border Margin="0,0,0,20" CornerRadius="10"
-                        Background="{DynamicResource CardBackgroundFillColorDefaultBrush}">
+                <!-- Current Average & Goal — bento hero card -->
+                <Border Margin="0,0,0,20" CornerRadius="14"
+                        Background="{DynamicResource CardBackgroundFillColorDefaultBrush}"
+                        Effect="{StaticResource CardElevatedShadow}">
                     <Grid>
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="4"/>
@@ -27,21 +28,22 @@
                             <ColumnDefinition Width="Auto"/>
                         </Grid.ColumnDefinitions>
 
-                        <Border Grid.Column="0" CornerRadius="10,0,0,10"
+                        <Border Grid.Column="0" CornerRadius="14,0,0,14"
                                 Background="{StaticResource AccentGradient}"/>
 
-                        <Grid Grid.Column="1" Margin="20,16">
+                        <Grid Grid.Column="1" Margin="24,20">
                             <StackPanel>
-                                <TextBlock Text="Current Average" FontSize="13"
+                                <TextBlock Text="Current Average" FontSize="12"
                                            Foreground="{DynamicResource TextFillColorSecondaryBrush}" Margin="0,0,0,8"/>
-                                <TextBlock Text="{Binding CurrentAverage, StringFormat={}{0:F1}%}" FontSize="40" FontWeight="Bold"/>
+                                <TextBlock Text="{Binding CurrentAverage, StringFormat={}{0:F1}%}" FontSize="44" FontWeight="Bold"/>
                             </StackPanel>
                         </Grid>
 
-                        <StackPanel Grid.Column="2" Margin="24,16" VerticalAlignment="Center">
-                            <TextBlock Text="Goal" FontSize="13"
-                                       Foreground="{DynamicResource TextFillColorSecondaryBrush}" Margin="0,0,0,8"/>
-                            <ui:Badge Content="{Binding GoalPercent, StringFormat={}{0:F0}%}" Appearance="Success"/>
+                        <StackPanel Grid.Column="2" Margin="24,20" VerticalAlignment="Center" HorizontalAlignment="Right">
+                            <TextBlock Text="Target" FontSize="12"
+                                       Foreground="{DynamicResource TextFillColorSecondaryBrush}" Margin="0,0,0,8" HorizontalAlignment="Center"/>
+                            <ui:Badge Content="{Binding GoalPercent, StringFormat={}{0:F0}%}" Appearance="Success"
+                                      FontSize="16"/>
                         </StackPanel>
                     </Grid>
                 </Border>
@@ -49,16 +51,16 @@
                 <!-- Progress to Goal -->
                 <ui:Card Margin="0,0,0,20">
                     <StackPanel Margin="16,14">
-                        <Grid Margin="0,0,0,12">
-                            <TextBlock Text="Progress to Goal" FontSize="15" FontWeight="SemiBold"/>
-                            <TextBlock Text="{Binding ProgressToGoal, StringFormat={}{0:F1}%}" FontSize="15" FontWeight="Bold"
+                        <Grid Margin="0,0,0,14">
+                            <TextBlock Text="Progress to Goal" FontSize="14" FontWeight="SemiBold"/>
+                            <TextBlock Text="{Binding ProgressToGoal, StringFormat={}{0:F1}%}" FontSize="14" FontWeight="Bold"
                                        HorizontalAlignment="Right"/>
                         </Grid>
 
                         <!-- Gradient progress bar -->
-                        <Border Height="12" CornerRadius="6" Margin="0,0,0,12"
+                        <Border Height="10" CornerRadius="5" Margin="0,0,0,14"
                                 Background="{DynamicResource ControlFillColorDefaultBrush}">
-                            <Border CornerRadius="6" HorizontalAlignment="Left"
+                            <Border CornerRadius="5" HorizontalAlignment="Left"
                                     Background="{StaticResource AccentGradientHorizontal}">
                                 <Border.Width>
                                     <MultiBinding Converter="{StaticResource PercentageConverter}">
@@ -88,7 +90,7 @@
                 <!-- Goal Settings -->
                 <ui:Card Margin="0,0,0,20">
                     <StackPanel Margin="16,14">
-                        <TextBlock Text="Set Your Goal" FontSize="15" FontWeight="SemiBold" Margin="0,0,0,16"/>
+                        <TextBlock Text="Set Your Goal" FontSize="14" FontWeight="SemiBold" Margin="0,0,0,14"/>
 
                         <!-- Preset Goals -->
                         <ItemsControl ItemsSource="{Binding PresetGoals}">
@@ -105,7 +107,7 @@
                                         <StackPanel HorizontalAlignment="Center">
                                             <TextBlock Text="{Binding Percent, StringFormat={}{0:F0}%}" FontSize="20" FontWeight="Bold"
                                                        Foreground="{Binding Color, Converter={StaticResource StringToBrushConverter}}" HorizontalAlignment="Center"/>
-                                            <TextBlock Text="{Binding Label}" FontSize="12"
+                                            <TextBlock Text="{Binding Label}" FontSize="11"
                                                        Foreground="{DynamicResource TextFillColorSecondaryBrush}" HorizontalAlignment="Center"/>
                                         </StackPanel>
                                     </ui:CardAction>
@@ -114,8 +116,8 @@
                         </ItemsControl>
 
                         <!-- Custom Goal Input -->
-                        <Grid Margin="0,12,0,0">
-                            <TextBlock Text="Custom Goal:" FontSize="14"
+                        <Grid Margin="0,14,0,0">
+                            <TextBlock Text="Custom Goal:" FontSize="13"
                                        Foreground="{DynamicResource TextFillColorSecondaryBrush}"
                                        VerticalAlignment="Center" Margin="0,0,12,0"/>
 
