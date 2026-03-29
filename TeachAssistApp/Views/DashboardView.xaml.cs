@@ -11,6 +11,7 @@ namespace TeachAssistApp.Views;
 public partial class DashboardView : Page
 {
     private static readonly CubicEase EaseOut = new() { EasingMode = EasingMode.EaseOut };
+    private bool _firstLoad = true;
 
     public DashboardView()
     {
@@ -21,12 +22,26 @@ public partial class DashboardView : Page
     {
         try
         {
-            AnimateStatsEntrance();
-            AnimateCardsEntrance();
+            if (_firstLoad)
+            {
+                AnimateStatsEntrance();
+                AnimateCardsEntrance();
+                _firstLoad = false;
+            }
+            else
+            {
+                // Ensure stats are visible on subsequent navigations
+                StatAvg.Opacity = 1;
+                StatGpa.Opacity = 1;
+                StatCourses.Opacity = 1;
+            }
         }
         catch
         {
-            // Entrance animation is non-critical
+            // Entrance animation is non-critical — ensure visibility
+            StatAvg.Opacity = 1;
+            StatGpa.Opacity = 1;
+            StatCourses.Opacity = 1;
         }
     }
 

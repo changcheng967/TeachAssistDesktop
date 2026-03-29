@@ -26,7 +26,8 @@ public partial class CourseDetailView : Page
     {
         if (DataContext is CourseDetailViewModel vm)
         {
-            if (_viewModel != null && _viewModel != vm)
+            // Always unsubscribe first to prevent duplicate handlers
+            if (_viewModel != null)
             {
                 _viewModel.PropertyChanged -= OnViewModelPropertyChanged;
                 _viewModel.GradeTimeline.CollectionChanged -= OnGradeTimelineChanged;

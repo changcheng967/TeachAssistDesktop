@@ -22,5 +22,5 @@ public class Assignment
         }
     }
 
-    public bool IsMissing => !MarkAchieved.HasValue && !MarkPossible.HasValue;
+    public bool IsMissing => !MarkAchieved.HasValue && MarkPossible.HasValue;
 }

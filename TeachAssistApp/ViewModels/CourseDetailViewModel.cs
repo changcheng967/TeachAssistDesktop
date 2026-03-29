@@ -257,9 +257,8 @@ public partial class CourseDetailViewModel : ObservableObject
 
                 if (validAssignments.Any())
                 {
-                    var totalAchieved = validAssignments.Sum(a => a.MarkAchieved!.Value);
-                    var totalPossible = validAssignments.Sum(a => a.MarkPossible!.Value);
-                    var percentage = totalPossible > 0 ? (totalAchieved / totalPossible) * 100 : 0;
+                    // Use per-assignment average to avoid distortion from unequal point values
+                    var percentage = validAssignments.Average(a => a.Percentage ?? 0);
 
                     CategoryPerformance.Add(new CategoryPerformance
                     {
@@ -348,9 +347,10 @@ public partial class CourseDetailViewModel : ObservableObject
                 {
                     Name = g.Key,
                     AverageMark = g.Average(a => (a.MarkAchieved!.Value / a.MarkPossible!.Value) * 100),
-                    TotalWeight = g.Sum(a => a.Weight ?? 0)
+                    TotalWeight = g.Sum(a => a.Weight ?? 0),
+                    Date = g.FirstOrDefault(a => !string.IsNullOrEmpty(a.Date))?.Date
                 })
-                .OrderBy(a => a.Name)
+                .OrderBy(a => a.Date ?? "")
                 .Take(15);
 
             foreach (var assignment in assignmentGroups)
@@ -415,7 +415,7 @@ public partial class CourseDetailViewModel : ObservableObject
         var firstPoint = timeline.First();
         CurrentGrade = lastPoint.CumulativeGrade;
         // Grade change = how the grade evolved from first to last assignment
-        GradeChangeTotal = lastPoint.CumulativeGrade - (timeline.Count > 1 ? firstPoint.CumulativeGrade : 0);
+        GradeChangeTotal = timeline.Count > 1 ? lastPoint.CumulativeGrade - firstPoint.CumulativeGrade : 0;
         GradeChangeDisplay = $"{(GradeChangeTotal >= 0 ? "+" : "")}{GradeChangeTotal:F1}%";
 
         var highImpacts = impacts.Values.Where(v => v.IsHighImpact).ToList();

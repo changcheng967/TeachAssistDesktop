@@ -55,8 +55,8 @@ public partial class DashboardViewModel : ObservableObject
         // Initially showing loading, not empty
         IsEmpty = false;
 
-        // Load courses when initialized (fire and forget for simplicity)
-        _ = LoadCoursesAsync();
+        // Don't load courses in constructor — they may not be available yet.
+        // NavigationService.NavigateTo("Dashboard") triggers the load via LoadCoursesCommand.
     }
 
     [RelayCommand]

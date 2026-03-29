@@ -162,7 +162,10 @@ public partial class MainWindow : FluentWindow
                 break;
             case "Dashboard":
                 page = _serviceProvider.GetRequiredService<DashboardView>();
-                page.DataContext = _serviceProvider.GetRequiredService<DashboardViewModel>();
+                var dashboardVM = _serviceProvider.GetRequiredService<DashboardViewModel>();
+                page.DataContext = dashboardVM;
+                if (dashboardVM.Courses.Count == 0 && !dashboardVM.IsLoading)
+                    _ = dashboardVM.LoadCoursesCommand.ExecuteAsync(null);
                 RootNavigation.Visibility = Visibility.Visible;
                 HighlightNavItem(_dashboardItem);
                 break;

@@ -70,8 +70,8 @@ public partial class SettingsViewModel : ObservableObject
         _serviceProvider = serviceProvider;
         _pdfExporter = pdfExporter;
 
-        // Dark mode is the default — sync toggle to match
-        _isDarkMode = true;
+        // Detect current theme instead of always defaulting to dark
+        _isDarkMode = App.IsDarkTheme();
 
         LoadUserData();
     }
