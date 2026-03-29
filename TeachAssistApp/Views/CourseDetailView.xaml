@@ -36,12 +36,15 @@
                     </StackPanel>
                 </StackPanel>
 
-                <!-- Grade badge with grade color -->
+                <!-- Grade badge with grade color and glow -->
                 <Border Grid.Column="2"
-                        CornerRadius="12" Padding="16,8"
+                        CornerRadius="14" Padding="20,10"
                         Background="{Binding SelectedCourse.GradeColor, Converter={StaticResource StringToBrushConverter}}"
                         Visibility="{Binding SelectedCourse, Converter={StaticResource NullToVisibilityConverter}}">
-                    <TextBlock Text="{Binding SelectedCourse.DisplayMark}" FontSize="22" FontWeight="Bold"
+                    <Border.Effect>
+                        <DropShadowEffect Color="#6366F1" BlurRadius="16" ShadowDepth="0" Opacity="0.2" Direction="0"/>
+                    </Border.Effect>
+                    <TextBlock Text="{Binding SelectedCourse.DisplayMark}" FontSize="24" FontWeight="Bold"
                                Foreground="White" VerticalAlignment="Center"/>
                 </Border>
             </Grid>
@@ -112,7 +115,7 @@
                 <ItemsControl ItemsSource="{Binding CategoryPerformance}" Margin="0,8">
                     <ItemsControl.ItemTemplate>
                         <DataTemplate>
-                            <Grid Margin="0,0,0,8">
+                            <Grid Margin="0,0,0,12">
                                 <Grid.ColumnDefinitions>
                                     <ColumnDefinition Width="140"/>
                                     <ColumnDefinition Width="*"/>
@@ -120,8 +123,20 @@
                                 </Grid.ColumnDefinitions>
                                 <TextBlock Grid.Column="0" Text="{Binding Name}" FontSize="14"
                                            Foreground="{DynamicResource TextFillColorPrimaryBrush}" VerticalAlignment="Center"/>
-                                <ProgressBar Grid.Column="1" Height="8" Value="{Binding Percentage}" Maximum="100"
-                                             Margin="12,0" VerticalAlignment="Center"/>
+                                <!-- Gradient-filled rounded progress bar -->
+                                <Border Grid.Column="1" Height="8" CornerRadius="4" Margin="12,0"
+                                        Background="{DynamicResource ControlFillColorDefaultBrush}"
+                                        VerticalAlignment="Center">
+                                    <Border CornerRadius="4" HorizontalAlignment="Left"
+                                            Background="{StaticResource AccentGradient}">
+                                        <Border.Width>
+                                            <MultiBinding Converter="{StaticResource PercentageConverter}">
+                                                <Binding Path="Percentage"/>
+                                                <Binding RelativeSource="{RelativeSource AncestorType=Border}" Path="ActualWidth"/>
+                                            </MultiBinding>
+                                        </Border.Width>
+                                    </Border>
+                                </Border>
                                 <TextBlock Grid.Column="2" Text="{Binding Percentage, StringFormat={}{0:F1}%}" FontSize="15"
                                            FontWeight="Bold" VerticalAlignment="Center" Margin="12,0,0,0"/>
                             </Grid>
@@ -213,7 +228,44 @@
                                         <ItemsControl.ItemTemplate>
                                             <DataTemplate>
                                                 <Border Background="{DynamicResource CardBackgroundFillColorDefaultBrush}"
-                                                        CornerRadius="6" Padding="10,8" Margin="0,0,6,4" MinWidth="120">
+                                                        CornerRadius="8" Padding="12,10" Margin="0,0,8,8" MinWidth="130"
+                                                        Effect="{StaticResource CardDefaultShadow}"
+                                                        RenderTransformOrigin="0.5,0.5">
+                                                    <Border.RenderTransform>
+                                                        <ScaleTransform ScaleX="1" ScaleY="1"/>
+                                                    </Border.RenderTransform>
+                                                    <Border.Style>
+                                                        <Style TargetType="Border">
+                                                            <Style.Triggers>
+                                                                <Trigger Property="IsMouseOver" Value="True">
+                                                                    <Trigger.EnterActions>
+                                                                        <BeginStoryboard>
+                                                                            <Storyboard>
+                                                                                <DoubleAnimation Storyboard.TargetProperty="(UIElement.RenderTransform).(ScaleTransform.ScaleX)"
+                                                                                    To="1.04" Duration="0:0:0.12">
+                                                                                    <DoubleAnimation.EasingFunction><CubicEase EasingMode="EaseOut"/></DoubleAnimation.EasingFunction>
+                                                                                </DoubleAnimation>
+                                                                                <DoubleAnimation Storyboard.TargetProperty="(UIElement.RenderTransform).(ScaleTransform.ScaleY)"
+                                                                                    To="1.04" Duration="0:0:0.12">
+                                                                                    <DoubleAnimation.EasingFunction><CubicEase EasingMode="EaseOut"/></DoubleAnimation.EasingFunction>
+                                                                                </DoubleAnimation>
+                                                                            </Storyboard>
+                                                                        </BeginStoryboard>
+                                                                    </Trigger.EnterActions>
+                                                                    <Trigger.ExitActions>
+                                                                        <BeginStoryboard>
+                                                                            <Storyboard>
+                                                                                <DoubleAnimation Storyboard.TargetProperty="(UIElement.RenderTransform).(ScaleTransform.ScaleX)"
+                                                                                    To="1.0" Duration="0:0:0.1"/>
+                                                                                <DoubleAnimation Storyboard.TargetProperty="(UIElement.RenderTransform).(ScaleTransform.ScaleY)"
+                                                                                    To="1.0" Duration="0:0:0.1"/>
+                                                                            </Storyboard>
+                                                                        </BeginStoryboard>
+                                                                    </Trigger.ExitActions>
+                                                                </Trigger>
+                                                            </Style.Triggers>
+                                                        </Style>
+                                                    </Border.Style>
                                                     <StackPanel HorizontalAlignment="Center">
                                                         <TextBlock Text="{Binding Category}" FontSize="11" FontWeight="SemiBold"
                                                                    Foreground="{DynamicResource TextFillColorTertiaryBrush}"

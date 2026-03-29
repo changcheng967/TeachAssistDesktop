@@ -18,37 +18,37 @@
              ═══════════════════════════════════════════════════════ -->
         <Border Grid.Column="0" Background="{DynamicResource ApplicationPageBackgroundThemeBrush}">
             <Grid>
-                <!-- Subtle gradient overlay on brand panel -->
-                <Border Background="{StaticResource AccentGradientSubtle}" Opacity="0.08"/>
+                <!-- Visible gradient overlay on brand panel -->
+                <Border Background="{StaticResource AccentGradientSubtle}" Opacity="0.15"/>
 
                 <StackPanel VerticalAlignment="Center" HorizontalAlignment="Center" Margin="60">
 
                     <!-- Logo with glow -->
-                    <Border x:Name="BrandLogo" Width="96" Height="96"
-                            CornerRadius="22"
+                    <Border x:Name="BrandLogo" Width="100" Height="100"
+                            CornerRadius="24"
                             HorizontalAlignment="Center"
-                            Margin="0,0,0,32"
+                            Margin="0,0,0,36"
                             ClipToBounds="True"
                             Opacity="0" RenderTransformOrigin="0.5,0.5">
                         <Border.RenderTransform>
                             <ScaleTransform ScaleX="0.9" ScaleY="0.9"/>
                         </Border.RenderTransform>
                         <Border.Effect>
-                            <DropShadowEffect Color="#6366F1" BlurRadius="30" ShadowDepth="0" Opacity="0.35" Direction="0"/>
+                            <DropShadowEffect Color="#6366F1" BlurRadius="40" ShadowDepth="0" Opacity="0.5" Direction="0"/>
                         </Border.Effect>
                         <Image Source="/logo.png" Stretch="UniformToFill"/>
                     </Border>
 
                     <!-- Animated gradient accent line under logo -->
-                    <Border x:Name="BrandAccentLine" Width="200" Height="3"
+                    <Border x:Name="BrandAccentLine" Width="220" Height="3"
                             CornerRadius="1.5"
                             HorizontalAlignment="Center"
                             Background="{StaticResource AccentGradientHorizontal}"
-                            Margin="0,0,0,32"
+                            Margin="0,0,0,36"
                             Opacity="0"/>
 
                     <TextBlock x:Name="BrandTitle" Text="TeachAssist Desktop"
-                               FontSize="34"
+                               FontSize="36"
                                FontWeight="Bold"
                                Foreground="{DynamicResource TextFillColorPrimaryBrush}"
                                HorizontalAlignment="Center"
@@ -63,7 +63,7 @@
                                FontSize="16"
                                Foreground="{DynamicResource TextFillColorSecondaryBrush}"
                                HorizontalAlignment="Center"
-                               Margin="0,0,0,40"
+                               Margin="0,0,0,44"
                                Opacity="0" RenderTransformOrigin="0.5,0.5">
                         <TextBlock.RenderTransform>
                             <TranslateTransform Y="12"/>
@@ -78,46 +78,40 @@
                         </StackPanel.RenderTransform>
 
                         <Border Background="{DynamicResource CardBackgroundFillColorDefaultBrush}"
-                                CornerRadius="20" Padding="12,8" Margin="0,0,8,0">
-                            <Grid>
-                                <Grid.ColumnDefinitions>
-                                    <ColumnDefinition Width="3"/>
-                                    <ColumnDefinition Width="*"/>
-                                </Grid.ColumnDefinitions>
-                                <Border Grid.Column="0" CornerRadius="1.5" Background="{StaticResource InfoBrush}" Margin="0,0,8,0"/>
-                                <TextBlock Grid.Column="1" FontSize="13" Foreground="{DynamicResource TextFillColorSecondaryBrush}">
-                                    <Run Text="&#xE946;" FontFamily="Segoe MDL2 Assets" Foreground="{StaticResource InfoBrush}"/>
-                                    <Run Text="  Grade Trends"/>
+                                CornerRadius="20" Padding="14,10" Margin="0,0,10,0"
+                                Effect="{StaticResource CardDefaultShadow}">
+                            <StackPanel Orientation="Horizontal">
+                                <Border Width="8" Height="8" CornerRadius="4" Margin="0,0,8,0"
+                                        Background="{StaticResource InfoBrush}" VerticalAlignment="Center"/>
+                                <TextBlock FontSize="13" Foreground="{DynamicResource TextFillColorSecondaryBrush}"
+                                           VerticalAlignment="Center">
+                                    Grade Trends
                                 </TextBlock>
-                            </Grid>
+                            </StackPanel>
                         </Border>
                         <Border Background="{DynamicResource CardBackgroundFillColorDefaultBrush}"
-                                CornerRadius="20" Padding="12,8" Margin="0,0,8,0">
-                            <Grid>
-                                <Grid.ColumnDefinitions>
-                                    <ColumnDefinition Width="3"/>
-                                    <ColumnDefinition Width="*"/>
-                                </Grid.ColumnDefinitions>
-                                <Border Grid.Column="0" CornerRadius="1.5" Background="{StaticResource SuccessBrush}" Margin="0,0,8,0"/>
-                                <TextBlock Grid.Column="1" FontSize="13" Foreground="{DynamicResource TextFillColorSecondaryBrush}">
-                                    <Run Text="&#xE945;" FontFamily="Segoe MDL2 Assets" Foreground="{StaticResource SuccessBrush}"/>
-                                    <Run Text="  Goal Tracking"/>
+                                CornerRadius="20" Padding="14,10" Margin="0,0,10,0"
+                                Effect="{StaticResource CardDefaultShadow}">
+                            <StackPanel Orientation="Horizontal">
+                                <Border Width="8" Height="8" CornerRadius="4" Margin="0,0,8,0"
+                                        Background="{StaticResource SuccessBrush}" VerticalAlignment="Center"/>
+                                <TextBlock FontSize="13" Foreground="{DynamicResource TextFillColorSecondaryBrush}"
+                                           VerticalAlignment="Center">
+                                    Goal Tracking
                                 </TextBlock>
-                            </Grid>
+                            </StackPanel>
                         </Border>
                         <Border Background="{DynamicResource CardBackgroundFillColorDefaultBrush}"
-                                CornerRadius="20" Padding="12,8">
-                            <Grid>
-                                <Grid.ColumnDefinitions>
-                                    <ColumnDefinition Width="3"/>
-                                    <ColumnDefinition Width="*"/>
-                                </Grid.ColumnDefinitions>
-                                <Border Grid.Column="0" CornerRadius="1.5" Background="{StaticResource WarningBrush}" Margin="0,0,8,0"/>
-                                <TextBlock Grid.Column="1" FontSize="13" Foreground="{DynamicResource TextFillColorSecondaryBrush}">
-                                    <Run Text="&#xE94A;" FontFamily="Segoe MDL2 Assets" Foreground="{StaticResource WarningBrush}"/>
-                                    <Run Text="  What-If Calc"/>
+                                CornerRadius="20" Padding="14,10"
+                                Effect="{StaticResource CardDefaultShadow}">
+                            <StackPanel Orientation="Horizontal">
+                                <Border Width="8" Height="8" CornerRadius="4" Margin="0,0,8,0"
+                                        Background="{StaticResource WarningBrush}" VerticalAlignment="Center"/>
+                                <TextBlock FontSize="13" Foreground="{DynamicResource TextFillColorSecondaryBrush}"
+                                           VerticalAlignment="Center">
+                                    What-If Calc
                                 </TextBlock>
-                            </Grid>
+                            </StackPanel>
                         </Border>
                     </StackPanel>
                 </StackPanel>
@@ -128,7 +122,7 @@
              RIGHT PANEL: LOGIN FORM
              ═══════════════════════════════════════════════════════ -->
         <Border x:Name="FormPanel" Grid.Column="1"
-                Background="{DynamicResource ApplicationPageBackgroundThemeBrush}"
+                Background="{DynamicResource SolidBackgroundFillColorBaseBrush}"
                 BorderBrush="{DynamicResource ControlStrokeColorDefaultBrush}"
                 BorderThickness="1,0,0,0"
                 Opacity="0" RenderTransformOrigin="0.5,0.5">

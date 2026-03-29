@@ -1,6 +1,5 @@
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Animation;
 using Microsoft.Extensions.DependencyInjection;
@@ -54,13 +53,13 @@ public partial class DashboardView : Page
             var fadeIn = new DoubleAnimation
             {
                 From = 0, To = 1,
-                Duration = TimeSpan.FromMilliseconds(400),
+                Duration = TimeSpan.FromMilliseconds(500),
                 EasingFunction = EaseOut
             };
             var slideUp = new DoubleAnimation
             {
-                From = 20, To = 0,
-                Duration = TimeSpan.FromMilliseconds(400),
+                From = 24, To = 0,
+                Duration = TimeSpan.FromMilliseconds(500),
                 EasingFunction = EaseOut
             };
 
@@ -75,14 +74,14 @@ public partial class DashboardView : Page
             sb.Begin(this);
         }
 
-        // Progress bar: fade in after hero
+        // Progress bar: fade in + fill animation
         if (HeroProgressBar != null)
         {
             var progressFade = new DoubleAnimation
             {
                 From = 0, To = 1,
-                Duration = TimeSpan.FromMilliseconds(300),
-                BeginTime = TimeSpan.FromMilliseconds(200),
+                Duration = TimeSpan.FromMilliseconds(400),
+                BeginTime = TimeSpan.FromMilliseconds(300),
                 EasingFunction = EaseOut
             };
             Storyboard.SetTarget(progressFade, HeroProgressBar);
@@ -100,7 +99,7 @@ public partial class DashboardView : Page
             {
                 From = 0, To = 1,
                 Duration = TimeSpan.FromMilliseconds(300),
-                BeginTime = TimeSpan.FromMilliseconds(350),
+                BeginTime = TimeSpan.FromMilliseconds(450),
                 EasingFunction = EaseOut
             };
             Storyboard.SetTarget(labelFade, CourseSectionLabel);
@@ -133,21 +132,32 @@ public partial class DashboardView : Page
             var container = CourseItemsControl.ItemContainerGenerator.ContainerFromIndex(i) as ContentPresenter;
             if (container == null) continue;
 
-            var delay = TimeSpan.FromMilliseconds(i * 50);
+            var delay = TimeSpan.FromMilliseconds(500 + i * 60);
 
             var fadeIn = new DoubleAnimation
             {
                 From = 0, To = 1,
-                Duration = TimeSpan.FromMilliseconds(300),
+                Duration = TimeSpan.FromMilliseconds(350),
+                BeginTime = delay,
+                EasingFunction = EaseOut
+            };
+            var slideUp = new DoubleAnimation
+            {
+                From = 12, To = 0,
+                Duration = TimeSpan.FromMilliseconds(350),
                 BeginTime = delay,
                 EasingFunction = EaseOut
             };
 
+            container.RenderTransform = new TranslateTransform();
             Storyboard.SetTarget(fadeIn, container);
             Storyboard.SetTargetProperty(fadeIn, new PropertyPath(UIElement.OpacityProperty));
+            Storyboard.SetTarget(slideUp, container);
+            Storyboard.SetTargetProperty(slideUp, new PropertyPath("(UIElement.RenderTransform).(TranslateTransform.Y)"));
 
             var sb = new Storyboard();
             sb.Children.Add(fadeIn);
+            sb.Children.Add(slideUp);
             sb.Begin(this);
         }
     }

@@ -30,9 +30,9 @@
             </Grid>
 
             <!-- Appearance -->
-            <TextBlock Text="Appearance" FontSize="12" FontWeight="SemiBold"
+            <TextBlock Text="APPEARANCE" FontSize="11" FontWeight="SemiBold"
                        Foreground="{DynamicResource TextFillColorTertiaryBrush}" Margin="0,0,0,8"/>
-            <ui:Card Margin="0,0,0,20">
+            <ui:Card Margin="0,0,0,24">
                 <StackPanel>
                     <Grid Margin="16,14">
                         <Grid.ColumnDefinitions>
@@ -64,9 +64,9 @@
             </ui:Card>
 
             <!-- Tools -->
-            <TextBlock Text="Tools" FontSize="12" FontWeight="SemiBold"
+            <TextBlock Text="TOOLS" FontSize="11" FontWeight="SemiBold"
                        Foreground="{DynamicResource TextFillColorTertiaryBrush}" Margin="0,0,0,8"/>
-            <ui:Card Margin="0,0,0,20">
+            <ui:Card Margin="0,0,0,24">
                 <Grid Margin="16,14">
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="*"/>
@@ -97,7 +97,7 @@
             </ui:Card>
 
             <!-- Account -->
-            <TextBlock Text="Account" FontSize="12" FontWeight="SemiBold"
+            <TextBlock Text="ACCOUNT" FontSize="11" FontWeight="SemiBold"
                        Foreground="{DynamicResource TextFillColorTertiaryBrush}" Margin="0,0,0,8"/>
             <ui:Card Margin="0,0,0,20">
                 <StackPanel>
@@ -118,7 +118,7 @@
             </ui:Card>
 
             <!-- Data -->
-            <TextBlock Text="Data" FontSize="12" FontWeight="SemiBold"
+            <TextBlock Text="DATA" FontSize="11" FontWeight="SemiBold"
                        Foreground="{DynamicResource TextFillColorTertiaryBrush}" Margin="0,0,0,8"/>
             <ui:Card Margin="0,0,0,20">
                 <ui:CardAction Command="{Binding ClearCacheCommand}"
@@ -127,7 +127,7 @@
             </ui:Card>
 
             <!-- Keyboard Shortcuts -->
-            <TextBlock Text="Keyboard Shortcuts" FontSize="12" FontWeight="SemiBold"
+            <TextBlock Text="KEYBOARD SHORTCUTS" FontSize="11" FontWeight="SemiBold"
                        Foreground="{DynamicResource TextFillColorTertiaryBrush}" Margin="0,0,0,8"/>
             <ui:Card Margin="0,0,0,20">
                 <Grid Margin="16,14">
@@ -161,14 +161,17 @@
             </ui:Card>
 
             <!-- About -->
-            <TextBlock Text="About" FontSize="12" FontWeight="SemiBold"
+            <TextBlock Text="ABOUT" FontSize="11" FontWeight="SemiBold"
                        Foreground="{DynamicResource TextFillColorTertiaryBrush}" Margin="0,0,0,8"/>
             <ui:Card Margin="0,0,0,20">
                 <StackPanel Orientation="Horizontal" Margin="16,14">
-                    <Border Width="32" Height="32" CornerRadius="8" Margin="0,0,12,0" ClipToBounds="True">
+                    <Border Width="40" Height="40" CornerRadius="10" Margin="0,0,14,0" ClipToBounds="True">
+                        <Border.Effect>
+                            <DropShadowEffect Color="#6366F1" BlurRadius="16" ShadowDepth="0" Opacity="0.25" Direction="0"/>
+                        </Border.Effect>
                         <Image Source="/logo.png" Stretch="UniformToFill"/>
                     </Border>
-                    <StackPanel>
+                    <StackPanel VerticalAlignment="Center">
                         <TextBlock FontSize="15" FontWeight="SemiBold">TeachAssist Desktop</TextBlock>
                         <TextBlock FontSize="12" Foreground="{DynamicResource TextFillColorSecondaryBrush}">
                             <Run Text="Version "/><Run Text="{Binding AppVersion}" FontWeight="SemiBold"/><Run Text=" by changcheng967"/>
