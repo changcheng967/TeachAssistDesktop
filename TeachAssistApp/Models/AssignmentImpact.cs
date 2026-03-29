@@ -5,14 +5,14 @@ public class AssignmentImpact
     public string AssignmentName { get; set; } = string.Empty;
 
     /// <summary>
-    /// How much the running cumulative grade changed when this assignment was added.
+    /// How much the running weighted grade changed when this assignment was added.
     /// Positive = grade went up, negative = grade went down.
     /// </summary>
     public double ImpactDelta { get; set; }
 
     /// <summary>
     /// How much this assignment contributes to the final weighted grade.
-    /// E.g., a KU test with 25% category weight, 2 assignments in KU, score 90% → contribution = 90% * (25%/2) = 11.25%
+    /// E.g., a KU test where KU=25%, 3 KU assignments, scored 90% → 90 * 25 / (3 * 75) = 10.0%
     /// </summary>
     public double WeightedContribution { get; set; }
 

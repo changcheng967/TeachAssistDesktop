@@ -8,6 +8,15 @@ namespace TeachAssistApp.Helpers;
 
 public static class GradeImpactCalculator
 {
+    /// <summary>
+    /// Represents an assignment group with its per-category scores.
+    /// E.g., "Unit 1 Test" might have KU: 75%, T: 80%, C: 85%.
+    /// </summary>
+    private record ScoredItem(
+        string Name,
+        string? Date,
+        Dictionary<string, double> CategoryScores);
+
     public static (List<GradeTimelinePoint> Timeline, Dictionary<string, AssignmentImpact> Impacts)
         Calculate(List<AssignmentGroup> groups, WeightTable weightTable)
     {
@@ -15,121 +24,113 @@ public static class GradeImpactCalculator
         var impacts = new Dictionary<string, AssignmentImpact>();
         var hasWeights = weightTable.Weights.Count > 0;
 
-        // Build scored list: groups with valid marks and computed score + weight
-        var scored = new List<(AssignmentGroup Group, double Score, double Weight, string Category)>();
+        // Build scored items: one per assignment group, with per-category percentage scores
+        var items = new List<ScoredItem>();
 
-        foreach (var g in groups.Where(g => g.HasAnyMark))
+        foreach (var g in groups)
         {
-            var validMarks = g.Assignments
-                .Where(a => a.MarkAchieved.HasValue && a.MarkPossible.HasValue && a.MarkPossible.Value > 0)
-                .ToList();
-
-            if (!validMarks.Any()) continue;
-
-            double avgPercentage = validMarks.Average(a => a.Percentage ?? 0);
-
-            double weight;
-            string category;
-            if (hasWeights)
+            // Collect scores per category (average if multiple marks in same category)
+            var catScoreLists = new Dictionary<string, List<double>>();
+            foreach (var a in g.Assignments)
             {
-                // Use the max category weight to avoid inflating multi-category assignments
-                var categories = g.Assignments.Select(a => a.Category).Distinct().ToList();
-                category = categories.FirstOrDefault() ?? "O";
-                weight = categories.Max(c => weightTable.GetWeight(c) ?? 0);
+                if (a.MarkAchieved.HasValue && a.MarkPossible.HasValue && a.MarkPossible.Value > 0)
+                {
+                    var pct = (a.MarkAchieved.Value / a.MarkPossible.Value) * 100;
+                    var cat = string.IsNullOrEmpty(a.Category) ? "O" : a.Category;
+                    if (!catScoreLists.ContainsKey(cat))
+                        catScoreLists[cat] = new List<double>();
+                    catScoreLists[cat].Add(pct);
+                }
+            }
+
+            if (catScoreLists.Count > 0)
+            {
+                var catScores = catScoreLists.ToDictionary(kv => kv.Key, kv => kv.Value.Average());
+                var date = g.Assignments
+                    .Select(a => a.Date)
+                    .FirstOrDefault(d => !string.IsNullOrWhiteSpace(d));
+                items.Add(new ScoredItem(g.Name, date, catScores));
+            }
+        }
+
+        if (items.Count == 0) return (timeline, impacts);
+
+        // Sort by date
+        items = items
+            .OrderBy(x =>
+            {
+                if (x.Date == null) return double.MaxValue;
+                if (DateTime.TryParseExact(x.Date, "yyyy-MM-dd", CultureInfo.InvariantCulture, DateTimeStyles.None, out var dt))
+                    return dt.Ticks;
+                if (DateTime.TryParse(x.Date, CultureInfo.InvariantCulture, DateTimeStyles.None, out var dt2))
+                    return dt2.Ticks;
+                return double.MaxValue;
+            })
+            .ThenBy(x => x.Name)
+            .ToList();
+
+        // Compute the FINAL grade's category state (all items) for contribution calculation
+        var finalCatState = GetCategoryState(items, items.Count - 1);
+        double totalActiveWeight = hasWeights
+            ? finalCatState.Where(c => c.Value.Count > 0)
+                .Sum(c => weightTable.GetWeight(c.Key) ?? 0)
+            : 0;
+
+        // Compute each assignment's contribution to the FINAL grade
+        var contributions = new Dictionary<string, double>();
+        foreach (var item in items)
+        {
+            double contrib = 0;
+            if (hasWeights && totalActiveWeight > 0)
+            {
+                // contribution = sum over categories: score_c * weight_c / (n_c * total_active_weight)
+                foreach (var kv in item.CategoryScores)
+                {
+                    var w = weightTable.GetWeight(kv.Key) ?? 0;
+                    var n = finalCatState.GetValueOrDefault(kv.Key)?.Count ?? 1;
+                    if (n > 0 && w > 0)
+                        contrib += kv.Value * w / (n * totalActiveWeight);
+                }
             }
             else
             {
-                category = "O";
-                weight = 1.0; // normalized to 1/N below
+                // Equal weight: each group contributes equally
+                contrib = items.Count > 0 ? item.CategoryScores.Values.Average() / items.Count : 0;
             }
-
-            scored.Add((g, avgPercentage, weight, category));
+            contributions[item.Name] = contrib;
         }
 
-        // For equal-weight courses, normalize to 1/N
-        if (!hasWeights && scored.Count > 0)
+        // Build timeline: compute running grade at each step
+        for (int i = 0; i < items.Count; i++)
         {
-            var eqWeight = 1.0 / scored.Count;
-            scored = scored.Select(x => (x.Group, x.Score, eqWeight, x.Category)).ToList();
-        }
-
-        // Sort by date (best effort), fall back to list order
-        scored = scored
-            .OrderBy(x =>
-            {
-                var dateStr = x.Group.Assignments
-                    .Select(a => a.Date)
-                    .FirstOrDefault(d => !string.IsNullOrWhiteSpace(d));
-
-                if (dateStr == null) return double.MaxValue;
-
-                if (DateTime.TryParseExact(dateStr, "yyyy-MM-dd", CultureInfo.InvariantCulture, DateTimeStyles.None, out var dt))
-                    return dt.Ticks;
-                if (DateTime.TryParse(dateStr, CultureInfo.InvariantCulture, DateTimeStyles.None, out var dt2))
-                    return dt2.Ticks;
-
-                return double.MaxValue;
-            })
-            .ThenBy(x => x.Group.Name)
-            .ToList();
-
-        // Pre-compute weighted contribution for each assignment.
-        // Weighted contribution = score * (categoryWeight / numAssignmentsInCategory)
-        var categoryAssignmentCounts = scored
-            .GroupBy(x => x.Category)
-            .ToDictionary(g => g.Key, g => g.Count());
-
-        var contributions = new Dictionary<string, double>();
-        foreach (var item in scored)
-        {
-            var count = categoryAssignmentCounts.GetValueOrDefault(item.Category, 1);
-            // Contribution = percentage score * (category weight / assignments in that category)
-            // E.g., KU=25%, 3 KU assignments, scored 80% → 80% * (25%/3) = 6.67%
-            var contribution = item.Weight > 0
-                ? item.Score * (item.Weight / count / 100.0) * 100.0
-                : 0;
-            contributions[item.Group.Name] = contribution;
-        }
-
-        // Build cumulative timeline and running impacts
-        double weightedSum = 0;
-        double totalWeight = 0;
-
-        for (int i = 0; i < scored.Count; i++)
-        {
-            var item = scored[i];
-
-            double cumulativeBefore = totalWeight > 0 ? weightedSum / totalWeight : 0;
-
-            weightedSum += item.Score * item.Weight;
-            totalWeight += item.Weight;
-
-            double cumulativeAfter = weightedSum / totalWeight;
-            double impact = cumulativeAfter - cumulativeBefore;
+            var item = items[i];
+            double before = i > 0 ? ComputeGrade(items, weightTable, hasWeights, i - 1) : double.NaN;
+            double after = ComputeGrade(items, weightTable, hasWeights, i);
+            double impact = double.IsNaN(before) ? after : after - before;
 
             timeline.Add(new GradeTimelinePoint
             {
                 Index = i,
-                AssignmentName = item.Group.Name,
-                Date = item.Group.Assignments.Select(a => a.Date).FirstOrDefault(d => !string.IsNullOrWhiteSpace(d)),
-                CumulativeGrade = cumulativeAfter,
+                AssignmentName = item.Name,
+                Date = item.Date,
+                CumulativeGrade = after,
                 Impact = impact,
-                IsHighImpact = false, // set below
+                IsHighImpact = false,
                 FirstPoint = i == 0
             });
 
-            impacts[item.Group.Name] = new AssignmentImpact
+            impacts[item.Name] = new AssignmentImpact
             {
-                AssignmentName = item.Group.Name,
+                AssignmentName = item.Name,
                 ImpactDelta = impact,
-                WeightedContribution = contributions.GetValueOrDefault(item.Group.Name, 0),
-                IsHighImpact = false, // set below
-                CumulativeBefore = cumulativeBefore,
-                CumulativeAfter = cumulativeAfter
+                WeightedContribution = contributions.GetValueOrDefault(item.Name, 0),
+                IsHighImpact = false,
+                CumulativeBefore = double.IsNaN(before) ? 0 : before,
+                CumulativeAfter = after
             };
         }
 
-        // Hybrid high-impact: |impact| >= 3.0 OR top 3 by |impact| magnitude
+        // Mark high impacts: |impact| >= 3.0 OR top 3 by magnitude
         var byMagnitude = impacts.Values.OrderByDescending(v => Math.Abs(v.ImpactDelta)).ToList();
         var top3Set = new HashSet<string>(byMagnitude.Take(3).Select(v => v.AssignmentName));
 
@@ -142,5 +143,56 @@ public static class GradeImpactCalculator
         }
 
         return (timeline, impacts);
+    }
+
+    /// <summary>
+    /// Compute the weighted grade considering all items up to index upTo.
+    /// Correct approach: group by category → average within each → weight across.
+    /// </summary>
+    private static double ComputeGrade(List<ScoredItem> items, WeightTable weightTable, bool hasWeights, int upTo)
+    {
+        if (upTo < 0 || items.Count == 0) return 0;
+
+        var catState = GetCategoryState(items, upTo);
+
+        if (!hasWeights)
+        {
+            var allScores = catState.Values.SelectMany(x => x).ToList();
+            return allScores.Count > 0 ? allScores.Average() : 0;
+        }
+
+        double weightedSum = 0;
+        double totalWeight = 0;
+
+        foreach (var cat in catState)
+        {
+            if (cat.Value.Count == 0) continue;
+            var w = weightTable.GetWeight(cat.Key) ?? 0;
+            if (w > 0)
+            {
+                weightedSum += cat.Value.Average() * w;
+                totalWeight += w;
+            }
+        }
+
+        return totalWeight > 0 ? weightedSum / totalWeight : 0;
+    }
+
+    /// <summary>
+    /// Collect all per-category scores from items up to a given index.
+    /// </summary>
+    private static Dictionary<string, List<double>> GetCategoryState(List<ScoredItem> items, int upTo)
+    {
+        var state = new Dictionary<string, List<double>>();
+        foreach (var item in items.Take(upTo + 1))
+        {
+            foreach (var kv in item.CategoryScores)
+            {
+                if (!state.ContainsKey(kv.Key))
+                    state[kv.Key] = new List<double>();
+                state[kv.Key].Add(kv.Value);
+            }
+        }
+        return state;
     }
 }
