@@ -37,6 +37,13 @@
                 <ui:NavigationViewItem Content="Dashboard" Icon="{ui:SymbolIcon Home24}" Tag="Dashboard"/>
                 <ui:NavigationViewItem Content="Settings" Icon="{ui:SymbolIcon Settings24}" Tag="Settings"/>
             </ui:NavigationView.MenuItems>
+
+            <!-- Gradient accent at bottom of sidebar -->
+            <ui:NavigationView.FooterMenuItems>
+                <ui:NavigationViewItem Content="TeachAssist" Icon="{ui:SymbolIcon BookQuestionMark24}"
+                                       Foreground="{DynamicResource TextFillColorTertiaryBrush}" FontWeight="Normal"
+                                       FontSize="12" IsEnabled="False"/>
+            </ui:NavigationView.FooterMenuItems>
         </ui:NavigationView>
 
         <!-- Content area -->

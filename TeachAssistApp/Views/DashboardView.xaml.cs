@@ -24,80 +24,91 @@ public partial class DashboardView : Page
         {
             if (_firstLoad)
             {
-                AnimateStatsEntrance();
+                AnimateHeroEntrance();
                 AnimateCardsEntrance();
                 _firstLoad = false;
             }
             else
             {
-                // Ensure stats are visible on subsequent navigations
-                StatAvg.Opacity = 1;
-                StatGpa.Opacity = 1;
-                StatCourses.Opacity = 1;
+                // Ensure hero is visible on subsequent navigations
+                HeroStatCard.Opacity = 1;
+                HeroStatCard.RenderTransform = new TranslateTransform(0, 0);
+                HeroProgressBar.Opacity = 1;
+                CourseSectionLabel.Opacity = 1;
             }
         }
         catch
         {
             // Entrance animation is non-critical — ensure visibility
-            StatAvg.Opacity = 1;
-            StatGpa.Opacity = 1;
-            StatCourses.Opacity = 1;
+            HeroStatCard.Opacity = 1;
+            HeroProgressBar.Opacity = 1;
+            CourseSectionLabel.Opacity = 1;
         }
     }
 
-    private void Settings_Click(object sender, RoutedEventArgs e)
+    private void AnimateHeroEntrance()
     {
-        if (Application.Current is App app)
+        // Hero stat card: fade + slide up
+        if (HeroStatCard != null)
         {
-            var navigationService = app.Services?.GetService<INavigationService>();
-            navigationService?.NavigateTo("Settings");
-        }
-    }
-
-    private void QuickActions_Click(object sender, RoutedEventArgs e)
-    {
-        if (sender is Button button && button.ContextMenu is ContextMenu menu)
-        {
-            menu.PlacementTarget = button;
-            menu.Placement = System.Windows.Controls.Primitives.PlacementMode.Bottom;
-            menu.IsOpen = true;
-        }
-    }
-
-    private void AnimateStatsEntrance()
-    {
-        var cards = new[] { StatAvg, StatGpa, StatCourses };
-        for (int i = 0; i < cards.Length; i++)
-        {
-            var card = cards[i];
-            if (card == null) continue;
-
-            var delay = TimeSpan.FromMilliseconds(i * 80);
-
             var fadeIn = new DoubleAnimation
             {
                 From = 0, To = 1,
-                Duration = TimeSpan.FromMilliseconds(300),
-                BeginTime = delay,
+                Duration = TimeSpan.FromMilliseconds(400),
                 EasingFunction = EaseOut
             };
             var slideUp = new DoubleAnimation
             {
                 From = 20, To = 0,
-                Duration = TimeSpan.FromMilliseconds(300),
-                BeginTime = delay,
+                Duration = TimeSpan.FromMilliseconds(400),
                 EasingFunction = EaseOut
             };
 
-            Storyboard.SetTarget(fadeIn, card);
+            Storyboard.SetTarget(fadeIn, HeroStatCard);
             Storyboard.SetTargetProperty(fadeIn, new PropertyPath(UIElement.OpacityProperty));
-            Storyboard.SetTarget(slideUp, card);
+            Storyboard.SetTarget(slideUp, HeroStatCard);
             Storyboard.SetTargetProperty(slideUp, new PropertyPath("(UIElement.RenderTransform).(TranslateTransform.Y)"));
 
             var sb = new Storyboard();
             sb.Children.Add(fadeIn);
             sb.Children.Add(slideUp);
             sb.Begin(this);
+        }
+
+        // Progress bar: fade in after hero
+        if (HeroProgressBar != null)
+        {
+            var progressFade = new DoubleAnimation
+            {
+                From = 0, To = 1,
+                Duration = TimeSpan.FromMilliseconds(300),
+                BeginTime = TimeSpan.FromMilliseconds(200),
+                EasingFunction = EaseOut
+            };
+            Storyboard.SetTarget(progressFade, HeroProgressBar);
+            Storyboard.SetTargetProperty(progressFade, new PropertyPath(UIElement.OpacityProperty));
+
+            var sb2 = new Storyboard();
+            sb2.Children.Add(progressFade);
+            sb2.Begin(this);
+        }
+
+        // "Courses" label: fade in
+        if (CourseSectionLabel != null)
+        {
+            var labelFade = new DoubleAnimation
+            {
+                From = 0, To = 1,
+                Duration = TimeSpan.FromMilliseconds(300),
+                BeginTime = TimeSpan.FromMilliseconds(350),
+                EasingFunction = EaseOut
+            };
+            Storyboard.SetTarget(labelFade, CourseSectionLabel);
+            Storyboard.SetTargetProperty(labelFade, new PropertyPath(UIElement.OpacityProperty));
+
+            var sb3 = new Storyboard();
+            sb3.Children.Add(labelFade);
+            sb3.Begin(this);
         }
     }
 

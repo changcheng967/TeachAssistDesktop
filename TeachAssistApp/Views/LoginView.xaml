@@ -13,134 +13,211 @@
             <ColumnDefinition Width="420"/>
         </Grid.ColumnDefinitions>
 
-        <!-- Left Panel: Brand -->
+        <!-- ═══════════════════════════════════════════════════════
+             LEFT PANEL: BRAND
+             ═══════════════════════════════════════════════════════ -->
         <Border Grid.Column="0" Background="{DynamicResource ApplicationPageBackgroundThemeBrush}">
-            <StackPanel VerticalAlignment="Center" HorizontalAlignment="Center" Margin="60">
-                <!-- Logo -->
-                <Border x:Name="BrandLogo" Width="96" Height="96"
-                        CornerRadius="22"
-                        HorizontalAlignment="Center"
-                        Margin="0,0,0,32"
-                        ClipToBounds="True"
-                        Opacity="0">
-                    <Image Source="/logo.png" Stretch="UniformToFill"/>
-                </Border>
+            <Grid>
+                <!-- Subtle gradient overlay on brand panel -->
+                <Border Background="{StaticResource AccentGradientSubtle}" Opacity="0.08"/>
 
-                <TextBlock x:Name="BrandTitle" Text="TeachAssist Desktop"
-                           FontSize="34"
-                           FontWeight="Bold"
-                           Foreground="{DynamicResource TextFillColorPrimaryBrush}"
-                           HorizontalAlignment="Center"
-                           Margin="0,0,0,12"
-                           Opacity="0"/>
+                <StackPanel VerticalAlignment="Center" HorizontalAlignment="Center" Margin="60">
 
-                <TextBlock x:Name="BrandSubtitle" Text="Track your YRDSB grades with style."
-                           FontSize="16"
-                           Foreground="{DynamicResource TextFillColorSecondaryBrush}"
-                           HorizontalAlignment="Center"
-                           Margin="0,0,0,40"
-                           Opacity="0"/>
+                    <!-- Logo with glow -->
+                    <Border x:Name="BrandLogo" Width="96" Height="96"
+                            CornerRadius="22"
+                            HorizontalAlignment="Center"
+                            Margin="0,0,0,32"
+                            ClipToBounds="True"
+                            Opacity="0" RenderTransformOrigin="0.5,0.5">
+                        <Border.RenderTransform>
+                            <ScaleTransform ScaleX="0.9" ScaleY="0.9"/>
+                        </Border.RenderTransform>
+                        <Border.Effect>
+                            <DropShadowEffect Color="#6366F1" BlurRadius="30" ShadowDepth="0" Opacity="0.35" Direction="0"/>
+                        </Border.Effect>
+                        <Image Source="/logo.png" Stretch="UniformToFill"/>
+                    </Border>
 
-                <StackPanel x:Name="BrandBadges" HorizontalAlignment="Center" Orientation="Horizontal" Opacity="0">
-                    <Border Background="{DynamicResource CardBackgroundFillColorDefaultBrush}" CornerRadius="20" Padding="12,8" Margin="0,0,8,0">
-                        <TextBlock FontSize="13" Foreground="{DynamicResource TextFillColorSecondaryBrush}">
-                            <Run Text="&#xE946;" FontFamily="Segoe MDL2 Assets" Foreground="{StaticResource InfoBrush}"/>
-                            <Run Text="  Grade Trends"/>
-                        </TextBlock>
-                    </Border>
-                    <Border Background="{DynamicResource CardBackgroundFillColorDefaultBrush}" CornerRadius="20" Padding="12,8" Margin="0,0,8,0">
-                        <TextBlock FontSize="13" Foreground="{DynamicResource TextFillColorSecondaryBrush}">
-                            <Run Text="&#xE945;" FontFamily="Segoe MDL2 Assets" Foreground="{StaticResource SuccessBrush}"/>
-                            <Run Text="  Goal Tracking"/>
-                        </TextBlock>
-                    </Border>
-                    <Border Background="{DynamicResource CardBackgroundFillColorDefaultBrush}" CornerRadius="20" Padding="12,8">
-                        <TextBlock FontSize="13" Foreground="{DynamicResource TextFillColorSecondaryBrush}">
-                            <Run Text="&#xE94A;" FontFamily="Segoe MDL2 Assets" Foreground="{StaticResource WarningBrush}"/>
-                            <Run Text="  What-If Calc"/>
-                        </TextBlock>
-                    </Border>
+                    <!-- Animated gradient accent line under logo -->
+                    <Border x:Name="BrandAccentLine" Width="200" Height="3"
+                            CornerRadius="1.5"
+                            HorizontalAlignment="Center"
+                            Background="{StaticResource AccentGradientHorizontal}"
+                            Margin="0,0,0,32"
+                            Opacity="0"/>
+
+                    <TextBlock x:Name="BrandTitle" Text="TeachAssist Desktop"
+                               FontSize="34"
+                               FontWeight="Bold"
+                               Foreground="{DynamicResource TextFillColorPrimaryBrush}"
+                               HorizontalAlignment="Center"
+                               Margin="0,0,0,12"
+                               Opacity="0" RenderTransformOrigin="0.5,0.5">
+                        <TextBlock.RenderTransform>
+                            <TranslateTransform Y="12"/>
+                        </TextBlock.RenderTransform>
+                    </TextBlock>
+
+                    <TextBlock x:Name="BrandSubtitle" Text="Track your YRDSB grades with style."
+                               FontSize="16"
+                               Foreground="{DynamicResource TextFillColorSecondaryBrush}"
+                               HorizontalAlignment="Center"
+                               Margin="0,0,0,40"
+                               Opacity="0" RenderTransformOrigin="0.5,0.5">
+                        <TextBlock.RenderTransform>
+                            <TranslateTransform Y="12"/>
+                        </TextBlock.RenderTransform>
+                    </TextBlock>
+
+                    <!-- Feature badges with gradient left-border accents -->
+                    <StackPanel x:Name="BrandBadges" HorizontalAlignment="Center" Orientation="Horizontal" Opacity="0"
+                                RenderTransformOrigin="0.5,0.5">
+                        <StackPanel.RenderTransform>
+                            <TranslateTransform Y="12"/>
+                        </StackPanel.RenderTransform>
+
+                        <Border Background="{DynamicResource CardBackgroundFillColorDefaultBrush}"
+                                CornerRadius="20" Padding="12,8" Margin="0,0,8,0">
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="3"/>
+                                    <ColumnDefinition Width="*"/>
+                                </Grid.ColumnDefinitions>
+                                <Border Grid.Column="0" CornerRadius="1.5" Background="{StaticResource InfoBrush}" Margin="0,0,8,0"/>
+                                <TextBlock Grid.Column="1" FontSize="13" Foreground="{DynamicResource TextFillColorSecondaryBrush}">
+                                    <Run Text="&#xE946;" FontFamily="Segoe MDL2 Assets" Foreground="{StaticResource InfoBrush}"/>
+                                    <Run Text="  Grade Trends"/>
+                                </TextBlock>
+                            </Grid>
+                        </Border>
+                        <Border Background="{DynamicResource CardBackgroundFillColorDefaultBrush}"
+                                CornerRadius="20" Padding="12,8" Margin="0,0,8,0">
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="3"/>
+                                    <ColumnDefinition Width="*"/>
+                                </Grid.ColumnDefinitions>
+                                <Border Grid.Column="0" CornerRadius="1.5" Background="{StaticResource SuccessBrush}" Margin="0,0,8,0"/>
+                                <TextBlock Grid.Column="1" FontSize="13" Foreground="{DynamicResource TextFillColorSecondaryBrush}">
+                                    <Run Text="&#xE945;" FontFamily="Segoe MDL2 Assets" Foreground="{StaticResource SuccessBrush}"/>
+                                    <Run Text="  Goal Tracking"/>
+                                </TextBlock>
+                            </Grid>
+                        </Border>
+                        <Border Background="{DynamicResource CardBackgroundFillColorDefaultBrush}"
+                                CornerRadius="20" Padding="12,8">
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="3"/>
+                                    <ColumnDefinition Width="*"/>
+                                </Grid.ColumnDefinitions>
+                                <Border Grid.Column="0" CornerRadius="1.5" Background="{StaticResource WarningBrush}" Margin="0,0,8,0"/>
+                                <TextBlock Grid.Column="1" FontSize="13" Foreground="{DynamicResource TextFillColorSecondaryBrush}">
+                                    <Run Text="&#xE94A;" FontFamily="Segoe MDL2 Assets" Foreground="{StaticResource WarningBrush}"/>
+                                    <Run Text="  What-If Calc"/>
+                                </TextBlock>
+                            </Grid>
+                        </Border>
+                    </StackPanel>
                 </StackPanel>
-            </StackPanel>
+            </Grid>
         </Border>
 
-        <!-- Right Panel: Login Form -->
-        <Border x:Name="FormPanel" Grid.Column="1" Background="{DynamicResource ApplicationPageBackgroundThemeBrush}" Opacity="0">
-            <ScrollViewer VerticalScrollBarVisibility="Auto" Padding="48">
-                <StackPanel VerticalAlignment="Center" MinHeight="500">
-                    <TextBlock Text="Welcome back"
-                               FontSize="28"
-                               FontWeight="SemiBold"
-                               Foreground="{DynamicResource TextFillColorPrimaryBrush}"
-                               Margin="0,0,0,6"/>
+        <!-- ═══════════════════════════════════════════════════════
+             RIGHT PANEL: LOGIN FORM
+             ═══════════════════════════════════════════════════════ -->
+        <Border x:Name="FormPanel" Grid.Column="1"
+                Background="{DynamicResource ApplicationPageBackgroundThemeBrush}"
+                BorderBrush="{DynamicResource ControlStrokeColorDefaultBrush}"
+                BorderThickness="1,0,0,0"
+                Opacity="0" RenderTransformOrigin="0.5,0.5">
+            <Border.RenderTransform>
+                <TranslateTransform X="20"/>
+            </Border.RenderTransform>
 
-                    <TextBlock Text="Sign in with your YRDSB student credentials"
-                               FontSize="14"
-                               Foreground="{DynamicResource TextFillColorSecondaryBrush}"
-                               Margin="0,0,0,32"/>
+            <Grid>
+                <!-- Gradient accent line at top of form -->
+                <Border Height="3" VerticalAlignment="Top"
+                        Background="{StaticResource AccentGradientHorizontal}"
+                        Panel.ZIndex="1"/>
 
-                    <!-- Error Message -->
-                    <ui:InfoBar Title="Login Failed"
-                                Message="{Binding ErrorMessage}"
-                                Severity="Error"
-                                IsOpen="{Binding ErrorMessage, Converter={StaticResource StringToBoolConverter}}"
-                                Margin="0,0,0,20"/>
+                <ScrollViewer VerticalScrollBarVisibility="Auto" Padding="48" Margin="0,3,0,0">
+                    <StackPanel VerticalAlignment="Center" MinHeight="500">
+                        <TextBlock Text="Welcome back"
+                                   FontSize="28"
+                                   FontWeight="SemiBold"
+                                   Foreground="{DynamicResource TextFillColorPrimaryBrush}"
+                                   Margin="0,0,0,6"/>
 
-                    <!-- Student Number Field -->
-                    <TextBlock Text="Student Number"
-                               FontSize="14"
-                               FontWeight="SemiBold"
-                               Foreground="{DynamicResource TextFillColorPrimaryBrush}"
-                               Margin="0,0,0,8"/>
-                    <ui:TextBox Text="{Binding Username, UpdateSourceTrigger=PropertyChanged}"
-                                PlaceholderText="Enter your student number"
-                                Icon="{ui:SymbolIcon Person24}"
-                                Margin="0,0,0,16">
-                        <ui:TextBox.InputBindings>
-                            <KeyBinding Key="Enter" Command="{Binding LoginCommand}"/>
-                        </ui:TextBox.InputBindings>
-                    </ui:TextBox>
+                        <TextBlock Text="Sign in with your YRDSB student credentials"
+                                   FontSize="14"
+                                   Foreground="{DynamicResource TextFillColorSecondaryBrush}"
+                                   Margin="0,0,0,32"/>
 
-                    <!-- Password Field -->
-                    <TextBlock Text="Password"
-                               FontSize="14"
-                               FontWeight="SemiBold"
-                               Foreground="{DynamicResource TextFillColorPrimaryBrush}"
-                               Margin="0,0,0,8"/>
-                    <ui:PasswordBox x:Name="PasswordBox"
-                                    PlaceholderText="Enter your password"
-                                    PasswordChanged="PasswordBox_PasswordChanged"
-                                    KeyDown="PasswordBox_KeyDown"
+                        <!-- Error Message -->
+                        <ui:InfoBar Title="Login Failed"
+                                    Message="{Binding ErrorMessage}"
+                                    Severity="Error"
+                                    IsOpen="{Binding ErrorMessage, Converter={StaticResource StringToBoolConverter}}"
                                     Margin="0,0,0,20"/>
 
-                    <!-- Remember Me -->
-                    <ui:ToggleSwitch Content="Remember me"
-                                     IsChecked="{Binding RememberMe}"
-                                     Margin="0,0,0,24"/>
+                        <!-- Student Number Field -->
+                        <TextBlock Text="Student Number"
+                                   FontSize="14"
+                                   FontWeight="SemiBold"
+                                   Foreground="{DynamicResource TextFillColorPrimaryBrush}"
+                                   Margin="0,0,0,8"/>
+                        <ui:TextBox Text="{Binding Username, UpdateSourceTrigger=PropertyChanged}"
+                                    PlaceholderText="Enter your student number"
+                                    Icon="{ui:SymbolIcon Person24}"
+                                    Margin="0,0,0,16">
+                            <ui:TextBox.InputBindings>
+                                <KeyBinding Key="Enter" Command="{Binding LoginCommand}"/>
+                            </ui:TextBox.InputBindings>
+                        </ui:TextBox>
 
-                    <!-- Login Button -->
-                    <ui:Button Content="Sign In"
-                               Command="{Binding LoginCommand}"
-                               Appearance="Primary"
-                               HorizontalAlignment="Stretch"
-                               FontSize="15"
-                               Height="44"
-                               Margin="0,0,0,16"/>
+                        <!-- Password Field -->
+                        <TextBlock Text="Password"
+                                   FontSize="14"
+                                   FontWeight="SemiBold"
+                                   Foreground="{DynamicResource TextFillColorPrimaryBrush}"
+                                   Margin="0,0,0,8"/>
+                        <ui:PasswordBox x:Name="PasswordBox"
+                                        PlaceholderText="Enter your password"
+                                        PasswordChanged="PasswordBox_PasswordChanged"
+                                        KeyDown="PasswordBox_KeyDown"
+                                        Margin="0,0,0,20"/>
 
-                    <!-- Demo Hint -->
-                    <Border Background="{DynamicResource CardBackgroundFillColorDefaultBrush}"
-                            Padding="12,10"
-                            CornerRadius="8"
-                            HorizontalAlignment="Center">
-                        <TextBlock FontSize="13" Foreground="{DynamicResource TextFillColorTertiaryBrush}">
-                            <Run Text="&#xE946;" FontFamily="Segoe MDL2 Assets"/>
-                            <Run Text=" Type "/>
-                            <Run Text="demo" FontWeight="SemiBold" Foreground="{DynamicResource TextFillColorSecondaryBrush}"/>
-                            <Run Text=" to test with sample grades"/>
-                        </TextBlock>
-                    </Border>
-                </StackPanel>
-            </ScrollViewer>
+                        <!-- Remember Me -->
+                        <ui:ToggleSwitch Content="Remember me"
+                                         IsChecked="{Binding RememberMe}"
+                                         Margin="0,0,0,24"/>
+
+                        <!-- Login Button -->
+                        <ui:Button Content="Sign In"
+                                   Command="{Binding LoginCommand}"
+                                   Appearance="Primary"
+                                   HorizontalAlignment="Stretch"
+                                   FontSize="15"
+                                   Height="44"
+                                   Margin="0,0,0,16"/>
+
+                        <!-- Demo Hint -->
+                        <Border Background="{DynamicResource CardBackgroundFillColorDefaultBrush}"
+                                Padding="12,10"
+                                CornerRadius="8"
+                                HorizontalAlignment="Center">
+                            <TextBlock FontSize="13" Foreground="{DynamicResource TextFillColorTertiaryBrush}">
+                                <Run Text="&#xE946;" FontFamily="Segoe MDL2 Assets"/>
+                                <Run Text=" Type "/>
+                                <Run Text="demo" FontWeight="SemiBold" Foreground="{DynamicResource TextFillColorSecondaryBrush}"/>
+                                <Run Text=" to test with sample grades"/>
+                            </TextBlock>
+                        </Border>
+                    </StackPanel>
+                </ScrollViewer>
+            </Grid>
         </Border>
 
         <!-- Loading Overlay -->

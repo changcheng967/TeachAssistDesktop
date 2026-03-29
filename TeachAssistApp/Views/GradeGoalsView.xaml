@@ -11,29 +11,40 @@
     <Grid>
         <ui:TitleBar Title="Grade Goals" />
 
-        <ScrollViewer Margin="0,32,0,0" VerticalScrollBarVisibility="Auto" Padding="32,24,32,32">
+        <!-- Gradient accent line -->
+        <Border Height="3" VerticalAlignment="Top" Margin="0,32,0,0"
+                Background="{StaticResource AccentGradientHorizontal}"/>
+
+        <ScrollViewer Margin="0,35,0,0" VerticalScrollBarVisibility="Auto" Padding="32,20,32,32">
             <StackPanel>
                 <!-- Current Average & Goal -->
-                <ui:Card Margin="0,0,0,20">
-                    <Grid Margin="16,14">
+                <Border Margin="0,0,0,20" CornerRadius="10"
+                        Background="{DynamicResource CardBackgroundFillColorDefaultBrush}">
+                    <Grid>
                         <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="4"/>
                             <ColumnDefinition Width="*"/>
                             <ColumnDefinition Width="Auto"/>
                         </Grid.ColumnDefinitions>
 
-                        <StackPanel Grid.Column="0">
-                            <TextBlock Text="Current Average" FontSize="13"
-                                       Foreground="{DynamicResource TextFillColorSecondaryBrush}" Margin="0,0,0,8"/>
-                            <TextBlock Text="{Binding CurrentAverage, StringFormat={}{0:F1}%}" FontSize="40" FontWeight="Bold"/>
-                        </StackPanel>
+                        <Border Grid.Column="0" CornerRadius="10,0,0,10"
+                                Background="{StaticResource AccentGradient}"/>
 
-                        <StackPanel Grid.Column="1" Margin="24,0,0,0" VerticalAlignment="Center">
+                        <Grid Grid.Column="1" Margin="20,16">
+                            <StackPanel>
+                                <TextBlock Text="Current Average" FontSize="13"
+                                           Foreground="{DynamicResource TextFillColorSecondaryBrush}" Margin="0,0,0,8"/>
+                                <TextBlock Text="{Binding CurrentAverage, StringFormat={}{0:F1}%}" FontSize="40" FontWeight="Bold"/>
+                            </StackPanel>
+                        </Grid>
+
+                        <StackPanel Grid.Column="2" Margin="24,16" VerticalAlignment="Center">
                             <TextBlock Text="Goal" FontSize="13"
                                        Foreground="{DynamicResource TextFillColorSecondaryBrush}" Margin="0,0,0,8"/>
                             <ui:Badge Content="{Binding GoalPercent, StringFormat={}{0:F0}%}" Appearance="Success"/>
                         </StackPanel>
                     </Grid>
-                </ui:Card>
+                </Border>
 
                 <!-- Progress to Goal -->
                 <ui:Card Margin="0,0,0,20">
@@ -44,7 +55,19 @@
                                        HorizontalAlignment="Right"/>
                         </Grid>
 
-                        <ProgressBar Height="12" Value="{Binding ProgressToGoal}" Maximum="100" Margin="0,0,0,12"/>
+                        <!-- Gradient progress bar -->
+                        <Border Height="12" CornerRadius="6" Margin="0,0,0,12"
+                                Background="{DynamicResource ControlFillColorDefaultBrush}">
+                            <Border CornerRadius="6" HorizontalAlignment="Left"
+                                    Background="{StaticResource AccentGradientHorizontal}">
+                                <Border.Width>
+                                    <MultiBinding Converter="{StaticResource PercentageConverter}">
+                                        <Binding Path="ProgressToGoal"/>
+                                        <Binding RelativeSource="{RelativeSource AncestorType=Border}" Path="ActualWidth"/>
+                                    </MultiBinding>
+                                </Border.Width>
+                            </Border>
+                        </Border>
 
                         <Grid>
                             <TextBlock FontSize="12" Foreground="{DynamicResource TextFillColorSecondaryBrush}">
@@ -100,8 +123,7 @@
                                 <ui:TextBox Text="{Binding CustomGoal, UpdateSourceTrigger=PropertyChanged}"
                                             PlaceholderText="%" Width="80" VerticalAlignment="Center"/>
                                 <ui:Button Content="Set" Command="{Binding SetCustomGoalCommand}"
-                                           Appearance="Primary" Margin="8,0,0,0" VerticalAlignment="Center"
-                                           />
+                                           Appearance="Primary" Margin="8,0,0,0" VerticalAlignment="Center"/>
                             </StackPanel>
                         </Grid>
                     </StackPanel>

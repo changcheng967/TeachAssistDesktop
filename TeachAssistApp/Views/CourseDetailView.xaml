@@ -12,7 +12,7 @@
             <StackPanel Margin="32,28,32,32" Background="{DynamicResource ApplicationPageBackgroundThemeBrush}">
 
             <!-- Header -->
-            <Grid Margin="0,0,0,20">
+            <Grid Margin="0,0,0,24">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="Auto"/>
                     <ColumnDefinition Width="*"/>
@@ -36,10 +36,14 @@
                     </StackPanel>
                 </StackPanel>
 
-                <ui:Badge Grid.Column="2" Appearance="Danger"
-                          Visibility="{Binding SelectedCourse, Converter={StaticResource NullToVisibilityConverter}}">
-                    <TextBlock Text="{Binding SelectedCourse.DisplayMark}" FontSize="20" FontWeight="Bold" Margin="8,4"/>
-                </ui:Badge>
+                <!-- Grade badge with grade color -->
+                <Border Grid.Column="2"
+                        CornerRadius="12" Padding="16,8"
+                        Background="{Binding SelectedCourse.GradeColor, Converter={StaticResource StringToBrushConverter}}"
+                        Visibility="{Binding SelectedCourse, Converter={StaticResource NullToVisibilityConverter}}">
+                    <TextBlock Text="{Binding SelectedCourse.DisplayMark}" FontSize="22" FontWeight="Bold"
+                               Foreground="White" VerticalAlignment="Center"/>
+                </Border>
             </Grid>
 
             <!-- Grade Analytics Section -->
@@ -50,12 +54,25 @@
                             Margin="0,0,0,12">
                 <StackPanel Margin="0,8">
                     <StackPanel Orientation="Horizontal" Margin="0,0,0,16">
-                        <ui:Card Margin="0,0,8,0" Padding="16,12">
-                            <StackPanel>
-                                <TextBlock Text="Current" FontSize="12" Foreground="{DynamicResource TextFillColorTertiaryBrush}"/>
-                                <TextBlock Text="{Binding CurrentGrade, StringFormat={}{0:F1}%}" FontSize="20" FontWeight="Bold" Margin="0,4,0,0"/>
-                            </StackPanel>
-                        </ui:Card>
+                        <!-- Current grade with gradient left accent -->
+                        <Border CornerRadius="8" Padding="0" Margin="0,0,8,0">
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="4"/>
+                                    <ColumnDefinition Width="*"/>
+                                </Grid.ColumnDefinitions>
+                                <Border Grid.Column="0" CornerRadius="8,0,0,8"
+                                        Background="{StaticResource AccentGradient}"/>
+                                <Border Grid.Column="1" Background="{DynamicResource CardBackgroundFillColorDefaultBrush}"
+                                        CornerRadius="0,8,8,0" Padding="16,12">
+                                    <StackPanel>
+                                        <TextBlock Text="Current" FontSize="12" Foreground="{DynamicResource TextFillColorTertiaryBrush}"/>
+                                        <TextBlock Text="{Binding CurrentGrade, StringFormat={}{0:F1}%}" FontSize="28" FontWeight="Bold"
+                                                   Margin="0,4,0,0"/>
+                                    </StackPanel>
+                                </Border>
+                            </Grid>
+                        </Border>
                         <ui:Card Margin="0,0,8,0" Padding="16,12">
                             <StackPanel>
                                 <TextBlock Text="Change" FontSize="12" Foreground="{DynamicResource TextFillColorTertiaryBrush}"/>
@@ -95,7 +112,7 @@
                 <ItemsControl ItemsSource="{Binding CategoryPerformance}" Margin="0,8">
                     <ItemsControl.ItemTemplate>
                         <DataTemplate>
-                            <Grid Margin="0,0,0,4">
+                            <Grid Margin="0,0,0,8">
                                 <Grid.ColumnDefinitions>
                                     <ColumnDefinition Width="140"/>
                                     <ColumnDefinition Width="*"/>
@@ -132,7 +149,7 @@
                                     <ui:Badge Content="{Binding Code}" Margin="0,0,0,8"/>
                                     <TextBlock Text="{Binding Percentage, StringFormat={}{0:F1}%}" FontSize="22" FontWeight="Bold"
                                                Foreground="{Binding GradeColor, Converter={StaticResource StringToBrushConverter}}" Margin="0,0,0,6"/>
-                                    <ProgressBar Height="6" Value="{Binding Percentage}" Maximum="100" Margin="0,0,0,0"/>
+                                    <ProgressBar Height="6" Value="{Binding Percentage}" Maximum="100"/>
                                     <TextBlock FontSize="12" Foreground="{DynamicResource TextFillColorTertiaryBrush}" Margin="0,6,0,0">
                                         <Run Text="{Binding AssignmentCount}"/><Run Text=" assessments"/>
                                     </TextBlock>
@@ -186,7 +203,7 @@
                                         </Border>
                                     </Grid>
 
-                                    <!-- Individual assignments -->
+                                    <!-- Individual assignments in a wrap panel -->
                                     <ItemsControl ItemsSource="{Binding Assignments}">
                                         <ItemsControl.ItemsPanel>
                                             <ItemsPanelTemplate>
@@ -233,13 +250,13 @@
         </StackPanel>
     </ScrollViewer>
 
-    <!-- Loading Overlay (outside ScrollViewer so it overlays) -->
+    <!-- Loading Overlay -->
     <Grid Background="{DynamicResource OverlayBrush}"
           Visibility="{Binding IsLoading, Converter={StaticResource BooleanToVisibilityConverter}}">
         <ui:ProgressRing IsIndeterminate="True" Width="40" Height="40" VerticalAlignment="Center" HorizontalAlignment="Center"/>
     </Grid>
 
-    <!-- Error Message (outside ScrollViewer) -->
+    <!-- Error Message -->
     <ui:InfoBar Title="Error"
                 Message="{Binding ErrorMessage}"
                 Severity="Error"
@@ -247,12 +264,7 @@
                 Margin="32,60,32,0"
                 HorizontalAlignment="Center"
                 VerticalAlignment="Top"
-                MaxWidth="500"
->
-        <ui:InfoBar.RenderTransform>
-            <TranslateTransform Y="0"/>
-        </ui:InfoBar.RenderTransform>
-    </ui:InfoBar>
+                MaxWidth="500"/>
 
     <!-- No Report Message -->
     <ui:InfoBar Title="No Report Available"
@@ -262,11 +274,6 @@
                 Margin="32,60,32,0"
                 HorizontalAlignment="Center"
                 VerticalAlignment="Top"
-                MaxWidth="500"
->
-        <ui:InfoBar.RenderTransform>
-            <TranslateTransform Y="0"/>
-        </ui:InfoBar.RenderTransform>
-    </ui:InfoBar>
+                MaxWidth="500"/>
     </Grid>
 </Page>
