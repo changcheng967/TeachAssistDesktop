@@ -22,7 +22,7 @@
         </Grid.ColumnDefinitions>
 
         <!-- TitleBar overlays content -->
-        <ui:TitleBar Grid.ColumnSpan="2" Title="TeachAssist" Margin="46,0,0,0"/>
+        <ui:TitleBar x:Name="AppTitleBar" Grid.ColumnSpan="2" Title="TeachAssist"/>
 
         <!-- Navigation sidebar -->
         <ui:NavigationView x:Name="RootNavigation"
@@ -43,5 +43,12 @@
         <Frame x:Name="ContentArea" Grid.Column="1" Margin="0,32,0,0"
                NavigationUIVisibility="Hidden"
                Navigated="ContentArea_Navigated"/>
+
+        <!-- Toast notification overlay -->
+        <StackPanel x:Name="ToastHost" Grid.Column="1"
+                    VerticalAlignment="Top"
+                    HorizontalAlignment="Right"
+                    Margin="0,44,16,0"
+                    Orientation="Vertical"/>
     </Grid>
 </ui:FluentWindow>

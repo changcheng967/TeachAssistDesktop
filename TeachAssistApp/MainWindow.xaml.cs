@@ -27,6 +27,10 @@ public partial class MainWindow : FluentWindow
         _serviceProvider = serviceProvider;
         _navigationService = serviceProvider.GetRequiredService<Helpers.INavigationService>();
 
+        // Initialize toast notification service
+        var toastService = serviceProvider.GetRequiredService<Services.IToastService>() as Services.ToastService;
+        toastService?.SetHost(ToastHost);
+
         _navigationService.OnNavigate += OnNavigate;
         this.KeyDown += MainWindow_KeyDown;
 
@@ -159,6 +163,7 @@ public partial class MainWindow : FluentWindow
                 _ = loginViewModel.LoadSavedCredentialsAsync();
                 page.DataContext = loginViewModel;
                 RootNavigation.Visibility = Visibility.Collapsed;
+                UpdateTitleBarMargin(false);
                 break;
             case "Dashboard":
                 page = _serviceProvider.GetRequiredService<DashboardView>();
@@ -169,6 +174,7 @@ public partial class MainWindow : FluentWindow
                     _ = dashboardVM.LoadCoursesCommand.ExecuteAsync(null);
                 }
                 RootNavigation.Visibility = Visibility.Visible;
+                UpdateTitleBarMargin(true);
                 HighlightNavItem(_dashboardItem);
                 break;
             case "Settings":
@@ -177,6 +183,7 @@ public partial class MainWindow : FluentWindow
                 page.DataContext = settingsViewModel;
                 _ = settingsViewModel.RefreshUserDataAsync();
                 RootNavigation.Visibility = Visibility.Visible;
+                UpdateTitleBarMargin(true);
                 HighlightNavItem(_settingsItem);
                 break;
             case "CourseDetail":
@@ -194,6 +201,7 @@ public partial class MainWindow : FluentWindow
                     page.DataContext = _serviceProvider.GetRequiredService<CourseDetailViewModel>();
                 }
                 RootNavigation.Visibility = Visibility.Visible;
+                UpdateTitleBarMargin(true);
                 break;
         }
 
@@ -228,6 +236,13 @@ public partial class MainWindow : FluentWindow
             if (mi is NavigationViewItem nvi) nvi.IsActive = false;
         }
         if (item != null) item.IsActive = true;
+    }
+
+    private void UpdateTitleBarMargin(bool sidebarVisible)
+    {
+        AppTitleBar.Margin = sidebarVisible
+            ? new Thickness(46, 0, 0, 0)
+            : new Thickness(0);
     }
 
     protected override void OnClosed(EventArgs e)

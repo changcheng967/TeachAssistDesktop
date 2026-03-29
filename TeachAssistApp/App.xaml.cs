@@ -77,6 +77,7 @@ public partial class App : Application
                     services.AddSingleton<ICourseCacheService, CourseCacheService>();
                     services.AddSingleton<Helpers.INavigationService, Helpers.NavigationService>();
                     services.AddSingleton<PdfExporter>();
+                    services.AddSingleton<Services.IToastService, Services.ToastService>();
 
                     // ViewModels
                     services.AddSingleton<MainViewModel>();
