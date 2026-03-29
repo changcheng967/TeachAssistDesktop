@@ -36,9 +36,6 @@ public partial class LoginViewModel : ObservableObject
         _teachAssistService = teachAssistService;
         _credentialService = credentialService;
         _navigationService = navigationService;
-
-        // Load saved credentials on initialization
-        LoadSavedCredentials();
     }
 
     public async Task LoadSavedCredentialsAsync()

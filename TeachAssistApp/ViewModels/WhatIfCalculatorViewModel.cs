@@ -97,7 +97,7 @@ public partial class WhatIfCalculatorViewModel : ObservableObject
             Name = NewAssignmentName,
             Mark = mark,
             Weight = weight,
-            RemoveCommand = new RelayCommand(() => RemoveAssignment(mark, weight))
+            RemoveCommand = new RelayCommand(() => RemoveAssignment(HypotheticalAssignments.Count))
         });
 
         // Clear inputs
@@ -108,12 +108,11 @@ public partial class WhatIfCalculatorViewModel : ObservableObject
         UpdateProjection();
     }
 
-    private void RemoveAssignment(double mark, double weight)
+    private void RemoveAssignment(int index)
     {
-        var toRemove = HypotheticalAssignments.FirstOrDefault(a => a.Mark == mark && a.Weight == weight);
-        if (toRemove != null)
+        if (index >= 0 && index < HypotheticalAssignments.Count)
         {
-            HypotheticalAssignments.Remove(toRemove);
+            HypotheticalAssignments.RemoveAt(index);
             UpdateProjection();
         }
     }

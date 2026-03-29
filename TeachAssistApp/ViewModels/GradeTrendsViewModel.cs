@@ -104,11 +104,11 @@ public partial class GradeTrendsViewModel : ObservableObject
         }
 
         // Find best and worst courses
-        var best = courses.OrderByDescending(c => c.NumericMark).First();
-        var worst = courses.OrderBy(c => c.NumericMark).First();
+        var best = courses.OrderByDescending(c => c.NumericMark ?? 0).First();
+        var worst = courses.OrderBy(c => c.NumericMark ?? 0).First();
 
-        Insights.Add($"🏆 Strongest performance: {best.Code} ({best.NumericMark:F1}%)");
-        Insights.Add($"📝 Area for improvement: {worst.Code} ({worst.NumericMark:F1}%)");
+        Insights.Add($"🏆 Strongest performance: {best.Code} ({best.NumericMark ?? 0:F1}%)");
+        Insights.Add($"📝 Area for improvement: {worst.Code} ({worst.NumericMark ?? 0:F1}%)");
 
         // Check for struggling courses
         var struggling = courses.Where(c => c.NumericMark < 70).ToList();

@@ -87,28 +87,20 @@ public partial class DashboardView : Page
     }
 
     private bool _cardsAnimating;
+    private bool _cardsHandlerAttached;
     private void AnimateCardsEntrance()
     {
         if (_cardsAnimating) return;
         if (CourseItemsControl.Items.Count == 0)
         {
-            CourseItemsControl.ItemContainerGenerator.StatusChanged += (s, args) =>
-            {
-                try
-                {
-                    if (CourseItemsControl.ItemContainerGenerator.Status == System.Windows.Controls.Primitives.GeneratorStatus.ContainersGenerated
-                        && CourseItemsControl.Items.Count > 0)
-                    {
-                        _cardsAnimating = false;
-                        AnimateCardsEntrance();
-                    }
-                }
-                catch { }
-            };
+            if (_cardsHandlerAttached) return;
+            _cardsHandlerAttached = true;
+            CourseItemsControl.ItemContainerGenerator.StatusChanged += OnCardsStatusChanged;
             return;
         }
 
         _cardsAnimating = true;
+        _cardsHandlerAttached = false;
 
         for (int i = 0; i < CourseItemsControl.Items.Count; i++)
         {
@@ -132,5 +124,21 @@ public partial class DashboardView : Page
             sb.Children.Add(fadeIn);
             sb.Begin(this);
         }
+    }
+
+    private void OnCardsStatusChanged(object? sender, EventArgs e)
+    {
+        try
+        {
+            if (CourseItemsControl.ItemContainerGenerator.Status == System.Windows.Controls.Primitives.GeneratorStatus.ContainersGenerated
+                && CourseItemsControl.Items.Count > 0)
+            {
+                CourseItemsControl.ItemContainerGenerator.StatusChanged -= OnCardsStatusChanged;
+                _cardsAnimating = false;
+                _cardsHandlerAttached = false;
+                AnimateCardsEntrance();
+            }
+        }
+        catch { }
     }
 }

@@ -181,7 +181,8 @@
                                                 CornerRadius="4" Padding="8,3"
                                                 Visibility="{Binding Impact, Converter={StaticResource NullToVisibilityConverter}}"
                                                 ToolTip="Grade change after this assignment">
-                                            <TextBlock Text="{Binding Impact.DisplayImpact}" FontSize="12" FontWeight="SemiBold" Foreground="White"/>
+                                            <TextBlock Text="{Binding Impact.DisplayImpact}" FontSize="12" FontWeight="SemiBold" Foreground="White"
+                                                       ToolTip="Actual impact on your final grade (leave-one-out analysis)"/>
                                         </Border>
                                     </Grid>
 

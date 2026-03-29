@@ -77,6 +77,24 @@ public partial class App : Application
 
         // Watch for system theme changes (must be called after Show)
         SystemThemeWatcher.Watch(mainWindow as Wpf.Ui.Controls.FluentWindow);
+
+        // Initialize overlay brush to match current theme
+        UpdateOverlayBrush(IsDarkTheme());
+    }
+
+    public static bool IsDarkTheme()
+    {
+        try
+        {
+            var bgBrush = Current.Resources["ApplicationPageBackgroundThemeBrush"] as SolidColorBrush;
+            if (bgBrush != null)
+            {
+                // Dark backgrounds have low R values
+                return bgBrush.Color.R < 128;
+            }
+        }
+        catch { }
+        return true; // default to dark
     }
 
     public static void UpdateOverlayBrush(bool isDark)
