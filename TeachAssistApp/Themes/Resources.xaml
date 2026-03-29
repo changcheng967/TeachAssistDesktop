@@ -3,49 +3,41 @@
                     xmlns:sys="clr-namespace:System;assembly=mscorlib">
 
     <!-- ══════════════════════════════════════════════════════════
-         ACCENT GRADIENTS — Primary design identity
+         ACCENT — used sparingly, only on brand/hero elements
          ══════════════════════════════════════════════════════════ -->
     <LinearGradientBrush x:Key="AccentGradient" StartPoint="0,0" EndPoint="1,1">
         <GradientStop Color="#6366F1" Offset="0"/>
         <GradientStop Color="#8B5CF6" Offset="1"/>
     </LinearGradientBrush>
-
     <LinearGradientBrush x:Key="AccentGradientSubtle" StartPoint="0,0" EndPoint="1,1">
         <GradientStop Color="#312E81" Offset="0"/>
         <GradientStop Color="#4C1D95" Offset="1"/>
     </LinearGradientBrush>
-
     <LinearGradientBrush x:Key="AccentGradientHorizontal" StartPoint="0,0.5" EndPoint="1,0.5">
         <GradientStop Color="#6366F1" Offset="0"/>
         <GradientStop Color="#A78BFA" Offset="1"/>
     </LinearGradientBrush>
 
-    <LinearGradientBrush x:Key="AccentGradientVertical" StartPoint="0.5,0" EndPoint="0.5,1">
-        <GradientStop Color="#6366F1" Offset="0"/>
-        <GradientStop Color="#8B5CF6" Offset="1"/>
-    </LinearGradientBrush>
-
-    <!-- Glow effect for accent elements -->
-    <DropShadowEffect x:Key="AccentGlow" Color="#6366F1" BlurRadius="20" ShadowDepth="0" Opacity="0.4" Direction="0"/>
+    <!-- Soft glow — very subtle -->
+    <DropShadowEffect x:Key="AccentGlow" Color="#6366F1" BlurRadius="24" ShadowDepth="0" Opacity="0.2" Direction="0"/>
 
     <!-- ══════════════════════════════════════════════════════════
-         OVERLAY & STATUS COLORS
+         OVERLAY & STATUS
          ══════════════════════════════════════════════════════════ -->
     <SolidColorBrush x:Key="OverlayBrush" Color="#99000000"/>
-
     <SolidColorBrush x:Key="SuccessBrush" Color="#16A34A"/>
     <SolidColorBrush x:Key="WarningBrush" Color="#D97706"/>
     <SolidColorBrush x:Key="ErrorBrush" Color="#DC2626"/>
     <SolidColorBrush x:Key="InfoBrush" Color="#2563EB"/>
 
     <!-- ══════════════════════════════════════════════════════════
-         CARD ELEVATION & HOVER
+         SHADOWS — macOS-style: very soft, barely visible
          ══════════════════════════════════════════════════════════ -->
-    <DropShadowEffect x:Key="CardHoverShadow" BlurRadius="16" ShadowDepth="4" Opacity="0.15" Direction="270"/>
-    <DropShadowEffect x:Key="CardDefaultShadow" BlurRadius="8" ShadowDepth="2" Opacity="0.06" Direction="270"/>
+    <DropShadowEffect x:Key="CardHoverShadow" BlurRadius="24" ShadowDepth="6" Opacity="0.08" Direction="270"/>
+    <DropShadowEffect x:Key="CardDefaultShadow" BlurRadius="12" ShadowDepth="2" Opacity="0.04" Direction="270"/>
 
     <!-- ══════════════════════════════════════════════════════════
-         TYPOGRAPHY SCALE
+         TYPOGRAPHY
          ══════════════════════════════════════════════════════════ -->
     <sys:Double x:Key="HeroFontSize">42</sys:Double>
     <sys:Double x:Key="DisplayFontSize">28</sys:Double>
@@ -55,25 +47,26 @@
     <sys:Double x:Key="CaptionFontSize">12</sys:Double>
 
     <!-- ══════════════════════════════════════════════════════════
-         BUTTON MICRO-ANIMATION (preserves base WPF-UI styling)
-         Uses RenderTransform only — does NOT replace Button style
+         BUTTON — subtle press, no scale on hover (macOS feel)
          ══════════════════════════════════════════════════════════ -->
     <Style x:Key="AnimatedButton" TargetType="ButtonBase">
         <Setter Property="RenderTransformOrigin" Value="0.5,0.5"/>
         <Setter Property="RenderTransform">
-            <Setter.Value>
-                <ScaleTransform ScaleX="1" ScaleY="1"/>
-            </Setter.Value>
+            <Setter.Value><ScaleTransform ScaleX="1" ScaleY="1"/></Setter.Value>
         </Setter>
         <Style.Triggers>
-            <Trigger Property="IsMouseOver" Value="True">
+            <Trigger Property="IsPressed" Value="True">
                 <Trigger.EnterActions>
                     <BeginStoryboard>
                         <Storyboard>
                             <DoubleAnimation Storyboard.TargetProperty="(UIElement.RenderTransform).(ScaleTransform.ScaleX)"
-                                To="1.03" Duration="0:0:0.1"/>
+                                To="0.98" Duration="0:0:0.25">
+                                <DoubleAnimation.EasingFunction><QuadraticEase EasingMode="EaseInOut"/></DoubleAnimation.EasingFunction>
+                            </DoubleAnimation>
                             <DoubleAnimation Storyboard.TargetProperty="(UIElement.RenderTransform).(ScaleTransform.ScaleY)"
-                                To="1.03" Duration="0:0:0.1"/>
+                                To="0.98" Duration="0:0:0.25">
+                                <DoubleAnimation.EasingFunction><QuadraticEase EasingMode="EaseInOut"/></DoubleAnimation.EasingFunction>
+                            </DoubleAnimation>
                         </Storyboard>
                     </BeginStoryboard>
                 </Trigger.EnterActions>
@@ -81,30 +74,22 @@
                     <BeginStoryboard>
                         <Storyboard>
                             <DoubleAnimation Storyboard.TargetProperty="(UIElement.RenderTransform).(ScaleTransform.ScaleX)"
-                                To="1.0" Duration="0:0:0.1"/>
+                                To="1.0" Duration="0:0:0.3">
+                                <DoubleAnimation.EasingFunction><QuadraticEase EasingMode="EaseInOut"/></DoubleAnimation.EasingFunction>
+                            </DoubleAnimation>
                             <DoubleAnimation Storyboard.TargetProperty="(UIElement.RenderTransform).(ScaleTransform.ScaleY)"
-                                To="1.0" Duration="0:0:0.1"/>
+                                To="1.0" Duration="0:0:0.3">
+                                <DoubleAnimation.EasingFunction><QuadraticEase EasingMode="EaseInOut"/></DoubleAnimation.EasingFunction>
+                            </DoubleAnimation>
                         </Storyboard>
                     </BeginStoryboard>
                 </Trigger.ExitActions>
-            </Trigger>
-            <Trigger Property="IsPressed" Value="True">
-                <Trigger.EnterActions>
-                    <BeginStoryboard>
-                        <Storyboard>
-                            <DoubleAnimation Storyboard.TargetProperty="(UIElement.RenderTransform).(ScaleTransform.ScaleX)"
-                                To="0.97" Duration="0:0:0.08"/>
-                            <DoubleAnimation Storyboard.TargetProperty="(UIElement.RenderTransform).(ScaleTransform.ScaleY)"
-                                To="0.97" Duration="0:0:0.08"/>
-                        </Storyboard>
-                    </BeginStoryboard>
-                </Trigger.EnterActions>
             </Trigger>
         </Style.Triggers>
     </Style>
 
     <!-- ══════════════════════════════════════════════════════════
-         GRADIENT ACCENT LINE — thin decorative bar
+         DECORATIVE ACCENT LINE
          ══════════════════════════════════════════════════════════ -->
     <Style x:Key="GradientAccentLine" TargetType="Border">
         <Setter Property="Height" Value="2"/>
@@ -113,7 +98,7 @@
     </Style>
 
     <!-- ══════════════════════════════════════════════════════════
-         ELEVATED CARD — card with default shadow for depth
+         ELEVATED CARD — barely visible shadow, gentle hover
          ══════════════════════════════════════════════════════════ -->
     <Style x:Key="ElevatedCard" TargetType="Border">
         <Setter Property="Background" Value="{DynamicResource CardBackgroundFillColorDefaultBrush}"/>
@@ -121,9 +106,7 @@
         <Setter Property="Effect" Value="{StaticResource CardDefaultShadow}"/>
         <Setter Property="RenderTransformOrigin" Value="0.5,0.5"/>
         <Setter Property="RenderTransform">
-            <Setter.Value>
-                <ScaleTransform ScaleX="1" ScaleY="1"/>
-            </Setter.Value>
+            <Setter.Value><ScaleTransform ScaleX="1" ScaleY="1"/></Setter.Value>
         </Setter>
         <Style.Triggers>
             <Trigger Property="IsMouseOver" Value="True">
@@ -131,8 +114,8 @@
                     <BeginStoryboard>
                         <Storyboard>
                             <DoubleAnimation Storyboard.TargetProperty="(UIElement.RenderTransform).(ScaleTransform.ScaleY)"
-                                To="1.02" Duration="0:0:0.15">
-                                <DoubleAnimation.EasingFunction><CubicEase EasingMode="EaseOut"/></DoubleAnimation.EasingFunction>
+                                To="1.006" Duration="0:0:0.4">
+                                <DoubleAnimation.EasingFunction><QuadraticEase EasingMode="EaseInOut"/></DoubleAnimation.EasingFunction>
                             </DoubleAnimation>
                         </Storyboard>
                     </BeginStoryboard>
@@ -141,7 +124,9 @@
                     <BeginStoryboard>
                         <Storyboard>
                             <DoubleAnimation Storyboard.TargetProperty="(UIElement.RenderTransform).(ScaleTransform.ScaleY)"
-                                To="1.0" Duration="0:0:0.12"/>
+                                To="1.0" Duration="0:0:0.35">
+                                <DoubleAnimation.EasingFunction><QuadraticEase EasingMode="EaseInOut"/></DoubleAnimation.EasingFunction>
+                            </DoubleAnimation>
                         </Storyboard>
                     </BeginStoryboard>
                 </Trigger.ExitActions>
@@ -149,9 +134,7 @@
         </Style.Triggers>
     </Style>
 
-    <!-- ══════════════════════════════════════════════════════════
-         SECTION HEADER — styled label for settings-like sections
-         ══════════════════════════════════════════════════════════ -->
+    <!-- Section header -->
     <Style x:Key="SectionHeader" TargetType="TextBlock">
         <Setter Property="FontSize" Value="13"/>
         <Setter Property="FontWeight" Value="SemiBold"/>
@@ -160,7 +143,7 @@
     </Style>
 
     <!-- ══════════════════════════════════════════════════════════
-         GRADIENT PROGRESS BAR — rounded, gradient-filled, animated
+         PROGRESS BARS — rounded, clean
          ══════════════════════════════════════════════════════════ -->
     <Style x:Key="GradientProgressBar" TargetType="ProgressBar">
         <Setter Property="Height" Value="6"/>
@@ -168,10 +151,8 @@
             <Setter.Value>
                 <ControlTemplate TargetType="ProgressBar">
                     <Grid>
-                        <!-- Track -->
                         <Border x:Name="PART_Track" CornerRadius="3"
                                 Background="{DynamicResource ControlFillColorDefaultBrush}"/>
-                        <!-- Fill -->
                         <Border x:Name="PART_Indicator" CornerRadius="3"
                                 HorizontalAlignment="Left"
                                 Background="{StaticResource AccentGradientHorizontal}"/>
@@ -180,8 +161,6 @@
             </Setter.Value>
         </Setter>
     </Style>
-
-    <!-- Grade-colored progress bar -->
     <Style x:Key="GradeProgressBar" TargetType="ProgressBar">
         <Setter Property="Height" Value="6"/>
         <Setter Property="Template">
@@ -198,9 +177,7 @@
         </Setter>
     </Style>
 
-    <!-- ══════════════════════════════════════════════════════════
-         GRADIENT HEADING — gradient text effect for key titles
-         ══════════════════════════════════════════════════════════ -->
+    <!-- Gradient heading — used only on primary page titles -->
     <Style x:Key="GradientHeading" TargetType="TextBlock">
         <Setter Property="FontSize" Value="28"/>
         <Setter Property="FontWeight" Value="SemiBold"/>

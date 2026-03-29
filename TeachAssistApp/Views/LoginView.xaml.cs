@@ -10,7 +10,7 @@ namespace TeachAssistApp.Views;
 public partial class LoginView : Page
 {
     private bool _firstLoad = true;
-    private static readonly CubicEase EaseOut = new() { EasingMode = EasingMode.EaseOut };
+    private static readonly QuadraticEase SmoothEase = new() { EasingMode = EasingMode.EaseInOut };
 
     public LoginView()
     {
@@ -38,7 +38,7 @@ public partial class LoginView : Page
         }
         _firstLoad = false;
 
-        var ease = EaseOut;
+        var ease = SmoothEase;
 
         // 1. Logo: scale from 0.9 + fade in
         if (BrandLogo != null)

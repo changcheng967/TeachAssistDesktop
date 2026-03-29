@@ -134,8 +134,8 @@
             <ItemsControl x:Name="CourseItemsControl" ItemsSource="{Binding Courses}">
                 <ItemsControl.ItemTemplate>
                     <DataTemplate>
-                        <!-- Course card with shadow and grade color accent -->
-                        <Border Margin="0,0,0,10" CornerRadius="12"
+                        <!-- Course card -->
+                        <Border Margin="0,0,0,6" CornerRadius="12"
                                 Background="{DynamicResource CardBackgroundFillColorDefaultBrush}"
                                 Effect="{StaticResource CardDefaultShadow}"
                                 RenderTransformOrigin="0.5,0.5">
@@ -150,11 +150,9 @@
                                                 <BeginStoryboard>
                                                     <Storyboard>
                                                         <DoubleAnimation Storyboard.TargetProperty="(UIElement.RenderTransform).(ScaleTransform.ScaleY)"
-                                                            To="1.02" Duration="0:0:0.15">
-                                                            <DoubleAnimation.EasingFunction><CubicEase EasingMode="EaseOut"/></DoubleAnimation.EasingFunction>
+                                                            To="1.008" Duration="0:0:0.25">
+                                                            <DoubleAnimation.EasingFunction><QuadraticEase EasingMode="EaseInOut"/></DoubleAnimation.EasingFunction>
                                                         </DoubleAnimation>
-                                                        <ThicknessAnimation Storyboard.TargetProperty="Margin"
-                                                            To="0,0,0,10" Duration="0:0:0.15"/>
                                                     </Storyboard>
                                                 </BeginStoryboard>
                                             </Trigger.EnterActions>
@@ -162,7 +160,9 @@
                                                 <BeginStoryboard>
                                                     <Storyboard>
                                                         <DoubleAnimation Storyboard.TargetProperty="(UIElement.RenderTransform).(ScaleTransform.ScaleY)"
-                                                            To="1.0" Duration="0:0:0.12"/>
+                                                            To="1.0" Duration="0:0:0.2">
+                                                            <DoubleAnimation.EasingFunction><QuadraticEase EasingMode="EaseInOut"/></DoubleAnimation.EasingFunction>
+                                                        </DoubleAnimation>
                                                     </Storyboard>
                                                 </BeginStoryboard>
                                             </Trigger.ExitActions>
@@ -173,19 +173,17 @@
 
                             <Grid>
                                 <Grid.ColumnDefinitions>
-                                    <ColumnDefinition Width="5"/>
-                                    <ColumnDefinition Width="Auto"/>
+                                    <ColumnDefinition Width="3"/>
                                     <ColumnDefinition Width="*"/>
-                                    <ColumnDefinition Width="Auto"/>
-                                    <ColumnDefinition Width="Auto"/>
                                 </Grid.ColumnDefinitions>
 
-                                <!-- Grade color accent bar -->
+                                <!-- Thin grade color accent -->
                                 <Border Grid.Column="0" CornerRadius="12,0,0,12"
-                                        Background="{Binding GradeColor, Converter={StaticResource StringToBrushConverter}}"/>
+                                        Background="{Binding GradeColor, Converter={StaticResource StringToBrushConverter}}"
+                                        Opacity="0.7"/>
 
                                 <!-- Clickable content -->
-                                <Button Grid.Column="1" Grid.ColumnSpan="4"
+                                <Button Grid.Column="1"
                                         Command="{Binding DataContext.SelectCourseCommand, RelativeSource={RelativeSource AncestorType=ItemsControl}}"
                                         CommandParameter="{Binding}"
                                         Style="{x:Null}"
@@ -197,11 +195,10 @@
                                             <ContentPresenter/>
                                         </ControlTemplate>
                                     </Button.Template>
-                                    <Grid Margin="20,16,20,16">
+                                    <Grid Margin="20,14,20,14">
                                         <Grid.ColumnDefinitions>
-                                            <ColumnDefinition Width="90"/>
+                                            <ColumnDefinition Width="80"/>
                                             <ColumnDefinition Width="*"/>
-                                            <ColumnDefinition Width="100"/>
                                             <ColumnDefinition Width="Auto"/>
                                         </Grid.ColumnDefinitions>
 
@@ -210,21 +207,10 @@
                                                    Text="{Binding Code}"
                                                    FontSize="14" FontWeight="SemiBold"
                                                    Foreground="{DynamicResource TextFillColorPrimaryBrush}"
-                                                   VerticalAlignment="Center">
-                                            <TextBlock.Style>
-                                                <Style TargetType="TextBlock">
-                                                    <Style.Triggers>
-                                                        <DataTrigger Binding="{Binding IsLunch}" Value="True">
-                                                            <Setter Property="FontStyle" Value="Italic"/>
-                                                            <Setter Property="Foreground" Value="{DynamicResource TextFillColorTertiaryBrush}"/>
-                                                        </DataTrigger>
-                                                    </Style.Triggers>
-                                                </Style>
-                                            </TextBlock.Style>
-                                        </TextBlock>
+                                                   VerticalAlignment="Center"/>
 
-                                        <!-- Course name + status + mini grade bar -->
-                                        <StackPanel Grid.Column="1" VerticalAlignment="Center" Margin="8,0,0,0">
+                                        <!-- Course name + status -->
+                                        <StackPanel Grid.Column="1" VerticalAlignment="Center" Margin="12,0,0,0">
                                             <TextBlock Text="{Binding Name}"
                                                        FontSize="14"
                                                        Foreground="{DynamicResource TextFillColorPrimaryBrush}"
@@ -233,67 +219,21 @@
                                                        Foreground="{DynamicResource TextFillColorTertiaryBrush}"
                                                        Visibility="{Binding MarkStatus, Converter={StaticResource StringToVisibilityConverter}}"
                                                        Text="{Binding MarkStatus}"/>
-                                            <!-- Mini grade progress bar -->
-                                            <ProgressBar Height="4" Margin="0,6,60,0"
-                                                         Style="{StaticResource GradeProgressBar}"
-                                                         Value="{Binding NumericMark, Mode=OneWay}" Maximum="100"
-                                                         Visibility="{Binding HasValidMark, Converter={StaticResource BooleanToVisibilityConverter}}"
-                                                         Foreground="{Binding GradeColor, Converter={StaticResource StringToBrushConverter}}"/>
                                         </StackPanel>
 
-                                        <!-- Grade circle indicator -->
-                                        <Border Grid.Column="2" Width="52" Height="52" CornerRadius="26"
-                                                Background="{DynamicResource ControlFillColorDefaultBrush}"
-                                                VerticalAlignment="Center" HorizontalAlignment="Center"
-                                                Visibility="{Binding HasValidMark, Converter={StaticResource BooleanToVisibilityConverter}}">
-                                            <Border CornerRadius="24" Margin="3"
-                                                    Background="{DynamicResource CardBackgroundFillColorDefaultBrush}">
-                                                <Grid>
-                                                    <!-- Colored ring -->
-                                                    <Ellipse Stroke="{Binding GradeColor, Converter={StaticResource StringToBrushConverter}}"
-                                                             StrokeThickness="2.5" Fill="Transparent" Margin="2"
-                                                             Opacity="0.4"/>
-                                                    <!-- Grade text -->
-                                                    <TextBlock Text="{Binding DisplayMark}"
-                                                               FontSize="14" FontWeight="Bold"
-                                                               Foreground="{Binding GradeColor, Converter={StaticResource StringToBrushConverter}}"
-                                                               HorizontalAlignment="Center" VerticalAlignment="Center"/>
-                                                </Grid>
-                                            </Border>
-                                        </Border>
-
-                                        <!-- Fallback for lunch/non-graded -->
-                                        <TextBlock Grid.Column="2"
-                                                   Text="{Binding DisplayMark}"
-                                                   Visibility="{Binding HasValidMark, Converter={StaticResource InvertedBooleanToVisibilityConverter}}"
-                                                   FontSize="14"
-                                                   Foreground="{DynamicResource TextFillColorTertiaryBrush}"
-                                                   VerticalAlignment="Center"
-                                                   HorizontalAlignment="Center">
-                                            <TextBlock.Style>
-                                                <Style TargetType="TextBlock">
-                                                    <Style.Triggers>
-                                                        <DataTrigger Binding="{Binding IsLunch}" Value="True">
-                                                            <Setter Property="FontStyle" Value="Italic"/>
-                                                        </DataTrigger>
-                                                    </Style.Triggers>
-                                                </Style>
-                                            </TextBlock.Style>
-                                        </TextBlock>
-
-                                        <!-- Block + Room -->
-                                        <StackPanel Grid.Column="3" Orientation="Horizontal"
-                                                    HorizontalAlignment="Right" VerticalAlignment="Center">
+                                        <!-- Grade + Block -->
+                                        <StackPanel Grid.Column="2" Orientation="Horizontal"
+                                                    VerticalAlignment="Center" HorizontalAlignment="Right">
+                                            <TextBlock Text="{Binding DisplayMark}"
+                                                       FontSize="18" FontWeight="Bold"
+                                                       Foreground="{Binding GradeColor, Converter={StaticResource StringToBrushConverter}}"
+                                                       VerticalAlignment="Center" Margin="0,0,16,0"/>
                                             <Border Background="{DynamicResource ControlFillColorDefaultBrush}"
-                                                    CornerRadius="4" Padding="6,3" Margin="0,0,6,0">
+                                                    CornerRadius="4" Padding="6,3">
                                                 <TextBlock FontSize="11" Foreground="{DynamicResource TextFillColorTertiaryBrush}">
                                                     <Run Text="P"/><Run Text="{Binding Block}"/>
                                                 </TextBlock>
                                             </Border>
-                                            <TextBlock Text="{Binding Room, StringFormat='Rm {0}'}"
-                                                       FontSize="11"
-                                                       Foreground="{DynamicResource TextFillColorTertiaryBrush}"
-                                                       VerticalAlignment="Center"/>
                                         </StackPanel>
                                     </Grid>
                                 </Button>

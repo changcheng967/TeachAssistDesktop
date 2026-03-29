@@ -9,7 +9,7 @@ namespace TeachAssistApp.Views;
 
 public partial class DashboardView : Page
 {
-    private static readonly CubicEase EaseOut = new() { EasingMode = EasingMode.EaseOut };
+    private static readonly QuadraticEase SmoothEase = new() { EasingMode = EasingMode.EaseInOut };
     private bool _firstLoad = true;
 
     public DashboardView()
@@ -53,14 +53,14 @@ public partial class DashboardView : Page
             var fadeIn = new DoubleAnimation
             {
                 From = 0, To = 1,
-                Duration = TimeSpan.FromMilliseconds(500),
-                EasingFunction = EaseOut
+                Duration = TimeSpan.FromMilliseconds(600),
+                EasingFunction = SmoothEase
             };
             var slideUp = new DoubleAnimation
             {
-                From = 24, To = 0,
-                Duration = TimeSpan.FromMilliseconds(500),
-                EasingFunction = EaseOut
+                From = 20, To = 0,
+                Duration = TimeSpan.FromMilliseconds(600),
+                EasingFunction = SmoothEase
             };
 
             Storyboard.SetTarget(fadeIn, HeroStatCard);
@@ -80,9 +80,9 @@ public partial class DashboardView : Page
             var progressFade = new DoubleAnimation
             {
                 From = 0, To = 1,
-                Duration = TimeSpan.FromMilliseconds(400),
+                Duration = TimeSpan.FromMilliseconds(500),
                 BeginTime = TimeSpan.FromMilliseconds(300),
-                EasingFunction = EaseOut
+                EasingFunction = SmoothEase
             };
             Storyboard.SetTarget(progressFade, HeroProgressBar);
             Storyboard.SetTargetProperty(progressFade, new PropertyPath(UIElement.OpacityProperty));
@@ -98,9 +98,9 @@ public partial class DashboardView : Page
             var labelFade = new DoubleAnimation
             {
                 From = 0, To = 1,
-                Duration = TimeSpan.FromMilliseconds(300),
-                BeginTime = TimeSpan.FromMilliseconds(450),
-                EasingFunction = EaseOut
+                Duration = TimeSpan.FromMilliseconds(400),
+                BeginTime = TimeSpan.FromMilliseconds(500),
+                EasingFunction = SmoothEase
             };
             Storyboard.SetTarget(labelFade, CourseSectionLabel);
             Storyboard.SetTargetProperty(labelFade, new PropertyPath(UIElement.OpacityProperty));
@@ -132,21 +132,21 @@ public partial class DashboardView : Page
             var container = CourseItemsControl.ItemContainerGenerator.ContainerFromIndex(i) as ContentPresenter;
             if (container == null) continue;
 
-            var delay = TimeSpan.FromMilliseconds(500 + i * 60);
+            var delay = TimeSpan.FromMilliseconds(550 + i * 70);
 
             var fadeIn = new DoubleAnimation
             {
                 From = 0, To = 1,
-                Duration = TimeSpan.FromMilliseconds(350),
+                Duration = TimeSpan.FromMilliseconds(400),
                 BeginTime = delay,
-                EasingFunction = EaseOut
+                EasingFunction = SmoothEase
             };
             var slideUp = new DoubleAnimation
             {
-                From = 12, To = 0,
-                Duration = TimeSpan.FromMilliseconds(350),
+                From = 10, To = 0,
+                Duration = TimeSpan.FromMilliseconds(400),
                 BeginTime = delay,
-                EasingFunction = EaseOut
+                EasingFunction = SmoothEase
             };
 
             container.RenderTransform = new TranslateTransform();

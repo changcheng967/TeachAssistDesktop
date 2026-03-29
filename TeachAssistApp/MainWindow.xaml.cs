@@ -222,10 +222,11 @@ public partial class MainWindow : FluentWindow
             var fadeIn = new DoubleAnimation
             {
                 From = 0, To = 1,
-                Duration = TimeSpan.FromMilliseconds(200),
-                EasingFunction = new CubicEase { EasingMode = EasingMode.EaseOut }
+                Duration = TimeSpan.FromMilliseconds(350),
+                EasingFunction = new QuadraticEase { EasingMode = EasingMode.EaseInOut }
             };
             fe.BeginAnimation(UIElement.OpacityProperty, fadeIn);
+
         }
     }
 
