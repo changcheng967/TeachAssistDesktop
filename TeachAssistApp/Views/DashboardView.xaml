@@ -40,8 +40,7 @@
                        Icon="{ui:SymbolIcon ArrowSyncCheckmark24}"
                        VerticalAlignment="Top"
                        Margin="0,4,0,0"
-                       Style="{StaticResource AnimatedButton}"
-                       RenderTransformOrigin="0.5,0.5"/>
+                       />
         </Grid>
 
         <!-- Stats Row -->
@@ -254,8 +253,7 @@
                 <TextBlock Text="Your courses will appear here once marks are published" FontSize="14"
                            Foreground="{DynamicResource TextFillColorSecondaryBrush}"
                            HorizontalAlignment="Center" Margin="0,0,0,24"/>
-                <ui:Button Content="Refresh" Command="{Binding LoadCoursesCommand}" Appearance="Primary" Icon="{ui:SymbolIcon ArrowSync24}"
-                           Style="{StaticResource AnimatedButton}" RenderTransformOrigin="0.5,0.5"/>
+                <ui:Button Content="Refresh" Command="{Binding LoadCoursesCommand}" Appearance="Primary" Icon="{ui:SymbolIcon ArrowSync24}"/>
             </StackPanel>
         </Grid>
 
@@ -268,12 +266,6 @@
                     Margin="32,60,32,0"
                     HorizontalAlignment="Center"
                     VerticalAlignment="Top"
-                    MaxWidth="500"
-                    RenderTransformOrigin="0.5,0"
-                    Style="{StaticResource AnimatedInfoBar}">
-            <ui:InfoBar.RenderTransform>
-                <TranslateTransform Y="0"/>
-            </ui:InfoBar.RenderTransform>
-        </ui:InfoBar>
+                    MaxWidth="500"/>
     </Grid>
 </Page>

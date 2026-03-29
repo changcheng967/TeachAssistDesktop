@@ -125,9 +125,7 @@
                                HorizontalAlignment="Stretch"
                                FontSize="15"
                                Height="44"
-                               Margin="0,0,0,16"
-                               Style="{StaticResource AnimatedButton}"
-                               RenderTransformOrigin="0.5,0.5"/>
+                               Margin="0,0,0,16"/>
 
                     <!-- Demo Hint -->
                     <Border Background="{DynamicResource CardBackgroundFillColorDefaultBrush}"

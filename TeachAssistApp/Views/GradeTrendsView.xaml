@@ -93,7 +93,7 @@
 
                 <ui:Button Content="Close" Command="{Binding CloseCommand}" Appearance="Secondary"
                            HorizontalAlignment="Right"
-                           Style="{StaticResource AnimatedButton}" RenderTransformOrigin="0.5,0.5"/>
+                           />
             </StackPanel>
         </ScrollViewer>
     </Grid>

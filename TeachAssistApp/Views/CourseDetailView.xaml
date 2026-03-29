@@ -248,7 +248,7 @@
                 HorizontalAlignment="Center"
                 VerticalAlignment="Top"
                 MaxWidth="500"
-                RenderTransformOrigin="0.5,0" Style="{StaticResource AnimatedInfoBar}">
+>
         <ui:InfoBar.RenderTransform>
             <TranslateTransform Y="0"/>
         </ui:InfoBar.RenderTransform>
@@ -263,7 +263,7 @@
                 HorizontalAlignment="Center"
                 VerticalAlignment="Top"
                 MaxWidth="500"
-                RenderTransformOrigin="0.5,0" Style="{StaticResource AnimatedInfoBar}">
+>
         <ui:InfoBar.RenderTransform>
             <TranslateTransform Y="0"/>
         </ui:InfoBar.RenderTransform>

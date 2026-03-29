@@ -60,7 +60,7 @@
 
                         <ui:Button Content="Add Assignment" Command="{Binding AddAssignmentCommand}"
                                    Appearance="Primary" HorizontalAlignment="Stretch"
-                                   Style="{StaticResource AnimatedButton}" RenderTransformOrigin="0.5,0.5"/>
+                                   />
                     </StackPanel>
                 </ui:Card>
 
