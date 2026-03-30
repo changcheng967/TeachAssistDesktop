@@ -19,8 +19,8 @@
         <Grid Margin="0,35,0,0">
             <ScrollViewer VerticalScrollBarVisibility="Auto" Padding="32,24,32,60">
                 <StackPanel>
-                    <!-- Stats row — bento style -->
-                    <Grid Margin="0,0,0,24">
+                    <!-- Stats row -->
+                    <Grid Margin="0,0,0,20">
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="*"/>
                             <ColumnDefinition Width="10"/>
@@ -30,7 +30,9 @@
                         </Grid.ColumnDefinitions>
 
                         <!-- Average -->
-                        <Border Grid.Column="0" Style="{StaticResource BentoCard}" CornerRadius="12">
+                        <Border Grid.Column="0" CornerRadius="10"
+                                Background="{DynamicResource CardBackgroundFillColorDefaultBrush}"
+                                Effect="{StaticResource CardDefaultShadow}" Padding="16,12">
                             <StackPanel>
                                 <TextBlock Text="Overall Average" FontSize="11" Foreground="{DynamicResource TextFillColorTertiaryBrush}" Margin="0,0,0,6"/>
                                 <TextBlock Text="{Binding OverallAverage, StringFormat={}{0:F1}%}" FontSize="28" FontWeight="Bold"/>
@@ -38,14 +40,16 @@
                         </Border>
 
                         <!-- Highest -->
-                        <Border Grid.Column="2" Style="{StaticResource BentoCard}" CornerRadius="12">
+                        <Border Grid.Column="2" CornerRadius="10"
+                                Background="{DynamicResource CardBackgroundFillColorDefaultBrush}"
+                                Effect="{StaticResource CardDefaultShadow}">
                             <Grid>
                                 <Grid.ColumnDefinitions>
                                     <ColumnDefinition Width="3"/>
                                     <ColumnDefinition Width="*"/>
                                 </Grid.ColumnDefinitions>
-                                <Border Grid.Column="0" CornerRadius="12,0,0,12" Background="{StaticResource SuccessGradient}" Opacity="0.6"/>
-                                <StackPanel Grid.Column="1" Margin="16,0,0,0">
+                                <Border Grid.Column="0" CornerRadius="10,0,0,10" Background="{StaticResource SuccessGradient}" Opacity="0.6"/>
+                                <StackPanel Grid.Column="1" Margin="16,12">
                                     <TextBlock Text="Highest Mark" FontSize="11" Foreground="{DynamicResource TextFillColorTertiaryBrush}" Margin="0,0,0,6"/>
                                     <TextBlock Text="{Binding HighestMark, StringFormat={}{0:F1}%}" FontSize="28" FontWeight="Bold" Foreground="{StaticResource SuccessBrush}"/>
                                 </StackPanel>
@@ -53,14 +57,16 @@
                         </Border>
 
                         <!-- Lowest -->
-                        <Border Grid.Column="4" Style="{StaticResource BentoCard}" CornerRadius="12">
+                        <Border Grid.Column="4" CornerRadius="10"
+                                Background="{DynamicResource CardBackgroundFillColorDefaultBrush}"
+                                Effect="{StaticResource CardDefaultShadow}">
                             <Grid>
                                 <Grid.ColumnDefinitions>
                                     <ColumnDefinition Width="3"/>
                                     <ColumnDefinition Width="*"/>
                                 </Grid.ColumnDefinitions>
-                                <Border Grid.Column="0" CornerRadius="12,0,0,12" Background="{StaticResource WarmGradient}" Opacity="0.6"/>
-                                <StackPanel Grid.Column="1" Margin="16,0,0,0">
+                                <Border Grid.Column="0" CornerRadius="10,0,0,10" Background="{StaticResource WarmGradient}" Opacity="0.6"/>
+                                <StackPanel Grid.Column="1" Margin="16,12">
                                     <TextBlock Text="Lowest Mark" FontSize="11" Foreground="{DynamicResource TextFillColorTertiaryBrush}" Margin="0,0,0,6"/>
                                     <TextBlock Text="{Binding LowestMark, StringFormat={}{0:F1}%}" FontSize="28" FontWeight="Bold" Foreground="{StaticResource WarningBrush}"/>
                                 </StackPanel>
@@ -68,11 +74,9 @@
                         </Border>
                     </Grid>
 
-                    <!-- Course Trends -->
-                    <TextBlock Text="Course Performance"
-                               FontSize="15" FontWeight="SemiBold"
-                               Foreground="{DynamicResource TextFillColorSecondaryBrush}"
-                               Margin="0,0,0,12"/>
+                    <!-- Course Performance -->
+                    <TextBlock Text="COURSE PERFORMANCE" FontSize="11" FontWeight="SemiBold"
+                               Foreground="{DynamicResource TextFillColorTertiaryBrush}" Margin="0,0,0,10"/>
 
                     <ScrollViewer MaxHeight="280" VerticalScrollBarVisibility="Auto">
                         <ItemsControl ItemsSource="{Binding CourseTrends}">
@@ -84,12 +88,11 @@
                                         <Grid>
                                             <Grid.ColumnDefinitions>
                                                 <ColumnDefinition Width="3"/>
-                                                <ColumnDefinition Width="170"/>
+                                                <ColumnDefinition Width="160"/>
                                                 <ColumnDefinition Width="*"/>
-                                                <ColumnDefinition Width="70"/>
+                                                <ColumnDefinition Width="65"/>
                                             </Grid.ColumnDefinitions>
 
-                                            <!-- Grade color accent -->
                                             <Border Grid.Column="0" CornerRadius="10,0,0,10"
                                                     Background="{Binding GradeColor, Converter={StaticResource StringToBrushConverter}}" Opacity="0.6"/>
 
@@ -99,8 +102,7 @@
                                                            Foreground="{DynamicResource TextFillColorSecondaryBrush}" TextTrimming="CharacterEllipsis"/>
                                             </StackPanel>
 
-                                            <!-- Grade bar -->
-                                            <ProgressBar Grid.Column="2" Height="6" Value="{Binding Mark, Mode=OneWay}" Maximum="100"
+                                            <ProgressBar Grid.Column="2" Height="4" Value="{Binding Mark, Mode=OneWay}" Maximum="100"
                                                          Margin="14,0" VerticalAlignment="Center"
                                                          Style="{StaticResource ThinProgressBar}"/>
 
@@ -118,8 +120,9 @@
                     </ScrollViewer>
 
                     <!-- Insights -->
-                    <ui:Card Margin="0,20,0,20">
-                        <StackPanel Margin="14,12">
+                    <Border CornerRadius="10" Background="{DynamicResource CardBackgroundFillColorDefaultBrush}"
+                            Effect="{StaticResource CardDefaultShadow}" Margin="0,20,0,20" Padding="14,12">
+                        <StackPanel>
                             <TextBlock Text="Insights" FontSize="13" FontWeight="SemiBold" Margin="0,0,0,8"/>
                             <ItemsControl ItemsSource="{Binding Insights}">
                                 <ItemsControl.ItemTemplate>
@@ -130,7 +133,7 @@
                                 </ItemsControl.ItemTemplate>
                             </ItemsControl>
                         </StackPanel>
-                    </ui:Card>
+                    </Border>
                 </StackPanel>
             </ScrollViewer>
 

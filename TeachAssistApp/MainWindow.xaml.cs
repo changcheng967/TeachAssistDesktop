@@ -1,6 +1,7 @@
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
+using System.Windows.Media;
 using System.Windows.Media.Animation;
 using System.Windows.Navigation;
 using Microsoft.Extensions.DependencyInjection;
@@ -17,8 +18,7 @@ public partial class MainWindow : FluentWindow
     private readonly IServiceProvider _serviceProvider;
     private readonly Helpers.INavigationService _navigationService;
     private string _currentView = "";
-    private NavigationViewItem? _dashboardItem;
-    private NavigationViewItem? _settingsItem;
+    private Border? _activeNavItem;
     private string? _pendingNavigation;
 
     public MainWindow(IServiceProvider serviceProvider)
@@ -110,18 +110,6 @@ public partial class MainWindow : FluentWindow
     {
         WindowsIntegration.UpdateJumpList([]);
 
-        // Cache nav items and wire click handlers
-        foreach (var item in RootNavigation.MenuItems)
-        {
-            if (item is NavigationViewItem navItem)
-            {
-                if (navItem.Tag?.ToString() == "Dashboard") _dashboardItem = navItem;
-                if (navItem.Tag?.ToString() == "Settings") _settingsItem = navItem;
-
-                navItem.PreviewMouseLeftButtonDown += NavItem_PreviewMouseLeftButtonDown;
-            }
-        }
-
         // Process deferred navigation
         if (_pendingNavigation == "AutoLogin")
         {
@@ -137,7 +125,7 @@ public partial class MainWindow : FluentWindow
 
     private void NavItem_PreviewMouseLeftButtonDown(object sender, MouseButtonEventArgs e)
     {
-        if (sender is NavigationViewItem navItem)
+        if (sender is Border navItem)
         {
             var tag = navItem.Tag?.ToString();
             if (tag != null && tag != _currentView)
@@ -162,8 +150,8 @@ public partial class MainWindow : FluentWindow
                 var loginViewModel = _serviceProvider.GetRequiredService<LoginViewModel>();
                 _ = loginViewModel.LoadSavedCredentialsAsync();
                 page.DataContext = loginViewModel;
-                RootNavigation.Visibility = Visibility.Collapsed;
-                UpdateTitleBarMargin(false);
+                Sidebar.Visibility = Visibility.Collapsed;
+                AppTitleBar.Margin = new Thickness(0);
                 break;
             case "Dashboard":
                 page = _serviceProvider.GetRequiredService<DashboardView>();
@@ -173,18 +161,18 @@ public partial class MainWindow : FluentWindow
                 {
                     _ = dashboardVM.LoadCoursesCommand.ExecuteAsync(null);
                 }
-                RootNavigation.Visibility = Visibility.Visible;
-                UpdateTitleBarMargin(true);
-                HighlightNavItem(_dashboardItem);
+                Sidebar.Visibility = Visibility.Visible;
+                AppTitleBar.Margin = new Thickness(0);
+                SetActiveNav(NavDashboard);
                 break;
             case "Settings":
                 page = _serviceProvider.GetRequiredService<SettingsView>();
                 var settingsViewModel = _serviceProvider.GetRequiredService<SettingsViewModel>();
                 page.DataContext = settingsViewModel;
                 _ = settingsViewModel.RefreshUserDataAsync();
-                RootNavigation.Visibility = Visibility.Visible;
-                UpdateTitleBarMargin(true);
-                HighlightNavItem(_settingsItem);
+                Sidebar.Visibility = Visibility.Visible;
+                AppTitleBar.Margin = new Thickness(0);
+                SetActiveNav(NavSettings);
                 break;
             case "CourseDetail":
                 if (parts.Length > 1)
@@ -200,8 +188,9 @@ public partial class MainWindow : FluentWindow
                     page = _serviceProvider.GetRequiredService<CourseDetailView>();
                     page.DataContext = _serviceProvider.GetRequiredService<CourseDetailViewModel>();
                 }
-                RootNavigation.Visibility = Visibility.Visible;
-                UpdateTitleBarMargin(true);
+                Sidebar.Visibility = Visibility.Visible;
+                AppTitleBar.Margin = new Thickness(0);
+                ClearActiveNav();
                 break;
         }
 
@@ -211,6 +200,23 @@ public partial class MainWindow : FluentWindow
             while (ContentArea.CanGoBack)
                 ContentArea.RemoveBackEntry();
             ContentArea.Navigate(page);
+        }
+    }
+
+    private void SetActiveNav(Border? item)
+    {
+        ClearActiveNav();
+        if (item == null) return;
+        _activeNavItem = item;
+        item.Background = new SolidColorBrush(Color.FromArgb(0x15, 0x63, 0x66, 0xF1)); // Accent tint
+    }
+
+    private void ClearActiveNav()
+    {
+        if (_activeNavItem != null)
+        {
+            _activeNavItem.Background = Brushes.Transparent;
+            _activeNavItem = null;
         }
     }
 
@@ -228,22 +234,6 @@ public partial class MainWindow : FluentWindow
             fe.BeginAnimation(UIElement.OpacityProperty, fadeIn);
 
         }
-    }
-
-    private void HighlightNavItem(NavigationViewItem? item)
-    {
-        foreach (var mi in RootNavigation.MenuItems)
-        {
-            if (mi is NavigationViewItem nvi) nvi.IsActive = false;
-        }
-        if (item != null) item.IsActive = true;
-    }
-
-    private void UpdateTitleBarMargin(bool sidebarVisible)
-    {
-        AppTitleBar.Margin = sidebarVisible
-            ? new Thickness(46, 0, 0, 0)
-            : new Thickness(0);
     }
 
     protected override void OnClosed(EventArgs e)

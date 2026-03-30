@@ -11,24 +11,20 @@
         <ScrollViewer VerticalScrollBarVisibility="Auto">
             <StackPanel Margin="32,28,32,32" Background="{DynamicResource ApplicationPageBackgroundThemeBrush}">
 
-            <!-- Header with accent line -->
-            <Grid Margin="0,0,0,28">
-                <StackPanel>
-                    <TextBlock Text="Settings"
-                               FontSize="26"
-                               FontWeight="SemiBold"
-                               Foreground="{DynamicResource TextFillColorPrimaryBrush}"
-                               Margin="0,0,0,6"/>
-                    <Border Width="50" Height="3" CornerRadius="1.5"
-                            Background="{StaticResource AccentGradientHorizontal}"
-                            HorizontalAlignment="Left"/>
-                </StackPanel>
-            </Grid>
+            <!-- Header -->
+            <TextBlock Text="Settings"
+                       FontSize="26" FontWeight="SemiBold"
+                       Foreground="{DynamicResource TextFillColorPrimaryBrush}"
+                       Margin="0,0,0,6"/>
+            <Border Width="50" Height="3" CornerRadius="1.5"
+                    Background="{StaticResource AccentGradientHorizontal}"
+                    HorizontalAlignment="Left" Margin="0,0,0,28"/>
 
             <!-- APPEARANCE -->
             <TextBlock Text="APPEARANCE" FontSize="11" FontWeight="SemiBold"
                        Foreground="{DynamicResource TextFillColorTertiaryBrush}" Margin="0,0,0,10"/>
-            <ui:Card Margin="0,0,0,28">
+            <Border CornerRadius="10" Background="{DynamicResource CardBackgroundFillColorDefaultBrush}"
+                    Effect="{StaticResource CardDefaultShadow}" Margin="0,0,0,28">
                 <StackPanel>
                     <Grid Margin="16,14">
                         <Grid.ColumnDefinitions>
@@ -57,45 +53,99 @@
                         </ComboBox>
                     </Grid>
                 </StackPanel>
-            </ui:Card>
+            </Border>
 
-            <!-- TOOLS -->
+            <!-- TOOLS — custom grid of clickable tiles -->
             <TextBlock Text="TOOLS" FontSize="11" FontWeight="SemiBold"
                        Foreground="{DynamicResource TextFillColorTertiaryBrush}" Margin="0,0,0,10"/>
-            <ui:Card Margin="0,0,0,28">
-                <Grid Margin="16,14">
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="*"/>
-                        <ColumnDefinition Width="10"/>
-                        <ColumnDefinition Width="*"/>
-                    </Grid.ColumnDefinitions>
-                    <Grid.RowDefinitions>
-                        <RowDefinition Height="Auto"/>
-                        <RowDefinition Height="10"/>
-                        <RowDefinition Height="Auto"/>
-                        <RowDefinition Height="10"/>
-                        <RowDefinition Height="Auto"/>
-                    </Grid.RowDefinitions>
+            <Grid Margin="0,0,0,28">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="10"/>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="10"/>
+                    <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="10"/>
+                    <RowDefinition Height="Auto"/>
+                </Grid.RowDefinitions>
 
-                    <ui:CardAction Grid.Row="0" Grid.Column="0" Command="{Binding ViewTrendsCommand}"
-                                   Icon="{ui:SymbolIcon ArrowTrendingLines24}" Content="Grade Trends"/>
-                    <ui:CardAction Grid.Row="0" Grid.Column="2" Command="{Binding GradeGoalsCommand}"
-                                   Icon="{ui:SymbolIcon ChartMultiple24}" Content="Grade Goals"/>
-                    <ui:CardAction Grid.Row="2" Grid.Column="0" Command="{Binding WhatIfCalculatorCommand}"
-                                   Icon="{ui:SymbolIcon Calculator24}" Content="What-If Calculator"/>
-                    <ui:CardAction Grid.Row="2" Grid.Column="2" Command="{Binding CheckForUpdatesCommand}"
-                                   Icon="{ui:SymbolIcon ArrowSyncCheckmark24}" Content="Check for Updates"/>
-                    <ui:CardAction Grid.Row="4" Grid.Column="0" Command="{Binding ExportToCsvCommand}"
-                                   Icon="{ui:SymbolIcon ArrowExportLtr24}" Content="Export CSV"/>
-                    <ui:CardAction Grid.Row="4" Grid.Column="2" Command="{Binding ExportToPdfCommand}"
-                                   Icon="{ui:SymbolIcon Document24}" Content="Export Report (HTML)"/>
-                </Grid>
-            </ui:Card>
+                <!-- Tool tiles — custom borders instead of CardAction -->
+                <Border Grid.Row="0" Grid.Column="0" CornerRadius="10"
+                        Background="{DynamicResource CardBackgroundFillColorDefaultBrush}"
+                        Effect="{StaticResource CardDefaultShadow}" Padding="14,12" Cursor="Hand"
+                        MouseLeftButtonDown="ToolTrends_Click" RenderTransformOrigin="0.5,0.5">
+                    <Border.RenderTransform><ScaleTransform ScaleX="1" ScaleY="1"/></Border.RenderTransform>
+                    <StackPanel Orientation="Horizontal">
+                        <ui:SymbolIcon Symbol="ArrowTrendingLines24" FontSize="16" Margin="0,0,10,0"
+                                       Foreground="{DynamicResource TextFillColorSecondaryBrush}"/>
+                        <TextBlock Text="Grade Trends" FontSize="13" VerticalAlignment="Center"/>
+                    </StackPanel>
+                </Border>
+                <Border Grid.Row="0" Grid.Column="2" CornerRadius="10"
+                        Background="{DynamicResource CardBackgroundFillColorDefaultBrush}"
+                        Effect="{StaticResource CardDefaultShadow}" Padding="14,12" Cursor="Hand"
+                        MouseLeftButtonDown="ToolGoals_Click" RenderTransformOrigin="0.5,0.5">
+                    <Border.RenderTransform><ScaleTransform ScaleX="1" ScaleY="1"/></Border.RenderTransform>
+                    <StackPanel Orientation="Horizontal">
+                        <ui:SymbolIcon Symbol="ChartMultiple24" FontSize="16" Margin="0,0,10,0"
+                                       Foreground="{DynamicResource TextFillColorSecondaryBrush}"/>
+                        <TextBlock Text="Grade Goals" FontSize="13" VerticalAlignment="Center"/>
+                    </StackPanel>
+                </Border>
+                <Border Grid.Row="0" Grid.Column="4" CornerRadius="10"
+                        Background="{DynamicResource CardBackgroundFillColorDefaultBrush}"
+                        Effect="{StaticResource CardDefaultShadow}" Padding="14,12" Cursor="Hand"
+                        MouseLeftButtonDown="ToolWhatIf_Click" RenderTransformOrigin="0.5,0.5">
+                    <Border.RenderTransform><ScaleTransform ScaleX="1" ScaleY="1"/></Border.RenderTransform>
+                    <StackPanel Orientation="Horizontal">
+                        <ui:SymbolIcon Symbol="Calculator24" FontSize="16" Margin="0,0,10,0"
+                                       Foreground="{DynamicResource TextFillColorSecondaryBrush}"/>
+                        <TextBlock Text="What-If Calc" FontSize="13" VerticalAlignment="Center"/>
+                    </StackPanel>
+                </Border>
+                <Border Grid.Row="2" Grid.Column="0" CornerRadius="10"
+                        Background="{DynamicResource CardBackgroundFillColorDefaultBrush}"
+                        Effect="{StaticResource CardDefaultShadow}" Padding="14,12" Cursor="Hand"
+                        MouseLeftButtonDown="ToolUpdate_Click" RenderTransformOrigin="0.5,0.5">
+                    <Border.RenderTransform><ScaleTransform ScaleX="1" ScaleY="1"/></Border.RenderTransform>
+                    <StackPanel Orientation="Horizontal">
+                        <ui:SymbolIcon Symbol="ArrowSyncCheckmark24" FontSize="16" Margin="0,0,10,0"
+                                       Foreground="{DynamicResource TextFillColorSecondaryBrush}"/>
+                        <TextBlock Text="Check Updates" FontSize="13" VerticalAlignment="Center"/>
+                    </StackPanel>
+                </Border>
+                <Border Grid.Row="2" Grid.Column="2" CornerRadius="10"
+                        Background="{DynamicResource CardBackgroundFillColorDefaultBrush}"
+                        Effect="{StaticResource CardDefaultShadow}" Padding="14,12" Cursor="Hand"
+                        MouseLeftButtonDown="ToolCsv_Click" RenderTransformOrigin="0.5,0.5">
+                    <Border.RenderTransform><ScaleTransform ScaleX="1" ScaleY="1"/></Border.RenderTransform>
+                    <StackPanel Orientation="Horizontal">
+                        <ui:SymbolIcon Symbol="ArrowExportLtr24" FontSize="16" Margin="0,0,10,0"
+                                       Foreground="{DynamicResource TextFillColorSecondaryBrush}"/>
+                        <TextBlock Text="Export CSV" FontSize="13" VerticalAlignment="Center"/>
+                    </StackPanel>
+                </Border>
+                <Border Grid.Row="2" Grid.Column="4" CornerRadius="10"
+                        Background="{DynamicResource CardBackgroundFillColorDefaultBrush}"
+                        Effect="{StaticResource CardDefaultShadow}" Padding="14,12" Cursor="Hand"
+                        MouseLeftButtonDown="ToolPdf_Click" RenderTransformOrigin="0.5,0.5">
+                    <Border.RenderTransform><ScaleTransform ScaleX="1" ScaleY="1"/></Border.RenderTransform>
+                    <StackPanel Orientation="Horizontal">
+                        <ui:SymbolIcon Symbol="Document24" FontSize="16" Margin="0,0,10,0"
+                                       Foreground="{DynamicResource TextFillColorSecondaryBrush}"/>
+                        <TextBlock Text="Export HTML" FontSize="13" VerticalAlignment="Center"/>
+                    </StackPanel>
+                </Border>
+            </Grid>
 
             <!-- ACCOUNT -->
             <TextBlock Text="ACCOUNT" FontSize="11" FontWeight="SemiBold"
                        Foreground="{DynamicResource TextFillColorTertiaryBrush}" Margin="0,0,0,10"/>
-            <ui:Card Margin="0,0,0,28">
+            <Border CornerRadius="10" Background="{DynamicResource CardBackgroundFillColorDefaultBrush}"
+                    Effect="{StaticResource CardDefaultShadow}" Margin="0,0,0,28">
                 <StackPanel>
                     <Border Margin="16,14,16,0" Background="{DynamicResource ControlFillColorDefaultBrush}"
                             CornerRadius="6" Padding="12">
@@ -111,55 +161,73 @@
                                    HorizontalAlignment="Right"/>
                     </Grid>
                 </StackPanel>
-            </ui:Card>
+            </Border>
 
             <!-- DATA -->
             <TextBlock Text="DATA" FontSize="11" FontWeight="SemiBold"
                        Foreground="{DynamicResource TextFillColorTertiaryBrush}" Margin="0,0,0,10"/>
-            <ui:Card Margin="0,0,0,28">
-                <ui:CardAction Command="{Binding ClearCacheCommand}"
-                               Icon="{ui:SymbolIcon Delete24}" Content="Clear Cached Data"
-                               Margin="8"/>
-            </ui:Card>
+            <Border CornerRadius="10" Background="{DynamicResource CardBackgroundFillColorDefaultBrush}"
+                    Effect="{StaticResource CardDefaultShadow}" Padding="14,12" Margin="0,0,0,28" Cursor="Hand"
+                    MouseLeftButtonDown="DataClear_Click">
+                <StackPanel Orientation="Horizontal">
+                    <ui:SymbolIcon Symbol="Delete24" FontSize="16" Margin="0,0,10,0"
+                                   Foreground="{DynamicResource TextFillColorSecondaryBrush}"/>
+                    <TextBlock Text="Clear Cached Data" FontSize="13" VerticalAlignment="Center"/>
+                </StackPanel>
+            </Border>
 
             <!-- KEYBOARD SHORTCUTS -->
             <TextBlock Text="KEYBOARD SHORTCUTS" FontSize="11" FontWeight="SemiBold"
                        Foreground="{DynamicResource TextFillColorTertiaryBrush}" Margin="0,0,0,10"/>
-            <ui:Card Margin="0,0,0,28">
+            <Border CornerRadius="10" Background="{DynamicResource CardBackgroundFillColorDefaultBrush}"
+                    Effect="{StaticResource CardDefaultShadow}" Margin="0,0,0,28">
                 <Grid Margin="16,14">
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="*"/>
                         <ColumnDefinition Width="*"/>
                     </Grid.ColumnDefinitions>
                     <Grid.RowDefinitions>
-                        <RowDefinition Height="32"/>
-                        <RowDefinition Height="32"/>
-                        <RowDefinition Height="32"/>
-                        <RowDefinition Height="32"/>
+                        <RowDefinition Height="30"/>
+                        <RowDefinition Height="30"/>
+                        <RowDefinition Height="30"/>
+                        <RowDefinition Height="30"/>
                     </Grid.RowDefinitions>
 
                     <TextBlock Grid.Row="0" Grid.Column="0" FontSize="13" VerticalAlignment="Center"
                                Foreground="{DynamicResource TextFillColorSecondaryBrush}">Refresh</TextBlock>
-                    <ui:Badge Grid.Row="0" Grid.Column="1" Content="F5" HorizontalAlignment="Right"/>
+                    <Border Grid.Row="0" Grid.Column="1" CornerRadius="4" HorizontalAlignment="Right"
+                            Background="{DynamicResource ControlFillColorDefaultBrush}" Padding="8,3">
+                        <TextBlock Text="F5" FontSize="11" FontWeight="SemiBold" Foreground="{DynamicResource TextFillColorSecondaryBrush}"/>
+                    </Border>
 
                     <TextBlock Grid.Row="1" Grid.Column="0" FontSize="13" VerticalAlignment="Center"
                                Foreground="{DynamicResource TextFillColorSecondaryBrush}">Settings</TextBlock>
-                    <ui:Badge Grid.Row="1" Grid.Column="1" Content="Ctrl + ," HorizontalAlignment="Right"/>
+                    <Border Grid.Row="1" Grid.Column="1" CornerRadius="4" HorizontalAlignment="Right"
+                            Background="{DynamicResource ControlFillColorDefaultBrush}" Padding="8,3">
+                        <TextBlock Text="Ctrl + ," FontSize="11" FontWeight="SemiBold" Foreground="{DynamicResource TextFillColorSecondaryBrush}"/>
+                    </Border>
 
                     <TextBlock Grid.Row="2" Grid.Column="0" FontSize="13" VerticalAlignment="Center"
                                Foreground="{DynamicResource TextFillColorSecondaryBrush}">Export</TextBlock>
-                    <ui:Badge Grid.Row="2" Grid.Column="1" Content="Ctrl + E" HorizontalAlignment="Right"/>
+                    <Border Grid.Row="2" Grid.Column="1" CornerRadius="4" HorizontalAlignment="Right"
+                            Background="{DynamicResource ControlFillColorDefaultBrush}" Padding="8,3">
+                        <TextBlock Text="Ctrl + E" FontSize="11" FontWeight="SemiBold" Foreground="{DynamicResource TextFillColorSecondaryBrush}"/>
+                    </Border>
 
                     <TextBlock Grid.Row="3" Grid.Column="0" FontSize="13" VerticalAlignment="Center"
                                Foreground="{DynamicResource TextFillColorSecondaryBrush}">Go Back</TextBlock>
-                    <ui:Badge Grid.Row="3" Grid.Column="1" Content="Esc" HorizontalAlignment="Right"/>
+                    <Border Grid.Row="3" Grid.Column="1" CornerRadius="4" HorizontalAlignment="Right"
+                            Background="{DynamicResource ControlFillColorDefaultBrush}" Padding="8,3">
+                        <TextBlock Text="Esc" FontSize="11" FontWeight="SemiBold" Foreground="{DynamicResource TextFillColorSecondaryBrush}"/>
+                    </Border>
                 </Grid>
-            </ui:Card>
+            </Border>
 
             <!-- ABOUT -->
             <TextBlock Text="ABOUT" FontSize="11" FontWeight="SemiBold"
                        Foreground="{DynamicResource TextFillColorTertiaryBrush}" Margin="0,0,0,10"/>
-            <ui:Card Margin="0,0,0,20">
+            <Border CornerRadius="10" Background="{DynamicResource CardBackgroundFillColorDefaultBrush}"
+                    Effect="{StaticResource CardDefaultShadow}" Margin="0,0,0,20">
                 <Grid Margin="16,14">
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="Auto"/>
@@ -167,7 +235,6 @@
                         <ColumnDefinition Width="*"/>
                     </Grid.ColumnDefinitions>
 
-                    <!-- Logo with warm glow -->
                     <Border Grid.Column="0" Width="44" Height="44" CornerRadius="12" ClipToBounds="True">
                         <Border.Effect>
                             <DropShadowEffect Color="#6366F1" BlurRadius="14" ShadowDepth="0" Opacity="0.2" Direction="0"/>
@@ -184,7 +251,7 @@
                                    Text="{Binding UpdateStatus}" Visibility="{Binding UpdateStatus, Converter={StaticResource StringToVisibilityConverter}}"/>
                     </StackPanel>
                 </Grid>
-            </ui:Card>
+            </Border>
 
         </StackPanel>
     </ScrollViewer>

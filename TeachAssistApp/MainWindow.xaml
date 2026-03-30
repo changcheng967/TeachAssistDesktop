@@ -24,27 +24,70 @@
         <!-- TitleBar overlays content -->
         <ui:TitleBar x:Name="AppTitleBar" Grid.ColumnSpan="2" Title="TeachAssist"/>
 
-        <!-- Navigation sidebar -->
-        <ui:NavigationView x:Name="RootNavigation"
-                           Grid.Column="0"
-                           PaneDisplayMode="Left"
-                           IsBackButtonVisible="Collapsed"
-                           IsPaneToggleVisible="False"
-                           OpenPaneLength="200"
-                           Margin="0,32,0,0">
+        <!-- Custom sidebar — no NavigationView -->
+        <Border x:Name="Sidebar" Grid.Column="0" Width="200" Margin="0,32,0,0"
+                Background="{DynamicResource CardBackgroundFillColorDefaultBrush}"
+                BorderBrush="{DynamicResource ControlStrokeColorDefaultBrush}"
+                BorderThickness="0,0,1,0">
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="Auto"/>
+                </Grid.RowDefinitions>
 
-            <ui:NavigationView.MenuItems>
-                <ui:NavigationViewItem Content="Dashboard" Icon="{ui:SymbolIcon Home24}" Tag="Dashboard"/>
-                <ui:NavigationViewItem Content="Settings" Icon="{ui:SymbolIcon Settings24}" Tag="Settings"/>
-            </ui:NavigationView.MenuItems>
+                <!-- Logo area -->
+                <StackPanel Grid.Row="0" Margin="20,20,20,24" Orientation="Horizontal">
+                    <Border Width="32" Height="32" CornerRadius="8" ClipToBounds="True" Margin="0,0,10,0">
+                        <Image Source="/logo.png" Stretch="UniformToFill"/>
+                    </Border>
+                    <TextBlock Text="TeachAssist" FontSize="14" FontWeight="SemiBold"
+                               Foreground="{DynamicResource TextFillColorPrimaryBrush}"
+                               VerticalAlignment="Center"/>
+                </StackPanel>
 
-            <!-- Gradient accent at bottom of sidebar -->
-            <ui:NavigationView.FooterMenuItems>
-                <ui:NavigationViewItem Content="TeachAssist" Icon="{ui:SymbolIcon BookQuestionMark24}"
-                                       Foreground="{DynamicResource TextFillColorTertiaryBrush}" FontWeight="Normal"
-                                       FontSize="12" IsEnabled="False"/>
-            </ui:NavigationView.FooterMenuItems>
-        </ui:NavigationView>
+                <!-- Nav items -->
+                <StackPanel Grid.Row="1" Margin="8,0">
+                    <!-- Dashboard -->
+                    <Border x:Name="NavDashboard" CornerRadius="8" Padding="12,10" Margin="0,0,0,4"
+                            Background="Transparent" Cursor="Hand"
+                            MouseLeftButtonDown="NavItem_PreviewMouseLeftButtonDown"
+                            Tag="Dashboard"
+                            RenderTransformOrigin="0.5,0.5">
+                        <StackPanel Orientation="Horizontal">
+                            <ui:SymbolIcon Symbol="Home24" FontSize="16" Margin="0,0,10,0"
+                                           Foreground="{DynamicResource TextFillColorSecondaryBrush}"/>
+                            <TextBlock Text="Dashboard" FontSize="13"
+                                       Foreground="{DynamicResource TextFillColorPrimaryBrush}"
+                                       VerticalAlignment="Center"/>
+                        </StackPanel>
+                    </Border>
+
+                    <!-- Settings -->
+                    <Border x:Name="NavSettings" CornerRadius="8" Padding="12,10" Margin="0,0,0,4"
+                            Background="Transparent" Cursor="Hand"
+                            MouseLeftButtonDown="NavItem_PreviewMouseLeftButtonDown"
+                            Tag="Settings"
+                            RenderTransformOrigin="0.5,0.5">
+                        <StackPanel Orientation="Horizontal">
+                            <ui:SymbolIcon Symbol="Settings24" FontSize="16" Margin="0,0,10,0"
+                                           Foreground="{DynamicResource TextFillColorSecondaryBrush}"/>
+                            <TextBlock Text="Settings" FontSize="13"
+                                       Foreground="{DynamicResource TextFillColorPrimaryBrush}"
+                                       VerticalAlignment="Center"/>
+                        </StackPanel>
+                    </Border>
+                </StackPanel>
+
+                <!-- Footer: gradient line + version -->
+                <StackPanel Grid.Row="2" Margin="20,0,20,16">
+                    <Border Height="2" CornerRadius="1" Margin="0,0,0,12"
+                            Background="{StaticResource AccentGradientHorizontal}" Opacity="0.4"/>
+                    <TextBlock Text="TeachAssist Desktop" FontSize="11"
+                               Foreground="{DynamicResource TextFillColorTertiaryBrush}"/>
+                </StackPanel>
+            </Grid>
+        </Border>
 
         <!-- Content area -->
         <Frame x:Name="ContentArea" Grid.Column="1" Margin="0,32,0,0"

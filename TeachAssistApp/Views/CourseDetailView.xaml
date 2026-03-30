@@ -36,7 +36,7 @@
                     </StackPanel>
                 </StackPanel>
 
-                <!-- Grade badge with soft glow -->
+                <!-- Grade badge -->
                 <Border Grid.Column="2"
                         CornerRadius="12" Padding="20,10"
                         Background="{Binding SelectedCourse.GradeColor, Converter={StaticResource StringToBrushConverter}}"
@@ -49,131 +49,134 @@
                 </Border>
             </Grid>
 
-            <!-- Grade Analytics Section -->
-            <ui:CardExpander Header="Grade Analytics"
-                            IsExpanded="True"
-                            Icon="{ui:SymbolIcon ChartMultiple24}"
-                            Visibility="{Binding HasGradeTimeline, Converter={StaticResource BooleanToVisibilityConverter}}"
-                            Margin="0,0,0,12">
-                <StackPanel Margin="0,8">
-                    <!-- Bento-style stat cards -->
-                    <Grid Margin="0,0,0,16">
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="1.3*"/>
-                            <ColumnDefinition Width="8"/>
-                            <ColumnDefinition Width="*"/>
-                            <ColumnDefinition Width="8"/>
-                            <ColumnDefinition Width="*"/>
-                            <ColumnDefinition Width="8"/>
-                            <ColumnDefinition Width="1.2*"/>
-                        </Grid.ColumnDefinitions>
+            <!-- ═══════════ GRADE ANALYTICS ═══════════ -->
+            <StackPanel Visibility="{Binding HasGradeTimeline, Converter={StaticResource BooleanToVisibilityConverter}}"
+                        Margin="0,0,0,20">
+                <!-- Section label -->
+                <TextBlock Text="ANALYTICS" FontSize="11" FontWeight="SemiBold"
+                           Foreground="{DynamicResource TextFillColorTertiaryBrush}" Margin="0,0,0,10"/>
 
-                        <!-- Current grade — hero card with gradient accent -->
-                        <Border Grid.Column="0" CornerRadius="10"
-                                Background="{DynamicResource CardBackgroundFillColorDefaultBrush}"
-                                Effect="{StaticResource CardDefaultShadow}">
-                            <Grid>
-                                <Grid.ColumnDefinitions>
-                                    <ColumnDefinition Width="4"/>
-                                    <ColumnDefinition Width="*"/>
-                                </Grid.ColumnDefinitions>
-                                <Border Grid.Column="0" CornerRadius="10,0,0,10"
-                                        Background="{StaticResource AccentGradient}"/>
-                                <StackPanel Grid.Column="1" Margin="16,12">
-                                    <TextBlock Text="Current" FontSize="11" Foreground="{DynamicResource TextFillColorTertiaryBrush}"/>
-                                    <TextBlock Text="{Binding CurrentGrade, StringFormat={}{0:F1}%}" FontSize="26" FontWeight="Bold"
-                                               Margin="0,4,0,0"/>
-                                </StackPanel>
-                            </Grid>
-                        </Border>
+                <!-- Bento stat row -->
+                <Grid Margin="0,0,0,12">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="1.3*"/>
+                        <ColumnDefinition Width="8"/>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="8"/>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="8"/>
+                        <ColumnDefinition Width="1.2*"/>
+                    </Grid.ColumnDefinitions>
 
-                        <!-- Change -->
-                        <Border Grid.Column="2" CornerRadius="10"
-                                Background="{DynamicResource CardBackgroundFillColorDefaultBrush}"
-                                Effect="{StaticResource CardDefaultShadow}" Padding="14,12">
-                            <StackPanel>
-                                <TextBlock Text="Change" FontSize="11" Foreground="{DynamicResource TextFillColorTertiaryBrush}"/>
-                                <TextBlock Text="{Binding GradeChangeDisplay}" FontSize="20" FontWeight="Bold"
-                                           Foreground="{Binding GradeChangeTotal, Converter={StaticResource ImpactDeltaToColorConverter}}" Margin="0,4,0,0"/>
+                    <!-- Current — hero -->
+                    <Border Grid.Column="0" CornerRadius="10"
+                            Background="{DynamicResource CardBackgroundFillColorDefaultBrush}"
+                            Effect="{StaticResource CardDefaultShadow}">
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="4"/>
+                                <ColumnDefinition Width="*"/>
+                            </Grid.ColumnDefinitions>
+                            <Border Grid.Column="0" CornerRadius="10,0,0,10"
+                                    Background="{StaticResource AccentGradient}"/>
+                            <StackPanel Grid.Column="1" Margin="16,12">
+                                <TextBlock Text="Current" FontSize="11" Foreground="{DynamicResource TextFillColorTertiaryBrush}"/>
+                                <TextBlock Text="{Binding CurrentGrade, StringFormat={}{0:F1}%}" FontSize="26" FontWeight="Bold" Margin="0,4,0,0"/>
                             </StackPanel>
-                        </Border>
+                        </Grid>
+                    </Border>
 
-                        <!-- High Impact -->
-                        <Border Grid.Column="4" CornerRadius="10"
-                                Background="{DynamicResource CardBackgroundFillColorDefaultBrush}"
-                                Effect="{StaticResource CardDefaultShadow}" Padding="14,12">
-                            <StackPanel>
-                                <TextBlock Text="High Impact" FontSize="11" Foreground="{DynamicResource TextFillColorTertiaryBrush}"/>
-                                <TextBlock FontSize="20" FontWeight="Bold" Margin="0,4,0,0">
-                                    <Run Text="{Binding HighImpactCount}"/>
-                                    <Run Text=" tasks" FontSize="11"/>
-                                </TextBlock>
-                            </StackPanel>
-                        </Border>
+                    <!-- Change -->
+                    <Border Grid.Column="2" CornerRadius="10"
+                            Background="{DynamicResource CardBackgroundFillColorDefaultBrush}"
+                            Effect="{StaticResource CardDefaultShadow}" Padding="14,12">
+                        <StackPanel>
+                            <TextBlock Text="Change" FontSize="11" Foreground="{DynamicResource TextFillColorTertiaryBrush}"/>
+                            <TextBlock Text="{Binding GradeChangeDisplay}" FontSize="20" FontWeight="Bold"
+                                       Foreground="{Binding GradeChangeTotal, Converter={StaticResource ImpactDeltaToColorConverter}}" Margin="0,4,0,0"/>
+                        </StackPanel>
+                    </Border>
 
-                        <!-- Best -->
-                        <Border Grid.Column="6" CornerRadius="10"
-                                Background="{DynamicResource CardBackgroundFillColorDefaultBrush}"
-                                Effect="{StaticResource CardDefaultShadow}" Padding="14,12">
-                            <StackPanel>
-                                <TextBlock Text="Best Impact" FontSize="11" Foreground="{DynamicResource TextFillColorTertiaryBrush}" TextTrimming="CharacterEllipsis"/>
-                                <TextBlock Text="{Binding BestAssignmentName}" FontSize="12" FontWeight="SemiBold" TextTrimming="CharacterEllipsis" MaxHeight="18"/>
-                                <TextBlock Text="{Binding BestAssignmentImpact, StringFormat={}{0:+0.0;-0.0;0.0}%}" FontSize="16" FontWeight="Bold" Foreground="{StaticResource SuccessBrush}" Margin="0,2,0,0"/>
-                            </StackPanel>
-                        </Border>
-                    </Grid>
+                    <!-- High Impact -->
+                    <Border Grid.Column="4" CornerRadius="10"
+                            Background="{DynamicResource CardBackgroundFillColorDefaultBrush}"
+                            Effect="{StaticResource CardDefaultShadow}" Padding="14,12">
+                        <StackPanel>
+                            <TextBlock Text="High Impact" FontSize="11" Foreground="{DynamicResource TextFillColorTertiaryBrush}"/>
+                            <TextBlock FontSize="20" FontWeight="Bold" Margin="0,4,0,0">
+                                <Run Text="{Binding HighImpactCount}"/>
+                                <Run Text=" tasks" FontSize="11"/>
+                            </TextBlock>
+                        </StackPanel>
+                    </Border>
 
-                    <!-- Chart -->
-                    <ContentControl x:Name="ChartHost" Height="250" Margin="0,0,0,8"/>
-                </StackPanel>
-            </ui:CardExpander>
+                    <!-- Best -->
+                    <Border Grid.Column="6" CornerRadius="10"
+                            Background="{DynamicResource CardBackgroundFillColorDefaultBrush}"
+                            Effect="{StaticResource CardDefaultShadow}" Padding="14,12">
+                        <StackPanel>
+                            <TextBlock Text="Best Impact" FontSize="11" Foreground="{DynamicResource TextFillColorTertiaryBrush}" TextTrimming="CharacterEllipsis"/>
+                            <TextBlock Text="{Binding BestAssignmentName}" FontSize="12" FontWeight="SemiBold" TextTrimming="CharacterEllipsis" MaxHeight="18"/>
+                            <TextBlock Text="{Binding BestAssignmentImpact, StringFormat={}{0:+0.0;-0.0;0.0}%}" FontSize="16" FontWeight="Bold" Foreground="{StaticResource SuccessBrush}" Margin="0,2,0,0"/>
+                        </StackPanel>
+                    </Border>
+                </Grid>
 
-            <!-- Category Performance (standard courses) -->
-            <ui:CardExpander Header="Category Performance"
-                            IsExpanded="True"
-                            Icon="{ui:SymbolIcon DataBarVertical24}"
-                            Visibility="{Binding IsOEFormat, Converter={StaticResource InvertedBooleanToVisibilityConverter}}"
-                            Margin="0,0,0,12">
-                <ItemsControl ItemsSource="{Binding CategoryPerformance}" Margin="0,8">
-                    <ItemsControl.ItemTemplate>
-                        <DataTemplate>
-                            <Grid Margin="0,0,0,14">
-                                <Grid.ColumnDefinitions>
-                                    <ColumnDefinition Width="130"/>
-                                    <ColumnDefinition Width="*"/>
-                                    <ColumnDefinition Width="55"/>
-                                </Grid.ColumnDefinitions>
-                                <TextBlock Grid.Column="0" Text="{Binding Name}" FontSize="13"
-                                           Foreground="{DynamicResource TextFillColorPrimaryBrush}" VerticalAlignment="Center"/>
-                                <!-- Gradient-filled rounded progress bar -->
-                                <Border Grid.Column="1" Height="7" CornerRadius="3.5" Margin="12,0"
-                                        Background="{DynamicResource ControlFillColorDefaultBrush}"
-                                        VerticalAlignment="Center">
-                                    <Border CornerRadius="3.5" HorizontalAlignment="Left"
-                                            Background="{StaticResource AccentGradient}">
-                                        <Border.Width>
-                                            <MultiBinding Converter="{StaticResource PercentageConverter}">
-                                                <Binding Path="Percentage"/>
-                                                <Binding RelativeSource="{RelativeSource AncestorType=Border}" Path="ActualWidth"/>
-                                            </MultiBinding>
-                                        </Border.Width>
+                <!-- Chart -->
+                <Border CornerRadius="10" Background="{DynamicResource CardBackgroundFillColorDefaultBrush}"
+                        Effect="{StaticResource CardDefaultShadow}" Padding="8" Margin="0,0,0,0">
+                    <ContentControl x:Name="ChartHost" Height="240"/>
+                </Border>
+            </StackPanel>
+
+            <!-- ═══════════ CATEGORY PERFORMANCE ═══════════ -->
+            <StackPanel Visibility="{Binding IsOEFormat, Converter={StaticResource InvertedBooleanToVisibilityConverter}}"
+                        Margin="0,0,0,20">
+                <TextBlock Text="CATEGORIES" FontSize="11" FontWeight="SemiBold"
+                           Foreground="{DynamicResource TextFillColorTertiaryBrush}" Margin="0,0,0,10"/>
+
+                <Border CornerRadius="10" Background="{DynamicResource CardBackgroundFillColorDefaultBrush}"
+                        Effect="{StaticResource CardDefaultShadow}" Padding="16">
+                    <ItemsControl ItemsSource="{Binding CategoryPerformance}">
+                        <ItemsControl.ItemTemplate>
+                            <DataTemplate>
+                                <Grid Margin="0,0,0,14">
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="130"/>
+                                        <ColumnDefinition Width="*"/>
+                                        <ColumnDefinition Width="55"/>
+                                    </Grid.ColumnDefinitions>
+                                    <TextBlock Grid.Column="0" Text="{Binding Name}" FontSize="13"
+                                               Foreground="{DynamicResource TextFillColorPrimaryBrush}" VerticalAlignment="Center"/>
+                                    <Border Grid.Column="1" Height="7" CornerRadius="3.5" Margin="12,0"
+                                            Background="{DynamicResource ControlFillColorDefaultBrush}"
+                                            VerticalAlignment="Center">
+                                        <Border CornerRadius="3.5" HorizontalAlignment="Left"
+                                                Background="{StaticResource AccentGradient}">
+                                            <Border.Width>
+                                                <MultiBinding Converter="{StaticResource PercentageConverter}">
+                                                    <Binding Path="Percentage"/>
+                                                    <Binding RelativeSource="{RelativeSource AncestorType=Border}" Path="ActualWidth"/>
+                                                </MultiBinding>
+                                            </Border.Width>
+                                        </Border>
                                     </Border>
-                                </Border>
-                                <TextBlock Grid.Column="2" Text="{Binding Percentage, StringFormat={}{0:F1}%}" FontSize="14"
-                                           FontWeight="SemiBold" VerticalAlignment="Center" Margin="12,0,0,0"/>
-                            </Grid>
-                        </DataTemplate>
-                    </ItemsControl.ItemTemplate>
-                </ItemsControl>
-            </ui:CardExpander>
+                                    <TextBlock Grid.Column="2" Text="{Binding Percentage, StringFormat={}{0:F1}%}" FontSize="14"
+                                               FontWeight="SemiBold" VerticalAlignment="Center" Margin="12,0,0,0"/>
+                                </Grid>
+                            </DataTemplate>
+                        </ItemsControl.ItemTemplate>
+                    </ItemsControl>
+                </Border>
+            </StackPanel>
 
-            <!-- Expectation Performance (OE courses) -->
-            <ui:CardExpander Header="Expectation Performance"
-                            IsExpanded="True"
-                            Icon="{ui:SymbolIcon DataBarVertical24}"
-                            Visibility="{Binding IsOEFormat, Converter={StaticResource BooleanToVisibilityConverter}}"
-                            Margin="0,0,0,12">
-                <ItemsControl ItemsSource="{Binding ExpectationPerformance}" Margin="0,8">
+            <!-- ═══════════ EXPECTATION PERFORMANCE (OE) ═══════════ -->
+            <StackPanel Visibility="{Binding IsOEFormat, Converter={StaticResource BooleanToVisibilityConverter}}"
+                        Margin="0,0,0,20">
+                <TextBlock Text="EXPECTATIONS" FontSize="11" FontWeight="SemiBold"
+                           Foreground="{DynamicResource TextFillColorTertiaryBrush}" Margin="0,0,0,10"/>
+
+                <ItemsControl ItemsSource="{Binding ExpectationPerformance}">
                     <ItemsControl.ItemsPanel>
                         <ItemsPanelTemplate>
                             <WrapPanel/>
@@ -181,9 +184,16 @@
                     </ItemsControl.ItemsPanel>
                     <ItemsControl.ItemTemplate>
                         <DataTemplate>
-                            <ui:Card Margin="0,0,8,8" Padding="12,10" MinWidth="155">
+                            <Border Margin="0,0,8,8" MinWidth="155" CornerRadius="10"
+                                    Background="{DynamicResource CardBackgroundFillColorDefaultBrush}"
+                                    Effect="{StaticResource CardDefaultShadow}" Padding="14,12">
                                 <StackPanel>
-                                    <ui:Badge Content="{Binding Code}" Margin="0,0,0,8"/>
+                                    <!-- Custom badge instead of ui:Badge -->
+                                    <Border Background="{DynamicResource ControlFillColorDefaultBrush}"
+                                            CornerRadius="4" Padding="6,2" HorizontalAlignment="Left" Margin="0,0,0,8">
+                                        <TextBlock Text="{Binding Code}" FontSize="11" FontWeight="SemiBold"
+                                                   Foreground="{DynamicResource TextFillColorSecondaryBrush}"/>
+                                    </Border>
                                     <TextBlock Text="{Binding Percentage, StringFormat={}{0:F1}%}" FontSize="20" FontWeight="Bold"
                                                Foreground="{Binding GradeColor, Converter={StaticResource StringToBrushConverter}}" Margin="0,0,0,6"/>
                                     <ProgressBar Height="4" Value="{Binding Percentage, Mode=OneWay}" Maximum="100"
@@ -192,22 +202,25 @@
                                         <Run Text="{Binding AssignmentCount}"/><Run Text=" assessments"/>
                                     </TextBlock>
                                 </StackPanel>
-                            </ui:Card>
+                            </Border>
                         </DataTemplate>
                     </ItemsControl.ItemTemplate>
                 </ItemsControl>
-            </ui:CardExpander>
+            </StackPanel>
 
-            <!-- Assignments -->
-            <ui:CardExpander Header="Assignments"
-                            IsExpanded="True"
-                            Icon="{ui:SymbolIcon Document24}"
-                            Margin="0,0,0,12">
-                <ItemsControl ItemsSource="{Binding AssignmentGroups}" Margin="0,8">
+            <!-- ═══════════ ASSIGNMENTS ═══════════ -->
+            <StackPanel Margin="0,0,0,12">
+                <TextBlock Text="ASSIGNMENTS" FontSize="11" FontWeight="SemiBold"
+                           Foreground="{DynamicResource TextFillColorTertiaryBrush}" Margin="0,0,0,10"/>
+
+                <ItemsControl ItemsSource="{Binding AssignmentGroups}">
                     <ItemsControl.ItemTemplate>
                         <DataTemplate>
-                            <ui:Card Margin="0,0,0,8">
-                                <StackPanel Margin="12,8">
+                            <!-- Group card -->
+                            <Border Margin="0,0,0,8" CornerRadius="10"
+                                    Background="{DynamicResource CardBackgroundFillColorDefaultBrush}"
+                                    Effect="{StaticResource CardDefaultShadow}" Padding="16,12">
+                                <StackPanel>
                                     <!-- Group header -->
                                     <Grid Margin="0,0,0,10">
                                         <Grid.ColumnDefinitions>
@@ -222,8 +235,7 @@
                                                 CornerRadius="4" Padding="8,3"
                                                 Visibility="{Binding Impact, Converter={StaticResource NullToVisibilityConverter}}"
                                                 ToolTip="Weighted contribution to final grade">
-                                            <TextBlock FontSize="11" Foreground="{DynamicResource TextFillColorSecondaryBrush}"
-                                                       VerticalAlignment="Center">
+                                            <TextBlock FontSize="11" Foreground="{DynamicResource TextFillColorSecondaryBrush}" VerticalAlignment="Center">
                                                 <TextBlock.Text>
                                                     <MultiBinding StringFormat="Worth {0}">
                                                         <Binding Path="Impact.DisplayContribution"/>
@@ -236,8 +248,7 @@
                                                 CornerRadius="4" Padding="8,3"
                                                 Visibility="{Binding Impact, Converter={StaticResource NullToVisibilityConverter}}"
                                                 ToolTip="Grade change after this assignment">
-                                            <TextBlock Text="{Binding Impact.DisplayImpact}" FontSize="11" FontWeight="SemiBold" Foreground="White"
-                                                       ToolTip="Actual impact on your final grade"/>
+                                            <TextBlock Text="{Binding Impact.DisplayImpact}" FontSize="11" FontWeight="SemiBold" Foreground="White"/>
                                         </Border>
                                     </Grid>
 
@@ -313,18 +324,18 @@
                                         </ItemsControl.ItemTemplate>
                                     </ItemsControl>
                                 </StackPanel>
-                            </ui:Card>
+                            </Border>
                         </DataTemplate>
                     </ItemsControl.ItemTemplate>
                 </ItemsControl>
-            </ui:CardExpander>
+            </StackPanel>
 
             <!-- No Assignments -->
-            <ui:InfoBar Title="No assignments"
-                        Message="No assignments available yet"
-                        Severity="Informational"
-                        IsOpen="{Binding AssignmentGroups.Count, Converter={StaticResource IntZeroToBoolConverter}}"
-                        Margin="0,0,0,12"/>
+            <Border CornerRadius="8" Background="{DynamicResource CardBackgroundFillColorDefaultBrush}" Padding="16,12" Margin="0,0,0,12"
+                    Visibility="{Binding AssignmentGroups.Count, Converter={StaticResource IntZeroToBoolConverter}}">
+                <TextBlock Text="No assignments available yet" FontSize="13"
+                           Foreground="{DynamicResource TextFillColorSecondaryBrush}"/>
+            </Border>
 
         </StackPanel>
     </ScrollViewer>
