@@ -458,5 +458,5 @@ public class AssignmentTrendDisplay
     public string AssignmentName { get; set; } = string.Empty;
     public double Mark { get; set; }
     public double Weight { get; set; }
-    public string TrendColor { get; set; } = "#FF238636";
+    public string TrendColor { get; set; } = GradeColorHelper.Tier90;
 }

@@ -2,16 +2,16 @@ namespace TeachAssistApp.Helpers;
 
 public static class GradeColorHelper
 {
-    public const string NA = "#FF30363D";
-    public const string Tier95 = "#FF2EA043";  // A+ Forest Green
-    public const string Tier90 = "#FF3FB950";  // A  Green
-    public const string Tier85 = "#FF238636";  // A- Darker Green
-    public const string Tier80 = "#FFD29922";  // B+ Gold
-    public const string Tier75 = "#FF9A6700";  // B  Darker Gold
-    public const string Tier70 = "#FFDB6D28";  // B- Orange
-    public const string Tier65 = "#FFA57104";  // C+ Dark Orange
-    public const string Tier60 = "#FFf85149";  // C  Red
-    public const string Below60 = "#FFD73A49"; // Below C Darker Red
+    public const string NA = "#FF8B949E";       // Medium gray — visible on both light and dark
+    public const string Tier95 = "#FF1A7F37";   // A+ Rich Green
+    public const string Tier90 = "#FF2DA44E";   // A  Green
+    public const string Tier85 = "#FF238636";   // A- Forest Green
+    public const string Tier80 = "#FFBF8700";   // B+ Amber Gold
+    public const string Tier75 = "#FF9A6700";   // B  Dark Gold
+    public const string Tier70 = "#FFBC4C00";   // B- Burnt Orange
+    public const string Tier65 = "#FF954A00";   // C+ Deep Orange
+    public const string Tier60 = "#FFCF222E";   // C  Red
+    public const string Below60 = "#FFA40E26";  // Below C Dark Red
 
     public static string GetColor(double? mark)
     {

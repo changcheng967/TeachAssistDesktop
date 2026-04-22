@@ -24,11 +24,11 @@
                 <!-- Decorative floating circles for depth -->
                 <Canvas>
                     <Ellipse Canvas.Left="60" Canvas.Top="80" Width="180" Height="180"
-                             Fill="#6366F1" Opacity="0.03"/>
+                             Fill="#6366F1" Opacity="0.06"/>
                     <Ellipse Canvas.Right="40" Canvas.Bottom="60" Width="240" Height="240"
-                             Fill="#8B5CF6" Opacity="0.04"/>
+                             Fill="#8B5CF6" Opacity="0.07"/>
                     <Ellipse Canvas.Left="200" Canvas.Bottom="120" Width="100" Height="100"
-                             Fill="#F59E0B" Opacity="0.03"/>
+                             Fill="#F59E0B" Opacity="0.06"/>
                 </Canvas>
 
                 <StackPanel VerticalAlignment="Center" HorizontalAlignment="Center" Margin="60">

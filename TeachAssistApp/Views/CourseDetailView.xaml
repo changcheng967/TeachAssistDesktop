@@ -133,8 +133,7 @@
             <!-- ═══════════ CATEGORY PERFORMANCE ═══════════ -->
             <StackPanel Visibility="{Binding IsOEFormat, Converter={StaticResource InvertedBooleanToVisibilityConverter}}"
                         Margin="0,0,0,20">
-                <TextBlock Text="CATEGORIES" FontSize="11" FontWeight="SemiBold"
-                           Foreground="{DynamicResource TextFillColorTertiaryBrush}" Margin="0,0,0,10"/>
+                <TextBlock Text="CATEGORIES" Style="{StaticResource SectionHeader}"/>
 
                 <Border CornerRadius="10" Background="{DynamicResource CardBackgroundFillColorDefaultBrush}"
                         Effect="{StaticResource CardDefaultShadow}" Padding="16">
@@ -153,7 +152,7 @@
                                             Background="{DynamicResource ControlFillColorDefaultBrush}"
                                             VerticalAlignment="Center">
                                         <Border CornerRadius="3.5" HorizontalAlignment="Left"
-                                                Background="{StaticResource AccentGradient}">
+                                                Background="{Binding GradeColor, Converter={StaticResource StringToBrushConverter}}">
                                             <Border.Width>
                                                 <MultiBinding Converter="{StaticResource PercentageConverter}">
                                                     <Binding Path="Percentage"/>
@@ -163,7 +162,8 @@
                                         </Border>
                                     </Border>
                                     <TextBlock Grid.Column="2" Text="{Binding Percentage, StringFormat={}{0:F1}%}" FontSize="14"
-                                               FontWeight="SemiBold" VerticalAlignment="Center" Margin="12,0,0,0"/>
+                                               FontWeight="SemiBold" VerticalAlignment="Center" Margin="12,0,0,0"
+                                               Foreground="{Binding GradeColor, Converter={StaticResource StringToBrushConverter}}"/>
                                 </Grid>
                             </DataTemplate>
                         </ItemsControl.ItemTemplate>
@@ -174,8 +174,7 @@
             <!-- ═══════════ EXPECTATION PERFORMANCE (OE) ═══════════ -->
             <StackPanel Visibility="{Binding IsOEFormat, Converter={StaticResource BooleanToVisibilityConverter}}"
                         Margin="0,0,0,20">
-                <TextBlock Text="EXPECTATIONS" FontSize="11" FontWeight="SemiBold"
-                           Foreground="{DynamicResource TextFillColorTertiaryBrush}" Margin="0,0,0,10"/>
+                <TextBlock Text="EXPECTATIONS" Style="{StaticResource SectionHeader}"/>
 
                 <ItemsControl ItemsSource="{Binding ExpectationPerformance}">
                     <ItemsControl.ItemsPanel>
@@ -211,8 +210,7 @@
 
             <!-- ═══════════ ASSIGNMENTS ═══════════ -->
             <StackPanel Margin="0,0,0,12">
-                <TextBlock Text="ASSIGNMENTS" FontSize="11" FontWeight="SemiBold"
-                           Foreground="{DynamicResource TextFillColorTertiaryBrush}" Margin="0,0,0,10"/>
+                <TextBlock Text="ASSIGNMENTS" Style="{StaticResource SectionHeader}"/>
 
                 <ItemsControl ItemsSource="{Binding AssignmentGroups}">
                     <ItemsControl.ItemTemplate>

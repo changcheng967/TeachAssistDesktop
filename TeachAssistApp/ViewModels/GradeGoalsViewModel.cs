@@ -58,11 +58,11 @@ public partial class GradeGoalsViewModel : ObservableObject
 
     private void InitializePresetGoals()
     {
-        PresetGoals.Add(new PresetGoal { Percent = 90, Label = "Excellent", Color = "#FF238636" });
-        PresetGoals.Add(new PresetGoal { Percent = 85, Label = "Very Good", Color = "#FF3FB950" });
-        PresetGoals.Add(new PresetGoal { Percent = 80, Label = "Good", Color = "#FFD29922" });
-        PresetGoals.Add(new PresetGoal { Percent = 75, Label = "Satisfactory", Color = "#FFDB6D28" });
-        PresetGoals.Add(new PresetGoal { Percent = 70, Label = "Passing", Color = "#FFA57104" });
+        PresetGoals.Add(new PresetGoal { Percent = 90, Label = "Excellent", Color = GradeColorHelper.Tier90 });
+        PresetGoals.Add(new PresetGoal { Percent = 85, Label = "Very Good", Color = GradeColorHelper.Tier85 });
+        PresetGoals.Add(new PresetGoal { Percent = 80, Label = "Good", Color = GradeColorHelper.Tier80 });
+        PresetGoals.Add(new PresetGoal { Percent = 75, Label = "Satisfactory", Color = GradeColorHelper.Tier75 });
+        PresetGoals.Add(new PresetGoal { Percent = 70, Label = "Passing", Color = GradeColorHelper.Tier70 });
     }
 
     private async Task LoadDataAsync()

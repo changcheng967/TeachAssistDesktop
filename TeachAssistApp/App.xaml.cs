@@ -56,10 +56,10 @@ public partial class App : Application
             args.SetObserved();
         };
 
-        // Apply dark theme by default
+        // Apply light theme by default — grade colors show best on light backgrounds
         try
         {
-            ApplicationThemeManager.Apply(ApplicationTheme.Dark);
+            ApplicationThemeManager.Apply(ApplicationTheme.Light);
         }
         catch
         {
@@ -352,8 +352,8 @@ public class ImpactDeltaToColorConverter : System.Windows.Data.IValueConverter
         if (value is double delta)
         {
             return delta >= 0
-                ? new System.Windows.Media.SolidColorBrush(System.Windows.Media.Color.FromRgb(35, 134, 54))   // #238636 green
-                : new System.Windows.Media.SolidColorBrush(System.Windows.Media.Color.FromRgb(248, 81, 73));    // #F85149 red
+                ? new System.Windows.Media.SolidColorBrush(System.Windows.Media.Color.FromRgb(45, 164, 78))   // #2DA44E green
+                : new System.Windows.Media.SolidColorBrush(System.Windows.Media.Color.FromRgb(207, 34, 46));    // #CF222E red
         }
         return new System.Windows.Media.SolidColorBrush(System.Windows.Media.Colors.Gray);
     }
