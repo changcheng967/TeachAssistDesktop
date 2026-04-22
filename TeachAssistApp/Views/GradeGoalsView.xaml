@@ -82,10 +82,9 @@
                             </ItemsControl.ItemsPanel>
                             <ItemsControl.ItemTemplate>
                                 <DataTemplate>
-                                    <!-- Custom clickable tile instead of CardAction -->
-                                    <Border Margin="0,0,8,8" MinWidth="100" CornerRadius="8"
-                                            Background="{DynamicResource CardBackgroundFillColorDefaultBrush}"
-                                            Effect="{StaticResource CardDefaultShadow}" Padding="14,10" Cursor="Hand"
+                                    <!-- Custom clickable tile with hover animation -->
+                                    <Border Margin="0,0,8,8" MinWidth="100"
+                                            Style="{StaticResource InteractiveTile}" Padding="14,10"
                                             MouseLeftButtonDown="PresetGoal_Click" Tag="{Binding Percent}">
                                         <StackPanel HorizontalAlignment="Center">
                                             <TextBlock Text="{Binding Percent, StringFormat={}{0:F0}%}" FontSize="20" FontWeight="Bold"

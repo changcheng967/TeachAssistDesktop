@@ -72,67 +72,49 @@
                     <RowDefinition Height="Auto"/>
                 </Grid.RowDefinitions>
 
-                <!-- Tool tiles — custom borders instead of CardAction -->
-                <Border Grid.Row="0" Grid.Column="0" CornerRadius="10"
-                        Background="{DynamicResource CardBackgroundFillColorDefaultBrush}"
-                        Effect="{StaticResource CardDefaultShadow}" Padding="14,12" Cursor="Hand"
-                        MouseLeftButtonDown="ToolTrends_Click" RenderTransformOrigin="0.5,0.5">
-                    <Border.RenderTransform><ScaleTransform ScaleX="1" ScaleY="1"/></Border.RenderTransform>
+                <!-- Tool tiles with hover animation -->
+                <Border Grid.Row="0" Grid.Column="0" Style="{StaticResource InteractiveTile}" Padding="14,12"
+                        MouseLeftButtonDown="ToolTrends_Click">
                     <StackPanel Orientation="Horizontal">
                         <ui:SymbolIcon Symbol="ArrowTrendingLines24" FontSize="16" Margin="0,0,10,0"
                                        Foreground="{DynamicResource TextFillColorSecondaryBrush}"/>
                         <TextBlock Text="Grade Trends" FontSize="13" VerticalAlignment="Center"/>
                     </StackPanel>
                 </Border>
-                <Border Grid.Row="0" Grid.Column="2" CornerRadius="10"
-                        Background="{DynamicResource CardBackgroundFillColorDefaultBrush}"
-                        Effect="{StaticResource CardDefaultShadow}" Padding="14,12" Cursor="Hand"
-                        MouseLeftButtonDown="ToolGoals_Click" RenderTransformOrigin="0.5,0.5">
-                    <Border.RenderTransform><ScaleTransform ScaleX="1" ScaleY="1"/></Border.RenderTransform>
+                <Border Grid.Row="0" Grid.Column="2" Style="{StaticResource InteractiveTile}" Padding="14,12"
+                        MouseLeftButtonDown="ToolGoals_Click">
                     <StackPanel Orientation="Horizontal">
                         <ui:SymbolIcon Symbol="ChartMultiple24" FontSize="16" Margin="0,0,10,0"
                                        Foreground="{DynamicResource TextFillColorSecondaryBrush}"/>
                         <TextBlock Text="Grade Goals" FontSize="13" VerticalAlignment="Center"/>
                     </StackPanel>
                 </Border>
-                <Border Grid.Row="0" Grid.Column="4" CornerRadius="10"
-                        Background="{DynamicResource CardBackgroundFillColorDefaultBrush}"
-                        Effect="{StaticResource CardDefaultShadow}" Padding="14,12" Cursor="Hand"
-                        MouseLeftButtonDown="ToolWhatIf_Click" RenderTransformOrigin="0.5,0.5">
-                    <Border.RenderTransform><ScaleTransform ScaleX="1" ScaleY="1"/></Border.RenderTransform>
+                <Border Grid.Row="0" Grid.Column="4" Style="{StaticResource InteractiveTile}" Padding="14,12"
+                        MouseLeftButtonDown="ToolWhatIf_Click">
                     <StackPanel Orientation="Horizontal">
                         <ui:SymbolIcon Symbol="Calculator24" FontSize="16" Margin="0,0,10,0"
                                        Foreground="{DynamicResource TextFillColorSecondaryBrush}"/>
                         <TextBlock Text="What-If Calc" FontSize="13" VerticalAlignment="Center"/>
                     </StackPanel>
                 </Border>
-                <Border Grid.Row="2" Grid.Column="0" CornerRadius="10"
-                        Background="{DynamicResource CardBackgroundFillColorDefaultBrush}"
-                        Effect="{StaticResource CardDefaultShadow}" Padding="14,12" Cursor="Hand"
-                        MouseLeftButtonDown="ToolUpdate_Click" RenderTransformOrigin="0.5,0.5">
-                    <Border.RenderTransform><ScaleTransform ScaleX="1" ScaleY="1"/></Border.RenderTransform>
+                <Border Grid.Row="2" Grid.Column="0" Style="{StaticResource InteractiveTile}" Padding="14,12"
+                        MouseLeftButtonDown="ToolUpdate_Click">
                     <StackPanel Orientation="Horizontal">
                         <ui:SymbolIcon Symbol="ArrowSyncCheckmark24" FontSize="16" Margin="0,0,10,0"
                                        Foreground="{DynamicResource TextFillColorSecondaryBrush}"/>
                         <TextBlock Text="Check Updates" FontSize="13" VerticalAlignment="Center"/>
                     </StackPanel>
                 </Border>
-                <Border Grid.Row="2" Grid.Column="2" CornerRadius="10"
-                        Background="{DynamicResource CardBackgroundFillColorDefaultBrush}"
-                        Effect="{StaticResource CardDefaultShadow}" Padding="14,12" Cursor="Hand"
-                        MouseLeftButtonDown="ToolCsv_Click" RenderTransformOrigin="0.5,0.5">
-                    <Border.RenderTransform><ScaleTransform ScaleX="1" ScaleY="1"/></Border.RenderTransform>
+                <Border Grid.Row="2" Grid.Column="2" Style="{StaticResource InteractiveTile}" Padding="14,12"
+                        MouseLeftButtonDown="ToolCsv_Click">
                     <StackPanel Orientation="Horizontal">
                         <ui:SymbolIcon Symbol="ArrowExportLtr24" FontSize="16" Margin="0,0,10,0"
                                        Foreground="{DynamicResource TextFillColorSecondaryBrush}"/>
                         <TextBlock Text="Export CSV" FontSize="13" VerticalAlignment="Center"/>
                     </StackPanel>
                 </Border>
-                <Border Grid.Row="2" Grid.Column="4" CornerRadius="10"
-                        Background="{DynamicResource CardBackgroundFillColorDefaultBrush}"
-                        Effect="{StaticResource CardDefaultShadow}" Padding="14,12" Cursor="Hand"
-                        MouseLeftButtonDown="ToolPdf_Click" RenderTransformOrigin="0.5,0.5">
-                    <Border.RenderTransform><ScaleTransform ScaleX="1" ScaleY="1"/></Border.RenderTransform>
+                <Border Grid.Row="2" Grid.Column="4" Style="{StaticResource InteractiveTile}" Padding="14,12"
+                        MouseLeftButtonDown="ToolPdf_Click">
                     <StackPanel Orientation="Horizontal">
                         <ui:SymbolIcon Symbol="Document24" FontSize="16" Margin="0,0,10,0"
                                        Foreground="{DynamicResource TextFillColorSecondaryBrush}"/>

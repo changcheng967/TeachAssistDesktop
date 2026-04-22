@@ -38,13 +38,13 @@
 
                 <!-- Grade badge -->
                 <Border Grid.Column="2"
-                        CornerRadius="12" Padding="20,10"
+                        CornerRadius="12" Padding="24,12"
                         Background="{Binding SelectedCourse.GradeColor, Converter={StaticResource StringToBrushConverter}}"
                         Visibility="{Binding SelectedCourse, Converter={StaticResource NullToVisibilityConverter}}">
                     <Border.Effect>
-                        <DropShadowEffect Color="#6366F1" BlurRadius="12" ShadowDepth="0" Opacity="0.15" Direction="0"/>
+                        <DropShadowEffect Color="#6366F1" BlurRadius="16" ShadowDepth="0" Opacity="0.2" Direction="0"/>
                     </Border.Effect>
-                    <TextBlock Text="{Binding SelectedCourse.DisplayMark}" FontSize="22" FontWeight="Bold"
+                    <TextBlock Text="{Binding SelectedCourse.DisplayMark}" FontSize="24" FontWeight="Bold"
                                Foreground="White" VerticalAlignment="Center"/>
                 </Border>
             </Grid>
@@ -68,20 +68,22 @@
                         <ColumnDefinition Width="1.2*"/>
                     </Grid.ColumnDefinitions>
 
-                    <!-- Current — hero -->
+                    <!-- Current — hero with grade color -->
                     <Border Grid.Column="0" CornerRadius="10"
                             Background="{DynamicResource CardBackgroundFillColorDefaultBrush}"
                             Effect="{StaticResource CardDefaultShadow}">
                         <Grid>
                             <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="4"/>
+                                <ColumnDefinition Width="6"/>
                                 <ColumnDefinition Width="*"/>
                             </Grid.ColumnDefinitions>
                             <Border Grid.Column="0" CornerRadius="10,0,0,10"
-                                    Background="{StaticResource AccentGradient}"/>
+                                    Background="{Binding SelectedCourse.GradeColor, Converter={StaticResource StringToBrushConverter}}"/>
                             <StackPanel Grid.Column="1" Margin="16,12">
                                 <TextBlock Text="Current" FontSize="11" Foreground="{DynamicResource TextFillColorTertiaryBrush}"/>
-                                <TextBlock Text="{Binding CurrentGrade, StringFormat={}{0:F1}%}" FontSize="26" FontWeight="Bold" Margin="0,4,0,0"/>
+                                <TextBlock Text="{Binding CurrentGrade, StringFormat={}{0:F1}%}" FontSize="26" FontWeight="Bold"
+                                           Foreground="{Binding SelectedCourse.GradeColor, Converter={StaticResource StringToBrushConverter}}"
+                                           Margin="0,4,0,0"/>
                             </StackPanel>
                         </Grid>
                     </Border>

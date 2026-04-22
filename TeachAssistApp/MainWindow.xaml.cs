@@ -1,3 +1,4 @@
+using System.ComponentModel;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
@@ -164,6 +165,22 @@ public partial class MainWindow : FluentWindow
                 Sidebar.Visibility = Visibility.Visible;
                 AppTitleBar.Margin = new Thickness(0);
                 SetActiveNav(NavDashboard);
+                // Update sidebar average display
+                SidebarAverage.Text = dashboardVM.AverageMark > 0
+                    ? $"{dashboardVM.AverageMark:F1}%"
+                    : "--";
+                dashboardVM.PropertyChanged += (s, e) =>
+                {
+                    if (e.PropertyName == nameof(DashboardViewModel.AverageMark))
+                    {
+                        Dispatcher.Invoke(() =>
+                        {
+                            SidebarAverage.Text = dashboardVM.AverageMark > 0
+                                ? $"{dashboardVM.AverageMark:F1}%"
+                                : "--";
+                        });
+                    }
+                };
                 break;
             case "Settings":
                 page = _serviceProvider.GetRequiredService<SettingsView>();
@@ -208,7 +225,7 @@ public partial class MainWindow : FluentWindow
         ClearActiveNav();
         if (item == null) return;
         _activeNavItem = item;
-        item.Background = new SolidColorBrush(Color.FromArgb(0x15, 0x63, 0x66, 0xF1)); // Accent tint
+        item.Background = new SolidColorBrush(Color.FromArgb(0x20, 0xFF, 0xFF, 0xFF)); // White tint on dark sidebar
     }
 
     private void ClearActiveNav()

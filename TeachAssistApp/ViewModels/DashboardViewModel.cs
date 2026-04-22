@@ -41,6 +41,12 @@ public partial class DashboardViewModel : ObservableObject
     [ObservableProperty]
     private string _schoolName = "YRDSB";
 
+    [ObservableProperty]
+    private string _gradeLabel = "";
+
+    [ObservableProperty]
+    private string _gradeColor = GradeColorHelper.NA;
+
     private readonly IServiceProvider _serviceProvider;
 
     public DashboardViewModel(
@@ -132,8 +138,18 @@ public partial class DashboardViewModel : ObservableObject
             var sum = validCourses.Sum(c => c.NumericMark ?? 0);
             AverageMark = sum / validCourses.Count;
 
-            // Calculate GPA (Ontario scale)
-            // 90-100: 4.0, 80-89: 3.0, 70-79: 2.0, 60-69: 1.0, below 60: 0.0
+            GradeColor = GradeColorHelper.GetColor(AverageMark);
+            GradeLabel = AverageMark switch
+            {
+                >= 95 => "Outstanding",
+                >= 90 => "Excellent",
+                >= 80 => "Great",
+                >= 70 => "Good",
+                >= 60 => "Fair",
+                > 0 => "Keep Going",
+                _ => ""
+            };
+
             var gpaSum = validCourses.Sum(c =>
             {
                 var mark = c.NumericMark ?? 0;
@@ -148,6 +164,8 @@ public partial class DashboardViewModel : ObservableObject
         else
         {
             AverageMark = 0;
+            GradeColor = GradeColorHelper.NA;
+            GradeLabel = "";
             Gpa = "N/A";
         }
 
