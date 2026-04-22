@@ -13,16 +13,14 @@
 
             <!-- Header -->
             <TextBlock Text="Settings"
-                       FontSize="26" FontWeight="SemiBold"
-                       Foreground="{DynamicResource TextFillColorPrimaryBrush}"
+                       Style="{StaticResource GradientHeading}"
                        Margin="0,0,0,6"/>
             <Border Width="50" Height="3" CornerRadius="1.5"
                     Background="{StaticResource AccentGradientHorizontal}"
                     HorizontalAlignment="Left" Margin="0,0,0,28"/>
 
             <!-- APPEARANCE -->
-            <TextBlock Text="APPEARANCE" FontSize="11" FontWeight="SemiBold"
-                       Foreground="{DynamicResource TextFillColorTertiaryBrush}" Margin="0,0,0,10"/>
+            <TextBlock Text="APPEARANCE" Style="{StaticResource SectionHeader}"/>
             <Border CornerRadius="10" Background="{DynamicResource CardBackgroundFillColorDefaultBrush}"
                     Effect="{StaticResource CardDefaultShadow}" Margin="0,0,0,28">
                 <StackPanel>
@@ -56,8 +54,7 @@
             </Border>
 
             <!-- TOOLS — custom grid of clickable tiles -->
-            <TextBlock Text="TOOLS" FontSize="11" FontWeight="SemiBold"
-                       Foreground="{DynamicResource TextFillColorTertiaryBrush}" Margin="0,0,0,10"/>
+            <TextBlock Text="TOOLS" Style="{StaticResource SectionHeader}"/>
             <Grid Margin="0,0,0,28">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="*"/>
@@ -124,8 +121,7 @@
             </Grid>
 
             <!-- ACCOUNT -->
-            <TextBlock Text="ACCOUNT" FontSize="11" FontWeight="SemiBold"
-                       Foreground="{DynamicResource TextFillColorTertiaryBrush}" Margin="0,0,0,10"/>
+            <TextBlock Text="ACCOUNT" Style="{StaticResource SectionHeader}"/>
             <Border CornerRadius="10" Background="{DynamicResource CardBackgroundFillColorDefaultBrush}"
                     Effect="{StaticResource CardDefaultShadow}" Margin="0,0,0,28">
                 <StackPanel>
@@ -146,8 +142,7 @@
             </Border>
 
             <!-- DATA -->
-            <TextBlock Text="DATA" FontSize="11" FontWeight="SemiBold"
-                       Foreground="{DynamicResource TextFillColorTertiaryBrush}" Margin="0,0,0,10"/>
+            <TextBlock Text="DATA" Style="{StaticResource SectionHeader}"/>
             <Border CornerRadius="10" Background="{DynamicResource CardBackgroundFillColorDefaultBrush}"
                     Effect="{StaticResource CardDefaultShadow}" Padding="14,12" Margin="0,0,0,28" Cursor="Hand"
                     MouseLeftButtonDown="DataClear_Click">
@@ -159,8 +154,7 @@
             </Border>
 
             <!-- KEYBOARD SHORTCUTS -->
-            <TextBlock Text="KEYBOARD SHORTCUTS" FontSize="11" FontWeight="SemiBold"
-                       Foreground="{DynamicResource TextFillColorTertiaryBrush}" Margin="0,0,0,10"/>
+            <TextBlock Text="KEYBOARD SHORTCUTS" Style="{StaticResource SectionHeader}"/>
             <Border CornerRadius="10" Background="{DynamicResource CardBackgroundFillColorDefaultBrush}"
                     Effect="{StaticResource CardDefaultShadow}" Margin="0,0,0,28">
                 <Grid Margin="16,14">
@@ -206,8 +200,7 @@
             </Border>
 
             <!-- ABOUT -->
-            <TextBlock Text="ABOUT" FontSize="11" FontWeight="SemiBold"
-                       Foreground="{DynamicResource TextFillColorTertiaryBrush}" Margin="0,0,0,10"/>
+            <TextBlock Text="ABOUT" Style="{StaticResource SectionHeader}"/>
             <Border CornerRadius="10" Background="{DynamicResource CardBackgroundFillColorDefaultBrush}"
                     Effect="{StaticResource CardDefaultShadow}" Margin="0,0,0,20">
                 <Grid Margin="16,14">

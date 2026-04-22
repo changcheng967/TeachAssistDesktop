@@ -53,8 +53,7 @@
             <StackPanel Visibility="{Binding HasGradeTimeline, Converter={StaticResource BooleanToVisibilityConverter}}"
                         Margin="0,0,0,20">
                 <!-- Section label -->
-                <TextBlock Text="ANALYTICS" FontSize="11" FontWeight="SemiBold"
-                           Foreground="{DynamicResource TextFillColorTertiaryBrush}" Margin="0,0,0,10"/>
+                <TextBlock Text="ANALYTICS" Style="{StaticResource SectionHeader}"/>
 
                 <!-- Bento stat row -->
                 <Grid Margin="0,0,0,12">

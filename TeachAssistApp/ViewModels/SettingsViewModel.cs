@@ -26,7 +26,7 @@ public partial class SettingsViewModel : ObservableObject
     private readonly PdfExporter _pdfExporter;
 
     [ObservableProperty]
-    private string _appVersion = "5.1.0";
+    private string _appVersion = "5.2.0";
 
     [ObservableProperty]
     private string _updateStatus = string.Empty;

@@ -62,6 +62,8 @@
                                    Foreground="#A5B4FC" Opacity="0.7"/>
                         <TextBlock x:Name="SidebarAverage" Text="--"
                                    FontSize="28" FontWeight="Bold" Foreground="White" Margin="0,4,0,0"/>
+                        <TextBlock x:Name="SidebarGpa" Text=""
+                                   FontSize="11" Foreground="#C7D2FE" Opacity="0.6" Margin="0,4,0,0"/>
                     </StackPanel>
                 </Border>
 
@@ -74,7 +76,44 @@
                     <Border x:Name="NavDashboard" CornerRadius="8" Padding="10,10" Margin="0,0,0,4"
                             Background="Transparent" Cursor="Hand"
                             MouseLeftButtonDown="NavItem_PreviewMouseLeftButtonDown"
-                            Tag="Dashboard">
+                            Tag="Dashboard" RenderTransformOrigin="0.5,0.5">
+                        <Border.RenderTransform><ScaleTransform ScaleX="1" ScaleY="1"/></Border.RenderTransform>
+                        <Border.Style>
+                            <Style TargetType="Border">
+                                <Style.Triggers>
+                                    <Trigger Property="IsMouseOver" Value="True">
+                                        <Trigger.EnterActions>
+                                            <BeginStoryboard>
+                                                <Storyboard>
+                                                    <DoubleAnimation Storyboard.TargetProperty="(UIElement.RenderTransform).(ScaleTransform.ScaleX)"
+                                                        To="1.02" Duration="0:0:0.2">
+                                                        <DoubleAnimation.EasingFunction><QuadraticEase EasingMode="EaseInOut"/></DoubleAnimation.EasingFunction>
+                                                    </DoubleAnimation>
+                                                    <DoubleAnimation Storyboard.TargetProperty="(UIElement.RenderTransform).(ScaleTransform.ScaleY)"
+                                                        To="1.02" Duration="0:0:0.2">
+                                                        <DoubleAnimation.EasingFunction><QuadraticEase EasingMode="EaseInOut"/></DoubleAnimation.EasingFunction>
+                                                    </DoubleAnimation>
+                                                </Storyboard>
+                                            </BeginStoryboard>
+                                        </Trigger.EnterActions>
+                                        <Trigger.ExitActions>
+                                            <BeginStoryboard>
+                                                <Storyboard>
+                                                    <DoubleAnimation Storyboard.TargetProperty="(UIElement.RenderTransform).(ScaleTransform.ScaleX)"
+                                                        To="1.0" Duration="0:0:0.15">
+                                                        <DoubleAnimation.EasingFunction><QuadraticEase EasingMode="EaseInOut"/></DoubleAnimation.EasingFunction>
+                                                    </DoubleAnimation>
+                                                    <DoubleAnimation Storyboard.TargetProperty="(UIElement.RenderTransform).(ScaleTransform.ScaleY)"
+                                                        To="1.0" Duration="0:0:0.15">
+                                                        <DoubleAnimation.EasingFunction><QuadraticEase EasingMode="EaseInOut"/></DoubleAnimation.EasingFunction>
+                                                    </DoubleAnimation>
+                                                </Storyboard>
+                                            </BeginStoryboard>
+                                        </Trigger.ExitActions>
+                                    </Trigger>
+                                </Style.Triggers>
+                            </Style>
+                        </Border.Style>
                         <StackPanel Orientation="Horizontal">
                             <ui:SymbolIcon Symbol="Home24" FontSize="16" Margin="0,0,10,0"
                                            Foreground="#C7D2FE"/>
@@ -87,7 +126,44 @@
                     <Border x:Name="NavSettings" CornerRadius="8" Padding="10,10" Margin="0,0,0,4"
                             Background="Transparent" Cursor="Hand"
                             MouseLeftButtonDown="NavItem_PreviewMouseLeftButtonDown"
-                            Tag="Settings">
+                            Tag="Settings" RenderTransformOrigin="0.5,0.5">
+                        <Border.RenderTransform><ScaleTransform ScaleX="1" ScaleY="1"/></Border.RenderTransform>
+                        <Border.Style>
+                            <Style TargetType="Border">
+                                <Style.Triggers>
+                                    <Trigger Property="IsMouseOver" Value="True">
+                                        <Trigger.EnterActions>
+                                            <BeginStoryboard>
+                                                <Storyboard>
+                                                    <DoubleAnimation Storyboard.TargetProperty="(UIElement.RenderTransform).(ScaleTransform.ScaleX)"
+                                                        To="1.02" Duration="0:0:0.2">
+                                                        <DoubleAnimation.EasingFunction><QuadraticEase EasingMode="EaseInOut"/></DoubleAnimation.EasingFunction>
+                                                    </DoubleAnimation>
+                                                    <DoubleAnimation Storyboard.TargetProperty="(UIElement.RenderTransform).(ScaleTransform.ScaleY)"
+                                                        To="1.02" Duration="0:0:0.2">
+                                                        <DoubleAnimation.EasingFunction><QuadraticEase EasingMode="EaseInOut"/></DoubleAnimation.EasingFunction>
+                                                    </DoubleAnimation>
+                                                </Storyboard>
+                                            </BeginStoryboard>
+                                        </Trigger.EnterActions>
+                                        <Trigger.ExitActions>
+                                            <BeginStoryboard>
+                                                <Storyboard>
+                                                    <DoubleAnimation Storyboard.TargetProperty="(UIElement.RenderTransform).(ScaleTransform.ScaleX)"
+                                                        To="1.0" Duration="0:0:0.15">
+                                                        <DoubleAnimation.EasingFunction><QuadraticEase EasingMode="EaseInOut"/></DoubleAnimation.EasingFunction>
+                                                    </DoubleAnimation>
+                                                    <DoubleAnimation Storyboard.TargetProperty="(UIElement.RenderTransform).(ScaleTransform.ScaleY)"
+                                                        To="1.0" Duration="0:0:0.15">
+                                                        <DoubleAnimation.EasingFunction><QuadraticEase EasingMode="EaseInOut"/></DoubleAnimation.EasingFunction>
+                                                    </DoubleAnimation>
+                                                </Storyboard>
+                                            </BeginStoryboard>
+                                        </Trigger.ExitActions>
+                                    </Trigger>
+                                </Style.Triggers>
+                            </Style>
+                        </Border.Style>
                         <StackPanel Orientation="Horizontal">
                             <ui:SymbolIcon Symbol="Settings24" FontSize="16" Margin="0,0,10,0"
                                            Foreground="#C7D2FE"/>

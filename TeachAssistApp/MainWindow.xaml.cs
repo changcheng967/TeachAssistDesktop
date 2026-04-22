@@ -165,10 +165,11 @@ public partial class MainWindow : FluentWindow
                 Sidebar.Visibility = Visibility.Visible;
                 AppTitleBar.Margin = new Thickness(0);
                 SetActiveNav(NavDashboard);
-                // Update sidebar average display
+                // Update sidebar stat display
                 SidebarAverage.Text = dashboardVM.AverageMark > 0
                     ? $"{dashboardVM.AverageMark:F1}%"
                     : "--";
+                SidebarGpa.Text = dashboardVM.Gpa != "N/A" ? $"GPA {dashboardVM.Gpa}" : "";
                 dashboardVM.PropertyChanged += (s, e) =>
                 {
                     if (e.PropertyName == nameof(DashboardViewModel.AverageMark))
@@ -178,6 +179,13 @@ public partial class MainWindow : FluentWindow
                             SidebarAverage.Text = dashboardVM.AverageMark > 0
                                 ? $"{dashboardVM.AverageMark:F1}%"
                                 : "--";
+                        });
+                    }
+                    else if (e.PropertyName == nameof(DashboardViewModel.Gpa))
+                    {
+                        Dispatcher.Invoke(() =>
+                        {
+                            SidebarGpa.Text = dashboardVM.Gpa != "N/A" ? $"GPA {dashboardVM.Gpa}" : "";
                         });
                     }
                 };
