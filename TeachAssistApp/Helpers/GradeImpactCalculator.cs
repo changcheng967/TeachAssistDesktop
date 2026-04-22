@@ -8,14 +8,10 @@ namespace TeachAssistApp.Helpers;
 
 public static class GradeImpactCalculator
 {
-    /// <summary>
-    /// One scored item per assignment group, with per-category percentage scores.
-    /// E.g., "Unit 1 Test" might have KU: 75%, T: 80%, C: 90%.
-    /// </summary>
     private record ScoredItem(
         string Name,
         string? Date,
-        Dictionary<string, double> CategoryScores);
+        Dictionary<string, (double pct, double weight)> CategoryScores);
 
     public static (List<GradeTimelinePoint> Timeline, Dictionary<string, AssignmentImpact> Impacts)
         Calculate(List<AssignmentGroup> groups, WeightTable weightTable)
@@ -24,27 +20,31 @@ public static class GradeImpactCalculator
         var impacts = new Dictionary<string, AssignmentImpact>();
         var hasWeights = weightTable.Weights.Count > 0;
 
-        // Build scored items: one per assignment group, with per-category percentage scores
         var items = new List<ScoredItem>();
 
         foreach (var g in groups)
         {
-            var catScoreLists = new Dictionary<string, List<double>>();
+            var catScoreLists = new Dictionary<string, List<(double pct, double weight)>>();
             foreach (var a in g.Assignments)
             {
                 if (a.MarkAchieved.HasValue && a.MarkPossible.HasValue && a.MarkPossible.Value > 0)
                 {
                     var pct = (a.MarkAchieved.Value / a.MarkPossible.Value) * 100;
+                    var w = a.Weight ?? 0;
+                    // If no per-assignment weight, use MarkPossible as weight basis
+                    if (w <= 0) w = a.MarkPossible.Value;
                     var cat = string.IsNullOrEmpty(a.Category) ? "O" : a.Category;
                     if (!catScoreLists.ContainsKey(cat))
-                        catScoreLists[cat] = new List<double>();
-                    catScoreLists[cat].Add(pct);
+                        catScoreLists[cat] = new List<(double, double)>();
+                    catScoreLists[cat].Add((pct, w));
                 }
             }
 
             if (catScoreLists.Count > 0)
             {
-                var catScores = catScoreLists.ToDictionary(kv => kv.Key, kv => kv.Value.Average());
+                var catScores = catScoreLists.ToDictionary(
+                    kv => kv.Key,
+                    kv => WeightedAverage(kv.Value));
                 var date = g.Assignments
                     .Select(a => a.Date)
                     .FirstOrDefault(d => !string.IsNullOrWhiteSpace(d));
@@ -54,7 +54,6 @@ public static class GradeImpactCalculator
 
         if (items.Count == 0) return (timeline, impacts);
 
-        // Sort by date
         items = items
             .OrderBy(x =>
             {
@@ -68,7 +67,7 @@ public static class GradeImpactCalculator
             .ThenBy(x => x.Name)
             .ToList();
 
-        // ---- TIMELINE: cumulative grade over time (for chart) ----
+        // ---- TIMELINE ----
         for (int i = 0; i < items.Count; i++)
         {
             var subset = items.Take(i + 1).ToList();
@@ -80,21 +79,15 @@ public static class GradeImpactCalculator
                 AssignmentName = items[i].Name,
                 Date = items[i].Date,
                 CumulativeGrade = cumulativeGrade,
-                Impact = 0, // filled below
+                Impact = 0,
                 IsHighImpact = false,
                 FirstPoint = i == 0
             });
         }
 
         // ---- IMPACTS: leave-one-out ----
-        // For each assignment, compute: final_grade - grade_without_this_assignment
-        // This directly answers: "How much does this assignment affect my current grade?"
-        //   Positive = this assignment helped your grade
-        //   Negative = this assignment hurt your grade
-
         double finalGrade = ComputeGrade(items, weightTable, hasWeights);
 
-        // Category state for contribution calculation
         var finalCatState = GetCategoryState(items);
         double totalActiveWeight = hasWeights
             ? finalCatState.Where(c => c.Value.Count > 0)
@@ -105,7 +98,6 @@ public static class GradeImpactCalculator
         {
             var item = items[i];
 
-            // Compute grade WITHOUT this assignment
             var remaining = new List<ScoredItem>(items.Count - 1);
             for (int j = 0; j < items.Count; j++)
             {
@@ -117,7 +109,6 @@ public static class GradeImpactCalculator
 
             double impact = finalGrade - gradeWithout;
 
-            // Weighted contribution: portion of final grade from this assignment
             double contrib = 0;
             if (hasWeights && totalActiveWeight > 0)
             {
@@ -126,12 +117,12 @@ public static class GradeImpactCalculator
                     var w = weightTable.GetWeight(kv.Key) ?? 0;
                     var n = finalCatState.GetValueOrDefault(kv.Key)?.Count ?? 1;
                     if (n > 0 && w > 0)
-                        contrib += kv.Value * w / (n * totalActiveWeight);
+                        contrib += kv.Value.pct * w / (n * totalActiveWeight);
                 }
             }
             else
             {
-                contrib = items.Count > 0 ? item.CategoryScores.Values.Average() / items.Count : 0;
+                contrib = items.Count > 0 ? item.CategoryScores.Values.Average(v => v.pct) / items.Count : 0;
             }
 
             impacts[item.Name] = new AssignmentImpact
@@ -144,11 +135,9 @@ public static class GradeImpactCalculator
                 CumulativeAfter = finalGrade
             };
 
-            // Also set impact on timeline point
             timeline[i].Impact = impact;
         }
 
-        // Mark high impacts: |impact| >= 3.0 OR top 3 by magnitude
         var byMagnitude = impacts.Values.OrderByDescending(v => Math.Abs(v.ImpactDelta)).ToList();
         var top3Set = new HashSet<string>(byMagnitude.Take(3).Select(v => v.AssignmentName));
 
@@ -163,10 +152,6 @@ public static class GradeImpactCalculator
         return (timeline, impacts);
     }
 
-    /// <summary>
-    /// Compute the weighted grade for a set of items.
-    /// Correct formula: group by category → average within each → weight across.
-    /// </summary>
     private static double ComputeGrade(List<ScoredItem> items, WeightTable weightTable, bool hasWeights)
     {
         if (items.Count == 0) return 0;
@@ -176,7 +161,7 @@ public static class GradeImpactCalculator
         if (!hasWeights)
         {
             var allScores = catState.Values.SelectMany(x => x).ToList();
-            return allScores.Count > 0 ? allScores.Average() : 0;
+            return allScores.Count > 0 ? allScores.Average(v => v.pct) : 0;
         }
 
         double weightedSum = 0;
@@ -188,7 +173,8 @@ public static class GradeImpactCalculator
             var w = weightTable.GetWeight(cat.Key) ?? 0;
             if (w > 0)
             {
-                weightedSum += cat.Value.Average() * w;
+                var catAvg = WeightedAverage(cat.Value).pct;
+                weightedSum += catAvg * w;
                 totalWeight += w;
             }
         }
@@ -196,21 +182,26 @@ public static class GradeImpactCalculator
         return totalWeight > 0 ? weightedSum / totalWeight : 0;
     }
 
-    /// <summary>
-    /// Collect all per-category scores from items.
-    /// </summary>
-    private static Dictionary<string, List<double>> GetCategoryState(List<ScoredItem> items)
+    private static Dictionary<string, List<(double pct, double weight)>> GetCategoryState(List<ScoredItem> items)
     {
-        var state = new Dictionary<string, List<double>>();
+        var state = new Dictionary<string, List<(double pct, double weight)>>();
         foreach (var item in items)
         {
             foreach (var kv in item.CategoryScores)
             {
                 if (!state.ContainsKey(kv.Key))
-                    state[kv.Key] = new List<double>();
+                    state[kv.Key] = new List<(double, double)>();
                 state[kv.Key].Add(kv.Value);
             }
         }
         return state;
+    }
+
+    private static (double pct, double weight) WeightedAverage(List<(double pct, double weight)> scores)
+    {
+        if (scores.Count == 0) return (0, 0);
+        var totalW = scores.Sum(s => s.weight);
+        if (totalW <= 0) return (scores.Average(s => s.pct), 0);
+        return (scores.Sum(s => s.pct * s.weight) / totalW, totalW);
     }
 }

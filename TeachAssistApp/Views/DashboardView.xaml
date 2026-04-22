@@ -59,19 +59,18 @@
                 </Grid.RowDefinitions>
 
                 <!-- LEFT: Big average card — grade-colored accent -->
-                <Border Grid.Column="0" Style="{StaticResource BentoHeroCard}"
-                        CornerRadius="16">
+                <Border Grid.Column="0" Style="{StaticResource BentoHeroCard}">
                     <Grid>
                         <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="6"/>
+                            <ColumnDefinition Width="4"/>
                             <ColumnDefinition Width="*"/>
                         </Grid.ColumnDefinitions>
 
                         <!-- Grade-colored accent bar -->
-                        <Border Grid.Column="0" CornerRadius="16,0,0,16"
+                        <Border Grid.Column="0" CornerRadius="14,0,0,14"
                                 Background="{Binding GradeColor, Converter={StaticResource StringToBrushConverter}}"/>
 
-                        <StackPanel Grid.Column="1" VerticalAlignment="Center" Margin="24,12,24,12">
+                        <StackPanel Grid.Column="1" VerticalAlignment="Center" Margin="20,12,20,12">
                             <TextBlock Text="AVERAGE" FontSize="11" FontWeight="SemiBold"
                                        Foreground="{DynamicResource TextFillColorTertiaryBrush}"
                                        Margin="0,0,0,8" Opacity="0.8"/>
@@ -103,15 +102,15 @@
                     </Grid.RowDefinitions>
 
                     <!-- GPA card -->
-                    <Border Grid.Row="0" Style="{StaticResource BentoCard}" CornerRadius="14">
+                    <Border Grid.Row="0" Style="{StaticResource BentoCard}">
                         <Grid>
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition Width="4"/>
                                 <ColumnDefinition Width="*"/>
                             </Grid.ColumnDefinitions>
-                            <Border Grid.Column="0" CornerRadius="14,0,0,14"
+                            <Border Grid.Column="0" CornerRadius="10,0,0,10"
                                     Background="{StaticResource WarmGradient}"/>
-                            <StackPanel Grid.Column="1" Margin="16,0,0,0" VerticalAlignment="Center">
+                            <StackPanel Grid.Column="1" Margin="14,0,0,0" VerticalAlignment="Center">
                                 <TextBlock Text="GPA" FontSize="11" FontWeight="SemiBold"
                                            Foreground="{DynamicResource TextFillColorTertiaryBrush}"
                                            Margin="0,0,0,4" Opacity="0.8"/>
@@ -122,15 +121,15 @@
                     </Border>
 
                     <!-- Courses card -->
-                    <Border Grid.Row="2" Style="{StaticResource BentoCard}" CornerRadius="14">
+                    <Border Grid.Row="2" Style="{StaticResource BentoCard}">
                         <Grid>
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition Width="4"/>
                                 <ColumnDefinition Width="*"/>
                             </Grid.ColumnDefinitions>
-                            <Border Grid.Column="0" CornerRadius="14,0,0,14"
+                            <Border Grid.Column="0" CornerRadius="10,0,0,10"
                                     Background="{StaticResource SuccessGradient}"/>
-                            <StackPanel Grid.Column="1" Margin="16,0,0,0" VerticalAlignment="Center">
+                            <StackPanel Grid.Column="1" Margin="14,0,0,0" VerticalAlignment="Center">
                                 <TextBlock Text="COURSES" FontSize="11" FontWeight="SemiBold"
                                            Foreground="{DynamicResource TextFillColorTertiaryBrush}"
                                            Margin="0,0,0,4" Opacity="0.8"/>
@@ -145,7 +144,7 @@
             <!-- Section label -->
             <TextBlock x:Name="CourseSectionLabel" Text="COURSES"
                        Style="{StaticResource SectionHeader}"
-                       Margin="0,8,0,14"
+                       Margin="0,8,0,10"
                        Opacity="0"/>
         </StackPanel>
 
@@ -157,7 +156,7 @@
                 <ItemsControl.ItemTemplate>
                     <DataTemplate>
                         <!-- Course card -->
-                        <Border Margin="0,0,0,8" CornerRadius="12"
+                        <Border Margin="0,0,0,8" CornerRadius="10"
                                 Background="{DynamicResource CardBackgroundFillColorDefaultBrush}"
                                 Effect="{StaticResource CardDefaultShadow}"
                                 RenderTransformOrigin="0.5,0.5">
@@ -195,12 +194,12 @@
 
                             <Grid>
                                 <Grid.ColumnDefinitions>
-                                    <ColumnDefinition Width="6"/>
+                                    <ColumnDefinition Width="4"/>
                                     <ColumnDefinition Width="*"/>
                                 </Grid.ColumnDefinitions>
 
                                 <!-- Grade color accent bar -->
-                                <Border Grid.Column="0" CornerRadius="12,0,0,12"
+                                <Border Grid.Column="0" CornerRadius="10,0,0,10"
                                         Background="{Binding GradeColor, Converter={StaticResource StringToBrushConverter}}"/>
 
                                 <!-- Clickable content -->
@@ -216,7 +215,7 @@
                                             <ContentPresenter/>
                                         </ControlTemplate>
                                     </Button.Template>
-                                    <Grid Margin="20,16,20,16">
+                                    <Grid Margin="16,14,16,14">
                                         <Grid.ColumnDefinitions>
                                             <ColumnDefinition Width="80"/>
                                             <ColumnDefinition Width="*"/>
@@ -270,7 +269,7 @@
               Background="{DynamicResource OverlayBrush}"
               Visibility="{Binding IsLoading, Converter={StaticResource BooleanToVisibilityConverter}}">
             <StackPanel VerticalAlignment="Center" HorizontalAlignment="Center">
-                <Border Width="56" Height="56" CornerRadius="14" Margin="0,0,0,20"
+                <Border Width="56" Height="56" CornerRadius="10" Margin="0,0,0,20"
                         HorizontalAlignment="Center" ClipToBounds="True">
                     <Border.Effect>
                         <DropShadowEffect Color="#6366F1" BlurRadius="20" ShadowDepth="0" Opacity="0.3" Direction="0"/>
@@ -290,7 +289,7 @@
         <Grid Grid.Row="1"
               Visibility="{Binding IsEmpty, Converter={StaticResource BooleanToVisibilityConverter}}">
             <StackPanel VerticalAlignment="Center" HorizontalAlignment="Center">
-                <Border Width="72" Height="72" CornerRadius="18" Margin="0,0,0,24"
+                <Border Width="72" Height="72" CornerRadius="10" Margin="0,0,0,24"
                         HorizontalAlignment="Center" ClipToBounds="True">
                     <Border.Effect>
                         <DropShadowEffect Color="#6366F1" BlurRadius="20" ShadowDepth="0" Opacity="0.15" Direction="0"/>

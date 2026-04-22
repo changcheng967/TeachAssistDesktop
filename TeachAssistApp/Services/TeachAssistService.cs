@@ -1612,6 +1612,21 @@ public class TeachAssistService : ITeachAssistService
         System.Diagnostics.Debug.WriteLine($"  Found {rows.Count} weight table rows");
 #endif
 
+        // Detect if the table has both "Weighting" and "Course Weighting" columns.
+        // The HTML weight table layout is:
+        //   | Category | Weighting (redistributed) | Course Weighting (actual) | Student Achievement |
+        // We want the "Course Weighting" column (actual weights) to avoid double-redistribution.
+        int courseWeightColumn = -1;
+        var headerRow = rows[0].SelectNodes(".//th");
+        if (headerRow != null && headerRow.Count >= 3)
+        {
+            var headers = headerRow.Select(h => h.InnerText.Trim()).ToList();
+            if (headers.Contains("Weighting") && headers.Contains("Course Weighting"))
+            {
+                courseWeightColumn = headers.IndexOf("Course Weighting");
+            }
+        }
+
         foreach (var row in rows)
         {
             try
@@ -1644,7 +1659,21 @@ public class TeachAssistService : ITeachAssistService
 
                 if (string.IsNullOrEmpty(category)) continue;
 
-                // First numeric cell after the category label is the weight
+                // Prefer the "Course Weighting" column if detected, otherwise first numeric
+                if (courseWeightColumn >= 0 && courseWeightColumn < cells.Count)
+                {
+                    var weightStr = cells[courseWeightColumn].InnerText.Trim().TrimEnd('%');
+                    if (double.TryParse(weightStr, out var weight) && weight >= 0 && weight <= 100)
+                    {
+                        course.WeightTable.SetWeight(category, weight);
+#if DEBUG
+                        System.Diagnostics.Debug.WriteLine($"    Weight (course): {category} = {weight}%");
+#endif
+                        continue;
+                    }
+                }
+
+                // Fallback: first numeric cell after the category label
                 for (int ci = 1; ci < cells.Count; ci++)
                 {
                     var weightStr = cells[ci].InnerText.Trim().TrimEnd('%');
