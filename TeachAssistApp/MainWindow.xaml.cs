@@ -166,20 +166,13 @@ public partial class MainWindow : FluentWindow
                 AppTitleBar.Margin = new Thickness(0);
                 SetActiveNav(NavDashboard);
                 // Update sidebar stat display
-                SidebarAverage.Text = dashboardVM.AverageMark > 0
-                    ? $"{dashboardVM.AverageMark:F1}%"
-                    : "--";
-                SidebarGpa.Text = dashboardVM.Gpa != "N/A" ? $"GPA {dashboardVM.Gpa}" : "";
+                UpdateSidebarGrade(dashboardVM);
                 dashboardVM.PropertyChanged += (s, e) =>
                 {
-                    if (e.PropertyName == nameof(DashboardViewModel.AverageMark))
+                    if (e.PropertyName == nameof(DashboardViewModel.AverageMark) ||
+                        e.PropertyName == nameof(DashboardViewModel.GradeColor))
                     {
-                        Dispatcher.Invoke(() =>
-                        {
-                            SidebarAverage.Text = dashboardVM.AverageMark > 0
-                                ? $"{dashboardVM.AverageMark:F1}%"
-                                : "--";
-                        });
+                        Dispatcher.Invoke(() => UpdateSidebarGrade(dashboardVM));
                     }
                     else if (e.PropertyName == nameof(DashboardViewModel.Gpa))
                     {
@@ -234,6 +227,23 @@ public partial class MainWindow : FluentWindow
         if (item == null) return;
         _activeNavItem = item;
         item.Background = new SolidColorBrush(Color.FromArgb(0x20, 0xFF, 0xFF, 0xFF)); // White tint on dark sidebar
+    }
+
+    private void UpdateSidebarGrade(DashboardViewModel vm)
+    {
+        SidebarAverage.Text = vm.AverageMark > 0 ? $"{vm.AverageMark:F1}%" : "--";
+        SidebarGpa.Text = vm.Gpa != "N/A" ? $"GPA {vm.Gpa}" : "";
+
+        if (vm.AverageMark > 0 && !string.IsNullOrEmpty(vm.GradeColor))
+        {
+            var color = (Color)ColorConverter.ConvertFromString(vm.GradeColor);
+            SidebarGradeAccent.Background = new SolidColorBrush(color);
+            SidebarGradeAccent.Opacity = 0.8;
+        }
+        else
+        {
+            SidebarGradeAccent.Opacity = 0;
+        }
     }
 
     private void ClearActiveNav()

@@ -54,17 +54,25 @@
                                Foreground="#E0E7FF" VerticalAlignment="Center"/>
                 </StackPanel>
 
-                <!-- Quick stat card in sidebar -->
-                <Border Grid.Row="1" Margin="16,16,16,0" CornerRadius="10" Padding="16,12"
+                <!-- Quick stat card in sidebar — grade-colored accent -->
+                <Border Grid.Row="1" Margin="16,16,16,0" CornerRadius="10"
                         Background="#FFFFFF" Opacity="0.08">
-                    <StackPanel>
-                        <TextBlock Text="AVERAGE" FontSize="10" FontWeight="SemiBold"
-                                   Foreground="#A5B4FC" Opacity="0.7"/>
-                        <TextBlock x:Name="SidebarAverage" Text="--"
-                                   FontSize="28" FontWeight="Bold" Foreground="White" Margin="0,4,0,0"/>
-                        <TextBlock x:Name="SidebarGpa" Text=""
-                                   FontSize="11" Foreground="#C7D2FE" Opacity="0.6" Margin="0,4,0,0"/>
-                    </StackPanel>
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="4"/>
+                            <ColumnDefinition Width="*"/>
+                        </Grid.ColumnDefinitions>
+                        <Border x:Name="SidebarGradeAccent" Grid.Column="0" CornerRadius="10,0,0,10"
+                                Background="#818CF8" Opacity="0"/>
+                        <StackPanel Grid.Column="1" Margin="12,12,16,12">
+                            <TextBlock Text="AVERAGE" FontSize="10" FontWeight="SemiBold"
+                                       Foreground="#A5B4FC" Opacity="0.7"/>
+                            <TextBlock x:Name="SidebarAverage" Text="--"
+                                       FontSize="28" FontWeight="Bold" Foreground="White" Margin="0,4,0,0"/>
+                            <TextBlock x:Name="SidebarGpa" Text=""
+                                       FontSize="11" Foreground="#C7D2FE" Opacity="0.6" Margin="0,4,0,0"/>
+                        </StackPanel>
+                    </Grid>
                 </Border>
 
                 <!-- Nav items -->
