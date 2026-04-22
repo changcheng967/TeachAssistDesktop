@@ -175,8 +175,8 @@
 
                 <!-- Footer -->
                 <StackPanel Grid.Row="4" Margin="20,0,20,16">
-                    <Border Height="1" CornerRadius="1" Margin="0,0,0,10"
-                            Background="#FFFFFF" Opacity="0.08"/>
+                    <Border Height="2" CornerRadius="1" Margin="0,0,0,10"
+                            Background="{StaticResource AccentGradientHorizontal}" Opacity="0.4"/>
                     <TextBlock Text="TeachAssist Desktop" FontSize="10"
                                Foreground="#818CF8" Opacity="0.5"/>
                 </StackPanel>

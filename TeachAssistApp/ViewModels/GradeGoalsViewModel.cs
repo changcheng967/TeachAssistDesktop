@@ -5,6 +5,7 @@ using System.Collections.ObjectModel;
 using System.Linq;
 using System.Threading.Tasks;
 using TeachAssistApp.Services;
+using TeachAssistApp.Helpers;
 
 namespace TeachAssistApp.ViewModels;
 
@@ -14,6 +15,9 @@ public partial class GradeGoalsViewModel : ObservableObject
 
     [ObservableProperty]
     private double _currentAverage;
+
+    [ObservableProperty]
+    private string _gradeColor = GradeColorHelper.NA;
 
     [ObservableProperty]
     private double _goalPercent = 85;
@@ -71,6 +75,7 @@ public partial class GradeGoalsViewModel : ObservableObject
             if (validCourses.Any())
             {
                 CurrentAverage = validCourses.Average(c => c.NumericMark ?? 0);
+                GradeColor = GradeColorHelper.GetColor(CurrentAverage);
 
                 // Load saved goal
                 var savedGoal = LoadSavedGoal();

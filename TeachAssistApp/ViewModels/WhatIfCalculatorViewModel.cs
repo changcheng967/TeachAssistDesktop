@@ -5,6 +5,7 @@ using System.Collections.ObjectModel;
 using System.Linq;
 using System.Threading.Tasks;
 using TeachAssistApp.Services;
+using TeachAssistApp.Helpers;
 
 namespace TeachAssistApp.ViewModels;
 
@@ -15,6 +16,9 @@ public partial class WhatIfCalculatorViewModel : ObservableObject
 
     [ObservableProperty]
     private double _currentGpa;
+
+    [ObservableProperty]
+    private string _gradeColor = GradeColorHelper.NA;
 
     [ObservableProperty]
     private int _courseCount;
@@ -60,6 +64,7 @@ public partial class WhatIfCalculatorViewModel : ObservableObject
             if (validCourses.Any())
             {
                 CurrentGpa = validCourses.Average(c => c.NumericMark ?? 0);
+                GradeColor = GradeColorHelper.GetColor(CurrentGpa);
                 CourseCount = validCourses.Count;
             }
             else

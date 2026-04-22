@@ -5,6 +5,7 @@ using System.Collections.ObjectModel;
 using System.Linq;
 using System.Threading.Tasks;
 using TeachAssistApp.Services;
+using TeachAssistApp.Helpers;
 
 namespace TeachAssistApp.ViewModels;
 
@@ -14,6 +15,9 @@ public partial class GradeTrendsViewModel : ObservableObject
 
     [ObservableProperty]
     private double _overallAverage;
+
+    [ObservableProperty]
+    private string _gradeColor = GradeColorHelper.NA;
 
     [ObservableProperty]
     private double _highestMark;
@@ -45,6 +49,7 @@ public partial class GradeTrendsViewModel : ObservableObject
             if (validCourses.Any())
             {
                 OverallAverage = validCourses.Average(c => c.NumericMark ?? 0);
+                GradeColor = GradeColorHelper.GetColor(OverallAverage);
                 HighestMark = validCourses.Max(c => c.NumericMark ?? 0);
                 LowestMark = validCourses.Min(c => c.NumericMark ?? 0);
 

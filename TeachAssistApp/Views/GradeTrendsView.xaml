@@ -29,14 +29,23 @@
                             <ColumnDefinition Width="*"/>
                         </Grid.ColumnDefinitions>
 
-                        <!-- Average -->
+                        <!-- Average — grade-colored -->
                         <Border Grid.Column="0" CornerRadius="10"
                                 Background="{DynamicResource CardBackgroundFillColorDefaultBrush}"
-                                Effect="{StaticResource CardDefaultShadow}" Padding="16,12">
-                            <StackPanel>
-                                <TextBlock Text="Overall Average" FontSize="11" Foreground="{DynamicResource TextFillColorTertiaryBrush}" Margin="0,0,0,6"/>
-                                <TextBlock Text="{Binding OverallAverage, StringFormat={}{0:F1}%}" FontSize="28" FontWeight="Bold"/>
-                            </StackPanel>
+                                Effect="{StaticResource CardDefaultShadow}">
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="4"/>
+                                    <ColumnDefinition Width="*"/>
+                                </Grid.ColumnDefinitions>
+                                <Border Grid.Column="0" CornerRadius="10,0,0,10"
+                                        Background="{Binding GradeColor, Converter={StaticResource StringToBrushConverter}}"/>
+                                <StackPanel Grid.Column="1" Margin="16,12">
+                                    <TextBlock Text="Overall Average" FontSize="11" Foreground="{DynamicResource TextFillColorTertiaryBrush}" Margin="0,0,0,6"/>
+                                    <TextBlock Text="{Binding OverallAverage, StringFormat={}{0:F1}%}" FontSize="28" FontWeight="Bold"
+                                               Foreground="{Binding GradeColor, Converter={StaticResource StringToBrushConverter}}"/>
+                                </StackPanel>
+                            </Grid>
                         </Border>
 
                         <!-- Highest -->
