@@ -252,13 +252,25 @@ public partial class CourseDetailViewModel : ObservableObject
 
             if (categoryAssignments.Any())
             {
-                // Filter out assignments with null marks
-                var validAssignments = categoryAssignments.Where(a => a.MarkAchieved.HasValue && a.MarkPossible.HasValue).ToList();
+                var validAssignments = categoryAssignments
+                    .Where(a => a.MarkAchieved.HasValue && a.MarkPossible.HasValue && a.MarkPossible.Value > 0)
+                    .ToList();
 
                 if (validAssignments.Any())
                 {
-                    // Use per-assignment average to avoid distortion from unequal point values
-                    var percentage = validAssignments.Average(a => a.Percentage ?? 0);
+                    // Use weighted average matching GradeImpactCalculator
+                    var scored = validAssignments.Select(a =>
+                    {
+                        var pct = a.Percentage ?? 0;
+                        var w = a.Weight ?? 0;
+                        if (w <= 0) w = a.MarkPossible!.Value;
+                        return (pct, w);
+                    }).ToList();
+
+                    var totalW = scored.Sum(s => s.w);
+                    var percentage = totalW > 0
+                        ? scored.Sum(s => s.pct * s.w) / totalW
+                        : scored.Average(s => s.pct);
 
                     CategoryPerformance.Add(new CategoryPerformance
                     {

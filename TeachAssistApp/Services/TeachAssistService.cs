@@ -983,15 +983,15 @@ public class TeachAssistService : ITeachAssistService
                             var cells = rows[i].SelectNodes(".//td");
                             if (cells == null || cells.Count < 2) continue;
 
-                            // First cell must have rowspan="2" to be an assignment name
-                            if (cells[0].GetAttributeValue("rowspan", "1") != "2") continue;
+                            // First cell should be an assignment name (rowspan="2" is typical but not required)
+                            var rowspan = cells[0].GetAttributeValue("rowspan", "1");
+                            if (rowspan != "2" && rowspan != "1") continue;
 
                             var assignmentName = cells[0].InnerText.Trim();
                             if (string.IsNullOrWhiteSpace(assignmentName) ||
-                                assignmentName.Length < 3 ||
-                                assignmentName.Contains("Assignment", StringComparison.OrdinalIgnoreCase) ||
-                                assignmentName.Contains("Legend", StringComparison.OrdinalIgnoreCase) ||
-                                assignmentName.Contains("Category", StringComparison.OrdinalIgnoreCase))
+                                assignmentName.Length < 2 ||
+                                assignmentName.Equals("Legend", StringComparison.OrdinalIgnoreCase) ||
+                                assignmentName.Equals("Category", StringComparison.OrdinalIgnoreCase))
                                 continue;
 
 #if DEBUG
@@ -1617,10 +1617,10 @@ public class TeachAssistService : ITeachAssistService
         //   | Category | Weighting (redistributed) | Course Weighting (actual) | Student Achievement |
         // We want the "Course Weighting" column (actual weights) to avoid double-redistribution.
         int courseWeightColumn = -1;
-        var headerRow = rows[0].SelectNodes(".//th");
-        if (headerRow != null && headerRow.Count >= 3)
+        var headerCells = rows[0].SelectNodes(".//th") ?? rows[0].SelectNodes(".//td");
+        if (headerCells != null && headerCells.Count >= 3)
         {
-            var headers = headerRow.Select(h => h.InnerText.Trim()).ToList();
+            var headers = headerCells.Select(h => h.InnerText.Trim()).ToList();
             if (headers.Contains("Weighting") && headers.Contains("Course Weighting"))
             {
                 courseWeightColumn = headers.IndexOf("Course Weighting");
@@ -1697,8 +1697,8 @@ public class TeachAssistService : ITeachAssistService
     }
 
     /// <summary>
-    /// Fallback weight table finder — looks for any table containing percentage values
-    /// alongside known category names.
+    /// Fallback weight table finder — looks for tables with "Weighting" or "Course Weighting"
+    /// headers alongside known category names.
     /// </summary>
     private static HtmlNode? FindWeightTableFallback(HtmlDocument doc)
     {
@@ -1708,14 +1708,12 @@ public class TeachAssistService : ITeachAssistService
         foreach (var table in allTables)
         {
             var text = table.InnerText;
-            // Weight tables typically mention at least one category and have percentages
+            bool hasWeightingHeader = text.Contains("Weighting") || text.Contains("Course Weighting");
             bool hasCategory = text.Contains("Knowledge") || text.Contains("Thinking") ||
                                text.Contains("Communication") || text.Contains("Application") ||
-                               text.Contains("Final") || text.Contains("Culminating") ||
-                               text.Contains("Other");
-            bool hasPercentage = Regex.IsMatch(text, @"\d+\s*%");
+                               text.Contains("Final") || text.Contains("Culminating");
 
-            if (hasCategory && hasPercentage)
+            if (hasWeightingHeader && hasCategory)
                 return table;
         }
         return null;

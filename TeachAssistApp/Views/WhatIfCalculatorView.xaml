@@ -83,7 +83,7 @@
                         </Grid.ColumnDefinitions>
                         <Border Grid.Column="0" CornerRadius="10,0,0,10"
                                 Background="{Binding GpaDifference, Converter={StaticResource ImpactDeltaToColorConverter}}"/>
-                        <StackPanel Grid.Column="1" Margin="16,14">
+                        <StackPanel Grid.Column="1" Margin="14,12">
                             <TextBlock Text="Projected Average" FontSize="11" Foreground="{DynamicResource TextFillColorTertiaryBrush}" Margin="0,0,0,8"/>
                             <TextBlock Text="{Binding ProjectedGpa, StringFormat={}{0:F1}%}" FontSize="32" FontWeight="Bold"/>
                             <TextBlock FontSize="13" FontWeight="SemiBold" Margin="0,4,0,0"

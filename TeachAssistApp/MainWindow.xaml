@@ -81,7 +81,7 @@
                                Foreground="#818CF8" Opacity="0.5" Margin="10,0,0,10"/>
 
                     <!-- Dashboard -->
-                    <Border x:Name="NavDashboard" CornerRadius="8" Padding="10,10" Margin="0,0,0,4"
+                    <Border x:Name="NavDashboard" CornerRadius="10" Padding="10,10" Margin="0,0,0,4"
                             Background="Transparent" Cursor="Hand"
                             MouseLeftButtonDown="NavItem_PreviewMouseLeftButtonDown"
                             Tag="Dashboard" RenderTransformOrigin="0.5,0.5">
@@ -131,7 +131,7 @@
                     </Border>
 
                     <!-- Settings -->
-                    <Border x:Name="NavSettings" CornerRadius="8" Padding="10,10" Margin="0,0,0,4"
+                    <Border x:Name="NavSettings" CornerRadius="10" Padding="10,10" Margin="0,0,0,4"
                             Background="Transparent" Cursor="Hand"
                             MouseLeftButtonDown="NavItem_PreviewMouseLeftButtonDown"
                             Tag="Settings" RenderTransformOrigin="0.5,0.5">
