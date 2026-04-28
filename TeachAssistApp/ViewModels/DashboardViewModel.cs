@@ -76,7 +76,7 @@ public partial class DashboardViewModel : ObservableObject
             var courses = await _teachAssistService.GetCoursesAsync();
 
             Courses.Clear();
-            foreach (var course in courses)
+            foreach (var course in courses.Where(c => !c.IsLunch))
             {
                 Courses.Add(course);
             }
@@ -108,7 +108,7 @@ public partial class DashboardViewModel : ObservableObject
     [RelayCommand]
     private void SelectCourse(Course? course)
     {
-        if (course != null && !course.IsLunch)
+        if (course != null)
         {
 #if DEBUG
             System.Diagnostics.Debug.WriteLine($"SelectCourse called: {course.Code}");
@@ -130,8 +130,7 @@ public partial class DashboardViewModel : ObservableObject
         // Update school name from service
         SchoolName = _teachAssistService.SchoolName;
 
-        var academicCourses = Courses.Where(c => !c.IsLunch);
-        var validCourses = academicCourses.Where(c => c.HasValidMark).ToList();
+        var validCourses = Courses.Where(c => c.HasValidMark).ToList();
 
         if (validCourses.Any())
         {
@@ -169,7 +168,7 @@ public partial class DashboardViewModel : ObservableObject
             Gpa = "N/A";
         }
 
-        CourseCount = academicCourses.Count();
+        CourseCount = Courses.Count;
     }
 
     [RelayCommand]

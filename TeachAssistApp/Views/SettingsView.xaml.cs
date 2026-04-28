@@ -7,9 +7,67 @@ namespace TeachAssistApp.Views;
 
 public partial class SettingsView : Page
 {
+    private static readonly CubicEase EaseOut = new() { EasingMode = EasingMode.EaseOut };
+
     public SettingsView()
     {
         InitializeComponent();
+        DataContextChanged += OnDataContextChanged;
+    }
+
+    private void OnDataContextChanged(object sender, DependencyPropertyChangedEventArgs e)
+    {
+        if (e.OldValue is ViewModels.SettingsViewModel oldVm)
+            oldVm.PropertyChanged -= OnLoadingChanged;
+
+        if (e.NewValue is ViewModels.SettingsViewModel newVm)
+            newVm.PropertyChanged += OnLoadingChanged;
+    }
+
+    private void OnLoadingChanged(object? sender, System.ComponentModel.PropertyChangedEventArgs e)
+    {
+        if (e.PropertyName == nameof(ViewModels.SettingsViewModel.IsLoading) && DataContext is ViewModels.SettingsViewModel vm)
+        {
+            Dispatcher.Invoke(() =>
+            {
+                // Find the loading overlay grid
+                foreach (var child in LogicalTreeHelper.GetChildren(this))
+                {
+                    if (child is Grid g && g.Background is System.Windows.Media.SolidColorBrush brush
+                        && brush.Color.A > 0 && brush.Color.R == 0 && brush.Color.G == 0 && brush.Color.B == 0)
+                    {
+                        if (vm.IsLoading)
+                        {
+                            g.Visibility = Visibility.Visible;
+                            g.Opacity = 0;
+                            var fadeIn = new DoubleAnimation
+                            {
+                                From = 0, To = 1,
+                                Duration = TimeSpan.FromMilliseconds(200),
+                                EasingFunction = EaseOut
+                            };
+                            g.BeginAnimation(UIElement.OpacityProperty, fadeIn);
+                        }
+                        else
+                        {
+                            var fadeOut = new DoubleAnimation
+                            {
+                                From = 1, To = 0,
+                                Duration = TimeSpan.FromMilliseconds(300),
+                                EasingFunction = EaseOut
+                            };
+                            fadeOut.Completed += (s, _) =>
+                            {
+                                g.Visibility = Visibility.Collapsed;
+                                g.Opacity = 1;
+                            };
+                            g.BeginAnimation(UIElement.OpacityProperty, fadeOut);
+                        }
+                        break;
+                    }
+                }
+            });
+        }
     }
 
     private void ExecuteCommand(string commandName)

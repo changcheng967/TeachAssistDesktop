@@ -3,6 +3,7 @@ using System.Collections.Specialized;
 using System.ComponentModel;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Media.Animation;
 using ScottPlot;
 using ScottPlot.WPF;
 using TeachAssistApp.Models;
@@ -14,12 +15,74 @@ public partial class CourseDetailView : Page
 {
     private WpfPlot? _plotControl;
     private CourseDetailViewModel? _viewModel;
+    private static readonly System.Windows.Media.Animation.CubicEase EaseOut = new() { EasingMode = EasingMode.EaseOut };
 
     public CourseDetailView()
     {
         InitializeComponent();
         Loaded += OnLoaded;
         Unloaded += OnUnloaded;
+        DataContextChanged += OnDataContextChanged;
+    }
+
+    private void OnDataContextChanged(object sender, DependencyPropertyChangedEventArgs e)
+    {
+        if (e.OldValue is CourseDetailViewModel oldVm)
+            oldVm.PropertyChanged -= OnLoadingChanged;
+
+        if (e.NewValue is CourseDetailViewModel newVm)
+            newVm.PropertyChanged += OnLoadingChanged;
+    }
+
+    private void OnLoadingChanged(object? sender, System.ComponentModel.PropertyChangedEventArgs e)
+    {
+        if (e.PropertyName == nameof(CourseDetailViewModel.IsLoading) && _viewModel != null)
+        {
+            Dispatcher.Invoke(() =>
+            {
+                var overlay = FindLoadingOverlay();
+                if (overlay == null) return;
+
+                if (_viewModel.IsLoading)
+                {
+                    overlay.Visibility = Visibility.Visible;
+                    overlay.Opacity = 0;
+                    var fadeIn = new System.Windows.Media.Animation.DoubleAnimation
+                    {
+                        From = 0, To = 1,
+                        Duration = TimeSpan.FromMilliseconds(200),
+                        EasingFunction = EaseOut
+                    };
+                    overlay.BeginAnimation(UIElement.OpacityProperty, fadeIn);
+                }
+                else
+                {
+                    var fadeOut = new System.Windows.Media.Animation.DoubleAnimation
+                    {
+                        From = 1, To = 0,
+                        Duration = TimeSpan.FromMilliseconds(300),
+                        EasingFunction = EaseOut
+                    };
+                    fadeOut.Completed += (s, _) =>
+                    {
+                        overlay.Visibility = Visibility.Collapsed;
+                        overlay.Opacity = 1;
+                    };
+                    overlay.BeginAnimation(UIElement.OpacityProperty, fadeOut);
+                }
+            });
+        }
+    }
+
+    private Grid? FindLoadingOverlay()
+    {
+        foreach (var child in LogicalTreeHelper.GetChildren(this))
+        {
+            if (child is Grid g && g.Background is System.Windows.Media.SolidColorBrush brush
+                && brush.Color.A > 0 && brush.Color.R == 0 && brush.Color.G == 0 && brush.Color.B == 0)
+                return g;
+        }
+        return null;
     }
 
     private void OnLoaded(object sender, RoutedEventArgs e)
@@ -45,6 +108,9 @@ public partial class CourseDetailView : Page
 
             CreatePlotControl();
             RenderChart(_viewModel.GradeTimeline);
+
+            // Entrance animation for the main content panel
+            AnimateContentEntrance();
         }
     }
 
@@ -55,6 +121,49 @@ public partial class CourseDetailView : Page
             _viewModel.PropertyChanged -= OnViewModelPropertyChanged;
             _viewModel.GradeTimeline.CollectionChanged -= OnGradeTimelineChanged;
             _viewModel = null;
+        }
+    }
+
+    private void AnimateContentEntrance()
+    {
+        if (System.Windows.Media.VisualTreeHelper.GetChildrenCount(this) == 0) return;
+        var rootGrid = System.Windows.Media.VisualTreeHelper.GetChild(this, 0) as Grid;
+        if (rootGrid == null) return;
+
+        foreach (var child in LogicalTreeHelper.GetChildren(rootGrid))
+        {
+            if (child is ScrollViewer sv && System.Windows.Media.VisualTreeHelper.GetChildrenCount(sv) > 0)
+            {
+                var content = System.Windows.Media.VisualTreeHelper.GetChild(sv, 0) as StackPanel;
+                if (content == null) continue;
+
+                content.Opacity = 0;
+                content.RenderTransform = new System.Windows.Media.TranslateTransform(0, 16);
+
+                var fadeIn = new DoubleAnimation
+                {
+                    From = 0, To = 1,
+                    Duration = TimeSpan.FromMilliseconds(400),
+                    EasingFunction = EaseOut
+                };
+                var slideUp = new DoubleAnimation
+                {
+                    From = 16, To = 0,
+                    Duration = TimeSpan.FromMilliseconds(400),
+                    EasingFunction = EaseOut
+                };
+
+                Storyboard.SetTarget(fadeIn, content);
+                Storyboard.SetTargetProperty(fadeIn, new PropertyPath(UIElement.OpacityProperty));
+                Storyboard.SetTarget(slideUp, content);
+                Storyboard.SetTargetProperty(slideUp, new PropertyPath("(UIElement.RenderTransform).(TranslateTransform.Y)"));
+
+                var sb = new Storyboard();
+                sb.Children.Add(fadeIn);
+                sb.Children.Add(slideUp);
+                sb.Begin(this);
+                break;
+            }
         }
     }
 
@@ -145,8 +254,8 @@ public partial class CourseDetailView : Page
                 }
 
                 // Axis label styling
-                plot.Axes.Bottom.TickLabelStyle.FontSize = 10;
-                plot.Axes.Left.TickLabelStyle.FontSize = 10;
+                plot.Axes.Bottom.TickLabelStyle.FontSize = 11;
+                plot.Axes.Left.TickLabelStyle.FontSize = 11;
                 plot.Axes.Bottom.TickLabelStyle.ForeColor = textColor;
                 plot.Axes.Left.TickLabelStyle.ForeColor = textColor;
 
@@ -154,10 +263,10 @@ public partial class CourseDetailView : Page
                 var tickGen = new ScottPlot.TickGenerators.NumericManual();
                 for (int i = 0; i < timeline.Count; i++)
                 {
-                    tickGen.AddMajor(i, Truncate(timeline[i].AssignmentName, 12));
+                    tickGen.AddMajor(i, Truncate(timeline[i].AssignmentName, 10));
                 }
                 plot.Axes.Bottom.TickGenerator = tickGen;
-                plot.Axes.Bottom.TickLabelStyle.Rotation = 45;
+                plot.Axes.Bottom.TickLabelStyle.Rotation = 30;
 
                 // Y-axis: grade percentage 0–100
                 plot.Axes.Left.Min = 0;
@@ -187,6 +296,16 @@ public partial class CourseDetailView : Page
 
                 plot.ShowLegend();
                 _plotControl.Refresh();
+
+                // Fade in the chart smoothly
+                _plotControl.Opacity = 0;
+                var chartFade = new System.Windows.Media.Animation.DoubleAnimation
+                {
+                    From = 0, To = 1,
+                    Duration = TimeSpan.FromMilliseconds(400),
+                    EasingFunction = new System.Windows.Media.Animation.CubicEase { EasingMode = EasingMode.EaseOut }
+                };
+                _plotControl.BeginAnimation(System.Windows.UIElement.OpacityProperty, chartFade);
             });
         }
         catch (Exception ex)

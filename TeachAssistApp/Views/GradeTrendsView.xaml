@@ -17,7 +17,7 @@
                 Background="{StaticResource AccentGradientHorizontal}"/>
 
         <Grid Margin="0,35,0,0">
-            <ScrollViewer VerticalScrollBarVisibility="Auto" Padding="32,24,32,60">
+            <ScrollViewer VerticalScrollBarVisibility="Auto" CanContentScroll="False" Padding="32,24,32,60">
                 <StackPanel>
                     <!-- Stats row -->
                     <Grid Margin="0,0,0,20">
@@ -87,7 +87,7 @@
                     <TextBlock Text="COURSE PERFORMANCE" FontSize="11" FontWeight="SemiBold"
                                Foreground="{DynamicResource TextFillColorTertiaryBrush}" Margin="0,0,0,10"/>
 
-                    <ScrollViewer MaxHeight="280" VerticalScrollBarVisibility="Auto">
+                    <ScrollViewer MaxHeight="280" VerticalScrollBarVisibility="Auto" CanContentScroll="False">
                         <ItemsControl ItemsSource="{Binding CourseTrends}">
                             <ItemsControl.ItemTemplate>
                                 <DataTemplate>

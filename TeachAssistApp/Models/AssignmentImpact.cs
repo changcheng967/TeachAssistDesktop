@@ -24,4 +24,5 @@ public class AssignmentImpact
     public string DisplayImpact => $"{(ImpactDelta >= 0 ? "+" : "")}{ImpactDelta:F1}%";
     public string DisplayContribution => $"{WeightedContribution:F1}%";
     public string ImpactColor => IsPositive ? "#FF238636" : "#FFF85149";
+    public bool ShowBadge => Math.Abs(ImpactDelta) > 0.05;
 }

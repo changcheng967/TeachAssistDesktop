@@ -9,12 +9,79 @@ namespace TeachAssistApp.Views;
 
 public partial class DashboardView : Page
 {
+    private static readonly CubicEase EaseOut = new() { EasingMode = EasingMode.EaseOut };
     private static readonly QuadraticEase SmoothEase = new() { EasingMode = EasingMode.EaseInOut };
     private bool _firstLoad = true;
+    private ViewModels.DashboardViewModel? _vm;
 
     public DashboardView()
     {
         InitializeComponent();
+        DataContextChanged += OnDataContextChanged;
+    }
+
+    private void OnDataContextChanged(object sender, DependencyPropertyChangedEventArgs e)
+    {
+        if (e.OldValue is ViewModels.DashboardViewModel oldVm)
+            oldVm.PropertyChanged -= OnIsLoadingChanged;
+
+        if (e.NewValue is ViewModels.DashboardViewModel newVm)
+        {
+            _vm = newVm;
+            newVm.PropertyChanged += OnIsLoadingChanged;
+        }
+    }
+
+    private void OnIsLoadingChanged(object? sender, System.ComponentModel.PropertyChangedEventArgs e)
+    {
+        if (e.PropertyName == nameof(ViewModels.DashboardViewModel.IsLoading) && _vm != null)
+            Dispatcher.Invoke(() => AnimateLoadingOverlay(_vm.IsLoading));
+    }
+
+    private void AnimateLoadingOverlay(bool isLoading)
+    {
+        // Find the loading overlay grid (first child with OverlayBrush background in row span 2)
+        var overlay = FindLoadingOverlay();
+        if (overlay == null) return;
+
+        if (isLoading)
+        {
+            overlay.Visibility = Visibility.Visible;
+            overlay.Opacity = 0;
+            var fadeIn = new DoubleAnimation
+            {
+                From = 0, To = 1,
+                Duration = TimeSpan.FromMilliseconds(200),
+                EasingFunction = EaseOut
+            };
+            overlay.BeginAnimation(UIElement.OpacityProperty, fadeIn);
+        }
+        else
+        {
+            var fadeOut = new DoubleAnimation
+            {
+                From = 1, To = 0,
+                Duration = TimeSpan.FromMilliseconds(300),
+                EasingFunction = EaseOut
+            };
+            fadeOut.Completed += (s, _) =>
+            {
+                overlay.Visibility = Visibility.Collapsed;
+                overlay.Opacity = 1;
+            };
+            overlay.BeginAnimation(UIElement.OpacityProperty, fadeOut);
+        }
+    }
+
+    private Grid? FindLoadingOverlay()
+    {
+        // Loading overlay is the grid with Grid.RowSpan="2" and OverlayBrush
+        foreach (var child in LogicalTreeHelper.GetChildren(this))
+        {
+            if (child is Grid g && g.GetValue(Grid.RowSpanProperty) is int rs && rs == 2)
+                return g;
+        }
+        return null;
     }
 
     private void Page_Loaded(object sender, RoutedEventArgs e)
@@ -29,7 +96,6 @@ public partial class DashboardView : Page
             }
             else
             {
-                // Ensure hero is visible on subsequent navigations
                 BentoGrid.Opacity = 1;
                 BentoGrid.RenderTransform = new TranslateTransform(0, 0);
                 CourseSectionLabel.Opacity = 1;
@@ -37,7 +103,6 @@ public partial class DashboardView : Page
         }
         catch
         {
-            // Entrance animation is non-critical — ensure visibility
             BentoGrid.Opacity = 1;
             CourseSectionLabel.Opacity = 1;
         }
@@ -45,20 +110,19 @@ public partial class DashboardView : Page
 
     private void AnimateHeroEntrance()
     {
-        // Bento grid: fade + slide up
         if (BentoGrid != null)
         {
             var fadeIn = new DoubleAnimation
             {
                 From = 0, To = 1,
-                Duration = TimeSpan.FromMilliseconds(700),
-                EasingFunction = SmoothEase
+                Duration = TimeSpan.FromMilliseconds(600),
+                EasingFunction = EaseOut
             };
             var slideUp = new DoubleAnimation
             {
-                From = 16, To = 0,
-                Duration = TimeSpan.FromMilliseconds(700),
-                EasingFunction = SmoothEase
+                From = 20, To = 0,
+                Duration = TimeSpan.FromMilliseconds(600),
+                EasingFunction = EaseOut
             };
 
             Storyboard.SetTarget(fadeIn, BentoGrid);
@@ -72,15 +136,14 @@ public partial class DashboardView : Page
             sb.Begin(this);
         }
 
-        // "Courses" label: fade in
         if (CourseSectionLabel != null)
         {
             var labelFade = new DoubleAnimation
             {
                 From = 0, To = 1,
-                Duration = TimeSpan.FromMilliseconds(500),
-                BeginTime = TimeSpan.FromMilliseconds(600),
-                EasingFunction = SmoothEase
+                Duration = TimeSpan.FromMilliseconds(400),
+                BeginTime = TimeSpan.FromMilliseconds(500),
+                EasingFunction = EaseOut
             };
             Storyboard.SetTarget(labelFade, CourseSectionLabel);
             Storyboard.SetTargetProperty(labelFade, new PropertyPath(UIElement.OpacityProperty));
@@ -112,21 +175,21 @@ public partial class DashboardView : Page
             var container = CourseItemsControl.ItemContainerGenerator.ContainerFromIndex(i) as ContentPresenter;
             if (container == null) continue;
 
-            var delay = TimeSpan.FromMilliseconds(700 + i * 80);
+            var delay = TimeSpan.FromMilliseconds(600 + i * 50);
 
             var fadeIn = new DoubleAnimation
             {
                 From = 0, To = 1,
-                Duration = TimeSpan.FromMilliseconds(500),
+                Duration = TimeSpan.FromMilliseconds(350),
                 BeginTime = delay,
-                EasingFunction = SmoothEase
+                EasingFunction = EaseOut
             };
             var slideUp = new DoubleAnimation
             {
-                From = 12, To = 0,
-                Duration = TimeSpan.FromMilliseconds(500),
+                From = 16, To = 0,
+                Duration = TimeSpan.FromMilliseconds(350),
                 BeginTime = delay,
-                EasingFunction = SmoothEase
+                EasingFunction = EaseOut
             };
 
             container.RenderTransform = new TranslateTransform();

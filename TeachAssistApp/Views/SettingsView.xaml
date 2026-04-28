@@ -8,7 +8,7 @@
       d:DesignHeight="600" d:DesignWidth="800">
 
     <Grid>
-        <ScrollViewer VerticalScrollBarVisibility="Auto">
+        <ScrollViewer VerticalScrollBarVisibility="Auto" CanContentScroll="False">
             <StackPanel Margin="32,28,32,32" Background="{DynamicResource ApplicationPageBackgroundThemeBrush}">
 
             <!-- Header -->
@@ -218,7 +218,7 @@
                     </Border>
 
                     <StackPanel Grid.Column="2" VerticalAlignment="Center">
-                        <TextBlock FontSize="15" FontWeight="SemiBold">TeachAssist Desktop</TextBlock>
+                        <TextBlock FontSize="14" FontWeight="SemiBold">TeachAssist Desktop</TextBlock>
                         <TextBlock FontSize="12" Foreground="{DynamicResource TextFillColorSecondaryBrush}">
                             <Run Text="Version "/><Run Text="{Binding AppVersion}" FontWeight="SemiBold"/><Run Text=" by changcheng967"/>
                         </TextBlock>

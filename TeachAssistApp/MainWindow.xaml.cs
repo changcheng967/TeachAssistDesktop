@@ -217,7 +217,23 @@ public partial class MainWindow : FluentWindow
             _currentView = baseView;
             while (ContentArea.CanGoBack)
                 ContentArea.RemoveBackEntry();
-            ContentArea.Navigate(page);
+
+            // Fade out current content before navigating
+            if (ContentArea.Content is FrameworkElement oldContent)
+            {
+                var fadeOut = new DoubleAnimation
+                {
+                    From = 1, To = 0,
+                    Duration = TimeSpan.FromMilliseconds(150),
+                    EasingFunction = new CubicEase { EasingMode = EasingMode.EaseIn }
+                };
+                fadeOut.Completed += (s, _) => ContentArea.Navigate(page);
+                oldContent.BeginAnimation(UIElement.OpacityProperty, fadeOut);
+            }
+            else
+            {
+                ContentArea.Navigate(page);
+            }
         }
     }
 
@@ -263,11 +279,10 @@ public partial class MainWindow : FluentWindow
             var fadeIn = new DoubleAnimation
             {
                 From = 0, To = 1,
-                Duration = TimeSpan.FromMilliseconds(350),
-                EasingFunction = new QuadraticEase { EasingMode = EasingMode.EaseInOut }
+                Duration = TimeSpan.FromMilliseconds(400),
+                EasingFunction = new CubicEase { EasingMode = EasingMode.EaseOut }
             };
             fe.BeginAnimation(UIElement.OpacityProperty, fadeIn);
-
         }
     }
 

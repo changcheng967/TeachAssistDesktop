@@ -70,7 +70,7 @@
                     </TextBlock>
 
                     <TextBlock x:Name="BrandSubtitle" Text="Track your YRDSB grades with style."
-                               FontSize="15"
+                               FontSize="14"
                                Foreground="{DynamicResource TextFillColorSecondaryBrush}"
                                HorizontalAlignment="Center"
                                Margin="0,0,0,40"
@@ -140,10 +140,10 @@
                         Background="{StaticResource AccentGradientHorizontal}"
                         Panel.ZIndex="1"/>
 
-                <ScrollViewer VerticalScrollBarVisibility="Auto" Padding="44" Margin="0,3,0,0">
+                <ScrollViewer VerticalScrollBarVisibility="Auto" CanContentScroll="False" Padding="44" Margin="0,3,0,0">
                     <StackPanel VerticalAlignment="Center" MinHeight="480">
                         <TextBlock Text="Welcome back"
-                                   FontSize="26"
+                                   FontSize="28"
                                    FontWeight="SemiBold"
                                    Foreground="{DynamicResource TextFillColorPrimaryBrush}"
                                    Margin="0,0,0,4"/>
@@ -195,7 +195,7 @@
                                    Command="{Binding LoginCommand}"
                                    Appearance="Primary"
                                    HorizontalAlignment="Stretch"
-                                   FontSize="15"
+                                   FontSize="14"
                                    Height="44"
                                    Margin="0,0,0,20"/>
 

@@ -151,7 +151,7 @@
         <!-- ═══════════════════════════════════════════════════════
              COURSE LIST — Clean, spaced cards
              ═══════════════════════════════════════════════════════ -->
-        <ScrollViewer Grid.Row="1" VerticalScrollBarVisibility="Auto" Padding="32,0,32,32">
+        <ScrollViewer Grid.Row="1" VerticalScrollBarVisibility="Auto" CanContentScroll="False" Padding="32,0,32,32">
             <ItemsControl x:Name="CourseItemsControl" ItemsSource="{Binding Courses}">
                 <ItemsControl.ItemTemplate>
                     <DataTemplate>
@@ -280,7 +280,7 @@
                                  HorizontalAlignment="Center"/>
                 <TextBlock Text="Loading grades..."
                            Foreground="{DynamicResource TextFillColorPrimaryBrush}"
-                           FontSize="15" FontWeight="SemiBold"
+                           FontSize="14" FontWeight="SemiBold"
                            HorizontalAlignment="Center"/>
             </StackPanel>
         </Grid>
