@@ -23,6 +23,17 @@
 
         <ui:TitleBar x:Name="AppTitleBar" Grid.ColumnSpan="2" Title="TeachAssist"/>
 
+        <!-- Fill title bar area above sidebar with matching gradient -->
+        <Border Grid.Column="0" Width="220" Height="32" VerticalAlignment="Top"
+                Panel.ZIndex="0">
+            <Border.Background>
+                <LinearGradientBrush StartPoint="0,0" EndPoint="0,1">
+                    <GradientStop Color="#1E1B4B" Offset="0"/>
+                    <GradientStop Color="#1E1B4B" Offset="1"/>
+                </LinearGradientBrush>
+            </Border.Background>
+        </Border>
+
         <!-- Custom sidebar with gradient background -->
         <Border x:Name="Sidebar" Grid.Column="0" Width="220" Margin="0,32,0,0">
             <Border.Background>
