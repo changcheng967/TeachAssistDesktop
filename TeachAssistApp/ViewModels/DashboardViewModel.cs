@@ -63,10 +63,16 @@ public partial class DashboardViewModel : ObservableObject
     private string _topCourseColor = GradeColorHelper.NA;
 
     [ObservableProperty]
+    private Course? _topCourse;
+
+    [ObservableProperty]
     private string _focusCourseDisplay = string.Empty;
 
     [ObservableProperty]
     private string _focusCourseColor = GradeColorHelper.NA;
+
+    [ObservableProperty]
+    private Course? _focusCourse;
 
     [ObservableProperty]
     private string _atRiskDisplay = string.Empty;
@@ -194,9 +200,11 @@ public partial class DashboardViewModel : ObservableObject
             var top = ranked.First();
             var focus = ranked.Last();
 
+            TopCourse = top;
             TopCourseDisplay = $"{top.Code}  ·  {(top.NumericMark ?? 0):F1}%";
             TopCourseColor = top.GradeColor;
 
+            FocusCourse = focus;
             FocusCourseDisplay = $"{focus.Code}  ·  {(focus.NumericMark ?? 0):F1}%";
             FocusCourseColor = focus.GradeColor;
 
