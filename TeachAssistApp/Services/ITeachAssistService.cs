@@ -12,5 +12,6 @@ public interface ITeachAssistService
     void ClearCache();
     bool IsLoggedIn { get; }
     string? LastError { get; }
+    string? Username { get; }
     string SchoolName { get; }
 }

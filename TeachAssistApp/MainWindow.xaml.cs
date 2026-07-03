@@ -167,21 +167,7 @@ public partial class MainWindow : FluentWindow
                 SetActiveNav(NavDashboard);
                 // Update sidebar stat display
                 UpdateSidebarGrade(dashboardVM);
-                dashboardVM.PropertyChanged += (s, e) =>
-                {
-                    if (e.PropertyName == nameof(DashboardViewModel.AverageMark) ||
-                        e.PropertyName == nameof(DashboardViewModel.GradeColor))
-                    {
-                        Dispatcher.Invoke(() => UpdateSidebarGrade(dashboardVM));
-                    }
-                    else if (e.PropertyName == nameof(DashboardViewModel.Gpa))
-                    {
-                        Dispatcher.Invoke(() =>
-                        {
-                            SidebarGpa.Text = dashboardVM.Gpa != "N/A" ? $"GPA {dashboardVM.Gpa}" : "";
-                        });
-                    }
-                };
+                SubscribeDashboard(dashboardVM);
                 break;
             case "Settings":
                 page = _serviceProvider.GetRequiredService<SettingsView>();
@@ -245,6 +231,36 @@ public partial class MainWindow : FluentWindow
         item.Background = new SolidColorBrush(Color.FromArgb(0x20, 0xFF, 0xFF, 0xFF)); // White tint on dark sidebar
     }
 
+    // DashboardViewModel is a singleton, so subscribe at most once — otherwise every
+    // navigation to Dashboard stacked another handler and UpdateSidebarGrade ran N times.
+    private DashboardViewModel? _subscribedDashboard;
+
+    private void SubscribeDashboard(DashboardViewModel vm)
+    {
+        if (ReferenceEquals(vm, _subscribedDashboard)) return;
+        _subscribedDashboard = vm;
+        vm.PropertyChanged += DashboardVm_PropertyChanged;
+    }
+
+    private void DashboardVm_PropertyChanged(object? sender, PropertyChangedEventArgs e)
+    {
+        var vm = _subscribedDashboard;
+        if (vm == null) return;
+
+        if (e.PropertyName == nameof(DashboardViewModel.AverageMark) ||
+            e.PropertyName == nameof(DashboardViewModel.GradeColor))
+        {
+            Dispatcher.Invoke(() => UpdateSidebarGrade(vm));
+        }
+        else if (e.PropertyName == nameof(DashboardViewModel.Gpa))
+        {
+            Dispatcher.Invoke(() =>
+            {
+                SidebarGpa.Text = vm.Gpa != "N/A" ? $"GPA {vm.Gpa}" : "";
+            });
+        }
+    }
+
     private void UpdateSidebarGrade(DashboardViewModel vm)
     {
         SidebarAverage.Text = vm.AverageMark > 0 ? $"{vm.AverageMark:F1}%" : "--";
@@ -252,9 +268,18 @@ public partial class MainWindow : FluentWindow
 
         if (vm.AverageMark > 0 && !string.IsNullOrEmpty(vm.GradeColor))
         {
-            var color = (Color)ColorConverter.ConvertFromString(vm.GradeColor);
-            SidebarGradeAccent.Background = new SolidColorBrush(color);
-            SidebarGradeAccent.Opacity = 0.8;
+            try
+            {
+                var color = (Color)ColorConverter.ConvertFromString(vm.GradeColor);
+                SidebarGradeAccent.Background = new SolidColorBrush(color);
+                SidebarGradeAccent.Opacity = 0.8;
+            }
+            catch
+            {
+                // GradeColor should always be a valid hex token; guard anyway so a bad
+                // value can never crash the sidebar render on the UI thread.
+                SidebarGradeAccent.Opacity = 0;
+            }
         }
         else
         {

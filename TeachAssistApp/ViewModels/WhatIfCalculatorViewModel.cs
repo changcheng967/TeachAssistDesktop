@@ -36,6 +36,7 @@ public partial class WhatIfCalculatorViewModel : ObservableObject
     // Transcript summary (matches the Dashboard's portal-based average).
     [ObservableProperty] private string _gradeColor = GradeColorHelper.NA;
     [ObservableProperty] private double _currentAverage;
+    [ObservableProperty] private double _baselineAverage;
     [ObservableProperty] private int _courseCount;
 
     // Selected-course state.
@@ -79,6 +80,7 @@ public partial class WhatIfCalculatorViewModel : ObservableObject
             var valid = _allCourses.Where(c => c.HasValidMark).ToList();
             CourseCount = valid.Count;
             CurrentAverage = valid.Any() ? valid.Average(c => c.NumericMark ?? 0) : 0;
+            BaselineAverage = CurrentAverage;
             GradeColor = GradeColorHelper.GetColor(CurrentAverage);
         }
         catch (Exception ex)
@@ -140,8 +142,12 @@ public partial class WhatIfCalculatorViewModel : ObservableObject
 
             // Transcript baseline that uses the app-computed course grade for the selected
             // course, so the projection delta reflects ONLY the hypothetical assignments.
+            // BaselineAverage is shown explicitly so the before→after is never hidden.
             RecomputeTranscriptBaseline();
-            ProjectedAverage = CurrentAverage;
+            BaselineAverage = _transcriptCount > 0
+                ? (_othersSum + CurrentCourseGrade) / _transcriptCount
+                : CurrentAverage;
+            ProjectedAverage = BaselineAverage;
             AverageDifference = 0;
 
             // Category picker: prefer the course's real weighted strands, else the standard set.
@@ -270,12 +276,12 @@ public partial class WhatIfCalculatorViewModel : ObservableObject
         ProjectedCourseGrade = ComputeCourseGrade(working);
         CourseGradeDifference = ProjectedCourseGrade - CurrentCourseGrade;
 
-        // Transcript impact: only the selected course's grade changes between scenarios.
+        // Transcript impact: only the selected course's grade changes between scenarios,
+        // so the delta is measured against the displayed BaselineAverage.
         if (_transcriptCount > 0)
         {
-            var baseline = (_othersSum + CurrentCourseGrade) / _transcriptCount;
             ProjectedAverage = (_othersSum + ProjectedCourseGrade) / _transcriptCount;
-            AverageDifference = ProjectedAverage - baseline;
+            AverageDifference = ProjectedAverage - BaselineAverage;
         }
         else
         {

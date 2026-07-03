@@ -254,7 +254,8 @@ public partial class DashboardViewModel : ObservableObject
 
             if (saveFileDialog.ShowDialog() == true)
             {
-                var html = await pdfExporter.GenerateGradeReportHtmlAsync(Courses.ToList(), _teachAssistService.IsLoggedIn ? "Student" : "Student");
+                var studentName = string.IsNullOrEmpty(_teachAssistService.Username) ? "Student" : _teachAssistService.Username;
+                var html = await pdfExporter.GenerateGradeReportHtmlAsync(Courses.ToList(), studentName);
                 await pdfExporter.SaveAndOpenPdfAsync(html, saveFileDialog.FileName);
             }
         }

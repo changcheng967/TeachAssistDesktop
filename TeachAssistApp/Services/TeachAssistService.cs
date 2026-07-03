@@ -24,6 +24,7 @@ public class TeachAssistService : ITeachAssistService
 
     public bool IsLoggedIn { get; private set; }
     public string? LastError => _lastError;
+    public string? Username => _username;
     public string SchoolName { get; private set; } = "YRDSB";
 
     // Enable demo mode for testing without real credentials

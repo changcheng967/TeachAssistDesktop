@@ -97,35 +97,42 @@ public partial class GradeGoalsViewModel : ObservableObject
 
     private void CalculateProgress()
     {
-        ProgressToGoal = (CurrentAverage / GoalPercent) * 100;
+        // Guard against GoalPercent <= 0 — a custom goal of "0" would otherwise divide by
+        // zero, producing Infinity that crashes the progress-bar width binding.
+        ProgressToGoal = GoalPercent > 0
+            ? Math.Min((CurrentAverage / GoalPercent) * 100, 100)
+            : 0;
+
         PointsNeeded = GoalPercent - CurrentAverage;
-        OnTrack = CurrentAverage >= GoalPercent * 0.9; // Within 90% of goal
+        // "On track" means genuinely within reach this term (a few points), not merely 90%
+        // of an arbitrary target — 90% of a 95-goal is 85.5, which felt falsely reassuring.
+        OnTrack = PointsNeeded <= 5;
 
         UpdateMotivationalMessage();
     }
 
     private void UpdateMotivationalMessage()
     {
-        if (OnTrack)
+        // Tier the message by the actual point gap so the tone matches the math.
+        if (PointsNeeded <= 0)
         {
-            if (CurrentAverage >= GoalPercent)
-            {
-                MotivationalMessage = "🎉 Congratulations! You've reached your goal! Keep up the amazing work!";
-            }
-            else
-            {
-                MotivationalMessage = "💪 You're so close to your goal! Just a little more effort and you'll make it!";
-            }
+            MotivationalMessage = "🎉 You've reached your goal! Keep up the amazing work.";
             ShowMotivation = true;
         }
-        else if (PointsNeeded > 15)
+        else if (PointsNeeded <= 5)
         {
-            MotivationalMessage = "📚 Every assignment counts. Focus on your studies and aim high!";
+            MotivationalMessage = $"💪 Just {PointsNeeded:F1}% away — you're right there. Finish strong!";
+            ShowMotivation = true;
+        }
+        else if (PointsNeeded <= 15)
+        {
+            MotivationalMessage = $"📈 {PointsNeeded:F1}% to go. A couple of strong assignments will close the gap.";
             ShowMotivation = true;
         }
         else
         {
-            ShowMotivation = false;
+            MotivationalMessage = $"📚 {PointsNeeded:F1}% to your goal. Prioritise your lowest categories first.";
+            ShowMotivation = true;
         }
     }
 
@@ -140,7 +147,7 @@ public partial class GradeGoalsViewModel : ObservableObject
     [RelayCommand]
     private void SetCustomGoal()
     {
-        if (double.TryParse(CustomGoal, out var goal) && goal >= 0 && goal <= 100)
+        if (double.TryParse(CustomGoal, out var goal) && goal > 0 && goal <= 100)
         {
             GoalPercent = goal;
             CalculateProgress();
