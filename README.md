@@ -2,7 +2,7 @@
 
 > A modern Windows desktop application for YRDSB students to check their TeachAssist grades with advanced analytics and a polished Fluent UI.
 
-![TeachAssist](https://img.shields.io/badge/version-3.2.0-blue)
+![TeachAssist](https://img.shields.io/badge/version-5.8.0-blue)
 ![.NET](https://img.shields.io/badge/.NET-10.0-purple)
 ![Platform](https://img.shields.io/badge/platform-Windows_10%2B-blue)
 ![License](https://img.shields.io/badge/license-MIT-green)

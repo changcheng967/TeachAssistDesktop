@@ -47,12 +47,6 @@ public partial class SettingsViewModel : ObservableObject
     private bool _isDarkMode;
 
     [ObservableProperty]
-    private int _autoRefreshIndex = 0;
-
-    [ObservableProperty]
-    private string _autoRefreshInterval = "Off";
-
-    [ObservableProperty]
     private string _username = "Student";
 
     private List<Course>? _cachedCourses;
@@ -120,19 +114,6 @@ public partial class SettingsViewModel : ObservableObject
         catch { }
     }
 
-    partial void OnAutoRefreshIndexChanged(int value)
-    {
-        AutoRefreshInterval = value switch
-        {
-            0 => "Off",
-            1 => "5",
-            2 => "10",
-            3 => "15",
-            4 => "30",
-            _ => "Off"
-        };
-    }
-
     [RelayCommand]
     private async Task LogoutAsync()
     {
@@ -168,10 +149,11 @@ public partial class SettingsViewModel : ObservableObject
 
         try
         {
+            // Clear only the cached grade data — leave saved credentials intact so the
+            // user is not silently logged out. Logout is a separate, explicit action.
             _teachAssistService.ClearCache();
             _cachedCourses = null;
-            await _credentialService.ClearCredentialsAsync();
-            SuccessMessage = "✅ Cached data cleared successfully!";
+            SuccessMessage = "✅ Cached data cleared. Your login is kept.";
             await Task.Delay(2000);
             SuccessMessage = null;
         }
@@ -267,7 +249,9 @@ public partial class SettingsViewModel : ObservableObject
 
             var saveFileDialog = new Microsoft.Win32.SaveFileDialog
             {
-                Filter = "HTML Files (*.html)|*.html|PDF Files (*.pdf)|*.pdf|All Files (*.*)|*.*",
+                // The report is generated as HTML and opened in the browser, where the
+                // user can print it to PDF (Ctrl+P). Offer only what we actually produce.
+                Filter = "HTML Report (*.html)|*.html",
                 DefaultExt = "html",
                 FileName = $"TeachAssist_GradeReport_{DateTime.Now:yyyyMMdd_HHmmss}.html"
             };
@@ -277,19 +261,9 @@ public partial class SettingsViewModel : ObservableObject
                 var html = await _pdfExporter.GenerateGradeReportHtmlAsync(courses, Username);
                 var filePath = saveFileDialog.FileName;
 
-                // If user selected .pdf extension, save as .html but let them know
-                if (Path.GetExtension(filePath).ToLower() == ".pdf")
-                {
-                    filePath = Path.ChangeExtension(filePath, ".html");
-                    SuccessMessage = "💡 Report opened in browser. Use Ctrl+P to save as PDF!";
-                }
-                else
-                {
-                    SuccessMessage = $"✅ Report generated: {Path.GetFileName(filePath)}";
-                }
-
                 await _pdfExporter.SaveAndOpenPdfAsync(html, filePath);
 
+                SuccessMessage = "💡 Opened in your browser — use Ctrl+P to save as PDF.";
                 await Task.Delay(3000);
                 SuccessMessage = null;
             }

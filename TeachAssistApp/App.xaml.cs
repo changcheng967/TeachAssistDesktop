@@ -80,7 +80,6 @@ public partial class App : Application
                     services.AddSingleton<Services.IToastService, Services.ToastService>();
 
                     // ViewModels
-                    services.AddSingleton<MainViewModel>();
                     services.AddSingleton<LoginViewModel>();
                     services.AddSingleton<DashboardViewModel>();
                     services.AddSingleton<CourseDetailViewModel>();

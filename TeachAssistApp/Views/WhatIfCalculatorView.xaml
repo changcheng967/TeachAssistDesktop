@@ -4,7 +4,7 @@
         xmlns:ui="http://schemas.lepo.co/wpfui/2022/xaml"
         xmlns:helpers="clr-namespace:TeachAssistApp.Helpers"
         Title="What-If Calculator - TeachAssist"
-        Height="550" Width="500"
+        Height="660" Width="520"
         WindowStartupLocation="CenterOwner"
         ResizeMode="CanMinimize"
         ExtendsContentIntoTitleBar="True"
@@ -19,7 +19,8 @@
         <ScrollViewer Margin="0,35,0,0" VerticalScrollBarVisibility="Auto" CanContentScroll="False"
                       helpers:SmoothScrollBehavior.IsEnabled="True" Padding="32,24,32,32">
             <StackPanel>
-                <!-- Hero: Current Average -->
+
+                <!-- Hero: Overall Average -->
                 <Border Margin="0,0,0,20" CornerRadius="14"
                         Background="{DynamicResource CardBackgroundFillColorDefaultBrush}"
                         Effect="{StaticResource CardElevatedShadow}">
@@ -31,8 +32,8 @@
                         <Border Grid.Column="0" CornerRadius="14,0,0,14"
                                 Background="{Binding GradeColor, Converter={StaticResource StringToBrushConverter}}"/>
                         <StackPanel Grid.Column="1" Margin="20,16">
-                            <TextBlock Text="Current Average" FontSize="12" Foreground="{DynamicResource TextFillColorSecondaryBrush}" Margin="0,0,0,8"/>
-                            <TextBlock Text="{Binding CurrentGpa, StringFormat={}{0:F1}%}" FontSize="40" FontWeight="Bold"
+                            <TextBlock Text="Overall Average" FontSize="12" Foreground="{DynamicResource TextFillColorSecondaryBrush}" Margin="0,0,0,8"/>
+                            <TextBlock Text="{Binding CurrentAverage, StringFormat={}{0:F1}%}" FontSize="40" FontWeight="Bold"
                                        Foreground="{Binding GradeColor, Converter={StaticResource StringToBrushConverter}}"/>
                             <TextBlock FontSize="12" Foreground="{DynamicResource TextFillColorTertiaryBrush}" Margin="0,8,0,0">
                                 <Run Text="Across "/><Run Text="{Binding CourseCount}" FontWeight="SemiBold"/><Run Text=" courses"/>
@@ -41,16 +42,57 @@
                     </Grid>
                 </Border>
 
-                <!-- Add Assignment form -->
-                <TextBlock Text="ADD HYPOTHETICAL" FontSize="11" FontWeight="SemiBold"
-                           Foreground="{DynamicResource TextFillColorTertiaryBrush}" Margin="0,0,0,10"/>
-
+                <!-- Course selector -->
+                <TextBlock Text="SIMULATE A COURSE" Style="{StaticResource SectionHeader}"/>
                 <Border CornerRadius="10" Background="{DynamicResource CardBackgroundFillColorDefaultBrush}"
                         Effect="{StaticResource CardDefaultShadow}" Padding="14,12" Margin="0,0,0,20">
                     <StackPanel>
+                        <TextBlock Text="Choose a course" FontSize="11" Foreground="{DynamicResource TextFillColorTertiaryBrush}" Margin="0,0,0,6"/>
+                        <ComboBox ItemsSource="{Binding Courses}" SelectedItem="{Binding SelectedCourse}" FontSize="13">
+                            <ComboBox.ItemTemplate>
+                                <DataTemplate>
+                                    <StackPanel Orientation="Horizontal">
+                                        <TextBlock Text="{Binding Code}" FontWeight="SemiBold"/>
+                                        <TextBlock Text=" — " Foreground="{DynamicResource TextFillColorTertiaryBrush}"/>
+                                        <TextBlock Text="{Binding Name}" Foreground="{DynamicResource TextFillColorSecondaryBrush}"/>
+                                    </StackPanel>
+                                </DataTemplate>
+                            </ComboBox.ItemTemplate>
+                        </ComboBox>
+
+                        <TextBlock Margin="0,10,0,0" FontSize="12"
+                                   Visibility="{Binding IsLoadingCourse, Converter={StaticResource BooleanToVisibilityConverter}}"
+                                   Foreground="{DynamicResource TextFillColorSecondaryBrush}" Text="Loading course…"/>
+
+                        <StackPanel Orientation="Horizontal" Margin="0,10,0,0"
+                                    Visibility="{Binding HasCourseData, Converter={StaticResource BooleanToVisibilityConverter}}">
+                            <TextBlock Text="Current grade: " FontSize="13" Foreground="{DynamicResource TextFillColorSecondaryBrush}" VerticalAlignment="Center"/>
+                            <TextBlock Text="{Binding CurrentCourseGrade, StringFormat={}{0:F1}%}" FontSize="16" FontWeight="Bold" VerticalAlignment="Center"
+                                       Foreground="{Binding CurrentCourseGradeColor, Converter={StaticResource StringToBrushConverter}}"/>
+                        </StackPanel>
+                    </StackPanel>
+                </Border>
+
+                <!-- Add hypothetical (only once a course is loaded) -->
+                <TextBlock Text="ADD HYPOTHETICAL" Style="{StaticResource SectionHeader}"/>
+
+                <!-- Placeholder before a course is chosen -->
+                <Border CornerRadius="10" Background="{DynamicResource CardBackgroundFillColorDefaultBrush}"
+                        Effect="{StaticResource CardDefaultShadow}" Padding="14,16" Margin="0,0,0,20"
+                        Visibility="{Binding HasCourseData, Converter={StaticResource InvertedBooleanToVisibilityConverter}}">
+                    <TextBlock Text="Pick a course above to start simulating an upcoming assignment."
+                               FontSize="13" TextAlignment="Center"
+                               Foreground="{DynamicResource TextFillColorTertiaryBrush}"/>
+                </Border>
+
+                <!-- Add form -->
+                <Border CornerRadius="10" Background="{DynamicResource CardBackgroundFillColorDefaultBrush}"
+                        Effect="{StaticResource CardDefaultShadow}" Padding="14,12" Margin="0,0,0,20"
+                        Visibility="{Binding HasCourseData, Converter={StaticResource BooleanToVisibilityConverter}}">
+                    <StackPanel>
                         <TextBlock Text="Assignment Name" FontSize="11" Foreground="{DynamicResource TextFillColorTertiaryBrush}" Margin="0,0,0,6"/>
                         <ui:TextBox Text="{Binding NewAssignmentName, UpdateSourceTrigger=PropertyChanged}"
-                                    PlaceholderText="Enter name" Margin="0,0,0,12"/>
+                                    PlaceholderText="e.g. Unit 4 Test" Margin="0,0,0,12"/>
 
                         <Grid Margin="0,0,0,12">
                             <Grid.ColumnDefinitions>
@@ -63,44 +105,70 @@
                                 <ui:TextBox Text="{Binding NewAssignmentMark, UpdateSourceTrigger=PropertyChanged}" PlaceholderText="0-100"/>
                             </StackPanel>
                             <StackPanel Grid.Column="2">
-                                <TextBlock Text="Weight (%)" FontSize="11" Foreground="{DynamicResource TextFillColorTertiaryBrush}" Margin="0,0,0,6"/>
-                                <ui:TextBox Text="{Binding NewAssignmentWeight, UpdateSourceTrigger=PropertyChanged}" PlaceholderText="0-100"/>
+                                <TextBlock Text="Size (points)" FontSize="11" Foreground="{DynamicResource TextFillColorTertiaryBrush}" Margin="0,0,0,6"/>
+                                <ui:TextBox Text="{Binding NewAssignmentPoints, UpdateSourceTrigger=PropertyChanged}" PlaceholderText="e.g. 30"/>
                             </StackPanel>
                         </Grid>
+
+                        <TextBlock Text="Category" FontSize="11" Foreground="{DynamicResource TextFillColorTertiaryBrush}" Margin="0,0,0,6"/>
+                        <ComboBox ItemsSource="{Binding Categories}" SelectedItem="{Binding SelectedCategory}"
+                                  FontSize="13" Margin="0,0,0,4"/>
+                        <TextBlock Text="KU Knowledge · T Thinking · C Communication · A Application"
+                                   FontSize="10" Margin="0,0,0,12"
+                                   Foreground="{DynamicResource TextFillColorTertiaryBrush}"/>
 
                         <ui:Button Content="Add Assignment" Command="{Binding AddAssignmentCommand}"
                                    Appearance="Primary" HorizontalAlignment="Stretch"/>
                     </StackPanel>
                 </Border>
 
-                <!-- Projected Results -->
-                <Border Margin="0,0,0,8" CornerRadius="10"
+                <!-- Projected results -->
+                <Border Margin="0,0,0,8" CornerRadius="14"
                         Background="{DynamicResource CardBackgroundFillColorDefaultBrush}"
-                        Effect="{StaticResource CardDefaultShadow}"
+                        Effect="{StaticResource CardElevatedShadow}"
                         Visibility="{Binding HasHypotheticalAssignments, Converter={StaticResource BooleanToVisibilityConverter}}">
                     <Grid>
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="4"/>
                             <ColumnDefinition Width="*"/>
                         </Grid.ColumnDefinitions>
-                        <Border Grid.Column="0" CornerRadius="10,0,0,10"
-                                Background="{Binding GpaDifference, Converter={StaticResource ImpactDeltaToColorConverter}}"/>
-                        <StackPanel Grid.Column="1" Margin="14,12">
-                            <TextBlock Text="Projected Average" FontSize="11" Foreground="{DynamicResource TextFillColorTertiaryBrush}" Margin="0,0,0,8"/>
-                            <TextBlock Text="{Binding ProjectedGpa, StringFormat={}{0:F1}%}" FontSize="32" FontWeight="Bold"/>
-                            <TextBlock FontSize="13" FontWeight="SemiBold" Margin="0,4,0,0"
-                                       Foreground="{Binding GpaDifference, Converter={StaticResource ImpactDeltaToColorConverter}}">
-                                <Run Text="{Binding GpaDifference, StringFormat={}{0:+0.0;-0.0}%}"/>
-                                <Run Text=" difference" FontSize="11" FontWeight="Normal"
+                        <Border Grid.Column="0" CornerRadius="14,0,0,14"
+                                Background="{Binding CourseGradeDifference, Converter={StaticResource ImpactDeltaToColorConverter}}"/>
+                        <StackPanel Grid.Column="1" Margin="20,16">
+                            <TextBlock Text="Projected Course Grade" FontSize="11" Foreground="{DynamicResource TextFillColorTertiaryBrush}" Margin="0,0,0,8"/>
+                            <StackPanel Orientation="Horizontal">
+                                <TextBlock Text="{Binding CurrentCourseGrade, StringFormat={}{0:F1}%}" FontSize="20" FontWeight="SemiBold"
+                                           VerticalAlignment="Center"
+                                           Foreground="{DynamicResource TextFillColorSecondaryBrush}"/>
+                                <TextBlock Text="  →  " FontSize="16" VerticalAlignment="Center"
+                                           Foreground="{DynamicResource TextFillColorTertiaryBrush}"/>
+                                <TextBlock Text="{Binding ProjectedCourseGrade, StringFormat={}{0:F1}%}" FontSize="40" FontWeight="Bold"
+                                           VerticalAlignment="Center"
+                                           Foreground="{Binding CourseGradeDifference, Converter={StaticResource ImpactDeltaToColorConverter}}"/>
+                            </StackPanel>
+                            <TextBlock FontSize="13" FontWeight="SemiBold" Margin="0,6,0,0"
+                                       Foreground="{Binding CourseGradeDifference, Converter={StaticResource ImpactDeltaToColorConverter}}">
+                                <Run Text="{Binding CourseGradeDifference, StringFormat={}{0:+0.0;-0.0}%}"/>
+                                <Run Text=" in this course" FontSize="11" FontWeight="Normal"
                                      Foreground="{DynamicResource TextFillColorSecondaryBrush}"/>
+                            </TextBlock>
+
+                            <Border Height="1" Margin="0,12,0,12" Background="{DynamicResource ControlStrokeColorDefaultBrush}"/>
+
+                            <TextBlock FontSize="12" Foreground="{DynamicResource TextFillColorSecondaryBrush}">
+                                <Run Text="Overall average → "/><Run Text="{Binding ProjectedAverage, StringFormat={}{0:F1}%}" FontWeight="SemiBold"/>
+                                <Run Text="  (" Foreground="{DynamicResource TextFillColorTertiaryBrush}"/>
+                                <Run Text="{Binding AverageDifference, StringFormat={}{0:+0.0;-0.0}%}" FontWeight="SemiBold"
+                                     Foreground="{Binding AverageDifference, Converter={StaticResource ImpactDeltaToColorConverter}}"/>
+                                <Run Text=")" Foreground="{DynamicResource TextFillColorTertiaryBrush}"/>
                             </TextBlock>
                         </StackPanel>
                     </Grid>
                 </Border>
 
-                <!-- Assignment List -->
+                <!-- Hypothetical list -->
                 <Border CornerRadius="10" Background="{DynamicResource CardBackgroundFillColorDefaultBrush}"
-                        Effect="{StaticResource CardDefaultShadow}" Padding="14,12"
+                        Effect="{StaticResource CardDefaultShadow}" Padding="14,12" Margin="0,0,0,8"
                         Visibility="{Binding HasHypotheticalAssignments, Converter={StaticResource BooleanToVisibilityConverter}}">
                     <StackPanel>
                         <TextBlock Text="Hypothetical Assignments" FontSize="13" FontWeight="SemiBold" Margin="0,0,0,8"/>
@@ -112,12 +180,18 @@
                                             <ColumnDefinition Width="*"/>
                                             <ColumnDefinition Width="Auto"/>
                                             <ColumnDefinition Width="Auto"/>
+                                            <ColumnDefinition Width="Auto"/>
                                         </Grid.ColumnDefinitions>
-                                        <TextBlock Grid.Column="0" Text="{Binding Name}" FontSize="13" VerticalAlignment="Center"/>
+                                        <StackPanel Grid.Column="0" VerticalAlignment="Center">
+                                            <TextBlock Text="{Binding Name}" FontSize="13"/>
+                                            <TextBlock FontSize="10" Foreground="{DynamicResource TextFillColorTertiaryBrush}">
+                                                <Run Text="{Binding Category}"/><Run Text=" · "/><Run Text="{Binding Points}"/><Run Text=" pts"/>
+                                            </TextBlock>
+                                        </StackPanel>
                                         <TextBlock Grid.Column="1" Text="{Binding Mark, StringFormat={}{0:F0}%}"
                                                    FontSize="12" FontWeight="SemiBold" VerticalAlignment="Center" Margin="0,0,12,0"/>
                                         <ui:Button Grid.Column="2" Content="&#xE711;" FontFamily="Segoe MDL2 Assets"
-                                                   Command="{Binding RemoveCommand}" CommandParameter="{Binding}"
+                                                   Command="{Binding RemoveCommand}"
                                                    Appearance="Secondary" Padding="6" FontSize="11"/>
                                     </Grid>
                                 </DataTemplate>
@@ -125,6 +199,7 @@
                         </ItemsControl>
                     </StackPanel>
                 </Border>
+
             </StackPanel>
         </ScrollViewer>
     </Grid>

@@ -141,6 +141,75 @@
                 </Grid>
             </Grid>
 
+            <!-- Insights strip: top performer, needs focus, standing -->
+            <Grid Margin="0,0,0,20"
+                  Visibility="{Binding HasInsights, Converter={StaticResource BooleanToVisibilityConverter}}">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="10"/>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="10"/>
+                    <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
+
+                <!-- Top performer -->
+                <Border Grid.Column="0" Style="{StaticResource BentoCard}">
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="4"/>
+                            <ColumnDefinition Width="*"/>
+                        </Grid.ColumnDefinitions>
+                        <Border Grid.Column="0" CornerRadius="10,0,0,10"
+                                Background="{Binding TopCourseColor, Converter={StaticResource StringToBrushConverter}}"/>
+                        <StackPanel Grid.Column="1" Margin="14,0,0,0" VerticalAlignment="Center">
+                            <TextBlock Text="TOP PERFORMER" FontSize="11" FontWeight="SemiBold"
+                                       Foreground="{DynamicResource TextFillColorTertiaryBrush}"
+                                       Margin="0,0,0,4" Opacity="0.8"/>
+                            <TextBlock Text="{Binding TopCourseDisplay}" FontSize="15" FontWeight="Bold"
+                                       Foreground="{Binding TopCourseColor, Converter={StaticResource StringToBrushConverter}}"/>
+                        </StackPanel>
+                    </Grid>
+                </Border>
+
+                <!-- Needs focus -->
+                <Border Grid.Column="2" Style="{StaticResource BentoCard}">
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="4"/>
+                            <ColumnDefinition Width="*"/>
+                        </Grid.ColumnDefinitions>
+                        <Border Grid.Column="0" CornerRadius="10,0,0,10"
+                                Background="{Binding FocusCourseColor, Converter={StaticResource StringToBrushConverter}}"/>
+                        <StackPanel Grid.Column="1" Margin="14,0,0,0" VerticalAlignment="Center">
+                            <TextBlock Text="NEEDS FOCUS" FontSize="11" FontWeight="SemiBold"
+                                       Foreground="{DynamicResource TextFillColorTertiaryBrush}"
+                                       Margin="0,0,0,4" Opacity="0.8"/>
+                            <TextBlock Text="{Binding FocusCourseDisplay}" FontSize="15" FontWeight="Bold"
+                                       Foreground="{Binding FocusCourseColor, Converter={StaticResource StringToBrushConverter}}"/>
+                        </StackPanel>
+                    </Grid>
+                </Border>
+
+                <!-- Standing / at-risk -->
+                <Border Grid.Column="4" Style="{StaticResource BentoCard}">
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="4"/>
+                            <ColumnDefinition Width="*"/>
+                        </Grid.ColumnDefinitions>
+                        <Border Grid.Column="0" CornerRadius="10,0,0,10"
+                                Background="{Binding AtRiskColor, Converter={StaticResource StringToBrushConverter}}"/>
+                        <StackPanel Grid.Column="1" Margin="14,0,0,0" VerticalAlignment="Center">
+                            <TextBlock Text="STANDING" FontSize="11" FontWeight="SemiBold"
+                                       Foreground="{DynamicResource TextFillColorTertiaryBrush}"
+                                       Margin="0,0,0,4" Opacity="0.8"/>
+                            <TextBlock Text="{Binding AtRiskDisplay}" FontSize="15" FontWeight="Bold"
+                                       Foreground="{Binding AtRiskColor, Converter={StaticResource StringToBrushConverter}}"/>
+                        </StackPanel>
+                    </Grid>
+                </Border>
+            </Grid>
+
             <!-- Section label -->
             <TextBlock x:Name="CourseSectionLabel" Text="COURSES"
                        Style="{StaticResource SectionHeader}"

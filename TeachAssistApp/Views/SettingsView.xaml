@@ -34,24 +34,6 @@
                         <TextBlock Grid.Column="0" Text="Dark Mode" FontSize="14" VerticalAlignment="Center"/>
                         <ui:ToggleSwitch Grid.Column="1" IsChecked="{Binding IsDarkMode}" VerticalAlignment="Center"/>
                     </Grid>
-                    <Separator Margin="14,0"/>
-                    <Grid Margin="14,12">
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="*"/>
-                            <ColumnDefinition Width="Auto"/>
-                        </Grid.ColumnDefinitions>
-                        <TextBlock Grid.Column="0" FontSize="13" VerticalAlignment="Center"
-                                   Foreground="{DynamicResource TextFillColorSecondaryBrush}">
-                            <Run Text="Auto-refresh every"/><Run FontWeight="SemiBold" Text="{Binding AutoRefreshInterval}"/><Run Text=" min"/>
-                        </TextBlock>
-                        <ComboBox Grid.Column="1" SelectedIndex="{Binding AutoRefreshIndex}" Width="100" FontSize="13">
-                            <ComboBoxItem Content="Off"/>
-                            <ComboBoxItem Content="5 min"/>
-                            <ComboBoxItem Content="10 min"/>
-                            <ComboBoxItem Content="15 min"/>
-                            <ComboBoxItem Content="30 min"/>
-                        </ComboBox>
-                    </Grid>
                 </StackPanel>
             </Border>
 

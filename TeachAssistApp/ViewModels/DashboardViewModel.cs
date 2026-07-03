@@ -47,6 +47,28 @@ public partial class DashboardViewModel : ObservableObject
     [ObservableProperty]
     private string _gradeColor = GradeColorHelper.NA;
 
+    // Insights strip — surfaces "where do I stand / what needs attention" at a glance.
+    [ObservableProperty]
+    private bool _hasInsights;
+
+    [ObservableProperty]
+    private string _topCourseDisplay = string.Empty;
+
+    [ObservableProperty]
+    private string _topCourseColor = GradeColorHelper.NA;
+
+    [ObservableProperty]
+    private string _focusCourseDisplay = string.Empty;
+
+    [ObservableProperty]
+    private string _focusCourseColor = GradeColorHelper.NA;
+
+    [ObservableProperty]
+    private string _atRiskDisplay = string.Empty;
+
+    [ObservableProperty]
+    private string _atRiskColor = GradeColorHelper.NA;
+
     private readonly IServiceProvider _serviceProvider;
 
     public DashboardViewModel(
@@ -159,6 +181,24 @@ public partial class DashboardViewModel : ObservableObject
                 return 0.0;
             });
             Gpa = (gpaSum / validCourses.Count).ToString("F2");
+
+            // Insights: rank courses so the student can see, at a glance, what to
+            // celebrate and what to focus on.
+            var ranked = validCourses.OrderByDescending(c => c.NumericMark ?? 0).ToList();
+            var top = ranked.First();
+            var focus = ranked.Last();
+
+            TopCourseDisplay = $"{top.Code}  ·  {(top.NumericMark ?? 0):F1}%";
+            TopCourseColor = top.GradeColor;
+
+            FocusCourseDisplay = $"{focus.Code}  ·  {(focus.NumericMark ?? 0):F1}%";
+            FocusCourseColor = focus.GradeColor;
+
+            var atRisk = validCourses.Count(c => (c.NumericMark ?? 0) < 70);
+            AtRiskDisplay = atRisk > 0 ? $"{atRisk} below 70%" : "All above 70%";
+            AtRiskColor = atRisk > 0 ? GradeColorHelper.Tier70 : GradeColorHelper.Tier85;
+
+            HasInsights = true;
         }
         else
         {
@@ -166,6 +206,11 @@ public partial class DashboardViewModel : ObservableObject
             GradeColor = GradeColorHelper.NA;
             GradeLabel = "";
             Gpa = "N/A";
+
+            HasInsights = false;
+            TopCourseDisplay = string.Empty;
+            FocusCourseDisplay = string.Empty;
+            AtRiskDisplay = string.Empty;
         }
 
         CourseCount = Courses.Count;
@@ -200,22 +245,17 @@ public partial class DashboardViewModel : ObservableObject
             var pdfExporter = new Services.PdfExporter();
             var saveFileDialog = new Microsoft.Win32.SaveFileDialog
             {
-                Filter = "HTML Files (*.html)|*.html|PDF Files (*.pdf)|*.pdf|All Files (*.*)|*.*",
+                // The report is generated as HTML and opened in the browser; the user can
+                // print it to PDF from there (Ctrl+P). Offer only what we actually produce.
+                Filter = "HTML Report (*.html)|*.html",
                 DefaultExt = "html",
                 FileName = $"TeachAssist_Grades_{System.DateTime.Now:yyyyMMdd_HHmmss}.html"
             };
 
             if (saveFileDialog.ShowDialog() == true)
             {
-                var html = await pdfExporter.GenerateGradeReportHtmlAsync(Courses.ToList(), "Student");
-                var filePath = saveFileDialog.FileName;
-
-                if (System.IO.Path.GetExtension(filePath).ToLower() == ".pdf")
-                {
-                    filePath = System.IO.Path.ChangeExtension(filePath, ".html");
-                }
-
-                await pdfExporter.SaveAndOpenPdfAsync(html, filePath);
+                var html = await pdfExporter.GenerateGradeReportHtmlAsync(Courses.ToList(), _teachAssistService.IsLoggedIn ? "Student" : "Student");
+                await pdfExporter.SaveAndOpenPdfAsync(html, saveFileDialog.FileName);
             }
         }
         catch (Exception ex)
