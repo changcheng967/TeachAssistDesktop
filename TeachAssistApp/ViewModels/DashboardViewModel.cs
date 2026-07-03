@@ -32,6 +32,11 @@ public partial class DashboardViewModel : ObservableObject
     [ObservableProperty]
     private double _averageMark = 0;
 
+    // True only when at least one course has a real posted mark — distinguishes
+    // "0% average" from "no marks posted yet" so the hero never shows a fake 0.0%.
+    [ObservableProperty]
+    private bool _hasValidMarks;
+
     [ObservableProperty]
     private int _courseCount;
 
@@ -156,6 +161,7 @@ public partial class DashboardViewModel : ObservableObject
 
         if (validCourses.Any())
         {
+            HasValidMarks = true;
             var sum = validCourses.Sum(c => c.NumericMark ?? 0);
             AverageMark = sum / validCourses.Count;
 
@@ -202,6 +208,7 @@ public partial class DashboardViewModel : ObservableObject
         }
         else
         {
+            HasValidMarks = false;
             AverageMark = 0;
             GradeColor = GradeColorHelper.NA;
             GradeLabel = "";

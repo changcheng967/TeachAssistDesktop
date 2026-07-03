@@ -74,11 +74,18 @@
                             <TextBlock Text="AVERAGE" FontSize="11" FontWeight="SemiBold"
                                        Foreground="{DynamicResource TextFillColorTertiaryBrush}"
                                        Margin="0,0,0,8" Opacity="0.8"/>
-                            <TextBlock Text="{Binding AverageMark, StringFormat={}{0:F1}%}"
-                                       FontSize="52" FontWeight="Bold"
-                                       Foreground="{Binding GradeColor, Converter={StaticResource StringToBrushConverter}}"
-                                       helpers:NumericCounterBehavior.Animated="True"
-                                       helpers:NumericCounterBehavior.TargetValue="{Binding AverageMark}"/>
+                            <Grid>
+                                <TextBlock Text="{Binding AverageMark, StringFormat={}{0:F1}%}"
+                                           FontSize="52" FontWeight="Bold"
+                                           Foreground="{Binding GradeColor, Converter={StaticResource StringToBrushConverter}}"
+                                           helpers:NumericCounterBehavior.Animated="True"
+                                           helpers:NumericCounterBehavior.TargetValue="{Binding AverageMark}"
+                                           Visibility="{Binding HasValidMarks, Converter={StaticResource BooleanToVisibilityConverter}}"/>
+                                <TextBlock Text="--"
+                                           FontSize="52" FontWeight="Bold"
+                                           Foreground="{Binding GradeColor, Converter={StaticResource StringToBrushConverter}}"
+                                           Visibility="{Binding HasValidMarks, Converter={StaticResource InvertedBooleanToVisibilityConverter}}"/>
+                            </Grid>
 
                             <!-- Grade label — motivational -->
                             <TextBlock Text="{Binding GradeLabel}" FontSize="14" FontWeight="SemiBold"
